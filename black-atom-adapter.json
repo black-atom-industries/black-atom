@@ -59,6 +59,15 @@
         "black-atom-mnml-mono-light",
         "black-atom-mnml-ita-light"
       ]
+    },
+    "paper": {
+      "template": "./themes/paper/collection.template.conf",
+      "themes": [
+        "black-atom-paper-brown-light",
+        "black-atom-paper-brown-dark",
+        "black-atom-paper-blue-light",
+        "black-atom-paper-blue-dark"
+      ]
     }
   }
 }
