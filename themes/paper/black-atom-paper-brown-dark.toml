@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — PAPER ∷ Brown Dark"
+
+[colors]
+foreground = "#dcd3c6"
+background = "#332619"
+cursor_bg = "#e5ddd0"
+cursor_border = "#e5ddd0"
+cursor_fg = "#332619"
+selection_bg = "#534537"
+selection_fg = "#dcd3c6"
+split = "#e5ddd0"
+compose_cursor = "#dd7577"
+scrollbar_thumb = "#9a9185"
+
+ansi = [
+  "#534537", # black
+  "#b1aa9f", # dark_red
+  "#9a9185", # dark_green
+  "#9a9185", # dark_yellow
+  "#b1aa9f", # dark_blue
+  "#9a9185", # dark_magenta
+  "#b1aa9f", # dark_cyan
+  "#b1aa9f" # light_gray
+]
+
+brights = [
+  "#6e6152", # gray
+  "#b1aa9f", # red
+  "#9a9185", # green
+  "#9a9185", # yellow
+  "#b1aa9f", # blue
+  "#9a9185", # magenta
+  "#b1aa9f", # cyan
+  "#b1aa9f" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#24180d"
+background = "#332619"
+
+[colors.tab_bar.active_tab]
+fg_color = "#332619"
+bg_color = "#e5ddd0"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#332619"
+bg_color = "#534537"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#332619"
+bg_color = "#433528"
+
+[colors.tab_bar.new_tab]
+fg_color = "#332619"
+bg_color = "#a9ba78"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#332619"
+bg_color = "#433528"
+intensity = "Bold"
