@@ -11,7 +11,7 @@ cursor_fg = "#0f0d0b"
 selection_bg = "#2b2826"
 selection_fg = "#edeae8"
 split = "#e4e4e4"
-compose_cursor = "#e85760"
+compose_cursor = "#dd7577"
 scrollbar_thumb = "#82807d"
 
 ansi = [
@@ -55,7 +55,7 @@ bg_color = "#1c1a18"
 
 [colors.tab_bar.new_tab]
 fg_color = "#0f0d0b"
-bg_color = "#6eba66"
+bg_color = "#a9ba78"
 
 [colors.tab_bar.new_tab_hover]
 fg_color = "#0f0d0b"
