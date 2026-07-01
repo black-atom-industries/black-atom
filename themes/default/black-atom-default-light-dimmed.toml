@@ -3,61 +3,61 @@ author = "Black Atom Industries"
 name = "Black Atom — Light Dimmed"
 
 [colors]
-foreground = "#1d2722"
-background = "#d5e2dc"
-cursor_bg = "#00b290"
-cursor_border = "#00b290"
-cursor_fg = "#d5e2dc"
-selection_bg = "#bbc8c2"
-selection_fg = "#1d2722"
-split = "#00b290"
+foreground = "#20252a"
+background = "#d8dfe6"
+cursor_bg = "#2eaf6b"
+cursor_border = "#2eaf6b"
+cursor_fg = "#d8dfe6"
+selection_bg = "#bec5cc"
+selection_fg = "#20252a"
+split = "#2eaf6b"
 compose_cursor = "#ff50a7"
-scrollbar_thumb = "#55615c"
+scrollbar_thumb = "#595e64"
 
 ansi = [
-  "#1d2722", # black
-  "#66726d", # dark_red
-  "#899590", # dark_green
-  "#78837e", # dark_yellow
-  "#66726d", # dark_blue
+  "#20252a", # black
+  "#6a6f76", # dark_red
+  "#8d9399", # dark_green
+  "#7b8187", # dark_yellow
+  "#6a6f76", # dark_blue
   "#5981e0", # dark_magenta
-  "#0fa05c", # dark_cyan
-  "#899590" # light_gray
+  "#409d48", # dark_cyan
+  "#8d9399" # light_gray
 ]
 
 brights = [
-  "#55615c", # gray
-  "#66726d", # red
-  "#899590", # green
-  "#78837e", # yellow
-  "#66726d", # blue
+  "#595e64", # gray
+  "#6a6f76", # red
+  "#8d9399", # green
+  "#7b8187", # yellow
+  "#6a6f76", # blue
   "#8d85ed", # magenta
-  "#00b290", # cyan
-  "#bbc8c2" # white
+  "#2eaf6b", # cyan
+  "#bec5cc" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#c8d4cf"
-background = "#d5e2dc"
+inactive_tab_edge = "#cbd2d9"
+background = "#d8dfe6"
 
 [colors.tab_bar.active_tab]
-fg_color = "#c8d4cf"
-bg_color = "#00b290"
+fg_color = "#cbd2d9"
+bg_color = "#2eaf6b"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#c8d4cf"
-bg_color = "#bbc8c2"
+fg_color = "#cbd2d9"
+bg_color = "#bec5cc"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#c8d4cf"
-bg_color = "#bbc8c2"
+fg_color = "#cbd2d9"
+bg_color = "#bec5cc"
 
 [colors.tab_bar.new_tab]
-fg_color = "#c8d4cf"
+fg_color = "#cbd2d9"
 bg_color = "#00a800"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#c8d4cf"
-bg_color = "#bbc8c2"
+fg_color = "#cbd2d9"
+bg_color = "#bec5cc"
 intensity = "Bold"

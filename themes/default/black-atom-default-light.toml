@@ -3,61 +3,61 @@ author = "Black Atom Industries"
 name = "Black Atom — Light"
 
 [colors]
-foreground = "#1d2722"
-background = "#e2efe9"
-cursor_bg = "#00b290"
-cursor_border = "#00b290"
-cursor_fg = "#e2efe9"
-selection_bg = "#c8d4cf"
-selection_fg = "#1d2722"
-split = "#00b290"
+foreground = "#20252a"
+background = "#e5ecf3"
+cursor_bg = "#2eaf6b"
+cursor_border = "#2eaf6b"
+cursor_fg = "#e5ecf3"
+selection_bg = "#cbd2d9"
+selection_fg = "#20252a"
+split = "#2eaf6b"
 compose_cursor = "#ff50a7"
-scrollbar_thumb = "#55615c"
+scrollbar_thumb = "#595e64"
 
 ansi = [
-  "#1d2722", # black
-  "#66726d", # dark_red
-  "#899590", # dark_green
-  "#78837e", # dark_yellow
-  "#66726d", # dark_blue
+  "#20252a", # black
+  "#6a6f76", # dark_red
+  "#8d9399", # dark_green
+  "#7b8187", # dark_yellow
+  "#6a6f76", # dark_blue
   "#5981e0", # dark_magenta
-  "#0fa05c", # dark_cyan
-  "#899590" # light_gray
+  "#409d48", # dark_cyan
+  "#8d9399" # light_gray
 ]
 
 brights = [
-  "#55615c", # gray
-  "#66726d", # red
-  "#899590", # green
-  "#78837e", # yellow
-  "#66726d", # blue
+  "#595e64", # gray
+  "#6a6f76", # red
+  "#8d9399", # green
+  "#7b8187", # yellow
+  "#6a6f76", # blue
   "#8d85ed", # magenta
-  "#00b290", # cyan
-  "#c8d4cf" # white
+  "#2eaf6b", # cyan
+  "#cbd2d9" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#d5e2dc"
-background = "#e2efe9"
+inactive_tab_edge = "#d8dfe6"
+background = "#e5ecf3"
 
 [colors.tab_bar.active_tab]
-fg_color = "#d5e2dc"
-bg_color = "#00b290"
+fg_color = "#d8dfe6"
+bg_color = "#2eaf6b"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#d5e2dc"
-bg_color = "#c8d4cf"
+fg_color = "#d8dfe6"
+bg_color = "#cbd2d9"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#d5e2dc"
-bg_color = "#c8d4cf"
+fg_color = "#d8dfe6"
+bg_color = "#cbd2d9"
 
 [colors.tab_bar.new_tab]
-fg_color = "#d5e2dc"
+fg_color = "#d8dfe6"
 bg_color = "#00a800"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#d5e2dc"
-bg_color = "#c8d4cf"
+fg_color = "#d8dfe6"
+bg_color = "#cbd2d9"
 intensity = "Bold"
