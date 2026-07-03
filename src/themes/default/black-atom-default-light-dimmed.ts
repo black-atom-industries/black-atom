@@ -29,8 +29,8 @@ const primaries: ThemePrimaryColors = {
 const accents: ThemeAccentColors = {
     a10: oklch(0.67, 0.15, 155),
     a20: oklch(0.62, 0.15, 145),
-    a30: oklch(0.67, 0.15, 285),
-    a40: oklch(0.62, 0.15, 265),
+    a30: oklch(0.67, 0.15, 265),
+    a40: oklch(0.67, 0.15, 365),
 };
 
 const palette = createPalette(primaries, {

@@ -71,8 +71,8 @@ export default function (
             special: primaries.l10,
         },
         comment: {
-            default: oklch(0.51, 0.025, 145),
-            doc: oklch(0.51, 0.025, 145),
+            default: primaries.m10,
+            doc: accents.a10,
             todo: feedback.success,
             error: feedback.negative,
             warn: feedback.warning,

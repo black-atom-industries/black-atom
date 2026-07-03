@@ -20,17 +20,17 @@ const primaries: ThemePrimaryColors = {
     m30: oklch(0.60, 0.012, 250),
     m40: oklch(0.66, 0.012, 250),
 
-    l10: oklch(0.88, 0.012, 170),
-    l20: oklch(0.91, 0.012, 170),
-    l30: oklch(0.94, 0.012, 170),
-    l40: oklch(0.97, 0.012, 170),
+    l10: oklch(0.88, 0.012, 250),
+    l20: oklch(0.91, 0.012, 250),
+    l30: oklch(0.94, 0.012, 250),
+    l40: oklch(0.97, 0.012, 250),
 };
 
 const accents: ThemeAccentColors = {
     a10: oklch(0.75, 0.15, 155),
     a20: oklch(0.70, 0.15, 145),
-    a30: oklch(0.75, 0.15, 285),
-    a40: oklch(0.70, 0.15, 265),
+    a30: oklch(0.75, 0.15, 265),
+    a40: oklch(0.75, 0.15, 365),
 };
 
 const palette = createPalette(primaries, {

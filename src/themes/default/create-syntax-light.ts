@@ -70,8 +70,8 @@ export default function (
             special: primaries.d40,
         },
         comment: {
-            default: oklch(0.52, 0.025, 145),
-            doc: oklch(0.52, 0.025, 145),
+            default: primaries.m40,
+            doc: accents.a10,
             todo: feedback.success,
             error: feedback.negative,
             warn: feedback.warning,
