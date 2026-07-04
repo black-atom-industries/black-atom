@@ -20,7 +20,7 @@ ansi = [
   "#8d9399", # dark_green
   "#7b8187", # dark_yellow
   "#6a6f76", # dark_blue
-  "#5981e0", # dark_magenta
+  "#df6989", # dark_magenta
   "#409d48", # dark_cyan
   "#8d9399" # light_gray
 ]
@@ -31,7 +31,7 @@ brights = [
   "#8d9399", # green
   "#7b8187", # yellow
   "#6a6f76", # blue
-  "#8d85ed", # magenta
+  "#6791f1", # magenta
   "#2eaf6b", # cyan
   "#bec5cc" # white
 ]

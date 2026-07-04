@@ -3,13 +3,13 @@ author = "Black Atom Industries"
 name = "Black Atom — Dark Dimmed"
 
 [colors]
-foreground = "#e4eeea"
+foreground = "#e5ecf3"
 background = "#20252a"
 cursor_bg = "#4ec983"
 cursor_border = "#4ec983"
 cursor_fg = "#20252a"
 selection_bg = "#3e4349"
-selection_fg = "#e4eeea"
+selection_fg = "#e5ecf3"
 split = "#4ec983"
 compose_cursor = "#e97292"
 scrollbar_thumb = "#7b8187"
@@ -20,9 +20,9 @@ ansi = [
   "#8d9399", # dark_green
   "#7b8187", # dark_yellow
   "#6a6f76", # dark_blue
-  "#709afb", # dark_magenta
+  "#fb82a1", # dark_magenta
   "#5bb661", # dark_cyan
-  "#dae4e0" # light_gray
+  "#dbe2e9" # light_gray
 ]
 
 brights = [
@@ -31,9 +31,9 @@ brights = [
   "#8d9399", # green
   "#7b8187", # yellow
   "#6a6f76", # blue
-  "#a59eff", # magenta
+  "#7faaff", # magenta
   "#4ec983", # cyan
-  "#e4eeea" # white
+  "#e5ecf3" # white
 ]
 
 [colors.tab_bar]

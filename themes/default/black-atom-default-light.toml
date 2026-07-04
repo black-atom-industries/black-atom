@@ -4,11 +4,11 @@ name = "Black Atom — Light"
 
 [colors]
 foreground = "#20252a"
-background = "#e5ecf3"
+background = "#eff6fd"
 cursor_bg = "#2eaf6b"
 cursor_border = "#2eaf6b"
-cursor_fg = "#e5ecf3"
-selection_bg = "#cbd2d9"
+cursor_fg = "#eff6fd"
+selection_bg = "#d5dbe3"
 selection_fg = "#20252a"
 split = "#2eaf6b"
 compose_cursor = "#ff50a7"
@@ -20,7 +20,7 @@ ansi = [
   "#8d9399", # dark_green
   "#7b8187", # dark_yellow
   "#6a6f76", # dark_blue
-  "#5981e0", # dark_magenta
+  "#df6989", # dark_magenta
   "#409d48", # dark_cyan
   "#8d9399" # light_gray
 ]
@@ -31,33 +31,33 @@ brights = [
   "#8d9399", # green
   "#7b8187", # yellow
   "#6a6f76", # blue
-  "#8d85ed", # magenta
+  "#6791f1", # magenta
   "#2eaf6b", # cyan
-  "#cbd2d9" # white
+  "#d5dbe3" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#d8dfe6"
-background = "#e5ecf3"
+inactive_tab_edge = "#e2e9f0"
+background = "#eff6fd"
 
 [colors.tab_bar.active_tab]
-fg_color = "#d8dfe6"
+fg_color = "#e2e9f0"
 bg_color = "#2eaf6b"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#d8dfe6"
-bg_color = "#cbd2d9"
+fg_color = "#e2e9f0"
+bg_color = "#d5dbe3"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#d8dfe6"
-bg_color = "#cbd2d9"
+fg_color = "#e2e9f0"
+bg_color = "#d5dbe3"
 
 [colors.tab_bar.new_tab]
-fg_color = "#d8dfe6"
+fg_color = "#e2e9f0"
 bg_color = "#00a800"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#d8dfe6"
-bg_color = "#cbd2d9"
+fg_color = "#e2e9f0"
+bg_color = "#d5dbe3"
 intensity = "Bold"
