@@ -50,6 +50,8 @@ const theme: ThemeDefinition = {
     meta,
     primaries,
     palette,
+    accents,
+    feedback,
     ui: createUi(options),
     syntax: createSyntax(options),
 };
