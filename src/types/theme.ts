@@ -41,7 +41,7 @@ export interface ThemePaletteColors {
     white: HexColor;
 }
 
-/** Minimal accent colors used by MNML collection themes. */
+/** Minimal accent colors used to add emphasis without a full palette. */
 export interface ThemeAccentColors {
     a10: HexColor;
     a20: HexColor;
@@ -300,6 +300,10 @@ export interface ThemeDefinition {
     primaries: ThemePrimaryColors;
     /** 16-color terminal palette. */
     palette: ThemePaletteColors;
+    /** Minimal accent colors used to add emphasis without a full palette. */
+    accents: ThemeAccentColors;
+    /** Semantic feedback colors for UI states. */
+    feedback: ThemeFeedbackColors;
     /** UI color tokens split into background and foreground groups. */
     ui: ThemeUiColors;
     /** Syntax highlighting color tokens for all language constructs. */
