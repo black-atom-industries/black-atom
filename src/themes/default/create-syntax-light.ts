@@ -1,5 +1,4 @@
 import type { ThemeCreatorOptions, ThemeSyntaxColors } from "../../types/theme.ts";
-import { oklch } from "../../utils/color.ts";
 
 /**
  * Default collection light syntax - dark teal (keywords/types/functions) + rust amber (strings/numbers)
@@ -15,7 +14,7 @@ export default function (
             default: primaries.d40,
             builtin: primaries.d40,
             member: memberColor,
-            parameter: accents.a20,
+            parameter: accents.a40 ?? accents.a20,
         },
         property: {
             default: memberColor,
