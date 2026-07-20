@@ -10,18 +10,18 @@ import createUi from "./create-ui-light.ts";
 const meta = themeKeyMetaMap["black-atom-default-light-dimmed"];
 
 const primaries: ThemePrimaryColors = {
-    d10: oklch(0.20, 0.012, 250),
-    d20: oklch(0.26, 0.012, 250),
-    d30: oklch(0.32, 0.012, 250),
-    d40: oklch(0.38, 0.012, 250),
+    d10: oklch(0.12, 0.012, 250),
+    d20: oklch(0.18, 0.012, 250),
+    d30: oklch(0.24, 0.012, 250),
+    d40: oklch(0.30, 0.012, 250),
 
-    m10: oklch(0.48, 0.012, 250),
-    m20: oklch(0.54, 0.012, 250),
-    m30: oklch(0.60, 0.012, 250),
-    m40: oklch(0.66, 0.012, 250),
+    m10: oklch(0.40, 0.012, 250),
+    m20: oklch(0.46, 0.012, 250),
+    m30: oklch(0.52, 0.012, 250),
+    m40: oklch(0.58, 0.012, 250),
 
-    l10: oklch(0.82, 0.012, 250),
-    l20: oklch(0.86, 0.012, 250),
+    l10: oklch(0.75, 0.012, 250),
+    l20: oklch(0.85, 0.012, 250),
     l30: oklch(0.90, 0.012, 250),
     l40: oklch(0.94, 0.012, 250),
 };

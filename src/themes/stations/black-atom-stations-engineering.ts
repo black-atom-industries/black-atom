@@ -26,6 +26,10 @@ const primaries: ThemePrimaryColors = {
     l40: oklch(0.971, 0.025, 160.61),
 };
 
+// #E5F882
+// #515D61
+// #CDE3D8
+
 const palette = createPalette(primaries, {
     darkRed: oklch(0.72, 0.147, 355.7),
     red: oklch(0.757, 0.129, 355.17),
