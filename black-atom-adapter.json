@@ -30,6 +30,12 @@
       "themes": [
         "black-atom-mnml-clay-dark"
       ]
+    },
+    "paper": {
+      "template": "./themes/paper/collection.template.json",
+      "themes": [
+        "black-atom-paper-brown-light"
+      ]
     }
   },
   "enabled": false

@@ -1,0 +1,41 @@
+{
+  "name": "<%= theme.meta.label %>",
+  "type": "<%= theme.meta.appearance %>",
+  "description": "A Black Atom theme from the <%= theme.meta.collection.label %> collection",
+
+  "colors": {
+    "background": "<%= theme.ui.bg.default %>",
+    "foreground": "<%= theme.ui.fg.default %>",
+    "accent": "<%= theme.ui.fg.accent %>",
+    "selection": "<%= theme.ui.bg.selection %>",
+    "hover": "<%= theme.ui.bg.hover %>",
+    "active": "<%= theme.ui.bg.active %>",
+    "panel": "<%= theme.ui.bg.panel %>",
+    "border": "<%= theme.ui.bg.hover %>",
+
+    "info": "<%= theme.ui.fg.info %>",
+    "warning": "<%= theme.ui.fg.warn %>",
+    "error": "<%= theme.ui.fg.negative %>",
+    "success": "<%= theme.ui.fg.positive %>",
+
+    "black": "<%= theme.palette.black %>",
+    "red": "<%= theme.palette.red %>",
+    "green": "<%= theme.palette.green %>",
+    "yellow": "<%= theme.palette.yellow %>",
+    "blue": "<%= theme.palette.blue %>",
+    "magenta": "<%= theme.palette.magenta %>",
+    "cyan": "<%= theme.palette.cyan %>",
+    "white": "<%= theme.palette.white %>"
+  },
+
+  "syntax": {
+    "comment": "<%= theme.syntax.comment.default %>",
+    "string": "<%= theme.syntax.string.default %>",
+    "number": "<%= theme.syntax.number.default %>",
+    "keyword": "<%= theme.syntax.keyword.default %>",
+    "function": "<%= theme.syntax.func.default %>",
+    "variable": "<%= theme.syntax.variable.default %>",
+    "type": "<%= theme.syntax.type.default %>",
+    "tag": "<%= theme.syntax.tag.default %>"
+  }
+}

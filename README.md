@@ -23,6 +23,7 @@ Black Atom includes multiple theme collections, each with dark and light variant
 | **MNML**      | Minimalist accent themes      |
 | **Stations**  | Space station-inspired themes |
 | **Terra**     | Earth season-inspired themes  |
+| **Paper**     | Paper-inspired tactile themes |
 
 ## Installation
 
@@ -105,9 +106,12 @@ Templates use the Eta template engine syntax to access theme properties:
     ├── stations/             # Stations collection
     │   ├── collection.template.[ext]
     │   └── black-atom-stations-engineering.[ext]  # ← generated
-    └── terra/                # Terra collection
+    ├── terra/                # Terra collection
+    │   ├── collection.template.[ext]
+    │   └── black-atom-terra-spring-day.[ext]  # ← generated
+    └── paper/                # Paper collection
         ├── collection.template.[ext]
-        └── black-atom-terra-spring-day.[ext]  # ← generated
+        └── black-atom-paper-brown-light.[ext]  # ← generated
 ```
 
 ### Setup Steps for New Adapters

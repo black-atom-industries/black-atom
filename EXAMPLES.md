@@ -386,16 +386,20 @@ my-adapter/
     │   ├── black-atom-stations-medical.ext
     │   ├── black-atom-stations-operations.ext
     │   └── black-atom-stations-research.ext
-    └── terra/
+    ├── terra/
+    │   ├── collection.template.ext
+    │   ├── black-atom-terra-fall-day.ext
+    │   ├── black-atom-terra-fall-night.ext
+    │   ├── black-atom-terra-spring-day.ext
+    │   ├── black-atom-terra-spring-night.ext
+    │   ├── black-atom-terra-summer-day.ext
+    │   ├── black-atom-terra-summer-night.ext
+    │   ├── black-atom-terra-winter-day.ext
+    │   └── black-atom-terra-winter-night.ext
+    └── paper/
         ├── collection.template.ext
-        ├── black-atom-terra-fall-day.ext
-        ├── black-atom-terra-fall-night.ext
-        ├── black-atom-terra-spring-day.ext
-        ├── black-atom-terra-spring-night.ext
-        ├── black-atom-terra-summer-day.ext
-        ├── black-atom-terra-summer-night.ext
-        ├── black-atom-terra-winter-day.ext
-        └── black-atom-terra-winter-night.ext
+        ├── black-atom-paper-brown-light.ext
+        └── ...
 ```
 
 Replace `.ext` with your platform's preferred file extension (`.json`, `.lua`, `.css`, etc.).

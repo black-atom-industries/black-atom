@@ -1,0 +1,41 @@
+{
+  "name": "Black Atom — PAPER ∷ Brown Light",
+  "type": "light",
+  "description": "A Black Atom theme from the PAPER collection",
+
+  "colors": {
+    "background": "#f2e2ce",
+    "foreground": "#2b2826",
+    "accent": "#242424",
+    "selection": "#decfba",
+    "hover": "#e8d8c4",
+    "active": "#fdf0de",
+    "panel": "#e8d8c4",
+    "border": "#e8d8c4",
+
+    "info": "#00a3e9",
+    "warning": "#cd7b00",
+    "error": "#f14d4c",
+    "success": "#819e00",
+
+    "black": "#4e463d",
+    "red": "#c4b5a1",
+    "green": "#aa9c8a",
+    "yellow": "#aa9c8a",
+    "blue": "#c4b5a1",
+    "magenta": "#aa9c8a",
+    "cyan": "#c4b5a1",
+    "white": "#c4b5a1"
+  },
+
+  "syntax": {
+    "comment": "#908474",
+    "string": "#908474",
+    "number": "#4e463d",
+    "keyword": "#4f4d48",
+    "function": "#242424",
+    "variable": "#3c3731",
+    "type": "#201f1d",
+    "tag": "#4f4d48"
+  }
+}
