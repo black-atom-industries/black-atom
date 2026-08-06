@@ -5,7 +5,7 @@ description: Use when creating a new adapter for a platform to support Black Ato
 
 You are creating a new adapter for the Black Atom theme ecosystem. This is a **collaborative process** that involves researching the target platform's theme format, mapping tokens, and creating the adapter structure.
 
-**Existing adapters for reference:** nvim, ghostty, zed, wezterm, tmux, waybar, niri, lazygit
+**Existing adapters for reference:** nvim, ghostty, zed, wezterm, tmux, waybar, niri, lazygit, obsidian, helm, herdr
 **Adapters location:** `~/repos/black-atom-industries/{adapter-name}/`
 
 ## Phase 1: Research
@@ -112,7 +112,9 @@ theme.syntax.punctuation.default
     │   └── collection.template.{ext}
     ├── terra/
     │   └── collection.template.{ext}
-    └── mnml/
+    ├── mnml/
+    │   └── collection.template.{ext}
+    └── paper/
         └── collection.template.{ext}
 ```
 
@@ -175,7 +177,19 @@ theme.syntax.punctuation.default
                 "black-atom-mnml-47-light",
                 "black-atom-mnml-47-dark",
                 "black-atom-mnml-eink-light",
-                "black-atom-mnml-eink-dark"
+                "black-atom-mnml-eink-dark",
+                "black-atom-mnml-mono-dark",
+                "black-atom-mnml-mono-light",
+                "black-atom-mnml-ita-light"
+            ]
+        },
+        "paper": {
+            "template": "./themes/paper/collection.template.{ext}",
+            "themes": [
+                "black-atom-paper-brown-light",
+                "black-atom-paper-brown-dark",
+                "black-atom-paper-blue-light",
+                "black-atom-paper-blue-dark"
             ]
         }
     }

@@ -75,6 +75,8 @@ Each adapter repository contains:
 
 - [Neovim](https://github.com/black-atom-industries/nvim)
 - [Ghostty](https://github.com/black-atom-industries/ghostty)
+- [Helm](https://github.com/black-atom-industries/helm)
+- [Herdr](https://github.com/black-atom-industries/herdr)
 - [WezTerm](https://github.com/black-atom-industries/wezterm)
 - [Tmux](https://github.com/black-atom-industries/tmux)
 - [Zed](https://github.com/black-atom-industries/zed)
