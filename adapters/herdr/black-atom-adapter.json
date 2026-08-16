@@ -1,5 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/black-atom-industries/core/refs/heads/main/adapter.schema.json",
+    "$schema": "../../core/adapter.schema.json",
     "postGenerate": "deno task postGenerate",
     "collections": {
         "default": {

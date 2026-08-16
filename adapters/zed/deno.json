@@ -1,7 +1,6 @@
 {
     "tasks": {
-        "generate": "deno run -A jsr:@black-atom/core/cli generate",
-        "dev": "deno run -A jsr:@black-atom/core/cli generate --watch",
-        "update": "deno cache --reload jsr:@black-atom/core/cli"
+        "generate": "deno run -A ../../core/src/cli/index.ts generate",
+        "dev": "deno run -A ../../core/src/cli/index.ts generate --watch"
     }
 }

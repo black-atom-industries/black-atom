@@ -1,5 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/black-atom-industries/core/refs/heads/main/adapter.schema.json",
+    "$schema": "../../core/adapter.schema.json",
     "collections": {
         "default": {
             "template": "lua/black-atom/themes/default/collection.template.lua",

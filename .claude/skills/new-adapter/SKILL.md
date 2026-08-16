@@ -30,8 +30,14 @@ Create `adapters/<name>/`:
   `adapters/ghostty/black-atom-adapter.json` (all six collections: `default`, `jpn`, `terra`,
   `stations`, `mnml`, `paper`, each with its current theme keys) and change only the `template`
   path per collection to `./themes/<collection>/collection.template.<ext>`.
-- `deno.json` — copy from `adapters/ghostty/deno.json` unchanged (same `generate`/`dev`/`update`
-  tasks in every adapter).
+- `deno.json` — copy from `adapters/ghostty/deno.json` unchanged (same `generate`/`dev` tasks in
+  every adapter):
+  ```json
+  "tasks": {
+      "generate": "deno run -A ../../core/src/cli/index.ts generate",
+      "dev": "deno run -A ../../core/src/cli/index.ts generate --watch"
+  }
+  ```
 - `README.md` — what the adapter is, install/usage for the target app.
 - `themes/<collection>/collection.template.<ext>` — one per collection, or one shared
   `themes/collection.template.<ext>` if every collection needs the same mapping (see herdr,
