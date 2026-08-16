@@ -33,7 +33,8 @@ Tauri wrapper in between.
 `livery/cli/src/`:
 
 - `main.rs` — the clap `Command` enum; a bare invocation opens the theme picker
-- `commands.rs` — one handler per subcommand (`apply`, `list`, `status`, `setup`)
+- `commands.rs` — one handler per subcommand (`apply`, `list`, `status`, `setup`, `appearance`,
+  `nvim-settings`)
 
 The frontend calls `update_app(app, theme_key, appearance, collection_key)`. The dispatcher reads
 that app's config, builds the template variables, and routes to the per-app function. No per-app

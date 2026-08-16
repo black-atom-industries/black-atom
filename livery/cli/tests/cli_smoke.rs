@@ -159,7 +159,14 @@ fn help_lists_every_subcommand() {
     let output = Command::new(BINARY).arg("--help").output().unwrap();
     assert!(output.status.success());
     let help = stdout(&output);
-    for command in ["apply", "list", "status", "setup"] {
+    for command in [
+        "apply",
+        "list",
+        "status",
+        "setup",
+        "appearance",
+        "nvim-settings",
+    ] {
         assert!(help.contains(command), "--help omits {command}:\n{help}");
     }
 }

@@ -109,6 +109,41 @@ pub fn start_app() {
 
 #[cfg(test)]
 mod tests {
+    use livery_core::capability::Capability;
+
+    fn to_camel(snake: &str) -> String {
+        let mut camel = String::with_capacity(snake.len());
+        let mut capitalize = false;
+        for c in snake.chars() {
+            if c == '_' {
+                capitalize = true;
+            } else if capitalize {
+                camel.extend(c.to_uppercase());
+                capitalize = false;
+            } else {
+                camel.push(c);
+            }
+        }
+        camel
+    }
+
+    /// Every capability reaches the frontend: the exported bindings carry a
+    /// wrapper for each one, so a capability cannot ship CLI-only.
+    #[test]
+    fn capabilities_have_commands() {
+        let bindings = super::specta_builder()
+            .export_str(specta_typescript::Typescript::default())
+            .expect("Failed to export typescript bindings");
+
+        for cap in Capability::ALL {
+            let wrapper = format!("async {}(", to_camel(cap.command_name()));
+            assert!(
+                bindings.contains(&wrapper),
+                "{cap:?} has no binding: '{wrapper}' is missing from the exported bindings"
+            );
+        }
+    }
+
     /// Regenerates ../src/bindings.ts on every test run, so command/type
     /// changes never ship stale bindings — no GUI launch required.
     #[test]

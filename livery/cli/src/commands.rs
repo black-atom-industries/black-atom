@@ -172,6 +172,38 @@ pub fn setup(yes: bool) -> Result<(), String> {
     Ok(())
 }
 
+pub fn appearance(mode: &str) -> Result<(), String> {
+    let result = updaters::update_system_appearance(mode.to_string());
+    report("appearance", &result)
+}
+
+/// The settings live in the config; the subcommand only pushes them into
+/// nvim's managed block, so an untouched config writes the defaults.
+pub fn nvim_settings() -> Result<(), String> {
+    let settings = livery_core::config::commands::get_config()
+        .apps
+        .get(&AppName::Nvim)
+        .and_then(|app_config| app_config.settings.clone())
+        .unwrap_or_default();
+
+    let result = block_on(updaters::write_nvim_settings(settings));
+    report("nvim", &result)
+}
+
+fn report(label: &str, result: &updaters::UpdateResult) -> Result<(), String> {
+    let detail = result
+        .message
+        .as_ref()
+        .map(|message| format!(" — {message}"))
+        .unwrap_or_default();
+
+    if result.status == UpdateStatus::Error {
+        return Err(format!("{label} {}{detail}", result.status.as_str()));
+    }
+    println!("{label:<10} {}{detail}", result.status.as_str());
+    Ok(())
+}
+
 pub fn pick_and_apply() -> Result<(), String> {
     unpacked()?;
 

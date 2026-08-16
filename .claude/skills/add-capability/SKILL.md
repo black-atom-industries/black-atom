@@ -20,12 +20,23 @@ If the function touches files, read the `backend-testing` skill and follow its f
 real config fixtures under `livery/core/tests/fixtures/`, not inline test strings, plus an
 idempotency test. Add `#[cfg(test)] mod tests` in the source file for anything else.
 
-A user-facing action worth a subcommand also gets one in `livery/cli`: a variant on the `Command`
-enum in `livery/cli/src/main.rs` and its handler in `livery/cli/src/commands.rs`. The CLI calls
-`livery_core` directly, so it needs no Tauri wrapper. Run it as
-`cargo run -p livery-cli -- <args>`, always under a sandbox `$HOME`.
+## 2. Capability variant
 
-## 2. Command wrapper
+Add the variant to `Capability` in `livery/core/src/capability.rs`, list it in `Capability::ALL`,
+and return its snake_case Tauri command name from `command_name()`. Two exhaustive matches hang off
+this enum, so both clients are forced to cover the new action before the workspace compiles and
+tests green.
+
+## 3. CLI surface
+
+Every capability reaches the terminal client: a variant on the `Command` enum in
+`livery/cli/src/main.rs`, its handler in `livery/cli/src/commands.rs`, and an arm in the
+`cli_surface` match naming the subcommand that exposes it. The `every_capability_has_a_subcommand`
+test next to it asserts clap actually defines that subcommand. The CLI calls `livery_core`
+directly, so it needs no Tauri wrapper. Run it as `cargo run -p livery-cli -- <args>`, always under
+a sandbox `$HOME`.
+
+## 4. Command wrapper
 
 Add a wrapper in `livery/src-tauri/src/commands.rs` carrying `#[tauri::command]` plus
 `#[specta::specta]`, following the shape of `verify_app_path` there: same name, same signature, one
@@ -36,9 +47,10 @@ The response type is a `#[derive(Debug, Serialize, Type)]` struct that stays `pu
 `livery_core` module owning the function, and the wrapper re-exports nothing.
 
 Register the command in `specta_builder()` in `livery/src-tauri/src/lib.rs`, inside
-`collect_commands![...]`.
+`collect_commands![...]`. The `capabilities_have_commands` test in the same file exports the
+bindings and asserts every `Capability` has a camelCase wrapper in them.
 
-## 3. Regenerate bindings
+## 5. Regenerate bindings
 
 ```bash
 cargo test
@@ -49,7 +61,7 @@ This runs the whole Cargo workspace and, on the way, re-exports
 `bindings.ts`. The PostToolUse hook and the pre-commit check both verify it matches what `cargo
 test` produces, so a stale binding fails before it reaches a commit.
 
-## 4. Frontend
+## 6. Frontend
 
 Call the new binding through a TanStack Query hook in `livery/src/queries/`, following
 `livery/src/queries/use-themes-status.ts`: a `TOPIC` constant, a `queryKey` helper, `useQuery` for
@@ -60,9 +72,9 @@ Wire the hook into a route under `livery/src/routes/` (routes own state and orch
 component under `livery/src/components/` (props in, UI out, no fetching of its own) — a settings
 page for a specific app goes in `livery/src/components/settings/adapter-pages/`. Read
 `livery/src/AGENTS.md` before writing: no filesystem or shell access from TypeScript, every OS
-operation goes through the command from step 2.
+operation goes through the command from step 4.
 
-## 5. Verify
+## 7. Verify
 
 ```bash
 deno task check
@@ -72,6 +84,6 @@ cargo clippy
 
 All three clean before committing.
 
-## 6. Commit
+## 8. Commit
 
 Commit format and scope rules are in the root `CLAUDE.md`.
