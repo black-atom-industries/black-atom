@@ -1,7 +1,7 @@
-local api = require("black-atom.api")
-local config = require("black-atom.config").get()
+local black_atom = require("black-atom")
 
-local colors = api:get_colors()
+local colors = black_atom.theme.colors
+local config = black_atom.config
 
 local cond_hl = require("black-atom.lib.highlights").cond_hl
 

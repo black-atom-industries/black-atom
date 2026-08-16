@@ -45,13 +45,7 @@ function M.build_highlights_map(colors, config)
     local highlight_modules =
         require("black-atom.lib.files").get_highlight_modules(constants.highlights_path, default_ignore_pattern)
 
-    local highlights_map = M.aggregate_highlight_maps(highlight_modules, colors, config)
-
-    if config.debug then
-        require("black-atom.lib.debug").write_debug_highlights_file(colors, highlight_modules, highlights_map)
-    end
-
-    return highlights_map
+    return M.aggregate_highlight_maps(highlight_modules, colors, config)
 end
 
 ---Aggregate the highlight maps from the highlight files

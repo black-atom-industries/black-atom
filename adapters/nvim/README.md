@@ -4,13 +4,9 @@
 
 ## What is a Black Atom Adapter?
 
-This repository is a **Neovim adapter** for the Black Atom theme ecosystem. In the Black Atom architecture:
-
-- The [core repository](https://github.com/black-atom-industries/core) is the single source of truth for all theme definitions
-- Each adapter implements these themes for a specific platform (Neovim, VS Code, Alacritty, etc.)
-- The adapter uses templates to transform core theme definitions into platform-specific files
-
-This modular approach ensures consistent colors and styling across all supported platforms while allowing for platform-specific optimizations.
+This is the **Neovim adapter** in the Black Atom monorepo. Themes are defined once in `core/`,
+and each adapter renders them for one platform through Eta templates. That keeps the colors
+identical everywhere while leaving room for platform-specific tuning.
 
 ## Available Themes
 
@@ -26,61 +22,53 @@ Black Atom includes multiple theme collections, each with dark and light variant
 
 ## Installation
 
-Install the plugin with your preferred package manager:
-
-### [lazy.nvim](https://github.com/folke/lazy.nvim)
+Put this directory on the runtimepath. Any plugin manager that can point at a
+directory works, or do it by hand:
 
 ```lua
-{
-  "black-atom-industries/nvim",
-  name = "black-atom",
-  priority = 1000, -- Load before other start plugins
-  opts = {
-    -- Configuration options
-    theme = "black-atom-jpn-koyo-yoru", -- Default theme
-    transparent = false, -- Enable transparent background
-    contrast = false, -- Enable high contrast mode
-  },
+vim.opt.rtp:append("/path/to/black-atom/adapters/nvim")
+vim.cmd.colorscheme("black-atom-jpn-koyo-yoru")
+```
+
+Every theme is a self-contained colorscheme in `colors/`, so `:colorscheme
+black-atom-<collection>-<name>` is all it takes. Tab-complete the list.
+
+## Configuration
+
+There is no `setup()`. Set `vim.g.black_atom_core_config` before the
+`:colorscheme` call and the values below get merged over the defaults. A partial
+table is fine, anything you leave out keeps its default.
+
+```lua
+vim.g.black_atom_core_config = {
+    term_colors = true,
+    styles = {
+        ending_tildes = false,
+        cmp_kind_color_mode = "bg", -- "fg" | "bg"
+        dark_sidebars = true,
+        dark_floats = true,
+        transparency = "none", -- "none" | "partial" | "full"
+        diagnostics = {
+            undercurl = false,
+            background = false,
+        },
+        syntax = {
+            comments = { italic = true },
+            keywords = { bold = true },
+            functions = {},
+            strings = { italic = false },
+            variables = {},
+            messages = { bold = true },
+        },
+    },
 }
 ```
 
-### [vim-plug](https://github.com/junegunn/vim-plug)
+The `styles.syntax` entries take any highlight attributes (`bold`, `italic`,
+`underline`, ...), which are merged into the group's definition.
 
-```vim
-Plug 'black-atom-industries/nvim'
-
-" In your init.vim or .vimrc
-lua << EOF
-require('black-atom').setup({
-  theme = "black-atom-jpn-koyo-yoru",
-  transparent = false,
-  contrast = false,
-})
-EOF
-```
-
-## Usage
-
-### Basic Configuration
-
-```lua
-require('black-atom').setup({
-  -- Default theme (will be used when Neovim starts)
-  theme = "black-atom-jpn-koyo-yoru",
-
-  -- Enable transparent background
-  transparent = false,
-
-  -- Enable high contrast mode
-  contrast = false,
-
-  -- Override specific highlight groups
-  overrides = {
-    -- Add your highlight overrides here
-    -- Example: Normal = { bg = "#000000" }
-  },
-})
-```
+To change the config at runtime, set the global again and re-run
+`:colorscheme`.
 
 ## LSP completion
 
@@ -208,15 +196,6 @@ This theme supports the following plugins:
 - [ ] Make API stable
 - [ ] Dediated Black Atom Colorscheme Picker
 
-### Setup
-
-Clone the repository:
-
-```bash
-git clone https://github.com/black-atom-industries/nvim.git
-cd nvim
-```
-
 ### Tooling
 
 Dev tooling is managed with [mise](https://mise.jdx.dev):
@@ -245,21 +224,11 @@ Individual tasks are also available: `mise run lint`, `mise run typecheck`,
 `mise run fmt-check`, and `mise run fmt` (formats in place). CI runs the same
 `mise run check`, so a green local run matches CI.
 
-### Highlight caching
-
-Compiled highlights are cached to disk so theme switches are near-instant. The
-cache auto-invalidates when any source file that affects highlights changes
-(highlight modules under `lua/black-atom/highlights/` and theme definitions
-under `lua/black-atom/themes/`, both hashed by mtime), so regeneration via the
-core CLI's `deno task dev` is picked up automatically on the next colorscheme
-switch. To force a full rebuild, run `:BlackAtomClearCache` (or delete the
-cache directory at `stdpath('data')/black-atom/cache/`).
-
 ### Working with Templates
 
 Theme files are generated from templates using [Black Atom Core](https://jsr.io/@black-atom/core). You need [Deno](https://deno.land/) installed.
 
-1. Edit the template files in `lua/black-atom/themes/{collection}/`
+1. Edit the template in `templates/collection.template.lua` (one template, all collections)
 2. Generate theme files:
    ```bash
    deno task generate
@@ -273,9 +242,6 @@ Theme files are generated from templates using [Black Atom Core](https://jsr.io/
 
 MIT - See [LICENSE](./LICENSE) for details
 
-## Related Projects
+## Related
 
-- [Black Atom Core](https://github.com/black-atom-industries/core) - Core theme definitions
-- [Black Atom for Ghostty](https://github.com/black-atom-industries/ghostty) - Ghostty terminal adapter
-- [Black Atom for Zed](https://github.com/black-atom-industries/zed) - Zed editor adapter
-- [Black Atom for Obsidian](https://github.com/black-atom-industries/obsidian) - Obsidian adapter
+Theme definitions live in `core/`. The other adapters sit next to this one under `adapters/`.

@@ -194,8 +194,5 @@
 ---@field ending_tildes?                                        boolean Wether to show the end-of-buffer tildes (Default: false)
 
 ---@class BlackAtom.Config
----@field debug?                                                boolean Enables the Debug Mode (Enables various debug messages) (Default: false)
----@field theme?                                                BlackAtom.Theme.Key
----@field collection?                                           BlackAtom.Theme.Collection.Key
 ---@field term_colors?                                          boolean Wether to enable terminal colors (Default: true)
 ---@field styles?                                               BlackAtom.Config.Styles Various styles related settings (Default: See Documentation)

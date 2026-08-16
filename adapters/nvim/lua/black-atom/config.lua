@@ -1,10 +1,7 @@
 local M = {}
 
 ---@type BlackAtom.Config
-local default_config = {
-    debug = false,
-    theme = "black-atom-engineering",
-    collection = "default",
+M.defaults = {
     term_colors = true,
     styles = {
         ending_tildes = false,
@@ -35,23 +32,11 @@ local default_config = {
     },
 }
 
----Sets options for the BlackAtom.Config during runtime
----@param options BlackAtom.Config
----@return nil
-function M.set(options)
-    local current_config = vim.g.black_atom_core_config or {}
-
-    ---@type BlackAtom.Config
-    local merged_config = vim.tbl_deep_extend("force", default_config, current_config, options)
-    require("black-atom.lib.validate").config(merged_config)
-
-    vim.g.black_atom_core_config = merged_config
-end
-
----Returns the current BlackAtom.Config
----@return BlackAtom.Config | any
-function M.get()
-    return vim.g.black_atom_core_config
+---Merges `vim.g.black_atom_core_config` over the defaults.
+---The global is never written back, so a user's partial table stays partial.
+---@return BlackAtom.Config
+function M.resolve()
+    return vim.tbl_deep_extend("force", M.defaults, vim.g.black_atom_core_config or {})
 end
 
 return M

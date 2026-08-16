@@ -2,7 +2,8 @@
     "$schema": "../../core/adapter.schema.json",
     "collections": {
         "default": {
-            "template": "lua/black-atom/themes/default/collection.template.lua",
+            "template": "./templates/collection.template.lua",
+            "output": "./colors",
             "themes": [
                 "black-atom-default-dark",
                 "black-atom-default-dark-dimmed",
@@ -11,7 +12,8 @@
             ]
         },
         "jpn": {
-            "template": "lua/black-atom/themes/jpn/collection.template.lua",
+            "template": "./templates/collection.template.lua",
+            "output": "./colors",
             "themes": [
                 "black-atom-jpn-koyo-yoru",
                 "black-atom-jpn-koyo-hiru",
@@ -20,7 +22,8 @@
             ]
         },
         "stations": {
-            "template": "lua/black-atom/themes/stations/collection.template.lua",
+            "template": "./templates/collection.template.lua",
+            "output": "./colors",
             "themes": [
                 "black-atom-stations-engineering",
                 "black-atom-stations-operations",
@@ -29,7 +32,8 @@
             ]
         },
         "terra": {
-            "template": "lua/black-atom/themes/terra/collection.template.lua",
+            "template": "./templates/collection.template.lua",
+            "output": "./colors",
             "themes": [
                 "black-atom-terra-spring-day",
                 "black-atom-terra-spring-night",
@@ -42,7 +46,8 @@
             ]
         },
         "mnml": {
-            "template": "lua/black-atom/themes/mnml/collection.template.lua",
+            "template": "./templates/collection.template.lua",
+            "output": "./colors",
             "themes": [
                 "black-atom-mnml-clay-dark",
                 "black-atom-mnml-clay-light",
@@ -61,7 +66,8 @@
             ]
         },
         "paper": {
-            "template": "lua/black-atom/themes/paper/collection.template.lua",
+            "template": "./templates/collection.template.lua",
+            "output": "./colors",
             "themes": [
                 "black-atom-paper-brown-light",
                 "black-atom-paper-brown-dark",
