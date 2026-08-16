@@ -94,7 +94,8 @@ Livery writes into files your dots repo tracks. Copy these before step one, or c
     delta, lazygit, herdr, obsidian); a second theme changed six files, a repeat apply changed
     nothing. Live reload of real apps NOT RUN. Caution: the nvim updater reloads every Neovim
     socket on the machine, sandbox or not.
-- [ ] Bare `livery`: a fuzzy picker opens; pick a theme, it applies.
+- [ ] Bare `livery` or `livery apply` without a theme: a fuzzy picker opens; pick a theme, it
+      applies.
   - Agent check: NOT RUN (interactive).
 - [ ] `livery apply not-a-theme` exits 1 with a clear message; `livery status | head -1` prints one
       line, no panic.

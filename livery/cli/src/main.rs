@@ -19,10 +19,10 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Apply a theme to every enabled app
+    /// Apply a theme to every enabled app; without a theme, pick one interactively
     Apply {
         /// Theme key, for example black-atom-jpn-koyo-yoru
-        theme: String,
+        theme: Option<String>,
     },
     /// List every available theme, grouped by collection
     List,
@@ -74,13 +74,13 @@ fn main() -> std::process::ExitCode {
     let cli = Cli::parse();
 
     let result = match cli.command {
-        Some(Command::Apply { theme }) => commands::apply(&theme),
+        Some(Command::Apply { theme: Some(theme) }) => commands::apply(&theme),
+        Some(Command::Apply { theme: None }) | None => commands::pick_and_apply(),
         Some(Command::List) => commands::list(),
         Some(Command::Status) => commands::status(),
         Some(Command::Setup { yes }) => commands::setup(yes),
         Some(Command::Appearance { mode }) => commands::appearance(&mode),
         Some(Command::NvimSettings) => commands::nvim_settings(),
-        None => commands::pick_and_apply(),
     };
 
     match result {

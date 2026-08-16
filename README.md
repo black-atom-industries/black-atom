@@ -93,8 +93,8 @@ livery setup                  # detect installed apps, write config
 livery apply <theme>          # apply a theme everywhere livery manages
 ```
 
-The GUI ships as `livery-gui`; the terminal client is `livery`, with a bare `livery` opening a
-theme picker.
+The GUI ships as `livery-gui`; the terminal client is `livery`, with a bare `livery` (or `livery apply`
+without a theme) opening a theme picker.
 
 ## Releases
 
