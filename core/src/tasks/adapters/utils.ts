@@ -1,43 +1,20 @@
-/**
- * Additional options for running commands beyond Deno.CommandOptions
- */
-export interface RunCommandOptions extends Deno.CommandOptions {
-    /** Expected exit codes that should not be treated as errors */
-    expectedExitCodes?: number[];
-}
-
-/**
- * Run a command and return its output
- * For certain Git commands like `git diff --staged --quiet`, we need to handle
- * exit code 1 differently (it's expected for indicating changes)
- */
 export async function runCommand(
     command: string[],
-    options: RunCommandOptions = {},
+    options: Deno.CommandOptions = {},
 ): Promise<string> {
-    const { expectedExitCodes = [], ...commandOptions } = options;
-
     try {
         const process = new Deno.Command(command[0], {
             args: command.slice(1),
             stdout: "piped",
             stderr: "piped",
-            ...commandOptions,
+            ...options,
         });
 
         const output = await process.output();
         const stdout = new TextDecoder().decode(output.stdout);
         const stderr = new TextDecoder().decode(output.stderr);
 
-        // For git diff --quiet, it returns exit code 1 when there are changes,
-        // which we don't want to treat as an error
-        const isGitDiffQuiet = command[0] === "git" &&
-            command.includes("diff") &&
-            command.includes("--quiet");
-
-        const isExpectedExitCode = expectedExitCodes.includes(output.code);
-
-        if (!output.success && !isGitDiffQuiet && !isExpectedExitCode) {
+        if (!output.success) {
             throw new Error(`Command failed with exit code ${output.code}: ${stderr}`);
         }
 

@@ -5,7 +5,6 @@ import { getAdapters } from "../../lib/discover-adapters.ts";
 import log from "../../lib/log.ts";
 import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
 import { themeKeys } from "../../types/theme.ts";
-import { forEachAdapter } from "./forEachAdapter.ts";
 import { runCommand } from "./utils.ts";
 
 async function runPostGenerate(adapterDir: string, adapter: string): Promise<void> {
@@ -36,33 +35,33 @@ async function runGenerate(adapterDir: string): Promise<void> {
 }
 
 /**
- * Generate themes for all repositories
+ * Generate themes for all adapters
  */
-export async function generateAllRepositories({
+export async function generateAllAdapters({
     logErrors = false,
 }: { logErrors?: boolean } = {}) {
     const results: { adapter: string; error?: string }[] = [];
     const adapters = await getAdapters();
+    const orgDir = config.dir.org;
 
-    await forEachAdapter({
-        adapters,
-        cb: async ({ adapter, adapterDir }) => {
-            try {
-                await runGenerate(adapterDir);
-                await runPostGenerate(adapterDir, adapter);
+    for (const adapter of adapters) {
+        const adapterDir = join(orgDir, adapter);
 
-                results.push({ adapter });
-            } catch (error) {
-                const errorMsg = error instanceof Error ? error.message : String(error);
-                results.push({ adapter, error: errorMsg });
+        try {
+            await runGenerate(adapterDir);
+            await runPostGenerate(adapterDir, adapter);
 
-                // Log error immediately if requested (useful for initial generation)
-                if (logErrors) {
-                    log.error(`Error in ${adapter}: ${errorMsg}`);
-                }
+            results.push({ adapter });
+        } catch (error) {
+            const errorMsg = error instanceof Error ? error.message : String(error);
+            results.push({ adapter, error: errorMsg });
+
+            // Log error immediately if requested (useful for initial generation)
+            if (logErrors) {
+                log.error(`Error in ${adapter}: ${errorMsg}`);
             }
-        },
-    });
+        }
+    }
 
     return results;
 }

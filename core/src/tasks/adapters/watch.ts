@@ -6,7 +6,7 @@ import { themeKeys } from "../../types/theme.ts";
 import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
 import { getAdapters } from "../../lib/discover-adapters.ts";
 import log from "../../lib/log.ts";
-import { generateAllRepositories, generateSingleAdapter } from "./generate.ts";
+import { generateAllAdapters, generateSingleAdapter } from "./generate.ts";
 
 /**
  * Multi-directory file watcher that handles both core theme changes and adapter template changes.
@@ -89,7 +89,7 @@ export async function watch() {
     // Run initial generation
     log.hr_thick("🚀 Running initial generation...");
     try {
-        await generateAllRepositories({ logErrors: true });
+        await generateAllAdapters({ logErrors: true });
         log.success("Initial generation completed successfully");
     } catch (error) {
         log.error(
@@ -158,7 +158,7 @@ export async function watch() {
             );
 
             try {
-                const results = await generateAllRepositories();
+                const results = await generateAllAdapters();
                 const errorAdapters = results.filter((r) => r.error);
 
                 if (errorAdapters.length > 0) {

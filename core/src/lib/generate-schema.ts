@@ -36,6 +36,10 @@ function generateSchema() {
                 "description": "Whether this adapter is active and should be processed",
                 "default": true,
             },
+            "postGenerate": {
+                "type": "string",
+                "description": "Command run in the adapter directory after generation",
+            },
             "collections": {
                 "type": "object",
                 "properties": collectionProperties,

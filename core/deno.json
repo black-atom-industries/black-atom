@@ -17,10 +17,9 @@
         "schema": "deno run --allow-read --allow-write src/lib/generate-schema.ts && deno fmt .",
         "cli:compile": "deno compile --allow-read --allow-write --allow-env -o black-atom-core src/cli/index.ts",
         "cli:install": "cp black-atom-core /usr/local/bin/",
-        "adapters:gen": "deno run -A src/tasks/index.ts adapters:gen",
+        "generate": "deno run -A src/tasks/generate.ts",
         "dev": "deno run -A src/tasks/dev.ts",
         "monitor": "deno run -A src/tasks/monitor.ts",
-        "adapters:each": "deno run -A src/tasks/adapters/each.ts",
         "publish": "deno publish --allow-slow-types",
         "test:terminal-colors": "bash scripts/test-terminal-colors.sh",
         "test:terminal-colors:dev": "deno run -A scripts/test-terminal-colors-dev.ts"

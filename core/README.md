@@ -2,19 +2,19 @@
 
 [![JSR](https://jsr.io/badges/@black-atom/core)](https://jsr.io/@black-atom/core)
 
-> The core theme definitions and generation engine for Black Atom Industries theme ecosystem
+> The core theme definitions and generation engine for the Black Atom theme ecosystem
 
 ## What is Black Atom Core?
 
-Black Atom Core is the central repository for all theme definitions in the Black Atom theme ecosystem. It serves as:
+Black Atom Core is the central package for all theme definitions in the Black Atom theme ecosystem. It is:
 
 - The **single source of truth** for all theme colors and styling
 - A **theme generation engine** that processes templates to create platform-specific theme files
 - A **command-line interface** for theme management and generation
 
-This modular architecture ensures consistent styling across all supported platforms while allowing for platform-specific optimizations through adapter repositories.
+This modular architecture keeps styling consistent across all supported platforms while allowing platform-specific output through adapters.
 
-For details on our color token system, see [Color Token System](./docs/color_tokens_system.md).
+For details on the color token system, see [Color Token System](./docs/color_tokens_system.md).
 
 ## Available Theme Collections
 
@@ -28,93 +28,91 @@ For details on our color token system, see [Color Token System](./docs/color_tok
 
 ## Usage
 
-### For Adapter Contributors
+Adapters live in `adapters/<name>/` in this repository, alongside core.
 
-Black Atom Core is published on [JSR](https://jsr.io/@black-atom/core). Adapter repositories use it directly — no need to clone core or install a binary.
-
-From any adapter repository:
+From the repo root:
 
 ```bash
-# Generate theme files
+# Regenerate every adapter
 deno task generate
 
-# Watch for template changes and auto-regenerate
-deno task dev
+# Watch core and every adapter's templates, regenerate on change
+deno task dev:adapters
 ```
 
-These tasks run the core CLI via JSR:
+From inside a single adapter directory (`adapters/<name>/`):
 
 ```bash
-deno run -A jsr:@black-atom/core/cli generate
+# Regenerate this adapter only
+deno task generate
+
+# Watch this adapter's templates, regenerate on change
+deno task dev
 ```
 
 ### Theme Adaptation
 
 The core CLI adapts theme files by:
 
-1. Reading adapter configuration files (`black-atom-adapter.json`)
-2. Processing template files with the Eta template engine
+1. Reading an adapter's `black-atom-adapter.json`
+2. Processing its template files with the Eta template engine
 3. Replacing template variables with values from core theme definitions
-4. Writing adapted files to the appropriate locations
+4. Writing adapted files next to their templates
 
 ## Adapter Pattern
 
 Black Atom uses an adapter pattern to support multiple platforms:
 
-1. **Core Repository**: Defines all theme colors and properties
-2. **Adapter Repositories**: Implement themes for specific platforms (Neovim, terminals, etc.)
-3. **Template Files**: Transform core definitions into platform-specific formats
+1. **Core**: defines all theme colors and properties
+2. **Adapters**: implement themes for specific platforms (Neovim, terminals, etc.)
+3. **Templates**: transform core definitions into platform-specific formats
 
-Each adapter repository contains:
+Each adapter directory contains:
 
 - Template files (e.g., `.template.lua`, `.template.json`)
-- A `black-atom-adapter.json` configuration file
+- A `black-atom-adapter.json` configuration file, validated against `core/adapter.schema.json`
 - Generated theme files
 
-### Supported Adapters
+### Adapters
 
-- [Neovim](https://github.com/black-atom-industries/nvim)
-- [Ghostty](https://github.com/black-atom-industries/ghostty)
-- [Helm](https://github.com/black-atom-industries/helm)
-- [Herdr](https://github.com/black-atom-industries/herdr)
-- [WezTerm](https://github.com/black-atom-industries/wezterm)
-- [Tmux](https://github.com/black-atom-industries/tmux)
-- [Zed](https://github.com/black-atom-industries/zed)
-- [Obsidian](https://github.com/black-atom-industries/obsidian)
-- [Lazygit](https://github.com/black-atom-industries/lazygit)
-- [Niri](https://github.com/black-atom-industries/niri)
-- [Waybar](https://github.com/black-atom-industries/waybar)
+ghostty, herdr, lazygit, niri, nvim, obsidian, tmux, waybar, wezterm, zed, each under `adapters/<name>/`.
 
 ## Development
 
 ### Prerequisites
 
 - [Deno](https://deno.land/) runtime
-- [ImageMagick](https://imagemagick.org/) — required for palette extraction from images (`magick` CLI)
+- [ImageMagick](https://imagemagick.org/) for palette extraction from images (`magick` CLI)
 
 A `.mise.toml` is included. Run `mise install` to get all project tools.
 
 ### Development Commands
 
+Run from `core/`:
+
 ```bash
-# Run typechecking
-deno task check
+# Watch and regenerate every adapter
+deno task dev
 
-# Run linter
-deno task lint
+# Run the monitor preview app
+deno task monitor
 
-# Format code
-deno task format
+# Run tests
+deno task test
 
-# Generate JSON schema
+# Generate the adapter JSON schema
 deno task schema
 
-# Update dependency lock file
-deno task lock
+# Compile and install the CLI binary
+deno task cli:compile
+deno task cli:install
 
 # Publish to JSR
 deno task publish
 ```
+
+`deno task check` and `deno task test` at the repo root run typechecking, linting, formatting, and
+tests across every workspace member, core included.
 
 > **Note on `--allow-slow-types`**: The publish task uses `--allow-slow-types` because the theme
 > registry in `src/types/themes.ts` relies on `as const satisfies` patterns to preserve literal
@@ -122,60 +120,22 @@ deno task publish
 > fast check cannot resolve these inferred types. Tracked in
 > [DEV-292](https://linear.app/black-atom-industries/issue/DEV-292).
 
-### Multi-Adapter Management
+### Creating New Themes and Adapters
 
-The core repository provides tasks for managing all adapter repositories simultaneously:
+Detailed guides live in `.claude/skills/`:
 
-```bash
-# Generate themes for all adapters
-deno task adapters:gen
-
-# Watch for changes and auto-regenerate themes
-deno task adapters:watch
-
-# Show status of all adapter repositories
-deno task adapters:status
-
-# Generate and commit themes to all adapters
-deno task adapters:commit
-
-# Push all adapter repositories to remote
-deno task adapters:push
-
-# Reset all adapter repositories to remote state
-deno task adapters:reset
-
-# Run any command in every repository (core + adapters)
-deno task org "git status"
-deno task org "git commit -m 'message'"
-deno task org "git commit --amend --no-edit"
-deno task org "git push"
-deno task org "lazygit"
-```
-
-The `org` task is a generic command runner — it runs the same command in every repository
-in the org (core + all enabled adapters) with streaming I/O so interactive commands
-like `lazygit` work. The command string is parsed with shell-like quote handling
-(both single and double quotes), so you can pass any arguments.
-
-**Note**: Multi-adapter commands require all adapter repositories to be cloned as siblings under the same parent directory. Example structure: `~/repos/black-atom-industries/{core,nvim,ghostty,zed,obsidian,...}`
-
-### Creating New Themes
-
-Detailed guides are available as Claude Code slash commands in `.claude/commands/core/`:
-
-- `/core:new-theme` — Create a new theme within an existing collection
-- `/core:new-adapter` — Create a new adapter for a platform
-- `/core:rename-theme` — Rename a theme across all repositories
+- `new-theme` — add a theme to an existing collection
+- `new-adapter` — add a platform adapter
+- `rename-theme` — rename a theme across core, adapters, and generated files
 
 ## Contributing
 
-Contributions are welcome! If you'd like to improve existing themes or add new features:
+Contributions are welcome. If you'd like to improve existing themes or add new features:
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Run typechecking and linting
+4. Run `deno task check` and `deno task test`
 5. Create a pull request
 
 ## License
