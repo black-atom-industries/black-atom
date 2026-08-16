@@ -1,9 +1,9 @@
 # Migration state
 
 Phase: 2
-Last completed task: 1.10 Phase 1 gate green locally, repo pushed
+Last completed task: 1.10 Phase 1 gate green locally (push pending, see Blocked)
 Next: 2.1 adapter generate tasks invoke core in-tree
-Blocked on Nik: (none)
+Blocked on Nik: `gh repo create black-atom-industries/black-atom --public --source . --push` is refused by the Claude Code permission classifier. Run it from `black-atom/` (or `! gh repo create ...` in the session), then CI on the first push is checked at the next gate. Phase 2 continues locally meanwhile.
 Decisions made in-run:
 
 - 2026-08-16 core's org-dir resolution and per-adapter git calls were re-pointed/removed in Phase 1 (task 1.4) so no dev task can write into the old checkouts.
