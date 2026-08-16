@@ -1,8 +1,8 @@
 # Migration state
 
-Phase: 4
-Last completed task: 4.1 livery_core split out of the tauri crate; repo created and pushed (github.com/black-atom-industries/black-atom), first CI run watching (Phase 3 gate green before it: nine adapters emit themes/<collection>/, nvim emits colors/, headless checks pass)
-Next: 4.2 binary names (livery-gui) and 4.3 embed themes + XDG paths
+Phase: 5
+Last completed task: 5.1 release-please configured (Phase 4 tasks 1-7 committed through fe1fe73; Phase 4 review fix pass pending)
+Next: 5.2 READMEs, Phase 4 review fixes (symlinks under-HOME order, CLI exit codes + SIGPIPE, atomic legacy copy, macro-built Capability, nvim settings write-then-persist, unpack errors surfaced), 5.3 follow-up issues
 Blocked on Nik: (none)
 Decisions made in-run:
 
@@ -20,5 +20,7 @@ Decisions made in-run:
 - 2026-08-16 16:27 Nik: unpack is keyed on a hash of the embedded payload rather than the crate version, so debug builds pick up adapter edits.
 - 2026-08-16 16:10 `get_themes_status` is replaced by `get_app_status` (per-app provisioning + linked flag) because the adapter pages still need that state; the download surface itself is deleted as the issue lists.
 - 2026-08-16 16:10 Neovim settings are stored in livery config as `apps.nvim.settings` and written into a managed Lua block in `apps.nvim.settings_path` (default `~/.config/nvim/init.lua`); the colorscheme-line patch stays.
+- 2026-08-16 17:35 unpack replaces an adapter dir with two renames (retire, activate); the dangling window is microseconds and apps read theme files on demand, so it stays as is.
+- 2026-08-16 17:38 session usage limit hit mid Phase 5; five subagents died before writing (only the release-please files survived); resumed 20:21.
 
 Follow-up issues filed: (none)
