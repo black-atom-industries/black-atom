@@ -6,7 +6,7 @@ apps. Agent checks are what was already proven in a throwaway `HOME`; they do no
 ## Test context
 
 - Build: `main` at the commit that carries this file (`git log -1`), repo
-  `black-atom-industries/black-atom`.
+  `nikbrunner/black-atom`.
 - Launch: `deno task dev` for the whole dev set, `cd livery && deno task build` for the bundle
   (`target/release/bundle/macos/livery.app`, binary `livery-gui`), `cargo build -p livery-cli` for
   the CLI (`target/debug/livery`).
@@ -201,6 +201,6 @@ Livery writes into files your dots repo tracks. Copy these before step one, or c
 ## Sign-off
 
 - Decision: pass / fail
-- Known issues: see GitHub issues #2–#7 in `black-atom-industries/black-atom`
+- Known issues: see GitHub issues #2–#7 in `nikbrunner/black-atom`
 - Retest:
 - Tester / date:

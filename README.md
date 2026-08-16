@@ -19,7 +19,7 @@ and everything else you point Black Atom at.
 ## Getting started
 
 ```bash
-git clone https://github.com/black-atom-industries/black-atom.git
+git clone https://github.com/nikbrunner/black-atom.git
 cd black-atom
 deno install
 deno task dev      # adapter watcher, livery, and monitor together

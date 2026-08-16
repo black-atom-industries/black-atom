@@ -25,5 +25,6 @@ Decisions made in-run:
 - 2026-08-16 20:47 the nvim updater reloads every Neovim socket on the machine; a sandbox HOME does not scope it. Sandbox applies switched Nik's live Neovim sessions (files untouched). Worth a HOME-scoped filter or a --no-reload flag later.
 - 2026-08-16 20:52 migration marked complete.
 - 2026-08-16 21:00 Nik: one version for the whole repo. release-please tracks a single package at the root, tag `v*`; every version field is pinned to 0.5.0 (above core 0.4.0 and livery 0.2.0), the first release proposes 0.6.0.
+- 2026-08-16 21:07 repo transferred to github.com/nikbrunner/black-atom and moved on disk to ~/repos/nikbrunner/black-atom; issues #2-#7 and release PR #1 came along; dots untouched (they still point at the old adapter checkouts until Nik switches over).
 
 Follow-up issues filed: #2 helm-tmux consumption, #3 archive/cleanup of the source repos (incl. JSR, livery issues), #4 Homebrew cask + Linux install, #5 niri/waybar/wezterm updaters, #6 first release version, #7 post-migration polish. release-please PR #1 is open and stays open.
