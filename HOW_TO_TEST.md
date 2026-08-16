@@ -9,7 +9,7 @@ apps. Agent checks are what was already proven in a throwaway `HOME`; they do no
   `nikbrunner/black-atom`.
 - Launch: `deno task dev` for the whole dev set, `cd livery && deno task build` for the bundle
   (`target/release/bundle/macos/livery.app`, binary `livery-gui`), `cargo build -p livery-cli` for
-  the CLI (`target/debug/livery`).
+  the CLI (`cargo install --path livery/cli` → `~/.cargo/bin/livery`).
 - Machine: your Mac with the real Ghostty, tmux, Neovim, Zed, Obsidian, lazygit, herdr, delta,
   helm-tmux configs. Linux checks (niri, waybar) are manual file installs, no updater exists.
 - Change summary: one repo; adapters generate from the in-tree core; nvim colorschemes are
@@ -42,8 +42,10 @@ Livery writes into files your dots repo tracks. Copy these before step one, or c
     at f93e181.
 - [ ] `cd livery && deno task build` produces `livery.app` with `Contents/MacOS/livery-gui`.
   - Agent check: PASS — built at 17:28 with a sandbox HOME.
-- [ ] `cargo build -p livery-cli` produces `target/debug/livery`; `livery --help` lists `apply`,
-      `list`, `status`, `setup`, `appearance`, `nvim-settings`.
+- [ ] `cargo install --path livery/cli` (from the repo root) puts a release `livery` into
+      `~/.cargo/bin`; `livery --help` lists `apply`, `list`, `status`, `setup`, `appearance`,
+      `nvim-settings`. There is no other install path yet (issue #4). To run without installing:
+      `cargo run -q -p livery-cli -- <args>`.
   - Agent check: PASS — sandbox run.
 
 ## Critical user journeys
