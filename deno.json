@@ -57,6 +57,7 @@
             "core/monitor/src/routeTree.gen.ts",
             "livery/src/routeTree.gen.ts",
             "livery/src/bindings.ts",
+            "livery/core/",
             "livery/src-tauri/",
             "adapters/*/themes/",
             "adapters/nvim/lua/black-atom/themes/",

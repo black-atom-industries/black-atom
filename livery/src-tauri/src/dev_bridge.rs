@@ -115,48 +115,48 @@ fn process_request(request: Request, expected_token: &str) -> Result<Value, (u16
 
 fn dispatch(command: &str, args: Value) -> Result<Value, String> {
     match command {
-        "get_config" => to_value(crate::config::commands::get_config()),
+        "get_config" => to_value(crate::commands::get_config()),
         "save_config" => {
-            crate::config::commands::save_config(argument(&args, "config")?)?;
+            crate::commands::save_config(argument(&args, "config")?)?;
             Ok(Value::Null)
         }
         "download_theme" => {
             let app = argument(&args, "app")?;
             to_value(tauri::async_runtime::block_on(
-                crate::themes::commands::download_theme(app),
+                crate::commands::download_theme(app),
             ))
         }
         "get_themes_status" => to_value(tauri::async_runtime::block_on(
-            crate::themes::commands::get_themes_status(),
+            crate::commands::get_themes_status(),
         )),
         "link_app_themes" => {
             let app = argument(&args, "app")?;
             to_value(tauri::async_runtime::block_on(
-                crate::themes::commands::link_app_themes(app),
+                crate::commands::link_app_themes(app),
             ))
         }
         "dismiss_themes_greeting" => {
-            tauri::async_runtime::block_on(crate::themes::commands::dismiss_themes_greeting())?;
+            tauri::async_runtime::block_on(crate::commands::dismiss_themes_greeting())?;
             Ok(Value::Null)
         }
         "detect_apps" => to_value(tauri::async_runtime::block_on(
-            crate::themes::detect::detect_apps(),
+            crate::commands::detect_apps(),
         )),
         "update_app" => {
             let app = argument(&args, "app")?;
             let theme = argument(&args, "theme")?;
-            to_value(tauri::async_runtime::block_on(crate::updaters::update_app(
+            to_value(tauri::async_runtime::block_on(crate::commands::update_app(
                 app, theme,
             )))
         }
         "update_system_appearance" => {
             let appearance = argument(&args, "appearance")?;
-            to_value(crate::updaters::update_system_appearance(appearance))
+            to_value(crate::commands::update_system_appearance(appearance))
         }
         "verify_app_path" => {
             let app = argument(&args, "app")?;
             to_value(tauri::async_runtime::block_on(
-                crate::updaters::verify_app_path(app),
+                crate::commands::verify_app_path(app),
             ))
         }
         "plugin:path|resolve_directory" => {

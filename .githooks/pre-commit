@@ -17,7 +17,7 @@ echo
 STAGED="$(git diff --cached --name-only --diff-filter=ACMR)"
 
 RUST_STAGED=false
-if echo "$STAGED" | grep -qE '^livery/src-tauri/|(^|/)Cargo\.(toml|lock)$'; then
+if echo "$STAGED" | grep -qE '^livery/(core|cli|src-tauri)/|(^|/)Cargo\.(toml|lock)$'; then
     RUST_STAGED=true
 fi
 

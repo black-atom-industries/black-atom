@@ -12,18 +12,18 @@ user-invocable: false
 cargo test
 ```
 
-Runs the whole Cargo workspace from the repo root, `livery/src-tauri` included.
+Runs the whole Cargo workspace from the repo root, `livery/core` and `livery/src-tauri` included.
 
 ## Fixture-Based Testing
 
-File operations (`livery/src-tauri/src/updaters/file_ops/text.rs`,
-`livery/src-tauri/src/updaters/file_ops/yaml.rs`) use **real config file fixtures** instead of
+File operations (`livery/core/src/updaters/file_ops/text.rs`,
+`livery/core/src/updaters/file_ops/yaml.rs`) use **real config file fixtures** instead of
 inline test strings. This catches formatting and indentation issues that simplified strings miss.
 
 ### Fixture Directory
 
 ```
-livery/src-tauri/tests/fixtures/
+livery/core/tests/fixtures/
   text/                              # Text-based configs (ghostty, nvim, tmux, delta)
     ghostty-config.txt               # Input config
     ghostty-config-expected.txt      # Expected output after patch
@@ -67,7 +67,7 @@ fn copy_fixture_to_temp(fixture_name: &str) -> tempfile::NamedTempFile {
 }
 ```
 
-`CARGO_MANIFEST_DIR` resolves to `livery/src-tauri`, so fixture paths stay relative to the crate.
+`CARGO_MANIFEST_DIR` resolves to `livery/core`, so fixture paths stay relative to the crate.
 
 ### Adding Fixtures for New Updaters
 

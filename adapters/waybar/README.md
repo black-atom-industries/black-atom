@@ -64,7 +64,7 @@ deno task generate
 3. Import a theme in your `style.css`:
 
 ```css
-@import "path/to/themes/black-atom-jpn-koyo-yoru.css";
+@import "path/to/themes/jpn/black-atom-jpn-koyo-yoru.css";
 
 window#waybar {
     background-color: @ba-bg-default;

@@ -23,28 +23,19 @@ path = "src/bin/perf_benchmark.rs"
 tauri-build = { version = "2.5.4", features = [] }
 
 [dependencies]
+livery_core = { path = "../core" }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 log = "0.4"
 dirs = "6"
-shellexpand = "3"
 tauri = { version = "~2.11.0", features = [] }
 tauri-plugin-log = "2"
 tauri-plugin-opener = "2"
 tauri-plugin-dialog = "2"
-regex = "1"
-tempfile = "3"
-yaml_edit = { package = "yaml-edit", git = "https://github.com/nikbrunner/yaml-edit", branch = "main" }
-yaml_serde = "0.10"
 specta = { version = "=2.0.0-rc.20", features = ["derive"] }
 tauri-specta = { version = "=2.0.0-rc.20", features = ["typescript"] }
 specta-typescript = "0.0.7"
-jsonc-parser = { version = "0.29", features = ["cst"] }
 fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
-flate2 = "1.1.9"
-tar = "0.4.46"
-toml = "0.9"
-reqwest = { version = "0.13.3", default-features = false, features = ["rustls"] }
 
 [target.'cfg(any(target_os = "macos", windows, target_os = "linux"))'.dependencies]
 tauri-plugin-global-shortcut = "2"

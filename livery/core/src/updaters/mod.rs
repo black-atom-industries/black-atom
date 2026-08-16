@@ -111,13 +111,6 @@ impl UpdateResult {
     }
 }
 
-/// Single entry point for all app updates. The frontend calls this once per app.
-///
-/// Each invocation reads config from disk independently — this is inherent to the
-/// Tauri IPC model where each `invoke` call is a separate request. At the current
-/// scale (~5 apps, tiny JSON file) this is fine.
-#[tauri::command]
-#[specta::specta]
 pub async fn update_app(app: AppName, theme: ThemeContext) -> UpdateResult {
     let app_str = app.as_str();
 
@@ -189,10 +182,6 @@ pub struct AppPathVerification {
     pub message: Option<String>,
 }
 
-/// Check one adapter's config_path: does it exist, and does its
-/// match_pattern hit? Read-only — never writes.
-#[tauri::command]
-#[specta::specta]
 pub async fn verify_app_path(app: AppName) -> AppPathVerification {
     let app_str = app.as_str();
 
@@ -227,10 +216,6 @@ pub async fn verify_app_path(app: AppName) -> AppPathVerification {
     }
 }
 
-/// Toggle system-wide dark/light mode. Separate from update_app because system
-/// appearance is not an app with AppConfig — it's a standalone boolean toggle.
-#[tauri::command]
-#[specta::specta]
 pub fn update_system_appearance(appearance: String) -> UpdateResult {
     let start = std::time::Instant::now();
     let mut result = system_appearance::update(&appearance);

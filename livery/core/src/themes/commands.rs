@@ -80,11 +80,6 @@ pub struct ThemesStatus {
     pub dismissed: bool,
 }
 
-/// Download one adapter's theme files into the managed themes directory.
-/// Pure fetch — wiring apps to the files is adapter setup (link_app_themes
-/// for zed/ghostty, config-pointed themes_path for tmux/lazygit).
-#[tauri::command]
-#[specta::specta]
 pub async fn download_theme(app: AppName) -> DownloadResult {
     let app_str = app.as_str();
     let start = std::time::Instant::now();
@@ -104,10 +99,6 @@ pub async fn download_theme(app: AppName) -> DownloadResult {
     result
 }
 
-/// Read the managed themes manifest for the frontend's greeting gate and
-/// the settings SYNC display.
-#[tauri::command]
-#[specta::specta]
 pub async fn get_themes_status() -> ThemesStatus {
     let Ok(root) = extract::managed_themes_root() else {
         return ThemesStatus {
@@ -180,14 +171,6 @@ pub struct LinkThemesResult {
     pub pruned: Option<u32>,
 }
 
-/// Wire an adapter's own themes location to the managed downloads via
-/// symlinks (create, heal, prune). Explicit adapter-setup action — never
-/// runs implicitly on download. The target dir is derived from the
-/// adapter's CONFIGURED config_path (its sibling `themes/`; for obsidian
-/// that is `<vault>/.obsidian/themes/`), so custom setups link into the
-/// right place.
-#[tauri::command]
-#[specta::specta]
 pub async fn link_app_themes(app: AppName) -> LinkThemesResult {
     let app_str = app.as_str();
 
@@ -284,10 +267,6 @@ fn app_themes_dir(config_path: &str, configured_path: Option<&str>) -> Option<st
     Some(path.parent()?.join("themes"))
 }
 
-/// Persist the greeting's "continue without" choice so hand-managed setups
-/// aren't greeted on every launch.
-#[tauri::command]
-#[specta::specta]
 pub async fn dismiss_themes_greeting() -> Result<(), String> {
     let root = extract::managed_themes_root()?;
     let mut stored = manifest::read_manifest(&root);

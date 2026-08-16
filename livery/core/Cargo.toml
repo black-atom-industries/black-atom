@@ -1,0 +1,32 @@
+[package]
+name = "livery_core"
+version = "0.2.0"
+description = "Black Atom livery domain logic — config, themes, updaters"
+authors = ["Black Atom Industries"]
+license = "MIT"
+repository = "https://github.com/black-atom-industries/livery"
+edition = "2021"
+rust-version = "1.82"
+
+[lib]
+name = "livery_core"
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+dirs = "6"
+shellexpand = "3"
+regex = "1"
+tempfile = "3"
+yaml_edit = { package = "yaml-edit", git = "https://github.com/nikbrunner/yaml-edit", branch = "main" }
+yaml_serde = "0.10"
+specta = { version = "=2.0.0-rc.20", features = ["derive"] }
+jsonc-parser = { version = "0.29", features = ["cst"] }
+flate2 = "1.1.9"
+tar = "0.4.46"
+toml = "0.9"
+reqwest = { version = "0.13.3", default-features = false, features = ["rustls"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread"] }

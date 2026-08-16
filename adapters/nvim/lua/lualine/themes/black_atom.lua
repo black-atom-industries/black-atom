@@ -19,15 +19,15 @@ M.normal = {
     b = {
         fg = fg.subtle,
         bg = cond_hl(bg.default, {
-            [config.transparency == "partial"] = bg.default,
-            [config.transparency == "full"] = colors.none,
+            [config.styles.transparency == "partial"] = bg.default,
+            [config.styles.transparency == "full"] = colors.none,
         }),
     },
     c = {
         fg = fg.subtle,
         bg = cond_hl(bg.default, {
-            [config.transparency == "partial"] = bg.default,
-            [config.transparency == "full"] = colors.none,
+            [config.styles.transparency == "partial"] = bg.default,
+            [config.styles.transparency == "full"] = colors.none,
         }),
     },
 }
@@ -40,15 +40,15 @@ M.inactive = {
     b = {
         fg = fg.disabled,
         bg = cond_hl(bg.default, {
-            [config.transparency == "partial"] = bg.default,
-            [config.transparency == "full"] = colors.none,
+            [config.styles.transparency == "partial"] = bg.default,
+            [config.styles.transparency == "full"] = colors.none,
         }),
     },
     c = {
         fg = fg.disabled,
         bg = cond_hl(bg.default, {
-            [config.transparency == "partial"] = bg.default,
-            [config.transparency == "full"] = colors.none,
+            [config.styles.transparency == "partial"] = bg.default,
+            [config.styles.transparency == "full"] = colors.none,
         }),
     },
 }

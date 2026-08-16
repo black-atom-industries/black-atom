@@ -1,9 +1,11 @@
 use std::collections::BTreeMap;
 use std::time::{Duration, Instant};
 
-use livery_lib::config::io as config_io;
-use livery_lib::config::types::AppName;
-use livery_lib::updaters::{dispatch_update, nvim, system_appearance, UpdateContext, UpdateStatus};
+use livery_core::config::io as config_io;
+use livery_core::config::types::AppName;
+use livery_core::updaters::{
+    dispatch_update, nvim, system_appearance, UpdateContext, UpdateStatus,
+};
 
 // Theme key, appearance, collection key, Zed theme label.
 // Labels match @black-atom/core computeLabel():

@@ -3,17 +3,29 @@
 The Rust backend is the executor. Every OS operation lives here: file I/O, downloads, process
 signals, socket communication.
 
+It is two crates. `livery/core` (`livery_core`) holds the domain logic and depends on no Tauri
+crate — `cargo tree -p livery_core -e normal | grep -c tauri` must stay `0`. `livery/src-tauri`
+(`livery_lib`) is the Tauri shell: command wrappers, plugins, window setup.
+
 ## Modules
 
-- `src/lib.rs` — Tauri command registration and the tauri-specta builder
-- `src/config/` — `types.rs` (`AppName`, `AppConfig`, `Config`), `defaults.rs`, `commands.rs`,
+`livery/core/src/`:
+
+- `config/` — `types.rs` (`AppName`, `AppConfig`, `Config`), `defaults.rs`, `commands.rs`,
   `io.rs` (disk I/O, tilde expansion, default merging)
-- `src/themes/` — theme registry, manifest, download and extraction, symlinks, app detection
-- `src/updaters/` — `mod.rs` holds `update_app`, `update_system_appearance`, and the dispatcher;
+- `themes/` — theme registry, manifest, download and extraction, symlinks, app detection
+- `updaters/` — `mod.rs` holds `update_app`, `update_system_appearance`, and the dispatcher;
   one module per app next to it
-- `src/updaters/file_ops/` — `text.rs`, `yaml.rs`, `jsonc.rs`, `managed_block.rs`, plus `secure.rs`
+- `updaters/file_ops/` — `text.rs`, `yaml.rs`, `jsonc.rs`, `managed_block.rs`, plus `secure.rs`
   for the path guard and `verify.rs`
-- `src/bin/perf_benchmark.rs` — benchmark binary
+
+`livery/src-tauri/src/`:
+
+- `commands.rs` — every `#[tauri::command]`, each one a thin wrapper over a `livery_core` function
+  with the same name and signature
+- `lib.rs` — the tauri-specta builder, plugins, and the window setup closure
+- `dev_bridge.rs` — loopback HTTP IPC for browser dev mode, dispatching to `commands::*`
+- `bin/perf_benchmark.rs` — benchmark binary, calls `livery_core` directly
 
 The frontend calls `update_app(app, theme_key, appearance, collection_key)`. The dispatcher reads
 that app's config, builds the template variables, and routes to the per-app function. No per-app
@@ -28,21 +40,24 @@ Commands validate that a path is under `$HOME` before writing. Writes are atomic
 Unit tests live in `#[cfg(test)] mod tests` inside the source file. File operations get fixtures,
 see the `backend-testing` skill.
 
-`tests/setup_smoke.rs` is the end-to-end suite. It points `$HOME` at a tempdir and serves theme
-tarballs from a local listener, so it never touches a real config. Extend that file for new setup
-scenarios rather than adding a parallel suite: `$HOME` is process-global and the scenario has to
-stay sequential.
+`livery/core/tests/setup_smoke.rs` is the end-to-end suite. It points `$HOME` at a tempdir and
+serves theme tarballs from a local listener, so it never touches a real config. Extend that file
+for new setup scenarios rather than adding a parallel suite: `$HOME` is process-global and the
+scenario has to stay sequential.
 
 ## Bindings
 
 `cargo test` regenerates `livery/src/bindings.ts` through tauri-specta. Adding or changing a command
 means running it before the frontend can see the new signature.
 
+A binding's JSDoc comes from the doc comment on the wrapper in `commands.rs`, not from the
+`livery_core` function behind it.
+
 ## Adding an updater
 
-1. Add the `AppName` variant in `src/config/types.rs` and its `as_str()` arm
-2. Add the default config in `src/config/defaults.rs`
-3. Write the updater module in `src/updaters/`
-4. Register it in `src/updaters/mod.rs`
-5. Add fixtures under `tests/fixtures/` and write the tests
+1. Add the `AppName` variant in `livery/core/src/config/types.rs` and its `as_str()` arm
+2. Add the default config in `livery/core/src/config/defaults.rs`
+3. Write the updater module in `livery/core/src/updaters/`
+4. Register it in `livery/core/src/updaters/mod.rs`
+5. Add fixtures under `livery/core/tests/fixtures/` and write the tests
 6. Run `cargo test` to regenerate the bindings

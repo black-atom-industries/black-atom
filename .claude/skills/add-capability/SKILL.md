@@ -10,28 +10,28 @@ from the frontend through a generated binding. Build it inside-out, core logic f
 
 ## 1. Core logic
 
-Write the logic as a plain function, no `#[tauri::command]`, no Tauri types in the signature.
-Today it lives next to the feature it belongs to: `livery/src-tauri/src/config/`,
-`livery/src-tauri/src/themes/`, or a new module under `livery/src-tauri/src/updaters/`. Read
-`livery/src-tauri/src/lib.rs` and `livery/src-tauri/src/updaters/mod.rs` first to see where
-similar logic already sits.
+Write the logic as a plain function in `livery/core` (crate `livery_core`, tauri-free): no
+`#[tauri::command]`, no `#[specta::specta]`, no Tauri types in the signature. It lives next to the
+feature it belongs to: `livery/core/src/config/`, `livery/core/src/themes/`, or a new module under
+`livery/core/src/updaters/`. Read `livery/core/src/updaters/mod.rs` first to see where similar
+logic already sits.
 
 If the function touches files, read the `backend-testing` skill and follow its fixture pattern:
-real config fixtures under `livery/src-tauri/tests/fixtures/`, not inline test strings, plus an
+real config fixtures under `livery/core/tests/fixtures/`, not inline test strings, plus an
 idempotency test. Add `#[cfg(test)] mod tests` in the source file for anything else.
 
-Once `livery/core` (crate `livery_core`, tauri-free) and `livery/cli` exist, core logic goes in
-`livery/core` instead, and this step also adds a subcommand in `livery/cli` and a variant on its
-`Capability` enum. Say so explicitly if you land this before that migration phase, and stop after
-step 1.
+Once `livery/cli` exists, this step also adds a subcommand there plus a variant on its `Capability`
+enum. Say so explicitly if you land this before that migration phase, and stop after step 1.
 
 ## 2. Command wrapper
 
-Wrap the function in `#[tauri::command]` plus `#[specta::specta]`, following the shape of
-`verify_app_path` in `livery/src-tauri/src/updaters/mod.rs` or `dismiss_themes_greeting` in
-`livery/src-tauri/src/themes/commands.rs`: the command reads config from disk, calls the plain
-function, and maps the result onto a `#[derive(Debug, Serialize, Type)]` response struct. Keep
-serialization types in the same module as the command.
+Add a wrapper in `livery/src-tauri/src/commands.rs` carrying `#[tauri::command]` plus
+`#[specta::specta]`, following the shape of `verify_app_path` there: same name, same signature, one
+call into the `livery_core` function. The doc comment lives on the wrapper — specta lifts it into
+`bindings.ts` as the binding's JSDoc.
+
+The response type is a `#[derive(Debug, Serialize, Type)]` struct that stays `pub` in the
+`livery_core` module owning the function, and the wrapper re-exports nothing.
 
 Register the command in `specta_builder()` in `livery/src-tauri/src/lib.rs`, inside
 `collect_commands![...]`.

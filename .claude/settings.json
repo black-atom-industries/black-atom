@@ -20,7 +20,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "deno fmt \"$FILEPATH\" 2>/dev/null; case \"$FILEPATH\" in *livery/src-tauri/*) (cd livery/src-tauri && cargo fmt 2>/dev/null);; esac; true"
+                        "command": "deno fmt \"$FILEPATH\" 2>/dev/null; case \"$FILEPATH\" in *livery/core/*|*livery/cli/*|*livery/src-tauri/*) cargo fmt --all 2>/dev/null;; esac; true"
                     },
                     { "type": "command", "command": ".claude/hooks/no-fs-plugin.sh" },
                     { "type": "command", "command": ".claude/hooks/check-bindings.sh" }

@@ -10,8 +10,8 @@ across the tools on a machine.
   (`core/adapter.schema.json`), preview app (`core/monitor/`)
 - `adapters/<name>/` — one directory per platform (ghostty, herdr, lazygit, niri, nvim, obsidian,
   tmux, waybar, wezterm, zed)
-- `livery/` — Tauri v2 desktop app, Deno + Vite + React frontend in `livery/src/`, Rust backend in
-  `livery/src-tauri/`
+- `livery/` — Tauri v2 desktop app, Deno + Vite + React frontend in `livery/src/`, domain logic in
+  `livery/core/` (crate `livery_core`, no Tauri dependency), Tauri shell in `livery/src-tauri/`
 - `ui/`, `website/` — placeholders
 
 Deno workspace at the root (`deno.json`), Cargo workspace at the root (`Cargo.toml`).

@@ -1,6 +1,6 @@
 //! Hermetic end-to-end smoke test of the adapter setup chain.
 //!
-//! Runs the real Tauri commands — get_config → detect_apps → save_config →
+//! Runs the real core functions — get_config → detect_apps → save_config →
 //! download_theme → link_app_themes → verify_app_path → get_themes_status —
 //! against a tempdir `$HOME` with planted app configs, downloading from a
 //! local listener that serves in-memory fixture tarballs. One test function:
@@ -12,10 +12,21 @@ use std::io::{Read, Write};
 use std::net::TcpListener;
 use std::path::Path;
 
-use livery_lib::config::types::AppName;
-use livery_lib::themes::registry::{provisioning, ThemeProvisioning};
-use livery_lib::themes::{commands as themes, detect, manifest};
-use livery_lib::updaters::UpdateStatus;
+use tokio::runtime::Runtime;
+
+use livery_core::config::types::AppName;
+use livery_core::themes::registry::{provisioning, ThemeProvisioning};
+use livery_core::themes::{commands as themes, detect, manifest};
+use livery_core::updaters::UpdateStatus;
+
+fn runtime() -> &'static Runtime {
+    static RUNTIME: std::sync::OnceLock<Runtime> = std::sync::OnceLock::new();
+    RUNTIME.get_or_init(|| Runtime::new().unwrap())
+}
+
+fn block_on<F: std::future::Future>(future: F) -> F::Output {
+    runtime().block_on(future)
+}
 
 fn gz_tarball(entries: &[(&str, &str)]) -> Vec<u8> {
     let encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::default());
@@ -185,11 +196,11 @@ fn setup_chain_end_to_end() {
     write_file(&vault_appearance, "{\"cssTheme\":\"Black Atom\"}\n");
 
     // 1. First config read materializes the defaults: everything disabled.
-    let mut config = livery_lib::config::commands::get_config();
+    let mut config = livery_core::config::commands::get_config();
     assert!(config.apps.values().all(|app| !app.enabled));
 
     // 2. Conservative detection: planted configs found, everything else not.
-    let detections = tauri::async_runtime::block_on(detect::detect_apps());
+    let detections = block_on(detect::detect_apps());
     let mut found: Vec<&str> = detections
         .iter()
         .filter(|d| d.found)
@@ -219,7 +230,7 @@ fn setup_chain_end_to_end() {
             _ => {}
         }
     }
-    livery_lib::config::commands::save_config(config).unwrap();
+    livery_core::config::commands::save_config(config).unwrap();
 
     // 4. Pre-plant a stale nvim download to prove the self-heal.
     let managed_root = home.join(".config/black-atom/themes");
@@ -240,7 +251,7 @@ fn setup_chain_end_to_end() {
         if provisioning(*app) == ThemeProvisioning::External {
             continue;
         }
-        let result = tauri::async_runtime::block_on(themes::download_theme(*app));
+        let result = block_on(themes::download_theme(*app));
         assert!(
             matches!(result.status, UpdateStatus::Done),
             "download {} failed: {:?}",
@@ -256,11 +267,11 @@ fn setup_chain_end_to_end() {
         }
     }
     // External adapters have nothing to fetch — a skip, not a failure.
-    let nvim_download = tauri::async_runtime::block_on(themes::download_theme(AppName::Nvim));
+    let nvim_download = block_on(themes::download_theme(AppName::Nvim));
     assert!(matches!(nvim_download.status, UpdateStatus::Skipped));
 
     // 6. Status: every app carries its class, the stale nvim download is gone.
-    let status = tauri::async_runtime::block_on(themes::get_themes_status());
+    let status = block_on(themes::get_themes_status());
     assert_eq!(status.adapters.len(), AppName::all().len());
     assert!(status.any_downloaded);
     for (app, adapter) in &status.adapters {
@@ -277,7 +288,7 @@ fn setup_chain_end_to_end() {
         AppName::Tmux,
         AppName::Obsidian,
     ] {
-        let result = tauri::async_runtime::block_on(themes::link_app_themes(app));
+        let result = block_on(themes::link_app_themes(app));
         assert!(
             matches!(result.status, UpdateStatus::Done),
             "link {} failed: {:?}",
@@ -298,29 +309,27 @@ fn setup_chain_end_to_end() {
     }
     // Merged adapters consume the managed dir directly — linking is a skip.
     for app in [AppName::Lazygit, AppName::Herdr] {
-        let link = tauri::async_runtime::block_on(themes::link_app_themes(app));
+        let link = block_on(themes::link_app_themes(app));
         assert!(matches!(link.status, UpdateStatus::Skipped));
     }
 
     // 8. Verify lands truthful per adapter.
-    let ghostty =
-        tauri::async_runtime::block_on(livery_lib::updaters::verify_app_path(AppName::Ghostty));
+    let ghostty = block_on(livery_core::updaters::verify_app_path(AppName::Ghostty));
     assert!(ghostty.exists);
     assert_eq!(ghostty.pattern_matches, Some(true));
 
-    let tmux = tauri::async_runtime::block_on(livery_lib::updaters::verify_app_path(AppName::Tmux));
+    let tmux = block_on(livery_core::updaters::verify_app_path(AppName::Tmux));
     assert!(tmux.exists);
     assert_eq!(tmux.pattern_matches, Some(true));
 
-    let zed = tauri::async_runtime::block_on(livery_lib::updaters::verify_app_path(AppName::Zed));
+    let zed = block_on(livery_core::updaters::verify_app_path(AppName::Zed));
     assert!(zed.exists);
     assert_eq!(zed.pattern_matches, None, "zed patches structurally");
 
-    let herdr =
-        tauri::async_runtime::block_on(livery_lib::updaters::verify_app_path(AppName::Herdr));
+    let herdr = block_on(livery_core::updaters::verify_app_path(AppName::Herdr));
     assert!(herdr.exists);
     assert_eq!(herdr.pattern_matches, None, "herdr patches a managed block");
 
-    let nvim = tauri::async_runtime::block_on(livery_lib::updaters::verify_app_path(AppName::Nvim));
+    let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
     assert!(!nvim.exists, "no nvim config was planted");
 }

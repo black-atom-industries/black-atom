@@ -185,7 +185,7 @@
 ---@field background?                                           boolean Wether to use background color for virtual text (Default: false)
 
 ---@class BlackAtom.Config.Styles
----@field cmp_kind_color_mode?                                  "fg" | "bg" (Default: "fg")
+---@field cmp_kind_color_mode?                                  "fg" | "bg" (Default: "bg")
 ---@field dark_sidebars?                                        boolean Wether to use dark sidebars (Default: true)
 ---@field dark_floats?                                          boolean Wether to use dark floats (Default: true)
 ---@field transparency?                                         "full" | "partial" | "none" Transparency level (Default: "none")

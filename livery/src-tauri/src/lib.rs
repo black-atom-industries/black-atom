@@ -1,6 +1,4 @@
-pub mod config;
-pub mod themes;
-pub mod updaters;
+pub mod commands;
 
 #[cfg(debug_assertions)]
 mod dev_bridge;
@@ -9,16 +7,16 @@ use tauri_specta::{collect_commands, Builder};
 
 fn specta_builder() -> Builder<tauri::Wry> {
     Builder::<tauri::Wry>::new().commands(collect_commands![
-        config::commands::get_config,
-        config::commands::save_config,
-        themes::commands::download_theme,
-        themes::commands::get_themes_status,
-        themes::commands::link_app_themes,
-        themes::commands::dismiss_themes_greeting,
-        themes::detect::detect_apps,
-        updaters::update_app,
-        updaters::update_system_appearance,
-        updaters::verify_app_path,
+        commands::get_config,
+        commands::save_config,
+        commands::download_theme,
+        commands::get_themes_status,
+        commands::link_app_themes,
+        commands::dismiss_themes_greeting,
+        commands::detect_apps,
+        commands::update_app,
+        commands::update_system_appearance,
+        commands::verify_app_path,
     ])
 }
 
@@ -63,7 +61,7 @@ pub fn start_app() {
                 use tauri::Manager;
                 use tauri_plugin_global_shortcut::{GlobalShortcutExt, Shortcut, ShortcutState};
 
-                let config = config::io::read_config_from_disk();
+                let config = livery_core::config::io::read_config_from_disk();
                 let shortcut_str = config.keymappings.toggle_window.clone();
 
                 let toggle_shortcut: Shortcut = shortcut_str

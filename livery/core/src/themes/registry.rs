@@ -117,7 +117,7 @@ pub enum AdapterEditableField {
 }
 
 /// Config fields each adapter's updater actually reads — HAND-MAINTAINED
-/// against `src-tauri/src/updaters/*` and the `dispatch_update` router in
+/// against `livery/core/src/updaters/*` and the `dispatch_update` router in
 /// `updaters/mod.rs`. Update this alongside any updater change.
 ///
 /// nvim/ghostty/tmux have dedicated updaters; delta and helm route through

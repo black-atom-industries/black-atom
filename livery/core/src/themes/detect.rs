@@ -12,11 +12,6 @@ pub struct AppDetection {
     pub found: bool,
 }
 
-/// Conservative app detection: an app counts as found iff its configured
-/// config file exists on disk. No binary lookups, no alternative-path
-/// guessing (wizard territory, #35) — better to miss than misconfigure.
-#[tauri::command]
-#[specta::specta]
 pub async fn detect_apps() -> Vec<AppDetection> {
     let mut config = crate::config::io::read_config_from_disk();
     crate::config::io::expand_app_paths(&mut config);

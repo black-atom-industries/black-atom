@@ -2377,6 +2377,26 @@ version = "0.2.0"
 dependencies = [
  "dirs",
  "fix-path-env",
+ "livery_core",
+ "log",
+ "serde",
+ "serde_json",
+ "specta",
+ "specta-typescript",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-dialog",
+ "tauri-plugin-global-shortcut",
+ "tauri-plugin-log",
+ "tauri-plugin-opener",
+ "tauri-specta",
+]
+
+[[package]]
+name = "livery_core"
+version = "0.2.0"
+dependencies = [
+ "dirs",
  "flate2",
  "jsonc-parser",
  "log",
@@ -2386,16 +2406,9 @@ dependencies = [
  "serde_json",
  "shellexpand",
  "specta",
- "specta-typescript",
  "tar",
- "tauri",
- "tauri-build",
- "tauri-plugin-dialog",
- "tauri-plugin-global-shortcut",
- "tauri-plugin-log",
- "tauri-plugin-opener",
- "tauri-specta",
  "tempfile",
+ "tokio",
  "toml 0.9.12+spec-1.1.0",
  "yaml-edit",
  "yaml_serde",

@@ -63,27 +63,27 @@ switch this app's theme automatically, continue.
 
 ## 6. Register `AppName`
 
-`livery/src-tauri/src/config/types.rs`: add the variant to `enum AppName`, to `AppName::all()`,
-and to `as_str()`. `livery/src-tauri/src/config/defaults.rs`: add a default `AppConfig` entry
+`livery/core/src/config/types.rs`: add the variant to `enum AppName`, to `AppName::all()`,
+and to `as_str()`. `livery/core/src/config/defaults.rs`: add a default `AppConfig` entry
 (`config_path`, `match_pattern` + `replace_template` for text-patch apps, or `themes_path` for
 linked/merged apps — see `livery/ADAPTERS.md` for the three provisioning classes).
-`livery/src-tauri/src/themes/registry.rs`: add the variant's arm to `provisioning()` and to the
+`livery/core/src/themes/registry.rs`: add the variant's arm to `provisioning()` and to the
 other `match app` blocks in that file (placement, editable fields). These are exhaustive Rust
 matches; the compiler rejects a missing arm.
 
 ## 7. Write the updater
 
-Create `livery/src-tauri/src/updaters/<name>.rs` with `pub fn update(app_str: &str, app_config:
+Create `livery/core/src/updaters/<name>.rs` with `pub fn update(app_str: &str, app_config:
 &AppConfig, ctx: &UpdateContext) -> UpdateResult`. Use `file_ops::text::patch_text_file` for a
 regex-replace config line (see `updaters/ghostty.rs`), or `file_ops::jsonc`/`file_ops::yaml` for
 structural patching (see `updaters/zed.rs`, `updaters/lazygit.rs`). Register the module with `mod
-<name>;` at the top of `livery/src-tauri/src/updaters/mod.rs` and add an arm to `dispatch_update`'s
+<name>;` at the top of `livery/core/src/updaters/mod.rs` and add an arm to `dispatch_update`'s
 `match app` there.
 
 ## 8. Test
 
 Load the `backend-testing` skill. Add realistic input/expected fixture pairs under
-`livery/src-tauri/tests/fixtures/`, write `#[cfg(test)] mod tests` in `<name>.rs` following
+`livery/core/tests/fixtures/`, write `#[cfg(test)] mod tests` in `<name>.rs` following
 `updaters/zed.rs`, include an idempotency test. Run:
 
 ```bash
