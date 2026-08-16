@@ -1,0 +1,30 @@
+/* Black Atom — JPN ∷ Tsuki Yoru */
+
+/* Background colors */
+@define-color ba-bg-default #1c1c1c;
+@define-color ba-bg-panel #0f0f0f;
+@define-color ba-bg-hover #282828;
+@define-color ba-bg-active #282828;
+@define-color ba-bg-selection #373737;
+@define-color ba-bg-contrast #e6e6e6;
+
+/* Foreground colors */
+@define-color ba-fg-default #e6e6e6;
+@define-color ba-fg-subtle #9d9daf;
+@define-color ba-fg-accent #eab899;
+@define-color ba-fg-disabled #828299;
+@define-color ba-fg-contrast #1c1c1c;
+
+/* Feedback colors */
+@define-color ba-fg-negative #f591b2;
+@define-color ba-fg-positive #90b99f;
+@define-color ba-fg-warn #eab899;
+@define-color ba-fg-info #a1b0cf;
+
+/* Palette colors */
+@define-color ba-red #f591b2;
+@define-color ba-green #90b99f;
+@define-color ba-yellow #eab899;
+@define-color ba-blue #a1b0cf;
+@define-color ba-magenta #aca1cf;
+@define-color ba-cyan #8dd9c5;

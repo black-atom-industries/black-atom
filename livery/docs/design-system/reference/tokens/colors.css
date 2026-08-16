@@ -1,0 +1,92 @@
+/* =============================================================
+   Black Atom — Color tokens
+   Chrome is warm monochrome; the one accent is muted green.
+   All colors oklch. light-dark() resolves per scheme.
+   In Livery, a ThemeProvider overrides the bg/fg tokens at
+   runtime with the selected theme's ui.bg / ui.fg values —
+   components consume tokens, never hex.
+   ============================================================= */
+
+:root {
+    color-scheme: light dark;
+}
+
+[data-ba-color-scheme="dark"]  { color-scheme: dark; }
+[data-ba-color-scheme="light"] { color-scheme: light; }
+
+:root {
+    /* Knobs — override hue/chroma and everything derives */
+    --ba-color-default-hue: 30;
+    --ba-color-default-chroma: 0.006;
+    --ba-color-positive-hue: 150;
+    --ba-color-positive-chroma: 0.08;
+    --ba-color-warn-hue: 80;
+    --ba-color-warn-chroma: 0.1;
+    --ba-color-negative-hue: 35;
+    --ba-color-negative-chroma: 0.1;
+    --ba-color-info-hue: 250;
+    --ba-color-info-chroma: 0.05;
+
+    /* ---------- Backgrounds (recessed < default < subtle < hint) ---------- */
+    --ba-color-bg-recessed: light-dark(
+        oklch(0.985 var(--ba-color-default-chroma) var(--ba-color-default-hue)),
+        oklch(0.145 var(--ba-color-default-chroma) var(--ba-color-default-hue))
+    );
+    --ba-color-bg-default: light-dark(
+        oklch(0.955 var(--ba-color-default-chroma) var(--ba-color-default-hue)),
+        oklch(0.18 var(--ba-color-default-chroma) var(--ba-color-default-hue))
+    );
+    --ba-color-bg-subtle: light-dark(
+        oklch(0.925 var(--ba-color-default-chroma) var(--ba-color-default-hue)),
+        oklch(0.21 var(--ba-color-default-chroma) var(--ba-color-default-hue))
+    );
+    --ba-color-bg-hint: light-dark(
+        oklch(0.9 var(--ba-color-default-chroma) var(--ba-color-default-hue)),
+        oklch(0.24 var(--ba-color-default-chroma) var(--ba-color-default-hue))
+    );
+    --ba-color-bg-contrast: light-dark(
+        oklch(0.22 var(--ba-color-default-chroma) var(--ba-color-default-hue)),
+        oklch(0.93 var(--ba-color-default-chroma) var(--ba-color-default-hue))
+    );
+    --ba-color-bg-disabled: light-dark(
+        oklch(0.9 var(--ba-color-default-chroma) var(--ba-color-default-hue)),
+        oklch(0.22 var(--ba-color-default-chroma) var(--ba-color-default-hue))
+    );
+
+    /* ---------- Foregrounds ---------- */
+    --ba-color-fg-default: light-dark(
+        oklch(0.24 var(--ba-color-default-chroma) var(--ba-color-default-hue)),
+        oklch(0.93 var(--ba-color-default-chroma) var(--ba-color-default-hue))
+    );
+    --ba-color-fg-subtle: color-mix(in oklch, var(--ba-color-fg-default) 78%, transparent);
+    --ba-color-fg-hint: color-mix(in oklch, var(--ba-color-fg-default) 55%, transparent);
+    --ba-color-fg-disabled: color-mix(in oklch, var(--ba-color-fg-default) 35%, transparent);
+    --ba-color-fg-contrast: light-dark(
+        oklch(0.955 var(--ba-color-default-chroma) var(--ba-color-default-hue)),
+        oklch(0.18 var(--ba-color-default-chroma) var(--ba-color-default-hue))
+    );
+
+    /* ---------- Intents (fg use; pips, labels, outlines) ---------- */
+    --ba-color-fg-positive: light-dark(
+        oklch(0.55 var(--ba-color-positive-chroma) var(--ba-color-positive-hue)),
+        oklch(0.7 var(--ba-color-positive-chroma) var(--ba-color-positive-hue))
+    );
+    --ba-color-fg-warn: light-dark(
+        oklch(0.6 var(--ba-color-warn-chroma) var(--ba-color-warn-hue)),
+        oklch(0.72 var(--ba-color-warn-chroma) var(--ba-color-warn-hue))
+    );
+    --ba-color-fg-negative: light-dark(
+        oklch(0.55 var(--ba-color-negative-chroma) var(--ba-color-negative-hue)),
+        oklch(0.66 var(--ba-color-negative-chroma) var(--ba-color-negative-hue))
+    );
+    --ba-color-fg-info: light-dark(
+        oklch(0.55 var(--ba-color-info-chroma) var(--ba-color-info-hue)),
+        oklch(0.7 var(--ba-color-info-chroma) var(--ba-color-info-hue))
+    );
+
+    /* ---------- Derived: borders + focus ---------- */
+    --ba-color-border-default: color-mix(in oklch, var(--ba-color-fg-default) 18%, transparent);
+    --ba-color-border-subtle: color-mix(in oklch, var(--ba-color-fg-default) 10%, transparent);
+    --ba-color-border-strong: color-mix(in oklch, var(--ba-color-fg-default) 45%, transparent);
+    --ba-color-focus: var(--ba-color-fg-positive);
+}

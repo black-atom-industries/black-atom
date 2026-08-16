@@ -1,0 +1,74 @@
+import type {
+    ThemeAccentColors,
+    ThemeDefinition,
+    ThemeFeedbackColors,
+    ThemePrimaryColors,
+    ThemeSyntaxColors,
+} from "../../types/theme.ts";
+import { themeKeyMetaMap } from "../../types/themes.ts";
+import { oklch } from "../../utils/color.ts";
+
+import createPalette from "./create-palette-light.ts";
+import createSyntax from "./create-syntax-light.ts";
+import createUi from "./create-ui-light.ts";
+import createFeedback from "./create-feedback-light.ts";
+
+const meta = themeKeyMetaMap["black-atom-mnml-osman-light"];
+
+const primaries: ThemePrimaryColors = {
+    d10: oklch(0.15, 0.008, 64),
+    d20: oklch(0.32, 0.015, 64),
+    d30: oklch(0.36, 0.015, 64),
+    d40: oklch(0.40, 0.015, 64),
+
+    m10: oklch(0.50, 0.020, 64),
+    m20: oklch(0.55, 0.020, 64),
+    m30: oklch(0.60, 0.020, 64),
+    m40: oklch(0.65, 0.020, 64),
+
+    l10: oklch(0.90, 0.012, 64),
+    l20: oklch(0.94, 0.013, 64),
+    l30: oklch(0.98, 0.013, 64),
+    l40: oklch(0.99, 0.010, 64),
+};
+
+const accents: ThemeAccentColors = {
+    a10: oklch(0.625, 0.200, 255),
+    a20: oklch(0.625, 0.225, 28),
+};
+
+const palette = createPalette(primaries, {
+    debug: false,
+    override: (palette) => ({
+        ...palette,
+        blue: accents.a10,
+        darkBlue: accents.a10,
+        red: accents.a20,
+        darkRed: accents.a20,
+    }),
+});
+
+const feedback: ThemeFeedbackColors = createFeedback(accents);
+
+const options = { primaries, palette, feedback, accents };
+const ui = createUi(options);
+const syntax: ThemeSyntaxColors = {
+    ...createSyntax(options),
+    keyword: {
+        default: accents.a20,
+        import: accents.a10,
+        export: accents.a10,
+    },
+};
+
+const theme: ThemeDefinition = {
+    meta,
+    primaries,
+    palette,
+    accents,
+    feedback,
+    ui,
+    syntax,
+};
+
+export default theme;

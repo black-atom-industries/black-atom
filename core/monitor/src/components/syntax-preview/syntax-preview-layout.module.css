@@ -1,0 +1,12 @@
+.root {
+    display: grid;
+    grid-template-columns: 0.15fr 1fr;
+    gap: var(--size-5);
+    min-height: 0;
+    align-items: start;
+}
+
+.sticky {
+    position: sticky;
+    top: 2em;
+}

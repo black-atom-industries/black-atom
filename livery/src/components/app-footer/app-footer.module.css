@@ -1,0 +1,26 @@
+/* =============================================================
+   AppFooter — Key vocabulary bar
+   Spec: docs/design-system/reference/components/containers/AppFooter.jsx
+   Composes KeyHint for the left slot; StatusPip (or similar) for the right.
+   ============================================================= */
+
+.root {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-1);
+    color: var(--ba-color-fg-hint);
+}
+
+.hints {
+    display: flex;
+    gap: var(--ba-size-6);
+    white-space: nowrap;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-2);
+}

@@ -1,0 +1,26 @@
+.btnPrimary {
+    padding: var(--size-2) var(--size-3);
+    border-radius: var(--radius-1);
+    border: none;
+    background: var(--ba-ui-fg-accent);
+    color: var(--ba-ui-bg-default);
+    font-size: var(--font-size-0);
+    cursor: pointer;
+}
+
+.btnSecondary {
+    padding: var(--size-2) var(--size-3);
+    border-radius: var(--radius-1);
+    border: var(--border-size-1) solid var(--ba-ui-bg-float);
+    background: var(--ba-ui-bg-panel);
+    color: var(--ba-ui-fg-default);
+    font-size: var(--font-size-0);
+    cursor: pointer;
+}
+
+.btnSecondary:disabled {
+    border-color: var(--ba-ui-bg-disabled);
+    background: var(--ba-ui-bg-disabled);
+    color: var(--ba-ui-fg-disabled);
+    cursor: not-allowed;
+}

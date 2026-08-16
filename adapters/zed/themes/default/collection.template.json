@@ -1,0 +1,420 @@
+{
+    "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
+    "name": "<%= theme.meta.label %>",
+    "author": "Black Atom",
+    "themes": [
+        {
+            "name": "<%= theme.meta.label %>",
+            "appearance": "<%= theme.meta.appearance %>",
+            "style": {
+                "border": "<%= theme.ui.bg.active %>",
+                "border.variant": "<%= theme.ui.bg.hover %>",
+                "border.focused": "<%= theme.ui.fg.accent %>",
+                "border.selected": "<%= theme.ui.bg.selection %>",
+                "border.transparent": "#00000000",
+                "border.disabled": "<%= theme.ui.fg.disabled %>",
+                "elevated_surface.background": "<%= theme.ui.bg.panel %>",
+                "surface.background": "<%= theme.ui.bg.panel %>",
+                "background": "<%= theme.ui.bg.default %>",
+                "element.background": "<%= theme.ui.bg.panel %>",
+                "element.hover": "<%= theme.ui.bg.hover %>",
+                "element.active": "<%= theme.ui.bg.active %>",
+                "element.selected": "<%= theme.ui.bg.selection %>",
+                "element.disabled": "<%= theme.ui.bg.disabled %>",
+                "drop_target.background": "<%= theme.ui.bg.selection %>80",
+                "ghost_element.background": "#00000000",
+                "ghost_element.hover": "<%= theme.ui.bg.hover %>",
+                "ghost_element.active": "<%= theme.ui.bg.active %>",
+                "ghost_element.selected": "<%= theme.ui.bg.selection %>",
+                "ghost_element.disabled": "<%= theme.ui.bg.disabled %>",
+                "text": "<%= theme.ui.fg.default %>",
+                "text.muted": "<%= theme.ui.fg.subtle %>",
+                "text.placeholder": "<%= theme.ui.fg.disabled %>",
+                "text.disabled": "<%= theme.ui.fg.disabled %>",
+                "text.accent": "<%= theme.ui.fg.accent %>",
+                "icon": "<%= theme.ui.fg.default %>",
+                "icon.muted": "<%= theme.ui.fg.subtle %>",
+                "icon.disabled": "<%= theme.ui.fg.disabled %>",
+                "icon.placeholder": "<%= theme.ui.fg.subtle %>",
+                "icon.accent": "<%= theme.ui.fg.accent %>",
+                "status_bar.background": "<%= theme.ui.bg.panel %>",
+                "title_bar.background": "<%= theme.ui.bg.panel %>",
+                "title_bar.inactive_background": "<%= theme.ui.bg.panel %>",
+                "toolbar.background": "<%= theme.ui.bg.default %>",
+                "tab_bar.background": "<%= theme.ui.bg.panel %>",
+                "tab.inactive_background": "<%= theme.ui.bg.panel %>",
+                "tab.active_background": "<%= theme.ui.bg.default %>",
+                "search.match_background": "<%= theme.ui.bg.search %>66",
+                "search.active_match_background": "<%= theme.ui.fg.warn %>66",
+                "panel.background": "<%= theme.ui.bg.panel %>",
+                "panel.focused_border": "<%= theme.ui.fg.accent %>",
+                "pane.focused_border": "<%= theme.ui.fg.accent %>",
+                "scrollbar.thumb.background": "<%= theme.ui.fg.accent %>4c",
+                "scrollbar.thumb.hover_background": "<%= theme.ui.bg.hover %>",
+                "scrollbar.thumb.border": "<%= theme.ui.bg.hover %>",
+                "scrollbar.track.background": "#00000000",
+                "scrollbar.track.border": "<%= theme.ui.fg.default %>12",
+                "editor.foreground": "<%= theme.ui.fg.default %>",
+                "editor.background": "<%= theme.ui.bg.default %>",
+                "editor.gutter.background": "<%= theme.ui.bg.default %>",
+                "editor.subheader.background": "<%= theme.ui.bg.panel %>",
+                "editor.active_line.background": "<%= theme.ui.bg.active %>bf",
+                "editor.highlighted_line.background": "<%= theme.ui.bg.hover %>",
+                "editor.line_number": "<%= theme.ui.fg.subtle %>",
+                "editor.active_line_number": "<%= theme.ui.fg.default %>",
+                "editor.hover_line_number": "<%= theme.ui.fg.subtle %>",
+                "editor.invisible": "<%= theme.ui.fg.disabled %>",
+                "editor.wrap_guide": "<%= theme.ui.fg.disabled %>0d",
+                "editor.active_wrap_guide": "<%= theme.ui.fg.disabled %>1a",
+                "editor.document_highlight.read_background": "<%= theme.ui.fg.accent %>1a",
+                "editor.document_highlight.write_background": "<%= theme.ui.bg.selection %>66",
+                "terminal.background": "<%= theme.ui.bg.default %>",
+                "terminal.foreground": "<%= theme.ui.fg.default %>",
+                "terminal.bright_foreground": "<%= theme.ui.fg.default %>",
+                "terminal.dim_foreground": "<%= theme.ui.fg.subtle %>",
+                "terminal.ansi.black": "<%= theme.palette.black %>",
+                "terminal.ansi.bright_black": "<%= theme.palette.gray %>",
+                "terminal.ansi.dim_black": "<%= theme.palette.gray %>",
+                "terminal.ansi.red": "<%= theme.palette.red %>",
+                "terminal.ansi.bright_red": "<%= theme.palette.red %>",
+                "terminal.ansi.dim_red": "<%= theme.palette.darkRed %>",
+                "terminal.ansi.green": "<%= theme.palette.green %>",
+                "terminal.ansi.bright_green": "<%= theme.palette.green %>",
+                "terminal.ansi.dim_green": "<%= theme.palette.darkGreen %>",
+                "terminal.ansi.yellow": "<%= theme.palette.yellow %>",
+                "terminal.ansi.bright_yellow": "<%= theme.palette.yellow %>",
+                "terminal.ansi.dim_yellow": "<%= theme.palette.darkYellow %>",
+                "terminal.ansi.blue": "<%= theme.palette.blue %>",
+                "terminal.ansi.bright_blue": "<%= theme.palette.blue %>",
+                "terminal.ansi.dim_blue": "<%= theme.palette.darkBlue %>",
+                "terminal.ansi.magenta": "<%= theme.palette.magenta %>",
+                "terminal.ansi.bright_magenta": "<%= theme.palette.magenta %>",
+                "terminal.ansi.dim_magenta": "<%= theme.palette.darkMagenta %>",
+                "terminal.ansi.cyan": "<%= theme.palette.cyan %>",
+                "terminal.ansi.bright_cyan": "<%= theme.palette.cyan %>",
+                "terminal.ansi.dim_cyan": "<%= theme.palette.darkCyan %>",
+                "terminal.ansi.white": "<%= theme.palette.lightGray %>",
+                "terminal.ansi.bright_white": "<%= theme.palette.white %>",
+                "terminal.ansi.dim_white": "<%= theme.palette.lightGray %>",
+                "link_text.hover": "<%= theme.ui.fg.accent %>",
+                "version_control.added": "<%= theme.ui.bg.add %>",
+                "version_control.modified": "<%= theme.ui.bg.modify %>",
+                "version_control.deleted": "<%= theme.ui.bg.delete %>",
+                "version_control.word_added": "<%= theme.ui.fg.add %>59",
+                "version_control.word_deleted": "<%= theme.ui.fg.delete %>CC",
+                "version_control.conflict_marker.ours": "<%= theme.ui.fg.positive %>1a",
+                "version_control.conflict_marker.theirs": "<%= theme.ui.fg.info %>1a",
+                "conflict": "<%= theme.ui.fg.warn %>",
+                "conflict.background": "<%= theme.ui.bg.warn %>1a",
+                "conflict.border": "<%= theme.ui.fg.warn %>",
+                "created": "<%= theme.ui.fg.positive %>",
+                "created.background": "<%= theme.ui.bg.positive %>1a",
+                "created.border": "<%= theme.ui.fg.positive %>",
+                "deleted": "<%= theme.ui.fg.negative %>",
+                "deleted.background": "<%= theme.ui.bg.negative %>1a",
+                "deleted.border": "<%= theme.ui.fg.negative %>",
+                "error": "<%= theme.ui.fg.negative %>",
+                "error.background": "<%= theme.ui.bg.negative %>1a",
+                "error.border": "<%= theme.ui.fg.negative %>",
+                "hidden": "<%= theme.ui.fg.disabled %>",
+                "hidden.background": "<%= theme.ui.bg.disabled %>1a",
+                "hidden.border": "<%= theme.ui.fg.disabled %>",
+                "hint": "<%= theme.ui.fg.hint %>",
+                "hint.background": "<%= theme.ui.bg.hint %>1a",
+                "hint.border": "<%= theme.ui.fg.hint %>",
+                "ignored": "<%= theme.ui.fg.disabled %>",
+                "ignored.background": "<%= theme.ui.bg.disabled %>1a",
+                "ignored.border": "<%= theme.ui.fg.disabled %>",
+                "info": "<%= theme.ui.fg.info %>",
+                "info.background": "<%= theme.ui.bg.info %>1a",
+                "info.border": "<%= theme.ui.fg.info %>",
+                "modified": "<%= theme.ui.fg.modify %>",
+                "modified.background": "<%= theme.ui.bg.modify %>1a",
+                "modified.border": "<%= theme.ui.fg.modify %>",
+                "predictive": "<%= theme.ui.fg.hint %>",
+                "predictive.background": "<%= theme.ui.bg.hint %>1a",
+                "predictive.border": "<%= theme.ui.fg.hint %>",
+                "renamed": "<%= theme.ui.fg.info %>",
+                "renamed.background": "<%= theme.ui.bg.info %>1a",
+                "renamed.border": "<%= theme.ui.fg.info %>",
+                "success": "<%= theme.ui.fg.positive %>",
+                "success.background": "<%= theme.ui.bg.positive %>1a",
+                "success.border": "<%= theme.ui.fg.positive %>",
+                "unreachable": "<%= theme.ui.fg.disabled %>",
+                "unreachable.background": "<%= theme.ui.bg.disabled %>1a",
+                "unreachable.border": "<%= theme.ui.fg.disabled %>",
+                "warning": "<%= theme.ui.fg.warn %>",
+                "warning.background": "<%= theme.ui.bg.warn %>1a",
+                "warning.border": "<%= theme.ui.fg.warn %>",
+                "vim.normal.background": "<%= theme.ui.bg.panel %>",
+                "vim.insert.background": "<%= theme.ui.fg.warn %>",
+                "vim.visual.background": "<%= theme.ui.fg.info %>",
+                "vim.visual_line.background": "<%= theme.ui.fg.info %>",
+                "vim.visual_block.background": "<%= theme.ui.fg.info %>",
+                "vim.replace.background": "<%= theme.ui.fg.negative %>",
+                "vim.helix_normal.background": "<%= theme.ui.bg.panel %>",
+                "vim.helix_select.background": "<%= theme.ui.fg.info %>",
+                "vim.mode.text": "<%= theme.ui.fg.default %>",
+                "players": [
+                    {
+                        "cursor": "<%= theme.ui.fg.accent %>",
+                        "background": "<%= theme.ui.fg.accent %>",
+                        "selection": "<%= theme.ui.fg.accent %>3d"
+                    },
+                    {
+                        "cursor": "<%= theme.palette.magenta %>",
+                        "background": "<%= theme.palette.magenta %>",
+                        "selection": "<%= theme.palette.magenta %>3d"
+                    },
+                    {
+                        "cursor": "<%= theme.palette.yellow %>",
+                        "background": "<%= theme.palette.yellow %>",
+                        "selection": "<%= theme.palette.yellow %>3d"
+                    },
+                    {
+                        "cursor": "<%= theme.palette.cyan %>",
+                        "background": "<%= theme.palette.cyan %>",
+                        "selection": "<%= theme.palette.cyan %>3d"
+                    },
+                    {
+                        "cursor": "<%= theme.palette.blue %>",
+                        "background": "<%= theme.palette.blue %>",
+                        "selection": "<%= theme.palette.blue %>3d"
+                    },
+                    {
+                        "cursor": "<%= theme.palette.red %>",
+                        "background": "<%= theme.palette.red %>",
+                        "selection": "<%= theme.palette.red %>3d"
+                    },
+                    {
+                        "cursor": "<%= theme.palette.green %>",
+                        "background": "<%= theme.palette.green %>",
+                        "selection": "<%= theme.palette.green %>3d"
+                    },
+                    {
+                        "cursor": "<%= theme.ui.fg.accent %>",
+                        "background": "<%= theme.ui.fg.accent %>",
+                        "selection": "<%= theme.ui.fg.accent %>3d"
+                    }
+                ],
+                "syntax": {
+                    "attribute": {
+                        "color": "<%= theme.syntax.tag.attribute %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "boolean": {
+                        "color": "<%= theme.syntax.boolean.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "comment": {
+                        "color": "<%= theme.syntax.comment.default %>",
+                        "font_style": "italic",
+                        "font_weight": null
+                    },
+                    "comment.doc": {
+                        "color": "<%= theme.syntax.comment.doc %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "constant": {
+                        "color": "<%= theme.syntax.constant.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "constructor": {
+                        "color": "<%= theme.syntax.constructor.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "embedded": {
+                        "color": "<%= theme.ui.fg.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "emphasis": {
+                        "color": "<%= theme.ui.fg.accent %>",
+                        "font_style": "italic",
+                        "font_weight": null
+                    },
+                    "emphasis.strong": {
+                        "color": "<%= theme.syntax.markup.strong %>",
+                        "font_style": null,
+                        "font_weight": 700
+                    },
+                    "enum": {
+                        "color": "<%= theme.syntax.type.builtin %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "function": {
+                        "color": "<%= theme.syntax.func.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "hint": {
+                        "color": "<%= theme.syntax.comment.hint %>",
+                        "font_style": null,
+                        "font_weight": 700
+                    },
+                    "keyword": {
+                        "color": "<%= theme.syntax.keyword.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "label": {
+                        "color": "<%= theme.syntax.attribute.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "namespace": {
+                        "color": "<%= theme.syntax.module.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "link_text": {
+                        "color": "<%= theme.syntax.markup.link %>",
+                        "font_style": "italic",
+                        "font_weight": null
+                    },
+                    "link_uri": {
+                        "color": "<%= theme.syntax.markup.link %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "number": {
+                        "color": "<%= theme.syntax.number.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "operator": {
+                        "color": "<%= theme.syntax.operator.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "predictive": {
+                        "color": "<%= theme.ui.fg.hint %>",
+                        "font_style": "italic",
+                        "font_weight": null
+                    },
+                    "preproc": {
+                        "color": "<%= theme.ui.fg.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "primary": {
+                        "color": "<%= theme.ui.fg.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "property": {
+                        "color": "<%= theme.syntax.property.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "punctuation": {
+                        "color": "<%= theme.syntax.punctuation.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "punctuation.bracket": {
+                        "color": "<%= theme.syntax.punctuation.bracket %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "punctuation.delimiter": {
+                        "color": "<%= theme.syntax.punctuation.delimiter %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "punctuation.list_marker": {
+                        "color": "<%= theme.syntax.markup.list.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "punctuation.markup": {
+                        "color": "<%= theme.syntax.markup.list.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "punctuation.special": {
+                        "color": "<%= theme.syntax.punctuation.special %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "string": {
+                        "color": "<%= theme.syntax.string.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "string.escape": {
+                        "color": "<%= theme.syntax.string.escape %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "string.regex": {
+                        "color": "<%= theme.syntax.string.regexp %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "string.special": {
+                        "color": "<%= theme.syntax.string.doc %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "string.special.symbol": {
+                        "color": "<%= theme.syntax.constant.builtin %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "selector": {
+                        "color": "<%= theme.syntax.constant.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "selector.pseudo": {
+                        "color": "<%= theme.syntax.tag.attribute %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "tag": {
+                        "color": "<%= theme.syntax.tag.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "text.literal": {
+                        "color": "<%= theme.syntax.string.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "title": {
+                        "color": "<%= theme.syntax.markup.heading.h1 %>",
+                        "font_style": null,
+                        "font_weight": 700
+                    },
+                    "type": {
+                        "color": "<%= theme.syntax.type.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "variable": {
+                        "color": "<%= theme.syntax.variable.default %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "variable.special": {
+                        "color": "<%= theme.syntax.variable.builtin %>",
+                        "font_style": null,
+                        "font_weight": null
+                    },
+                    "variant": {
+                        "color": "<%= theme.syntax.type.builtin %>",
+                        "font_style": null,
+                        "font_weight": null
+                    }
+                }
+            }
+        }
+    ]
+}

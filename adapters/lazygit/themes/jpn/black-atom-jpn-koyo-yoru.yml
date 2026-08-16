@@ -1,0 +1,29 @@
+# Black Atom — JPN ∷ Koyo Yoru
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#e49e22"
+      - bold
+    inactiveBorderColor:
+      - "#b19b7c"
+    optionsTextColor:
+      - "#b5a4d7"
+    selectedLineBgColor:
+      - "#4a3d50"
+    cherryPickedCommitBgColor:
+      - "#3a2d3f"
+    cherryPickedCommitFgColor:
+      - "#e49e22"
+    unstagedChangesColor:
+      - "#fe838f"
+    defaultFgColor:
+      - "#ead2b2"
+    searchingActiveBorderColor:
+      - "#e49e22"
+
+  authorColors:
+    "*": "#e19b73"

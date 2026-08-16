@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — JPN ∷ Murasaki Yoru"
+
+[colors]
+foreground = "#d4bfd6"
+background = "#351b23"
+cursor_bg = "#dca23a"
+cursor_border = "#dca23a"
+cursor_fg = "#351b23"
+selection_bg = "#5b3e47"
+selection_fg = "#d4bfd6"
+split = "#dca23a"
+compose_cursor = "#ff857b"
+scrollbar_thumb = "#946996"
+
+ansi = [
+  "#5b3e47", # black
+  "#ed7668", # dark_red
+  "#72ad91", # dark_green
+  "#e89a47", # dark_yellow
+  "#7ea5b7", # dark_blue
+  "#b9a2d4", # dark_magenta
+  "#62adac", # dark_cyan
+  "#946996" # light_gray
+]
+
+brights = [
+  "#7d5178", # gray
+  "#ff857b", # red
+  "#80bda2", # green
+  "#dca23a", # yellow
+  "#8cb6c5", # blue
+  "#d49bb2", # magenta
+  "#72bdbc", # cyan
+  "#b796b8" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#250d15"
+background = "#351b23"
+
+[colors.tab_bar.active_tab]
+fg_color = "#351b23"
+bg_color = "#dca23a"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#351b23"
+bg_color = "#6d4769"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#351b23"
+bg_color = "#452a32"
+
+[colors.tab_bar.new_tab]
+fg_color = "#351b23"
+bg_color = "#80bda2"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#351b23"
+bg_color = "#452a32"
+intensity = "Bold"

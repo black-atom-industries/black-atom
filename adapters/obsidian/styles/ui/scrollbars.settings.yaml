@@ -1,0 +1,10 @@
+- id: ba-scrollbars-heading
+  title: Scrollbars
+  type: heading
+  level: 2
+  collapsed: true
+- id: hide-scrollbars
+  title: Hide Scrollbars
+  description: Hide scrollbars (desktop only)
+  type: class-toggle
+  default: false

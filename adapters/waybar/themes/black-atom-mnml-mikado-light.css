@@ -1,0 +1,30 @@
+/* Black Atom — MNML ∷ Mikado Light */
+
+/* Background colors */
+@define-color ba-bg-default #c3cfd4;
+@define-color ba-bg-panel #b4c3c9;
+@define-color ba-bg-hover #b4c3c9;
+@define-color ba-bg-active #d2dbdf;
+@define-color ba-bg-selection #a8b9c0;
+@define-color ba-bg-contrast #2d404b;
+
+/* Foreground colors */
+@define-color ba-fg-default #0f212d;
+@define-color ba-fg-subtle #4c5d67;
+@define-color ba-fg-accent #cc8f00;
+@define-color ba-fg-disabled #617683;
+@define-color ba-fg-contrast #b4c3c9;
+
+/* Feedback colors */
+@define-color ba-fg-negative #f14d4c;
+@define-color ba-fg-positive #819e00;
+@define-color ba-fg-warn #cd7b00;
+@define-color ba-fg-info #00a3e9;
+
+/* Palette colors */
+@define-color ba-red #7b919d;
+@define-color ba-green #617683;
+@define-color ba-yellow #617683;
+@define-color ba-blue #cc8f00;
+@define-color ba-magenta #617683;
+@define-color ba-cyan #7b919d;

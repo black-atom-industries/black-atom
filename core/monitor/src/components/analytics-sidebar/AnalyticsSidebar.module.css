@@ -1,0 +1,186 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-3);
+    padding: var(--size-3);
+}
+
+/* Summary */
+.summaryLabel {
+    font-size: var(--font-size-00);
+    letter-spacing: var(--font-letterspacing-3);
+    color: var(--ba-ui-fg-subtle);
+    margin-bottom: var(--size-2);
+}
+
+.summaryRow {
+    display: flex;
+    align-items: baseline;
+    gap: var(--size-2);
+}
+
+.summaryValue {
+    font-size: var(--font-size-3);
+    font-weight: var(--font-weight-7);
+}
+
+.summaryValue[data-health="good"] {
+    color: var(--ba-ui-fg-positive);
+}
+.summaryValue[data-health="warn"] {
+    color: var(--ba-ui-fg-warn);
+}
+.summaryValue[data-health="poor"] {
+    color: var(--ba-ui-fg-negative);
+}
+
+.summaryValueSecondary {
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-7);
+    opacity: 0.7;
+}
+
+.summaryValueSecondary[data-health="good"] {
+    color: var(--ba-ui-fg-positive);
+}
+.summaryValueSecondary[data-health="warn"] {
+    color: var(--ba-ui-fg-warn);
+}
+.summaryValueSecondary[data-health="poor"] {
+    color: var(--ba-ui-fg-negative);
+}
+
+.summaryDetail {
+    font-size: var(--font-size-0);
+    color: var(--ba-ui-fg-subtle);
+}
+
+/* Worst pair callout — color varies by grade */
+.worstPair {
+    padding: var(--size-2);
+    border-radius: var(--radius-2);
+    border: var(--border-size-1) solid var(--ba-ui-bg-float);
+    background: var(--ba-ui-bg-active);
+}
+
+.worstPair[data-grade="fail"] {
+    background: var(--ba-ui-bg-negative);
+    border-color: color-mix(in oklch, var(--ba-ui-fg-negative) 20%, transparent);
+}
+
+.worstPair[data-grade="AA"] {
+    background: var(--ba-ui-bg-warn);
+    border-color: color-mix(in oklch, var(--ba-ui-fg-warn) 20%, transparent);
+}
+
+.worstPairLabel {
+    font-size: var(--font-size-00);
+    letter-spacing: var(--font-letterspacing-3);
+    color: var(--ba-ui-fg-subtle);
+    margin-bottom: var(--size-1);
+}
+
+.worstPairKeys {
+    font-size: var(--font-size-0);
+    font-weight: var(--font-weight-6);
+}
+
+.worstPair[data-grade="fail"] .worstPairKeys {
+    color: var(--ba-ui-fg-negative);
+}
+.worstPair[data-grade="AA"] .worstPairKeys {
+    color: var(--ba-ui-fg-warn);
+}
+.worstPair[data-grade="AAA"] .worstPairKeys {
+    color: var(--ba-ui-fg-positive);
+}
+
+.worstPairResult {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--size-1);
+    font-size: var(--font-size-0);
+}
+
+.worstPair[data-grade="fail"] .worstPairResult {
+    color: var(--ba-ui-fg-negative);
+}
+.worstPair[data-grade="AA"] .worstPairResult {
+    color: var(--ba-ui-fg-warn);
+}
+.worstPair[data-grade="AAA"] .worstPairResult {
+    color: var(--ba-ui-fg-positive);
+}
+
+.worstPairBadge {
+    font-size: var(--font-size-00);
+    padding: var(--size-1) var(--size-1);
+    border-radius: var(--radius-1);
+    background: var(--ba-ui-bg-default);
+}
+
+.worstPairBadge[data-grade="fail"] {
+    color: var(--ba-ui-fg-negative);
+}
+
+.worstPairBadge[data-grade="AA"] {
+    color: var(--ba-ui-fg-warn);
+}
+
+.worstPairBadge[data-grade="AAA"] {
+    color: var(--ba-ui-fg-positive);
+}
+
+/* Divider */
+.divider {
+    height: var(--border-size-1);
+    background: var(--ba-ui-bg-float);
+}
+
+/* Category */
+.category {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-1);
+}
+
+.categoryLabel {
+    font-size: var(--font-size-00);
+    letter-spacing: var(--font-letterspacing-3);
+    color: var(--ba-ui-fg-subtle);
+    margin-bottom: var(--size-1);
+    text-transform: uppercase;
+}
+
+/* Pair row */
+.pairRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--size-1) 0;
+    font-size: var(--font-size-0);
+}
+
+.pairKeys {
+    display: flex;
+    align-items: center;
+    gap: var(--size-2);
+    color: var(--ba-ui-fg-subtle);
+}
+
+.pairResult {
+    font-weight: var(--font-weight-5);
+}
+
+.pairRow[data-grade="AAA"] .pairResult {
+    color: var(--ba-ui-fg-positive);
+}
+
+.pairRow[data-grade="AA"] .pairResult {
+    color: var(--ba-ui-fg-warn);
+}
+
+.pairRow[data-grade="fail"] .pairResult {
+    color: var(--ba-ui-fg-negative);
+}

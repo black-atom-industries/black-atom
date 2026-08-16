@@ -1,0 +1,30 @@
+/* Black Atom — MNML ∷ E-Ink Light */
+
+/* Background colors */
+@define-color ba-bg-default #dedede;
+@define-color ba-bg-panel #d1d1d1;
+@define-color ba-bg-hover #d1d1d1;
+@define-color ba-bg-active #ebebeb;
+@define-color ba-bg-selection #c4c4c4;
+@define-color ba-bg-contrast #4d4d4d;
+
+/* Foreground colors */
+@define-color ba-fg-default #292929;
+@define-color ba-fg-subtle #5d5d5d;
+@define-color ba-fg-accent #5f5155;
+@define-color ba-fg-disabled #8c8c8c;
+@define-color ba-fg-contrast #d1d1d1;
+
+/* Feedback colors */
+@define-color ba-fg-negative #f14d4c;
+@define-color ba-fg-positive #819e00;
+@define-color ba-fg-warn #cd7b00;
+@define-color ba-fg-info #00a3e9;
+
+/* Palette colors */
+@define-color ba-red #a4a4a4;
+@define-color ba-green #8c8c8c;
+@define-color ba-yellow #8c8c8c;
+@define-color ba-blue #a4a4a4;
+@define-color ba-magenta #8c8c8c;
+@define-color ba-cyan #a4a4a4;

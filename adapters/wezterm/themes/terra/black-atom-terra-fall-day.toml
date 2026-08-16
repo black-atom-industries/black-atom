@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — TERRA ∷ Fall Day"
+
+[colors]
+foreground = "#422617"
+background = "#f8ddc7"
+cursor_bg = "#d9710b"
+cursor_border = "#d9710b"
+cursor_fg = "#f8ddc7"
+selection_bg = "#ffe6d2"
+selection_fg = "#422617"
+split = "#d9710b"
+compose_cursor = "#bf4d3f"
+scrollbar_thumb = "#815137"
+
+ansi = [
+  "#694a39", # black
+  "#a23125", # dark_red
+  "#546540", # dark_green
+  "#e16648", # dark_yellow
+  "#755644", # dark_blue
+  "#864d37", # dark_magenta
+  "#35695c", # dark_cyan
+  "#d39e82" # light_gray
+]
+
+brights = [
+  "#815137", # gray
+  "#bf4d3f", # red
+  "#6d7e57", # green
+  "#d9710b", # yellow
+  "#956d57", # blue
+  "#a26650", # magenta
+  "#4f8375", # cyan
+  "#f8ddc7" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#eeceb6"
+background = "#f8ddc7"
+
+[colors.tab_bar.active_tab]
+fg_color = "#f8ddc7"
+bg_color = "#d9710b"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#f8ddc7"
+bg_color = "#b78368"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#f8ddc7"
+bg_color = "#e3bfa4"
+
+[colors.tab_bar.new_tab]
+fg_color = "#f8ddc7"
+bg_color = "#6d7e57"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#f8ddc7"
+bg_color = "#e3bfa4"
+intensity = "Bold"

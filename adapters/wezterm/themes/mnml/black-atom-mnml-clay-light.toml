@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — MNML ∷ Clay Light"
+
+[colors]
+foreground = "#322e22"
+background = "#f8f2dc"
+cursor_bg = "#e76b3e"
+cursor_border = "#e76b3e"
+cursor_fg = "#f8f2dc"
+selection_bg = "#ddd8c2"
+selection_fg = "#322e22"
+split = "#e76b3e"
+compose_cursor = "#f14d4c"
+scrollbar_thumb = "#5d553f"
+
+ansi = [
+  "#4c473c", # black
+  "#888069", # dark_red
+  "#79715a", # dark_green
+  "#79715a", # dark_yellow
+  "#888069", # dark_blue
+  "#79715a", # dark_magenta
+  "#888069", # dark_cyan
+  "#888069" # light_gray
+]
+
+brights = [
+  "#5d553f", # gray
+  "#888069", # red
+  "#79715a", # green
+  "#79715a", # yellow
+  "#888069", # blue
+  "#79715a", # magenta
+  "#888069", # cyan
+  "#888069" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#ebe5cf"
+background = "#f8f2dc"
+
+[colors.tab_bar.active_tab]
+fg_color = "#ebe5cf"
+bg_color = "#e76b3e"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#ebe5cf"
+bg_color = "#ddd8c2"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#ebe5cf"
+bg_color = "#ebe5cf"
+
+[colors.tab_bar.new_tab]
+fg_color = "#ebe5cf"
+bg_color = "#819e00"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#ebe5cf"
+bg_color = "#ebe5cf"
+intensity = "Bold"

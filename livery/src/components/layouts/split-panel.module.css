@@ -1,0 +1,32 @@
+/* =============================================================
+   App.SplitPanel — Two-panel layout
+   Fixed 340px left rail + fluid right panel, hard 1px seam between.
+   All colors via --ba-* tokens.
+   ============================================================= */
+
+.root {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    height: 100%;
+}
+
+.left {
+    /* The rail itself never scrolls — a child (the theme list) owns its
+       own scroll region so prompt/filter chips stay pinned above it. */
+    overflow: hidden;
+    min-height: 0;
+    border-right: var(--ba-border);
+    padding: var(--ba-size-4) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-1);
+}
+
+.right {
+    overflow-y: auto;
+    padding: var(--ba-size-6) var(--ba-size-7);
+}
+
+.rightFlush {
+    padding: 0;
+}

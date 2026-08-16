@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — Stations ∷ Medical"
+
+[colors]
+foreground = "#2b3b33"
+background = "#e1e7e4"
+cursor_bg = "#66bd10"
+cursor_border = "#66bd10"
+cursor_fg = "#e1e7e4"
+selection_bg = "#c6d1cc"
+selection_fg = "#2b3b33"
+split = "#66bd10"
+compose_cursor = "#f472a0"
+scrollbar_thumb = "#669a84"
+
+ansi = [
+  "#425953", # black
+  "#e06c8c", # dark_red
+  "#357c35", # dark_green
+  "#f2a100", # dark_yellow
+  "#517a65", # dark_blue
+  "#7768cd", # dark_magenta
+  "#3fa569", # dark_cyan
+  "#c6d1cc" # light_gray
+]
+
+brights = [
+  "#476a5f", # gray
+  "#f472a0", # red
+  "#3c8e3c", # green
+  "#66bd10", # yellow
+  "#476a5f", # blue
+  "#998ed9", # magenta
+  "#40bf75", # cyan
+  "#e1e7e4" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#d4dcd8"
+background = "#e1e7e4"
+
+[colors.tab_bar.active_tab]
+fg_color = "#e1e7e4"
+bg_color = "#66bd10"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#e1e7e4"
+bg_color = "#77a494"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#e1e7e4"
+bg_color = "#c6d1cc"
+
+[colors.tab_bar.new_tab]
+fg_color = "#e1e7e4"
+bg_color = "#3c8e3c"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#e1e7e4"
+bg_color = "#c6d1cc"
+intensity = "Bold"

@@ -1,0 +1,69 @@
+---
+name: org-commit
+description: Use when committing theme changes across all Black Atom repositories with intelligent semantic messages. Handles core commit, adapter generation, and coordinated push.
+---
+
+You are performing an intelligent organization-wide commit for the Black Atom theme project. This project has multiple repositories that need to be kept in sync when theme changes are made.
+
+**Your task:**
+
+1. **Analyze the current context** by examining:
+   - Recent conversation context for what changes were made
+   - Git status in core repository to understand the scope of changes
+   - Changes in each adapter repository (if any)
+
+2. **Generate themes for all adapters** (without committing):
+   ```bash
+   deno task adapters:gen
+   ```
+
+3. **Examine each adapter repository** to understand what changed:
+   ```bash
+   deno task adapters:each git status --short
+   ```
+   - Analyze the nature of changes (new files, modifications, etc.)
+
+4. **Analyze and propose commit messages**:
+   - Generate appropriate semantic commit messages based on the actual changes
+   - Propose one message for core repository (reflecting core changes)
+   - Propose one message for all adapter repositories (typically the same message)
+   - Present both messages to user for approval before committing
+   - Examples of good semantic messages:
+     - `feat: add blue theme variants to mnml collection`
+     - `fix(themes/default): correct contrast in light theme`
+     - `refactor(themes/jpn): standardize naming conventions`
+
+5. **Wait for user approval** before proceeding with commits
+
+6. **If approved, commit repositories**:
+   - Commit core repository:
+     ```bash
+     git add -A && git commit -m "your message here"
+     ```
+   - Generate and commit all adapter repositories:
+     ```bash
+     deno task adapters:commit -y -m "your message here"
+     ```
+     (This regenerates themes and commits with the provided message, `-y` skips confirmation)
+
+7. **Push all repositories**:
+   ```bash
+   git push
+   deno task adapters:push
+   ```
+
+**Semantic commit guidelines:**
+
+- `feat:` - New themes, collections, or major features
+- `fix:` - Bug fixes, color corrections, or fixes
+- `refactor:` - Structural changes, architecture improvements
+- `style:` - Formatting, cleanup, minor styling changes
+- `docs:` - Documentation updates
+- `chore:` - Only use for true maintenance tasks
+
+**Expected behavior:**
+
+- Analyze changes intelligently rather than using generic automation
+- Create meaningful, descriptive commit messages for each repository
+- Ensure commits accurately reflect the nature of changes (new features vs fixes vs refactoring)
+- Provide clear feedback on what was committed to each repository and why

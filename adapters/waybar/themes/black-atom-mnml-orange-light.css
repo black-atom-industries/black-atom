@@ -1,0 +1,30 @@
+/* Black Atom — MNML ∷ Orange Light */
+
+/* Background colors */
+@define-color ba-bg-default #f5f9fb;
+@define-color ba-bg-panel #eef3f4;
+@define-color ba-bg-hover #eef3f4;
+@define-color ba-bg-active #fcffff;
+@define-color ba-bg-selection #e8eced;
+@define-color ba-bg-contrast #474e51;
+
+/* Foreground colors */
+@define-color ba-fg-default #242a2c;
+@define-color ba-fg-subtle #585f61;
+@define-color ba-fg-accent #fc8e06;
+@define-color ba-fg-disabled #868e90;
+@define-color ba-fg-contrast #eef3f4;
+
+/* Feedback colors */
+@define-color ba-fg-negative #f14d4c;
+@define-color ba-fg-positive #819e00;
+@define-color ba-fg-warn #cd7b00;
+@define-color ba-fg-info #00a3e9;
+
+/* Palette colors */
+@define-color ba-red #9ea6a9;
+@define-color ba-green #868e90;
+@define-color ba-yellow #fc8e06;
+@define-color ba-blue #9ea6a9;
+@define-color ba-magenta #868e90;
+@define-color ba-cyan #9ea6a9;

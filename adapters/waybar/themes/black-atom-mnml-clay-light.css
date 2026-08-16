@@ -1,0 +1,30 @@
+/* Black Atom — MNML ∷ Clay Light */
+
+/* Background colors */
+@define-color ba-bg-default #f8f2dc;
+@define-color ba-bg-panel #ebe5cf;
+@define-color ba-bg-hover #ebe5cf;
+@define-color ba-bg-active #fff9e2;
+@define-color ba-bg-selection #ddd8c2;
+@define-color ba-bg-contrast #4c473c;
+
+/* Foreground colors */
+@define-color ba-fg-default #322e22;
+@define-color ba-fg-subtle #5d553f;
+@define-color ba-fg-accent #e76b3e;
+@define-color ba-fg-disabled #79715a;
+@define-color ba-fg-contrast #ebe5cf;
+
+/* Feedback colors */
+@define-color ba-fg-negative #f14d4c;
+@define-color ba-fg-positive #819e00;
+@define-color ba-fg-warn #cd7b00;
+@define-color ba-fg-info #00a3e9;
+
+/* Palette colors */
+@define-color ba-red #888069;
+@define-color ba-green #79715a;
+@define-color ba-yellow #79715a;
+@define-color ba-blue #888069;
+@define-color ba-magenta #79715a;
+@define-color ba-cyan #888069;

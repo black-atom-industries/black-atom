@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "<%= theme.meta.label %>"
+
+[colors]
+foreground = "<%= theme.ui.fg.default %>"
+background = "<%= theme.ui.bg.default %>"
+cursor_bg = "<%= theme.ui.fg.accent %>"
+cursor_border = "<%= theme.ui.fg.accent %>"
+cursor_fg = "<%= theme.ui.bg.default %>"
+selection_bg = "<%= theme.ui.bg.selection %>"
+selection_fg = "<%= theme.ui.fg.default %>"
+split = "<%= theme.ui.fg.accent %>"
+compose_cursor = "<%= theme.ui.fg.negative %>"
+scrollbar_thumb = "<%= theme.ui.fg.subtle %>"
+
+ansi = [
+  "<%= theme.palette.black %>", # black
+  "<%= theme.palette.darkRed %>", # dark_red
+  "<%= theme.palette.darkGreen %>", # dark_green
+  "<%= theme.palette.darkYellow %>", # dark_yellow
+  "<%= theme.palette.darkBlue %>", # dark_blue
+  "<%= theme.palette.darkMagenta %>", # dark_magenta
+  "<%= theme.palette.darkCyan %>", # dark_cyan
+  "<%= theme.palette.lightGray %>" # light_gray
+]
+
+brights = [
+  "<%= theme.palette.gray %>", # gray
+  "<%= theme.palette.red %>", # red
+  "<%= theme.palette.green %>", # green
+  "<%= theme.palette.yellow %>", # yellow
+  "<%= theme.palette.blue %>", # blue
+  "<%= theme.palette.magenta %>", # magenta
+  "<%= theme.palette.cyan %>", # cyan
+  "<%= theme.palette.white %>" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "<%= theme.ui.bg.panel %>"
+background = "<%= theme.ui.bg.default %>"
+
+[colors.tab_bar.active_tab]
+fg_color = "<%= theme.ui.fg.contrast %>"
+bg_color = "<%= theme.ui.fg.accent %>"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "<%= theme.ui.fg.contrast %>"
+bg_color = "<%= theme.ui.bg.disabled %>"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "<%= theme.ui.fg.contrast %>"
+bg_color = "<%= theme.ui.bg.hover %>"
+
+[colors.tab_bar.new_tab]
+fg_color = "<%= theme.ui.fg.contrast %>"
+bg_color = "<%= theme.ui.fg.positive %>"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "<%= theme.ui.fg.contrast %>"
+bg_color = "<%= theme.ui.bg.hover %>"
+intensity = "Bold"

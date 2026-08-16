@@ -1,0 +1,13 @@
+/* =============================================================
+   Black Atom — Motion. Austere: quick ease-outs, no bounces,
+   no entrance animations. Progress bars animate width only.
+   ============================================================= */
+
+:root {
+    --ba-duration-1: 80ms; /* hover, press */
+    --ba-duration-2: 150ms; /* state changes, selection */
+    --ba-duration-3: 240ms; /* panel expand/collapse (max) */
+
+    --ba-ease: cubic-bezier(0.2, 0, 0, 1); /* ease-out */
+    --ba-ease-linear: linear; /* progress fills */
+}

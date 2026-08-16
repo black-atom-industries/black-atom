@@ -1,0 +1,9 @@
+.sidebar {
+    width: 120px;
+    flex-shrink: 0;
+    background: var(--ba-ui-bg-panel);
+    display: flex;
+    flex-direction: column;
+    padding: var(--size-2) 0;
+    gap: var(--size-1);
+}

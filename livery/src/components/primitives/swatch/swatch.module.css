@@ -1,0 +1,57 @@
+.root {
+    font-family: var(--ba-font-mono);
+}
+
+.pips {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.pip {
+    width: var(--ba-size-pip-mini);
+    height: var(--ba-size-pip-mini);
+}
+
+.band {
+    display: flex;
+    align-items: center;
+    height: var(--ba-size-band);
+    padding: 0 16px;
+}
+
+.bandLabel {
+    font-size: var(--ba-font-size-0);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-bg-recessed);
+    text-transform: uppercase;
+}
+
+.bandTag {
+    margin-left: 14px;
+    font-size: var(--ba-font-size-00);
+    letter-spacing: 0.1em;
+    color: var(--ba-color-bg-recessed);
+    border: 1px solid currentcolor;
+    padding: 1px 6px;
+    opacity: 0.75;
+}
+
+.bandHex {
+    margin-left: auto;
+    font-size: var(--ba-font-size-1);
+    color: var(--ba-color-bg-recessed);
+}
+
+.cell {
+    flex: 1;
+}
+
+.cellSwatch {
+    height: var(--ba-size-swatch);
+}
+
+.cellHex {
+    font-size: var(--ba-font-size-00);
+    color: var(--ba-color-fg-hint);
+    padding-top: 3px;
+}

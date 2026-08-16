@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+deno run -A "$PROJECT_ROOT/.githooks/checks-frontend.ts"
+deno run -A "$PROJECT_ROOT/.githooks/checks-backend.ts"

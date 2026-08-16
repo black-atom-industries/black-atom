@@ -1,0 +1,21 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ba-font-mono);
+    text-transform: uppercase;
+    white-space: nowrap;
+    border: var(--ba-border-strong);
+    color: var(--ba-color-fg-subtle);
+    font-size: var(--ba-font-size-0);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    padding: 3px 8px;
+}
+
+.sizeMini {
+    border-color: var(--ba-color-border-default);
+    color: var(--ba-color-fg-hint);
+    font-size: var(--ba-font-size-00);
+    letter-spacing: 0.04em;
+    padding: 1px 4px;
+}

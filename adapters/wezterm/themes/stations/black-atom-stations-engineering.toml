@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — Stations ∷ Engineering"
+
+[colors]
+foreground = "#d5f4e3"
+background = "#0d1818"
+cursor_bg = "#c6de68"
+cursor_border = "#c6de68"
+cursor_fg = "#0d1818"
+selection_bg = "#2a3535"
+selection_fg = "#d5f4e3"
+split = "#c6de68"
+compose_cursor = "#f08cb4"
+scrollbar_thumb = "#91bcad"
+
+ansi = [
+  "#2a3535", # black
+  "#eb7aa8", # dark_red
+  "#64c06a", # dark_green
+  "#e9b64b", # dark_yellow
+  "#91bcad", # dark_blue
+  "#999fdb", # dark_magenta
+  "#63bd89", # dark_cyan
+  "#b2e5cd" # light_gray
+]
+
+brights = [
+  "#51796d", # gray
+  "#f08cb4", # red
+  "#7fcd81", # green
+  "#c6de68", # yellow
+  "#c3eed9", # blue
+  "#a5a9e5", # magenta
+  "#81d6a5", # cyan
+  "#d5f4e3" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#030b0b"
+background = "#0d1818"
+
+[colors.tab_bar.active_tab]
+fg_color = "#0d1818"
+bg_color = "#c6de68"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#0d1818"
+bg_color = "#51796d"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#0d1818"
+bg_color = "#1c2626"
+
+[colors.tab_bar.new_tab]
+fg_color = "#0d1818"
+bg_color = "#7fcd81"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#0d1818"
+bg_color = "#1c2626"
+intensity = "Bold"

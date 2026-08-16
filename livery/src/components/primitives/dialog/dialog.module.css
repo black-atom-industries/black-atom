@@ -1,0 +1,65 @@
+/* =============================================================
+   Dialog — Modal surface
+   Spec: docs/design-system/reference/components/containers/Dialog.jsx
+   Strong border, subtle surface, no blur/shadow. Backdrop is a flat
+   scrim consistent with the no-transparency-effects rule (opaque dim,
+   not a blur).
+   ============================================================= */
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: var(--ba-color-bg-default);
+    opacity: 0.7;
+}
+
+.root {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--ba-color-bg-subtle);
+    border: var(--ba-border-strong);
+    font-family: var(--ba-font-mono);
+    display: flex;
+    flex-direction: column;
+    min-width: 420px;
+    max-width: min(640px, calc(100vw - var(--ba-size-8)));
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--ba-size-3) var(--ba-size-5);
+    border-bottom: var(--ba-border);
+}
+
+.title {
+    margin: 0;
+    font-size: var(--ba-font-size-1);
+    letter-spacing: 0.16em;
+    font-weight: var(--ba-font-weight-bold);
+    text-transform: uppercase;
+}
+
+.hint {
+    font-size: var(--ba-font-size-0);
+    color: var(--ba-color-fg-hint);
+    letter-spacing: 0.1em;
+}
+
+.body {
+    padding: var(--ba-size-5);
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--ba-size-3) var(--ba-size-5);
+    border-top: var(--ba-border);
+    font-size: var(--ba-font-size-0);
+    color: var(--ba-color-fg-hint);
+    letter-spacing: 0.1em;
+}

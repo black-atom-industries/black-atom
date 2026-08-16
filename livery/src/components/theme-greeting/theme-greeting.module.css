@@ -1,0 +1,49 @@
+/* =============================================================
+   ThemeGreeting — first-launch download prompt.
+   Datasheet voice: eyebrow, display headline, body, keyed actions,
+   apply-rail-style per-adapter rows once a download pass starts.
+   ============================================================= */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-3);
+    max-width: 52ch;
+    padding: var(--ba-size-8) var(--ba-size-6);
+}
+
+.eyebrow {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-00);
+    letter-spacing: var(--ba-font-letterspacing-wide);
+    color: var(--ba-color-fg-subtle);
+}
+
+.headline {
+    font-family: var(--ba-font-display);
+    font-size: var(--ba-font-size-6);
+    font-weight: var(--ba-font-weight-bold);
+    line-height: var(--ba-font-lineheight-tight);
+    /* fg-default, NOT fg-contrast — contrast is the inverted-surface fg
+       (near-black in dark mode) and renders invisible on the base surface. */
+    color: var(--ba-color-fg-default);
+}
+
+.body {
+    font-family: var(--ba-font-body);
+    font-size: var(--ba-font-size-1);
+    line-height: var(--ba-font-lineheight-body);
+    color: var(--ba-color-fg-hint);
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--ba-size-2);
+}
+
+.actions {
+    display: flex;
+    gap: var(--ba-size-3);
+    padding-top: var(--ba-size-2);
+}

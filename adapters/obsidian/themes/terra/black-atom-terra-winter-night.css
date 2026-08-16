@@ -1,0 +1,131 @@
+/* Black Atom — TERRA ∷ Winter Night */
+.theme-dark.black-atom-terra-winter-night {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #0b0d12;
+  --color-base-05: #12161d;
+  --color-base-10: #1a222e;
+  --color-base-20: #212f3f;
+  --color-base-25: #3f556b;
+  --color-base-30: #4c667f;
+  --color-base-35: #5e748b;
+  --color-base-40: #6f8298;
+  --color-base-50: #c0ccdb;
+  --color-base-60: #d3dbe8;
+  --color-base-70: #e2e8f2;
+  --color-base-100: #eef2f9;
+
+  /* Extended Colors */
+  --color-red: #a8a6e5;
+  --color-red-rgb: 168, 166, 229;
+  --color-orange: #eb8656;
+  --color-orange-rgb: 235, 134, 86;
+  --color-yellow: #fba952;
+  --color-yellow-rgb: 251, 169, 82;
+  --color-green: #82c3d3;
+  --color-green-rgb: 130, 195, 211;
+  --color-cyan: #71cfd9;
+  --color-cyan-rgb: 113, 207, 217;
+  --color-blue: #7fb6ee;
+  --color-blue-rgb: 127, 182, 238;
+  --color-purple: #b4a7df;
+  --color-purple-rgb: 180, 167, 223;
+  --color-pink: #9f8fbe;
+  --color-pink-rgb: 159, 143, 190;
+
+  /* Backgrounds */
+  --background-primary: #12161d;
+  --background-primary-alt: #1a222e;
+  --background-secondary: #0b0d12;
+  --background-secondary-alt: #0b0d12;
+  --background-modifier-hover: #1a222e;
+  --background-modifier-active-hover: #1a222e;
+  --background-modifier-border: #1a222e;
+  --background-modifier-border-hover: #1a222e;
+  --background-modifier-border-focus: #fba952;
+  --background-modifier-error-rgb: 42, 47, 63;
+  --background-modifier-error: #2a2f3f;
+  --background-modifier-error-hover: #2a2f3f;
+  --background-modifier-success-rgb: 41, 50, 62;
+  --background-modifier-success: #29323e;
+  --background-modifier-message: #273041;
+  --background-modifier-form-field: #12161d;
+
+  /* Text */
+  --text-normal: #e2e8f2;
+  --text-muted: #6f8298;
+  --text-faint: #5e748b;
+  --text-accent: #fba952;
+  --text-accent-hover: #fba952;
+  --text-on-accent: #12161d;
+  --text-on-accent-inverted: #e2e8f2;
+  --text-error: #a8a6e5;
+  --text-warning: #fba952;
+  --text-success: #82c3d3;
+  --text-selection: #212f3f;
+  --text-highlight-bg: #212f3f;
+
+  /* Interactive */
+  --interactive-normal: #12161d;
+  --interactive-hover: #1a222e;
+  --interactive-accent: #fba952;
+  --interactive-accent-hover: #fba952;
+
+  /* Headings */
+  --h1-color: #fba952;
+  --h2-color: #fba952;
+  --h3-color: #fba952;
+  --h4-color: #c0ccdb;
+  --h5-color: #c0ccdb;
+  --h6-color: #c0ccdb;
+
+  /* Markup */
+  --bold-color: #fba952;
+  --italic-color: #fba952;
+  --blockquote-border-color: #82c3d3;
+  --link-color: #82c3d3;
+  --link-color-hover: #82c3d3;
+  --link-external-color: #82c3d3;
+  --link-external-color-hover: #82c3d3;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #7fb6ee;
+  --code-comment: #3f556b;
+  --code-function: #fba952;
+  --code-important: #b4a7df;
+  --code-keyword: #b4a7df;
+  --code-operator: #b4a7df;
+  --code-property: #729bcf;
+  --code-punctuation: #c0ccdb;
+  --code-string: #82c3d3;
+  --code-tag: #fba952;
+  --code-value: #eb8656;
+  --code-background: #1a222e;
+
+  /* Tags */
+  --tag-color: #fba952;
+  --tag-color-hover: #fba952;
+  --tag-background: #1a222e;
+  --tag-background-hover: #1a222e;
+
+  /* Graph */
+  --graph-line: #1a222e;
+  --graph-node: #fba952;
+  --graph-node-focused: #fba952;
+  --graph-node-tag: #71cfd9;
+  --graph-node-attachment: #82c3d3;
+
+  /* Scrollbar */
+  --scrollbar-bg: #12161d;
+  --scrollbar-thumb-bg: #1a222e;
+  --scrollbar-active-thumb-bg: #6f8298;
+
+  /* Nav */
+  --nav-item-background-hover: #1a222e;
+  --nav-item-background-active: #1a222e;
+  --nav-item-background-selected: #212f3f;
+  --nav-item-color: #e2e8f2;
+  --nav-item-color-hover: #e2e8f2;
+  --nav-item-color-active: #fba952;
+  --nav-item-color-selected: #e2e8f2;
+}

@@ -1,0 +1,41 @@
+/* =============================================================
+   _app/route — App chrome layout
+   Header, main content, progress bar, footer — all separated
+   by 1px borders. Rendered inside App.Shell from __root.
+   ============================================================= */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.header {
+    flex-shrink: 0;
+    padding: var(--ba-size-4) var(--ba-size-6);
+    border-bottom: var(--ba-border-subtle);
+}
+
+.main {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Apply Rail slot — permanently docked, hard 1px left seam. */
+.rail {
+    flex-shrink: 0;
+    width: 280px;
+    border-left: var(--ba-border-subtle);
+}
+
+.footer {
+    flex-shrink: 0;
+    padding: var(--ba-size-2) var(--ba-size-6);
+    border-top: var(--ba-border-subtle);
+}

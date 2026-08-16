@@ -1,0 +1,22 @@
+/* =============================================================
+   Black Atom — Borders. 0px radius is the rule.
+   Sole exception: the brand dot (--ba-radius-dot).
+   No shadows anywhere; depth is tonal layering only.
+   ============================================================= */
+
+:root {
+    --ba-border-width: 1px;
+    --ba-border: var(--ba-border-width) solid var(--ba-color-border-default);
+    --ba-border-subtle: var(--ba-border-width) solid var(--ba-color-border-subtle);
+    --ba-border-strong: var(--ba-border-width) solid var(--ba-color-border-strong);
+
+    --ba-radius: 0;
+    --ba-radius-dot: 50%; /* brand dot ONLY */
+
+    /* Focus ring: 1px positive outline, 2px offset */
+    --ba-focus-outline: 1px solid var(--ba-color-focus);
+    --ba-focus-offset: 2px;
+
+    /* Selection edge: 2px positive left border */
+    --ba-selection-edge: 2px solid var(--ba-color-focus);
+}

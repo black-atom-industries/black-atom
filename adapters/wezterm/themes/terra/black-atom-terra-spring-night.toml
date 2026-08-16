@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — TERRA ∷ Spring Night"
+
+[colors]
+foreground = "#d6d0c2"
+background = "#212523"
+cursor_bg = "#d1a762"
+cursor_border = "#d1a762"
+cursor_fg = "#212523"
+selection_bg = "#313634"
+selection_fg = "#d6d0c2"
+split = "#d1a762"
+compose_cursor = "#ba6e5f"
+scrollbar_thumb = "#82978c"
+
+ansi = [
+  "#313634", # black
+  "#b95847", # dark_red
+  "#73b268", # dark_green
+  "#e89a61", # dark_yellow
+  "#899ddc", # dark_blue
+  "#d5a9c3", # dark_magenta
+  "#679980", # dark_cyan
+  "#b8aa94" # light_gray
+]
+
+brights = [
+  "#394740", # gray
+  "#ba6e5f", # red
+  "#92d49a", # green
+  "#d1a762", # yellow
+  "#99b9e6", # blue
+  "#c6b3da", # magenta
+  "#85ad9f", # cyan
+  "#d6d0c2" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#1d201f"
+background = "#212523"
+
+[colors.tab_bar.active_tab]
+fg_color = "#212523"
+bg_color = "#d1a762"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#212523"
+bg_color = "#394740"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#212523"
+bg_color = "#272c2a"
+
+[colors.tab_bar.new_tab]
+fg_color = "#212523"
+bg_color = "#92d49a"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#212523"
+bg_color = "#272c2a"
+intensity = "Bold"

@@ -1,0 +1,85 @@
+name: "Black Atom :: Variants"
+id: black-atom-variants
+settings:
+  - id: dark-theme-variant
+    title: Dark Theme Variant
+    description: Choose your Black Atom variant for dark mode
+    type: class-select
+    allowEmpty: false
+    default: black-atom-default-dark
+    options:
+      - label: "Default: Dark"
+        value: black-atom-default-dark
+      - label: "Default: Dark Dimmed"
+        value: black-atom-default-dark-dimmed
+      - label: "Stations: Engineering"
+        value: black-atom-stations-engineering
+      - label: "Stations: Operations"
+        value: black-atom-stations-operations
+      - label: "JPN: Koyo Yoru"
+        value: black-atom-jpn-koyo-yoru
+      - label: "JPN: Tsuki Yoru"
+        value: black-atom-jpn-tsuki-yoru
+      - label: "JPN: Murasaki Yoru"
+        value: black-atom-jpn-murasaki-yoru
+      - label: "Terra: Spring Night"
+        value: black-atom-terra-spring-night
+      - label: "Terra: Summer Night"
+        value: black-atom-terra-summer-night
+      - label: "Terra: Fall Night"
+        value: black-atom-terra-fall-night
+      - label: "Terra: Winter Night"
+        value: black-atom-terra-winter-night
+      - label: "MNML: Clay Dark"
+        value: black-atom-mnml-clay-dark
+      - label: "MNML: Orange Dark"
+        value: black-atom-mnml-orange-dark
+      - label: "MNML: Mikado Dark"
+        value: black-atom-mnml-mikado-dark
+      - label: "MNML: 47 Dark"
+        value: black-atom-mnml-47-dark
+      - label: "MNML: E-Ink Dark"
+        value: black-atom-mnml-eink-dark
+      - label: "MNML: Mono Dark"
+        value: black-atom-mnml-mono-dark
+  - id: light-theme-variant
+    title: Light Theme Variant
+    description: Choose your Black Atom variant for light mode
+    type: class-select
+    allowEmpty: false
+    default: black-atom-default-light
+    options:
+      - label: "Default: Light"
+        value: black-atom-default-light
+      - label: "Default: Light Dimmed"
+        value: black-atom-default-light-dimmed
+      - label: "Stations: Medical"
+        value: black-atom-stations-medical
+      - label: "Stations: Research"
+        value: black-atom-stations-research
+      - label: "JPN: Koyo Hiru"
+        value: black-atom-jpn-koyo-hiru
+      - label: "Terra: Spring Day"
+        value: black-atom-terra-spring-day
+      - label: "Terra: Summer Day"
+        value: black-atom-terra-summer-day
+      - label: "Terra: Fall Day"
+        value: black-atom-terra-fall-day
+      - label: "Terra: Winter Day"
+        value: black-atom-terra-winter-day
+      - label: "MNML: Clay Light"
+        value: black-atom-mnml-clay-light
+      - label: "MNML: Orange Light"
+        value: black-atom-mnml-orange-light
+      - label: "MNML: Osman Light"
+        value: black-atom-mnml-osman-light
+      - label: "MNML: Mikado Light"
+        value: black-atom-mnml-mikado-light
+      - label: "MNML: 47 Light"
+        value: black-atom-mnml-47-light
+      - label: "MNML: E-Ink Light"
+        value: black-atom-mnml-eink-light
+      - label: "MNML: Mono Light"
+        value: black-atom-mnml-mono-light
+      - label: "MNML: ITA Light"
+        value: black-atom-mnml-ita-light

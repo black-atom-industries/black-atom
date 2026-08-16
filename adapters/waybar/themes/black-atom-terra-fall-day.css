@@ -1,0 +1,30 @@
+/* Black Atom — TERRA ∷ Fall Day */
+
+/* Background colors */
+@define-color ba-bg-default #f8ddc7;
+@define-color ba-bg-panel #eeceb6;
+@define-color ba-bg-hover #e3bfa4;
+@define-color ba-bg-active #e3bfa4;
+@define-color ba-bg-selection #ffe6d2;
+@define-color ba-bg-contrast #422617;
+
+/* Foreground colors */
+@define-color ba-fg-default #422617;
+@define-color ba-fg-subtle #815137;
+@define-color ba-fg-accent #d9710b;
+@define-color ba-fg-disabled #9b6a4f;
+@define-color ba-fg-contrast #f8ddc7;
+
+/* Feedback colors */
+@define-color ba-fg-negative #bf4d3f;
+@define-color ba-fg-positive #6d7e57;
+@define-color ba-fg-warn #d9710b;
+@define-color ba-fg-info #956d57;
+
+/* Palette colors */
+@define-color ba-red #bf4d3f;
+@define-color ba-green #6d7e57;
+@define-color ba-yellow #d9710b;
+@define-color ba-blue #956d57;
+@define-color ba-magenta #a26650;
+@define-color ba-cyan #4f8375;

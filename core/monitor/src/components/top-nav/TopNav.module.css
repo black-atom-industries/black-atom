@@ -1,0 +1,64 @@
+.root {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--size-2) var(--size-3);
+    gap: var(--size-3);
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: var(--size-4);
+}
+
+.brand {
+    font-size: var(--font-size-0);
+    font-weight: var(--font-weight-7);
+    letter-spacing: var(--font-letterspacing-3);
+    color: var(--ba-ui-fg-accent);
+    white-space: nowrap;
+}
+
+.brandSub {
+    color: var(--ba-ui-fg-subtle);
+    font-weight: var(--font-weight-4);
+}
+
+.nav {
+    display: flex;
+}
+
+.navList {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: var(--size-1);
+}
+
+.navLink {
+    padding: var(--size-1) var(--size-2);
+    border-radius: var(--radius-2);
+    color: var(--ba-ui-fg-subtle);
+    font-size: var(--font-size-0);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+
+.navLink:hover {
+    background: var(--ba-ui-bg-hover);
+    color: var(--ba-ui-fg-default);
+}
+
+.navLink[data-active] {
+    background: var(--ba-ui-bg-active);
+    color: var(--ba-ui-fg-accent);
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: var(--size-2);
+}

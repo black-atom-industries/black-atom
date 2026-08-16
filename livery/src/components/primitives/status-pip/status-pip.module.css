@@ -1,0 +1,64 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-0);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.pip {
+    width: var(--ba-size-pip);
+    height: var(--ba-size-pip);
+    box-sizing: border-box;
+}
+
+.intentOk {
+    color: var(--ba-color-fg-positive);
+}
+
+.intentOk .pip {
+    background: var(--ba-color-fg-positive);
+}
+
+.intentRunning {
+    color: var(--ba-color-fg-default);
+}
+
+.intentRunning .pip {
+    background: var(--ba-color-fg-default);
+}
+
+.intentPending {
+    color: var(--ba-color-fg-disabled);
+}
+
+.intentPending .pip {
+    border: var(--ba-border);
+}
+
+.intentWarn {
+    color: var(--ba-color-fg-warn);
+}
+
+.intentWarn .pip {
+    background: var(--ba-color-fg-warn);
+}
+
+.intentError {
+    color: var(--ba-color-fg-negative);
+}
+
+.intentError .pip {
+    background: var(--ba-color-fg-negative);
+}
+
+.intentOff {
+    color: var(--ba-color-fg-disabled);
+}
+
+.intentOff .pip {
+    background: var(--ba-color-border-default);
+}

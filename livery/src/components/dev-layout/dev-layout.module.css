@@ -1,0 +1,34 @@
+.root {
+    --nav-width: 20ch;
+    --aside-width: 30ch;
+
+    display: grid;
+    grid-template-columns: var(--nav-width) 1fr var(--aside-width);
+    min-height: 100%;
+    font-family: var(--ba-font-mono);
+    background-color: var(--ba-color-bg-default);
+    color: var(--ba-color-fg-default);
+}
+
+.nav,
+.aside {
+    background-color: var(--ba-color-bg-subtle);
+    color: var(--ba-color-fg-default);
+
+    display: flex;
+    flex-direction: column;
+    padding: var(--ba-size-2);
+    overflow: auto;
+}
+
+.nav {
+    border-right: var(--ba-border);
+}
+
+.main {
+    padding: var(--ba-size-4);
+}
+
+.aside {
+    border-left: var(--ba-border);
+}

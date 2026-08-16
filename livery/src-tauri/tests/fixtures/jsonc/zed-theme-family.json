@@ -1,0 +1,19 @@
+{
+    "$schema": "https://zed.dev/schema/themes/v0.2.0.json",
+    "name": "Black Atom — JPN",
+    "author": "Black Atom Industries",
+    "themes": [
+        {
+            "name": "Black Atom — JPN ∷ Tsuki Yoru",
+            "appearance": "dark",
+            "style": {
+                "background": "#1D1A17",
+                "editor.background": "#1D1A17",
+                "syntax": {
+                    "comment": { "color": "#857D6E" },
+                    "keyword": { "color": "#96A9C6" }
+                }
+            }
+        }
+    ]
+}

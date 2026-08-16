@@ -1,0 +1,48 @@
+.root {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--ba-size-1) var(--ba-size-4);
+}
+
+.label {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-00);
+    color: var(--ba-color-fg-subtle);
+}
+
+.counter {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-00);
+    color: var(--ba-color-fg-disabled);
+    font-variant-numeric: tabular-nums;
+}
+
+.track {
+    grid-column: 1 / -1;
+    height: var(--ba-size-bar);
+    overflow: hidden;
+    background-color: var(--ba-color-bg-hint);
+}
+
+.indicator {
+    display: block;
+    height: 100%;
+    transition: width var(--ba-duration-2) var(--ba-ease-linear);
+}
+
+.indicatorIdle {
+    background-color: var(--ba-color-bg-disabled);
+}
+
+.indicatorRunning {
+    background-color: var(--ba-color-fg-warn);
+}
+
+.indicatorDone {
+    background-color: var(--ba-color-fg-positive);
+}
+
+.indicatorError {
+    background-color: var(--ba-color-fg-negative);
+}

@@ -1,0 +1,30 @@
+/* Black Atom — MNML ∷ Mono Dark */
+
+/* Background colors */
+@define-color ba-bg-default #0f0d0b;
+@define-color ba-bg-panel #070504;
+@define-color ba-bg-hover #1c1a18;
+@define-color ba-bg-active #1c1a18;
+@define-color ba-bg-selection #2b2826;
+@define-color ba-bg-contrast #c6c3c1;
+
+/* Foreground colors */
+@define-color ba-fg-default #edeae8;
+@define-color ba-fg-subtle #82807d;
+@define-color ba-fg-accent #e4e4e4;
+@define-color ba-fg-disabled #656360;
+@define-color ba-fg-contrast #0f0d0b;
+
+/* Feedback colors */
+@define-color ba-fg-negative #dd7577;
+@define-color ba-fg-positive #a9ba78;
+@define-color ba-fg-warn #d6b174;
+@define-color ba-fg-info #79b5cc;
+
+/* Palette colors */
+@define-color ba-red #a09e9b;
+@define-color ba-green #82807d;
+@define-color ba-yellow #82807d;
+@define-color ba-blue #a09e9b;
+@define-color ba-magenta #82807d;
+@define-color ba-cyan #a09e9b;

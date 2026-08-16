@@ -1,0 +1,70 @@
+import type { ThemeAccentColors, ThemeDefinition, ThemePrimaryColors } from "../../types/theme.ts";
+import { themeKeyMetaMap } from "../../types/themes.ts";
+import { oklch } from "../../utils/color.ts";
+
+import createFeedback from "./create-feedback-dark.ts";
+import createPalette from "./create-palette-dark.ts";
+import createSyntax from "./create-syntax-dark.ts";
+import createUi from "./create-ui-dark.ts";
+
+const meta = themeKeyMetaMap["black-atom-stations-operations"];
+
+const primaries: ThemePrimaryColors = {
+    d10: oklch(0.247, 0.014, 196.27),
+    d20: oklch(0.295, 0.021, 181.1),
+    d30: oklch(0.338, 0.027, 173.11),
+    d40: oklch(0.401, 0.033, 172.67),
+
+    m10: oklch(0.543, 0.049, 173.68),
+    m20: oklch(0.59, 0.062, 162),
+    m30: oklch(0.679, 0.059, 166.44),
+    m40: oklch(0.76, 0.051, 171.53),
+
+    l10: oklch(0.847, 0.081, 163.39),
+    l20: oklch(0.879, 0.073, 163.55),
+    l30: oklch(0.913, 0.059, 160.2),
+    l40: oklch(0.938, 0.052, 158.88),
+};
+
+const palette = createPalette(primaries, {
+    darkRed: oklch(0.72, 0.147, 355.7),
+    red: oklch(0.757, 0.129, 355.17),
+
+    darkGreen: oklch(0.71, 0.157, 143.69),
+    green: oklch(0.769, 0.126, 144.23),
+
+    darkYellow: oklch(0.804, 0.115, 76.67),
+    yellow: oklch(0.842, 0.142, 124.48),
+
+    darkBlue: primaries.m40,
+    blue: primaries.l20,
+
+    darkMagenta: oklch(0.763, 0.071, 271.99),
+    magenta: oklch(0.806, 0.049, 274.83),
+
+    darkCyan: oklch(0.728, 0.129, 155.8),
+    cyan: oklch(0.802, 0.123, 156.83),
+});
+
+const accents: ThemeAccentColors = {
+    a10: palette.yellow,
+    a20: palette.darkYellow,
+};
+
+const feedback = createFeedback(palette);
+const options = { primaries, palette, feedback, accents };
+
+const ui = createUi(options);
+const syntax = createSyntax(options);
+
+const theme: ThemeDefinition = {
+    meta,
+    primaries,
+    palette,
+    accents,
+    feedback,
+    ui,
+    syntax,
+};
+
+export default theme;

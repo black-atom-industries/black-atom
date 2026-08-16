@@ -1,0 +1,7 @@
+onboarding = false
+broken = [not-valid
+
+# BEGIN BLACK ATOM LIVERY THEME
+[theme]
+name = "terminal"
+# END BLACK ATOM LIVERY THEME

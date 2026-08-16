@@ -1,0 +1,29 @@
+# Black Atom — Dark
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#afdca9"
+      - bold
+    inactiveBorderColor:
+      - "#73838e"
+    optionsTextColor:
+      - "#5c6b76"
+    selectedLineBgColor:
+      - "#232a2a"
+    cherryPickedCommitBgColor:
+      - "#1a2121"
+    cherryPickedCommitFgColor:
+      - "#afdca9"
+    unstagedChangesColor:
+      - "#e97292"
+    defaultFgColor:
+      - "#c9dae7"
+    searchingActiveBorderColor:
+      - "#73838e"
+
+  authorColors:
+    "*": "#8fbc8a"

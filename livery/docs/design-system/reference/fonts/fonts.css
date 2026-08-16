@@ -1,0 +1,6 @@
+/* Black Atom — webfonts.
+   CDN-loaded. For offline/Tauri bundling, vendor woff2 files and
+   replace these imports with local @font-face rules. */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;1,400&display=swap");
+@import url("https://cdn.jsdelivr.net/fontsource/css/iosevka@latest/index.css");
+@import url("https://cdn.jsdelivr.net/fontsource/css/iosevka@latest/700.css");

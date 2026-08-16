@@ -1,0 +1,19 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-1);
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-1);
+}
+
+.group + .group {
+    margin-top: var(--ba-size-3);
+}
+
+.sectionHeader {
+    padding: 0 var(--ba-size-5) var(--ba-size-2);
+}

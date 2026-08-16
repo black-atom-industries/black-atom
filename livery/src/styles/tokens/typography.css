@@ -1,0 +1,43 @@
+/* =============================================================
+   Black Atom — Typography tokens
+   Three voices: display (Space Grotesk), mono/UI (Iosevka,
+   the DEFAULT interface voice), body (IBM Plex Sans, prose only).
+   ============================================================= */
+
+:root {
+    --ba-font-display: "Space Grotesk", sans-serif;
+    --ba-font-mono: "Iosevka", monospace;
+    --ba-font-body: "IBM Plex Sans", sans-serif;
+
+    /* Sizes */
+    --ba-font-size-00: 0.5625rem; /* 9px  — swatch hex labels */
+    --ba-font-size-0: 0.625rem; /* 10px — section labels, chips */
+    --ba-font-size-1: 0.6875rem; /* 11px — KV rows, footer hints */
+    --ba-font-size-2: 0.75rem; /* 12px — code, dense UI */
+    --ba-font-size-3: 0.8125rem; /* 13px — list rows, inputs */
+    --ba-font-size-4: 0.875rem; /* 14px — body prose */
+    --ba-font-size-5: 1.125rem; /* 18px — card titles */
+    --ba-font-size-6: 1.75rem; /* 28px — page titles */
+    --ba-font-size-7: 2.625rem; /* 42px — datasheet names */
+    --ba-font-size-8: 4rem; /* 64px — specimen display */
+
+    /* Weights */
+    --ba-font-weight-regular: 400;
+    --ba-font-weight-medium: 500;
+    --ba-font-weight-bold: 700;
+
+    /* Line heights */
+    --ba-font-lineheight-tight: 1; /* display */
+    --ba-font-lineheight-ui: 1.4; /* mono UI */
+    --ba-font-lineheight-body: 1.7; /* prose */
+    --ba-font-lineheight-code: 1.75; /* code previews */
+
+    /* Letterspacing */
+    --ba-font-letterspacing-display: -0.01em; /* display, tight */
+    --ba-font-letterspacing-label: 0.14em; /* uppercase section labels */
+    --ba-font-letterspacing-wide: 0.18em; /* eyebrows, doc codes */
+    --ba-font-letterspacing-chip: 0.08em; /* chips, buttons */
+
+    /* Measure */
+    --ba-measure-body: 65ch;
+}

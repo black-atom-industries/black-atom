@@ -1,0 +1,24 @@
+.panel {
+    flex: 1;
+    background: var(--ba-ui-bg-default);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.header {
+    padding: var(--size-2) var(--size-2);
+    font-size: var(--font-size-0);
+    font-weight: var(--font-weight-6);
+    color: var(--ba-ui-fg-default);
+    background: var(--ba-ui-bg-float);
+    border-bottom: var(--border-size-1) solid var(--ba-ui-bg-panel);
+}
+
+.content {
+    flex: 1;
+    padding: var(--size-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-2);
+}

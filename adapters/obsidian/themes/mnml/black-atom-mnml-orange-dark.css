@@ -1,0 +1,131 @@
+/* Black Atom — MNML ∷ Orange Dark */
+.theme-dark.black-atom-mnml-orange-dark {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #161c1e;
+  --color-base-05: #242a2c;
+  --color-base-10: #2d3436;
+  --color-base-20: #383e41;
+  --color-base-25: #585f61;
+  --color-base-30: #747c7e;
+  --color-base-35: #868e90;
+  --color-base-40: #9ea6a9;
+  --color-base-50: #bdc6c9;
+  --color-base-60: #cad3d5;
+  --color-base-70: #d7e0e3;
+  --color-base-100: #e4edf0;
+
+  /* Extended Colors */
+  --color-red: #9ea6a9;
+  --color-red-rgb: 158, 166, 169;
+  --color-orange: #ff8933;
+  --color-orange-rgb: 255, 137, 51;
+  --color-yellow: #ff9820;
+  --color-yellow-rgb: 255, 152, 32;
+  --color-green: #868e90;
+  --color-green-rgb: 134, 142, 144;
+  --color-cyan: #9ea6a9;
+  --color-cyan-rgb: 158, 166, 169;
+  --color-blue: #9ea6a9;
+  --color-blue-rgb: 158, 166, 169;
+  --color-purple: #868e90;
+  --color-purple-rgb: 134, 142, 144;
+  --color-pink: #868e90;
+  --color-pink-rgb: 134, 142, 144;
+
+  /* Backgrounds */
+  --background-primary: #242a2c;
+  --background-primary-alt: #2d3436;
+  --background-secondary: #161c1e;
+  --background-secondary-alt: #161c1e;
+  --background-modifier-hover: #2d3436;
+  --background-modifier-active-hover: #2d3436;
+  --background-modifier-border: #2d3436;
+  --background-modifier-border-hover: #2d3436;
+  --background-modifier-border-focus: #ff9820;
+  --background-modifier-error-rgb: 23, 67, 56;
+  --background-modifier-error: #174338;
+  --background-modifier-error-hover: #174338;
+  --background-modifier-success-rgb: 19, 60, 63;
+  --background-modifier-success: #133c3f;
+  --background-modifier-message: #193947;
+  --background-modifier-form-field: #242a2c;
+
+  /* Text */
+  --text-normal: #d7e0e3;
+  --text-muted: #868e90;
+  --text-faint: #747c7e;
+  --text-accent: #ff9820;
+  --text-accent-hover: #ff9820;
+  --text-on-accent: #242a2c;
+  --text-on-accent-inverted: #d7e0e3;
+  --text-error: #ff7a46;
+  --text-warning: #ff9820;
+  --text-success: #3aa85b;
+  --text-selection: #383e41;
+  --text-highlight-bg: #383e41;
+
+  /* Interactive */
+  --interactive-normal: #242a2c;
+  --interactive-hover: #2d3436;
+  --interactive-accent: #ff9820;
+  --interactive-accent-hover: #ff9820;
+
+  /* Headings */
+  --h1-color: #ff9820;
+  --h2-color: #ff9820;
+  --h3-color: #ff9820;
+  --h4-color: #9ea6a9;
+  --h5-color: #9ea6a9;
+  --h6-color: #9ea6a9;
+
+  /* Markup */
+  --bold-color: #ff9820;
+  --italic-color: #ff9820;
+  --blockquote-border-color: #747c7e;
+  --link-color: #ff8933;
+  --link-color-hover: #ff8933;
+  --link-external-color: #ff8933;
+  --link-external-color-hover: #ff8933;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #cad3d5;
+  --code-comment: #868e90;
+  --code-function: #ff9820;
+  --code-important: #ff8933;
+  --code-keyword: #ff8933;
+  --code-operator: #d7e0e3;
+  --code-property: #ff8933;
+  --code-punctuation: #bdc6c9;
+  --code-string: #cad3d5;
+  --code-tag: #ff9820;
+  --code-value: #bdc6c9;
+  --code-background: #161c1e;
+
+  /* Tags */
+  --tag-color: #ff9820;
+  --tag-color-hover: #ff9820;
+  --tag-background: #2d3436;
+  --tag-background-hover: #2d3436;
+
+  /* Graph */
+  --graph-line: #2d3436;
+  --graph-node: #ff9820;
+  --graph-node-focused: #ff9820;
+  --graph-node-tag: #9ea6a9;
+  --graph-node-attachment: #868e90;
+
+  /* Scrollbar */
+  --scrollbar-bg: #242a2c;
+  --scrollbar-thumb-bg: #2d3436;
+  --scrollbar-active-thumb-bg: #868e90;
+
+  /* Nav */
+  --nav-item-background-hover: #2d3436;
+  --nav-item-background-active: #2d3436;
+  --nav-item-background-selected: #383e41;
+  --nav-item-color: #d7e0e3;
+  --nav-item-color-hover: #d7e0e3;
+  --nav-item-color-active: #ff9820;
+  --nav-item-color-selected: #d7e0e3;
+}

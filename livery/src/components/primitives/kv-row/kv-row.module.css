@@ -1,0 +1,31 @@
+.root {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ba-size-4);
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-1);
+}
+
+.label {
+    color: var(--ba-color-fg-hint);
+    letter-spacing: var(--ba-font-letterspacing-chip);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.value {
+    text-align: right;
+    color: var(--ba-color-fg-subtle);
+}
+
+.intentPositive {
+    color: var(--ba-color-fg-positive);
+}
+
+.intentWarn {
+    color: var(--ba-color-fg-warn);
+}
+
+.intentNegative {
+    color: var(--ba-color-fg-negative);
+}

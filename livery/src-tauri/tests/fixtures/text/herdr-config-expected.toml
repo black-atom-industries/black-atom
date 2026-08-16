@@ -1,0 +1,42 @@
+onboarding = false
+# User-owned comment before the managed block.
+
+# BEGIN BLACK ATOM LIVERY THEME
+# Black Atom — TERRA ∷ Summer Day
+[theme]
+name = "catppuccin-latte"
+
+[theme.custom]
+accent = "#c67b36"
+panel_bg = "#eee4cf"
+surface_dim = "#d5d3b8"
+surface0 = "#e4dec8"
+surface1 = "#d5d3b8"
+overlay0 = "#798940"
+overlay1 = "#506e2c"
+text = "#00280f"
+subtext0 = "#26541c"
+red = "#ac6e59"
+green = "#768c00"
+yellow = "#a19021"
+blue = "#5a8f65"
+teal = "#459178"
+mauve = "#b67c8d"
+peach = "#c67b36"
+# END BLACK ATOM LIVERY THEME
+
+[update]
+channel = "preview"
+
+[ui]
+agent_panel_sort = "priority"
+show_agent_labels_on_pane_borders = true
+
+[keys]
+prefix = "ctrl+a"
+
+[[keys.command]]
+key = "alt+shift+g"
+type = "pane"
+command = "lazygit"
+description = "Open LazyGit"

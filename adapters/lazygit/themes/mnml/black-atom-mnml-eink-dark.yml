@@ -1,0 +1,29 @@
+# Black Atom — MNML ∷ E-Ink Dark
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#d2b5bd"
+      - bold
+    inactiveBorderColor:
+      - "#8c8c8c"
+    optionsTextColor:
+      - "#a4a4a4"
+    selectedLineBgColor:
+      - "#2e2e2e"
+    cherryPickedCommitBgColor:
+      - "#242424"
+    cherryPickedCommitFgColor:
+      - "#d2b5bd"
+    unstagedChangesColor:
+      - "#dd7577"
+    defaultFgColor:
+      - "#dedede"
+    searchingActiveBorderColor:
+      - "#8c8c8c"
+
+  authorColors:
+    "*": "#8c8c8c"

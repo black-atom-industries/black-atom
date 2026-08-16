@@ -1,0 +1,119 @@
+/* =============================================================
+   ThemeDetail — Datasheet for the selected theme
+   Composed from primitives only: Typo, Badge, SectionHeader,
+   Swatch (band/cell), KVRow. No hex, no chrome color literals.
+   ============================================================= */
+
+.empty {
+    color: var(--ba-color-fg-hint);
+    font-size: var(--ba-font-size-0);
+    font-family: var(--ba-font-mono);
+    font-variation-settings: "MONO" 1;
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-6);
+
+    /* Preview surface: painted in the CURSORED theme's own colors (its ui
+       palette scope-overrides the --ba-* tokens on this subtree), while the
+       chrome keeps the applied theme. Rendered flush in the split panel and
+       carries its own padding so the background reaches the pane edges. */
+    background: var(--ba-color-bg-default);
+    color: var(--ba-color-fg-default);
+    padding: var(--ba-size-6) var(--ba-size-7);
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+.headerRow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--ba-size-4);
+}
+
+.titleColumn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-2);
+}
+
+.titleGroup {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-4);
+}
+
+.name {
+    line-height: 1;
+}
+
+.collectionLine {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-1);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-hint);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-2);
+}
+
+.bands {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.primariesGrid {
+    display: flex;
+    gap: 2px;
+}
+
+.primariesGrid > * {
+    flex: 1;
+}
+
+.paletteGrid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;
+}
+
+.bottomGrid {
+    display: grid;
+    grid-template-columns: 1fr 250px;
+    gap: var(--ba-size-5);
+}
+
+.spec {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-2);
+
+    /* Raised panel tier — resolves to the previewed theme's ui.bg.panel
+       inside the preview scope. */
+    background: var(--ba-color-bg-subtle);
+    border: var(--ba-border-subtle);
+    padding: var(--ba-size-3) var(--ba-size-4);
+}
+
+.kvRows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-2);
+}
+
+.docCode {
+    margin-top: auto;
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-00);
+    letter-spacing: 0.12em;
+    color: var(--ba-color-fg-hint);
+    border-top: var(--ba-border-subtle);
+    padding-top: var(--ba-size-2);
+}

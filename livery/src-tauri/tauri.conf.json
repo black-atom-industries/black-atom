@@ -1,0 +1,45 @@
+{
+    "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+    "productName": "livery",
+    "version": "0.1.0",
+    "identifier": "industries.black-atom.livery",
+    "build": {
+        "frontendDist": "../dist",
+        "devUrl": "http://localhost:1420",
+        "beforeDevCommand": "deno task vite:dev",
+        "beforeBuildCommand": "deno task vite:build"
+    },
+    "app": {
+        "windows": [
+            {
+                "title": "Livery",
+                "width": 1280,
+                "height": 860,
+                "minWidth": 980,
+                "minHeight": 640,
+                "resizable": true,
+                "fullscreen": false,
+                "decorations": false
+            }
+        ],
+        "security": {
+            "csp": null
+        }
+    },
+    "plugins": {
+        "fs": {
+            "requireLiteralLeadingDot": false
+        }
+    },
+    "bundle": {
+        "active": true,
+        "targets": "all",
+        "icon": [
+            "icons/32x32.png",
+            "icons/128x128.png",
+            "icons/128x128@2x.png",
+            "icons/icon.icns",
+            "icons/icon.ico"
+        ]
+    }
+}

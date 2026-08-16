@@ -1,0 +1,131 @@
+/* Black Atom — JPN ∷ Tsuki Yoru */
+.theme-dark.black-atom-jpn-tsuki-yoru {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #0f0f0f;
+  --color-base-05: #1c1c1c;
+  --color-base-10: #282828;
+  --color-base-20: #373737;
+  --color-base-25: #4f4f61;
+  --color-base-30: #69697f;
+  --color-base-35: #828299;
+  --color-base-40: #9d9daf;
+  --color-base-50: #b3b3b3;
+  --color-base-60: #cbcbcb;
+  --color-base-70: #e6e6e6;
+  --color-base-100: #ffffff;
+
+  /* Extended Colors */
+  --color-red: #f591b2;
+  --color-red-rgb: 245, 145, 178;
+  --color-orange: #f6a090;
+  --color-orange-rgb: 246, 160, 144;
+  --color-yellow: #eab899;
+  --color-yellow-rgb: 234, 184, 153;
+  --color-green: #90b99f;
+  --color-green-rgb: 144, 185, 159;
+  --color-cyan: #8dd9c5;
+  --color-cyan-rgb: 141, 217, 197;
+  --color-blue: #a1b0cf;
+  --color-blue-rgb: 161, 176, 207;
+  --color-purple: #aca1cf;
+  --color-purple-rgb: 172, 161, 207;
+  --color-pink: #9789c3;
+  --color-pink-rgb: 151, 137, 195;
+
+  /* Backgrounds */
+  --background-primary: #1c1c1c;
+  --background-primary-alt: #282828;
+  --background-secondary: #0f0f0f;
+  --background-secondary-alt: #0f0f0f;
+  --background-modifier-hover: #282828;
+  --background-modifier-active-hover: #282828;
+  --background-modifier-border: #282828;
+  --background-modifier-border-hover: #282828;
+  --background-modifier-border-focus: #eab899;
+  --background-modifier-error-rgb: 76, 55, 61;
+  --background-modifier-error: #4c373d;
+  --background-modifier-error-hover: #4c373d;
+  --background-modifier-success-rgb: 54, 63, 57;
+  --background-modifier-success: #363f39;
+  --background-modifier-message: #3a3d43;
+  --background-modifier-form-field: #1c1c1c;
+
+  /* Text */
+  --text-normal: #e6e6e6;
+  --text-muted: #9d9daf;
+  --text-faint: #828299;
+  --text-accent: #eab899;
+  --text-accent-hover: #eab899;
+  --text-on-accent: #1c1c1c;
+  --text-on-accent-inverted: #e6e6e6;
+  --text-error: #f591b2;
+  --text-warning: #eab899;
+  --text-success: #90b99f;
+  --text-selection: #373737;
+  --text-highlight-bg: #373737;
+
+  /* Interactive */
+  --interactive-normal: #1c1c1c;
+  --interactive-hover: #282828;
+  --interactive-accent: #eab899;
+  --interactive-accent-hover: #eab899;
+
+  /* Headings */
+  --h1-color: #eab899;
+  --h2-color: #eab899;
+  --h3-color: #eab899;
+  --h4-color: #9d9daf;
+  --h5-color: #9d9daf;
+  --h6-color: #9d9daf;
+
+  /* Markup */
+  --bold-color: #eab899;
+  --italic-color: #eab899;
+  --blockquote-border-color: #90b99f;
+  --link-color: #90b99f;
+  --link-color-hover: #90b99f;
+  --link-external-color: #90b99f;
+  --link-external-color-hover: #90b99f;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #cbcbcb;
+  --code-comment: #69697f;
+  --code-function: #eab899;
+  --code-important: #aca1cf;
+  --code-keyword: #aca1cf;
+  --code-operator: #8699c1;
+  --code-property: #a1b0cf;
+  --code-punctuation: #9d9daf;
+  --code-string: #90b99f;
+  --code-tag: #eab899;
+  --code-value: #8699c1;
+  --code-background: #0f0f0f;
+
+  /* Tags */
+  --tag-color: #eab899;
+  --tag-color-hover: #eab899;
+  --tag-background: #282828;
+  --tag-background-hover: #282828;
+
+  /* Graph */
+  --graph-line: #282828;
+  --graph-node: #eab899;
+  --graph-node-focused: #eab899;
+  --graph-node-tag: #8dd9c5;
+  --graph-node-attachment: #90b99f;
+
+  /* Scrollbar */
+  --scrollbar-bg: #1c1c1c;
+  --scrollbar-thumb-bg: #282828;
+  --scrollbar-active-thumb-bg: #9d9daf;
+
+  /* Nav */
+  --nav-item-background-hover: #282828;
+  --nav-item-background-active: #282828;
+  --nav-item-background-selected: #373737;
+  --nav-item-color: #e6e6e6;
+  --nav-item-color-hover: #e6e6e6;
+  --nav-item-color-active: #eab899;
+  --nav-item-color-selected: #e6e6e6;
+}

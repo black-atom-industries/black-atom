@@ -1,0 +1,6 @@
+- [ ] `deno task build` should cp not symlink
+- [ ] `deno task build` format,lint,test after build
+- [ ] `deno task dev` with cp
+- [x] ui: scrollbars
+- [ ] ui: tags
+- [ ] `/Users/nbr/repos/nikbrunner/dots/scripts/dots/theme-link.sh`

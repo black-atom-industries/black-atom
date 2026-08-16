@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Font Declarations & OpenProps Font Overrides
+   ========================================================================== */
+
+/* --- @font-face: TX-02 (Mono) --- */
+
+@font-face {
+    font-family: "TX-02";
+    src: url("/fonts/TX-02-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "TX-02";
+    src: url("/fonts/TX-02-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "TX-02";
+    src: url("/fonts/TX-02-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "TX-02";
+    src: url("/fonts/TX-02-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "TX-02";
+    src: url("/fonts/TX-02-Oblique.ttf") format("truetype");
+    font-weight: 400;
+    font-style: oblique;
+    font-display: swap;
+}
+
+/* --- OpenProps Font Overrides --- */
+
+:root {
+    --font-mono: "TX-02", "JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace;
+
+    /* TODO: Replace with a proper sans-serif font */
+    --font-sans: var(--font-mono);
+}
+
+/* --- Base font assignments --- */
+
+body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+code,
+pre {
+    font-family: var(--font-mono);
+}

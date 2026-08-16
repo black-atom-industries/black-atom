@@ -1,0 +1,30 @@
+/* Black Atom — TERRA ∷ Summer Day */
+
+/* Background colors */
+@define-color ba-bg-default #f7e9d6;
+@define-color ba-bg-panel #eee4cf;
+@define-color ba-bg-hover #e4dec8;
+@define-color ba-bg-active #e4dec8;
+@define-color ba-bg-selection #ffeedd;
+@define-color ba-bg-contrast #00280f;
+
+/* Foreground colors */
+@define-color ba-fg-default #00280f;
+@define-color ba-fg-subtle #26541c;
+@define-color ba-fg-accent #c67b36;
+@define-color ba-fg-disabled #506e2c;
+@define-color ba-fg-contrast #f7e9d6;
+
+/* Feedback colors */
+@define-color ba-fg-negative #ac6e59;
+@define-color ba-fg-positive #768c00;
+@define-color ba-fg-warn #c67b36;
+@define-color ba-fg-info #5a8f65;
+
+/* Palette colors */
+@define-color ba-red #ac6e59;
+@define-color ba-green #768c00;
+@define-color ba-yellow #a19021;
+@define-color ba-blue #5a8f65;
+@define-color ba-magenta #b67c8d;
+@define-color ba-cyan #459178;

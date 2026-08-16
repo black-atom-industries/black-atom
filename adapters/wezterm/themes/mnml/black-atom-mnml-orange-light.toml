@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — MNML ∷ Orange Light"
+
+[colors]
+foreground = "#242a2c"
+background = "#f5f9fb"
+cursor_bg = "#fc8e06"
+cursor_border = "#fc8e06"
+cursor_fg = "#f5f9fb"
+selection_bg = "#e8eced"
+selection_fg = "#242a2c"
+split = "#fc8e06"
+compose_cursor = "#f14d4c"
+scrollbar_thumb = "#585f61"
+
+ansi = [
+  "#474e51", # black
+  "#9ea6a9", # dark_red
+  "#868e90", # dark_green
+  "#0795fd", # dark_yellow
+  "#9ea6a9", # dark_blue
+  "#868e90", # dark_magenta
+  "#9ea6a9", # dark_cyan
+  "#9ea6a9" # light_gray
+]
+
+brights = [
+  "#585f61", # gray
+  "#9ea6a9", # red
+  "#868e90", # green
+  "#fc8e06", # yellow
+  "#9ea6a9", # blue
+  "#868e90", # magenta
+  "#9ea6a9", # cyan
+  "#9ea6a9" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#eef3f4"
+background = "#f5f9fb"
+
+[colors.tab_bar.active_tab]
+fg_color = "#eef3f4"
+bg_color = "#fc8e06"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#eef3f4"
+bg_color = "#e8eced"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#eef3f4"
+bg_color = "#eef3f4"
+
+[colors.tab_bar.new_tab]
+fg_color = "#eef3f4"
+bg_color = "#819e00"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#eef3f4"
+bg_color = "#eef3f4"
+intensity = "Bold"

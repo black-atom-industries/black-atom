@@ -1,0 +1,30 @@
+/* Black Atom — MNML ∷ Osman Light */
+
+/* Background colors */
+@define-color ba-bg-default #fff7f0;
+@define-color ba-bg-panel #f2eae2;
+@define-color ba-bg-hover #f2eae2;
+@define-color ba-bg-active #fffbf5;
+@define-color ba-bg-selection #e4dcd6;
+@define-color ba-bg-contrast #4e463f;
+
+/* Foreground colors */
+@define-color ba-fg-default #38312b;
+@define-color ba-fg-subtle #6c6158;
+@define-color ba-fg-accent #1085fc;
+@define-color ba-fg-disabled #897e74;
+@define-color ba-fg-contrast #f2eae2;
+
+/* Feedback colors */
+@define-color ba-fg-negative #f14d4c;
+@define-color ba-fg-positive #819e00;
+@define-color ba-fg-warn #cd7b00;
+@define-color ba-fg-info #00a3e9;
+
+/* Palette colors */
+@define-color ba-red #f1342d;
+@define-color ba-green #897e74;
+@define-color ba-yellow #897e74;
+@define-color ba-blue #1085fc;
+@define-color ba-magenta #897e74;
+@define-color ba-cyan #988d83;

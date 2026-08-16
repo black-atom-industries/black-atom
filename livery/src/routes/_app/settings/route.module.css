@@ -1,0 +1,12 @@
+/* =============================================================
+   Settings route
+   Split-panel like the main view: left = section nav (ListRow +
+   adapter rows), right = the active section's panel, either an
+   adapter settings page or GeneralPanel. Layout chrome
+   (header/footer) lives in _app/route.tsx; App.SplitPanel handles
+   the split; this module only covers the loading/error states.
+   ============================================================= */
+
+.root {
+    padding: var(--ba-size-6);
+}

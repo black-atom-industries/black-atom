@@ -1,0 +1,7 @@
+onboarding = false
+
+[theme]
+name = "terminal"
+
+[update]
+channel = "preview"

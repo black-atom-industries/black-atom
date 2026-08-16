@@ -1,0 +1,74 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-2);
+    overflow-y: auto;
+    padding-right: var(--size-3);
+}
+
+.groupLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--size-3);
+    font-weight: var(--font-weight-6);
+    font-size: var(--font-size-1);
+    padding-top: var(--size-3);
+    margin-bottom: 0.5em;
+    color: var(--ba-ui-fg-default);
+}
+
+.groupLabel:first-child {
+    padding-top: 0;
+}
+
+.swatch {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-2);
+    flex-shrink: 0;
+}
+
+.leafGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.leafRow {
+    display: flex;
+    align-items: center;
+    gap: var(--size-2);
+    padding-left: var(--size-7);
+    font-size: var(--font-size-0);
+    color: var(--ba-ui-fg-subtle);
+}
+
+.leafSwatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: var(--radius-2);
+    flex-shrink: 0;
+}
+
+.subGroupLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--size-2);
+    padding-left: var(--size-7);
+    padding-top: var(--size-2);
+    font-weight: var(--font-weight-5);
+    font-size: var(--font-size-0);
+    color: var(--ba-ui-fg-default);
+}
+
+.deepLeafRow {
+    display: flex;
+    align-items: center;
+    gap: var(--size-2);
+    padding-left: var(--size-8);
+    font-size: var(--font-size-0);
+    color: var(--ba-ui-fg-subtle);
+}

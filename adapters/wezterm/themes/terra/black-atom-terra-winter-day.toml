@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — TERRA ∷ Winter Day"
+
+[colors]
+foreground = "#1e2a37"
+background = "#ebeff5"
+cursor_bg = "#fa9916"
+cursor_border = "#fa9916"
+cursor_fg = "#ebeff5"
+selection_bg = "#f6f9fc"
+selection_fg = "#1e2a37"
+split = "#fa9916"
+compose_cursor = "#6e6ab2"
+scrollbar_thumb = "#4f667c"
+
+ansi = [
+  "#3c4f62", # black
+  "#5d5292", # dark_red
+  "#17687d", # dark_green
+  "#fa6c14", # dark_yellow
+  "#2e5e9a", # dark_blue
+  "#665189", # dark_magenta
+  "#007283", # dark_cyan
+  "#94a6be" # light_gray
+]
+
+brights = [
+  "#4f667c", # gray
+  "#6e6ab2", # red
+  "#208295", # green
+  "#fa9916", # yellow
+  "#3578b8", # blue
+  "#7968a9", # magenta
+  "#008c99", # cyan
+  "#ebeff5" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#dfe5ef"
+background = "#ebeff5"
+
+[colors.tab_bar.active_tab]
+fg_color = "#ebeff5"
+bg_color = "#fa9916"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#ebeff5"
+bg_color = "#7c91aa"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#ebeff5"
+bg_color = "#cfd8e5"
+
+[colors.tab_bar.new_tab]
+fg_color = "#ebeff5"
+bg_color = "#208295"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#ebeff5"
+bg_color = "#cfd8e5"
+intensity = "Bold"

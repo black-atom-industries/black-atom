@@ -1,0 +1,131 @@
+/* Black Atom — Stations ∷ Medical */
+.theme-light.black-atom-stations-medical {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #eef4f2;
+  --color-base-05: #e1e7e4;
+  --color-base-10: #d4dcd8;
+  --color-base-20: #c6d1cc;
+  --color-base-25: #77a494;
+  --color-base-30: #669a84;
+  --color-base-35: #517a65;
+  --color-base-40: #476a5f;
+  --color-base-50: #425953;
+  --color-base-60: #384b42;
+  --color-base-70: #2b3b33;
+  --color-base-100: #22272f;
+
+  /* Extended Colors */
+  --color-red: #f472a0;
+  --color-red-rgb: 244, 114, 160;
+  --color-orange: #f2a100;
+  --color-orange-rgb: 242, 161, 0;
+  --color-yellow: #66bd10;
+  --color-yellow-rgb: 102, 189, 16;
+  --color-green: #3c8e3c;
+  --color-green-rgb: 60, 142, 60;
+  --color-cyan: #40bf75;
+  --color-cyan-rgb: 64, 191, 117;
+  --color-blue: #476a5f;
+  --color-blue-rgb: 71, 106, 95;
+  --color-purple: #998ed9;
+  --color-purple-rgb: 153, 142, 217;
+  --color-pink: #7768cd;
+  --color-pink-rgb: 119, 104, 205;
+
+  /* Backgrounds */
+  --background-primary: #e1e7e4;
+  --background-primary-alt: #c6d1cc;
+  --background-secondary: #d4dcd8;
+  --background-secondary-alt: #d4dcd8;
+  --background-modifier-hover: #c6d1cc;
+  --background-modifier-active-hover: #c6d1cc;
+  --background-modifier-border: #c6d1cc;
+  --background-modifier-border-hover: #c6d1cc;
+  --background-modifier-border-focus: #66bd10;
+  --background-modifier-error-rgb: 206, 218, 185;
+  --background-modifier-error: #cedab9;
+  --background-modifier-error-hover: #cedab9;
+  --background-modifier-success-rgb: 179, 210, 192;
+  --background-modifier-success: #b3d2c0;
+  --background-modifier-message: #b9c6c0;
+  --background-modifier-form-field: #e1e7e4;
+
+  /* Text */
+  --text-normal: #2b3b33;
+  --text-muted: #669a84;
+  --text-faint: #77a494;
+  --text-accent: #66bd10;
+  --text-accent-hover: #66bd10;
+  --text-on-accent: #e1e7e4;
+  --text-on-accent-inverted: #2b3b33;
+  --text-error: #f472a0;
+  --text-warning: #66bd10;
+  --text-success: #3c8e3c;
+  --text-selection: #c6d1cc;
+  --text-highlight-bg: #c6d1cc;
+
+  /* Interactive */
+  --interactive-normal: #e1e7e4;
+  --interactive-hover: #c6d1cc;
+  --interactive-accent: #66bd10;
+  --interactive-accent-hover: #66bd10;
+
+  /* Headings */
+  --h1-color: #66bd10;
+  --h2-color: #66bd10;
+  --h3-color: #66bd10;
+  --h4-color: #476a5f;
+  --h5-color: #476a5f;
+  --h6-color: #476a5f;
+
+  /* Markup */
+  --bold-color: #66bd10;
+  --italic-color: #66bd10;
+  --blockquote-border-color: #3c8e3c;
+  --link-color: #3c8e3c;
+  --link-color-hover: #3c8e3c;
+  --link-external-color: #3c8e3c;
+  --link-external-color-hover: #3c8e3c;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #476a5f;
+  --code-comment: #669a84;
+  --code-function: #66bd10;
+  --code-important: #998ed9;
+  --code-keyword: #998ed9;
+  --code-operator: #998ed9;
+  --code-property: #476a5f;
+  --code-punctuation: #476a5f;
+  --code-string: #3c8e3c;
+  --code-tag: #66bd10;
+  --code-value: #476a5f;
+  --code-background: #d4dcd8;
+
+  /* Tags */
+  --tag-color: #66bd10;
+  --tag-color-hover: #66bd10;
+  --tag-background: #c6d1cc;
+  --tag-background-hover: #c6d1cc;
+
+  /* Graph */
+  --graph-line: #c6d1cc;
+  --graph-node: #66bd10;
+  --graph-node-focused: #66bd10;
+  --graph-node-tag: #40bf75;
+  --graph-node-attachment: #3c8e3c;
+
+  /* Scrollbar */
+  --scrollbar-bg: #e1e7e4;
+  --scrollbar-thumb-bg: #c6d1cc;
+  --scrollbar-active-thumb-bg: #669a84;
+
+  /* Nav */
+  --nav-item-background-hover: #c6d1cc;
+  --nav-item-background-active: #c6d1cc;
+  --nav-item-background-selected: #c6d1cc;
+  --nav-item-color: #2b3b33;
+  --nav-item-color-hover: #2b3b33;
+  --nav-item-color-active: #66bd10;
+  --nav-item-color-selected: #2b3b33;
+}

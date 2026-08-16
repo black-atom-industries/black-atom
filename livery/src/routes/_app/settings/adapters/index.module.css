@@ -1,0 +1,25 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-4);
+    padding: var(--ba-size-6);
+}
+
+.detectRow {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-3);
+    font-family: var(--ba-font-mono);
+}
+
+.detectMeta {
+    font-size: var(--ba-font-size-0);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-hint);
+}
+
+.detectError {
+    font-size: var(--ba-font-size-0);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-negative);
+}

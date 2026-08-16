@@ -1,0 +1,25 @@
+/* =============================================================
+   Per-adapter settings page — shared layout shell. Each page
+   composes AdapterHeader / ClassDefinition / DraftField / ActionRow
+   into this shell explicitly; nothing here is adapter-specific.
+   ============================================================= */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-5);
+    font-family: var(--ba-font-mono);
+}
+
+.fieldGrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-4);
+}
+
+.fieldGridNote {
+    margin: calc(-1 * var(--ba-size-2)) 0 0;
+    font-size: var(--ba-font-size-1);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-subtle);
+}

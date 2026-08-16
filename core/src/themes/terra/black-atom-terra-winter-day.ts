@@ -1,0 +1,79 @@
+import type { ThemeAccentColors, ThemeDefinition, ThemePrimaryColors } from "../../types/theme.ts";
+import { themeKeyMetaMap } from "../../types/themes.ts";
+import { oklch } from "../../utils/color.ts";
+
+import createFeedback from "./create-feedback-light.ts";
+import createPalette from "./create-palette-light.ts";
+import createSyntax from "./create-syntax-light.ts";
+import createUi from "./create-ui-light.ts";
+
+const meta = themeKeyMetaMap["black-atom-terra-winter-day"];
+
+const primaries: ThemePrimaryColors = {
+    // Dark range - deep cold blues for text
+    d10: oklch(0.20, 0.025, 255),
+    d20: oklch(0.28, 0.03, 252),
+    d30: oklch(0.35, 0.035, 250),
+    d40: oklch(0.42, 0.04, 248),
+
+    // Mid range - cold steel blues
+    m10: oklch(0.50, 0.045, 248),
+    m20: oklch(0.58, 0.05, 250),
+    m30: oklch(0.65, 0.045, 252),
+    m40: oklch(0.72, 0.04, 255),
+
+    // Light range - icy whites with blue tint for backgrounds
+    l10: oklch(0.88, 0.02, 255),
+    l20: oklch(0.92, 0.015, 258),
+    l30: oklch(0.95, 0.01, 260),
+    l40: oklch(0.98, 0.005, 260),
+};
+
+const palette = createPalette(primaries, {
+    // Cold violet/mauve - red shifted toward blue (lower L for light bg)
+    darkRed: oklch(0.48, 0.10, 290),
+    red: oklch(0.56, 0.11, 285),
+
+    // Icy teal - green shifted cold
+    darkGreen: oklch(0.48, 0.08, 220),
+    green: oklch(0.56, 0.09, 215),
+
+    // Warm amber - lamplight in the cold
+    darkYellow: oklch(0.6963, 0.1929, 45.0),
+    yellow: oklch(0.7661, 0.1674, 65.0),
+
+    // Signature blue - slightly more present
+    darkBlue: oklch(0.48, 0.11, 255),
+    blue: oklch(0.56, 0.12, 250),
+
+    // Cold purple
+    darkMagenta: oklch(0.48, 0.09, 300),
+    magenta: oklch(0.56, 0.10, 295),
+
+    // Ice cyan - frost accent
+    darkCyan: oklch(0.50, 0.10, 210),
+    cyan: oklch(0.58, 0.11, 205),
+});
+
+const accents: ThemeAccentColors = {
+    a10: palette.yellow,
+    a20: palette.darkYellow,
+};
+
+const feedback = createFeedback(palette);
+const options = { primaries, palette, feedback, accents };
+
+const ui = createUi(options);
+const syntax = createSyntax(options);
+
+const theme: ThemeDefinition = {
+    meta,
+    primaries,
+    palette,
+    accents,
+    feedback,
+    ui,
+    syntax,
+};
+
+export default theme;

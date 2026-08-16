@@ -1,0 +1,23 @@
+/* =============================================================
+   Black Atom — Spacing tokens (open-props-style scale)
+   ============================================================= */
+
+:root {
+    --ba-size-1: 0.25rem;   /* 4px  — pip gaps */
+    --ba-size-2: 0.5rem;    /* 8px  — label-to-rule gaps */
+    --ba-size-3: 0.75rem;   /* 12px — intra-row gaps */
+    --ba-size-4: 1rem;      /* 16px — panel padding */
+    --ba-size-5: 1.25rem;   /* 20px — bar padding */
+    --ba-size-6: 1.75rem;   /* 28px — datasheet padding */
+    --ba-size-7: 2rem;      /* 32px */
+    --ba-size-8: 3rem;      /* 48px — board gaps */
+    --ba-size-9: 4rem;      /* 64px */
+
+    /* Component metrics */
+    --ba-size-pip: 8px;          /* status pip */
+    --ba-size-pip-mini: 7px;     /* palette pips */
+    --ba-size-bar: 3px;          /* progress bar height */
+    --ba-size-band: 40px;        /* accent band height */
+    --ba-size-swatch: 26px;      /* palette grid cell height */
+    --ba-size-row: 28px;         /* list row height */
+}

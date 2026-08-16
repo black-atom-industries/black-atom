@@ -1,0 +1,11 @@
+.collectionLabel {
+    font-size: var(--font-size-0);
+    text-transform: uppercase;
+    letter-spacing: var(--font-letterspacing-2);
+    color: var(--ba-ui-fg-disabled);
+    padding: var(--size-2) var(--size-2) var(--size-1);
+}
+
+.collectionLabel:first-child {
+    padding-top: var(--size-1);
+}

@@ -1,0 +1,9 @@
+.formPanel {
+    background: var(--ba-ui-bg-default);
+    border: var(--border-size-1) solid var(--ba-ui-bg-float);
+    border-radius: var(--radius-2);
+    padding: var(--size-2) var(--size-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-2);
+}

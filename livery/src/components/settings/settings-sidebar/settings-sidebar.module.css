@@ -1,0 +1,36 @@
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
+.back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 20px;
+    margin-bottom: var(--ba-size-3);
+    border: none;
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-1);
+    font-weight: var(--ba-font-weight-bold);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-hint);
+    background: transparent;
+    cursor: pointer;
+    transition: color var(--ba-duration-1) var(--ba-ease);
+}
+
+.back:hover {
+    color: var(--ba-color-fg-default);
+}
+
+.back:focus-visible {
+    outline: var(--ba-focus-outline);
+    outline-offset: var(--ba-focus-offset);
+}
+
+.badges {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-2);
+}

@@ -1,0 +1,20 @@
+{
+    "name": "black-atom-adapter-zed",
+    "version": "1.0.0",
+    "description": "The Zed adapter for Black Atom",
+    "scripts": {
+        "format": "prettier --write ."
+    },
+    "keywords": [
+        "black-atom",
+        "zed",
+        "theme",
+        "theme-adapter",
+        "color-scheme"
+    ],
+    "author": "Black Atom Industries",
+    "license": "MIT",
+    "devDependencies": {
+        "prettier": "^3.5.3"
+    }
+}

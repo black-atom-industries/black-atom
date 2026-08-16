@@ -1,0 +1,29 @@
+# Black Atom — TERRA ∷ Fall Day
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#d9710b"
+      - bold
+    inactiveBorderColor:
+      - "#815137"
+    optionsTextColor:
+      - "#956d57"
+    selectedLineBgColor:
+      - "#ffe6d2"
+    cherryPickedCommitBgColor:
+      - "#e3bfa4"
+    cherryPickedCommitFgColor:
+      - "#d9710b"
+    unstagedChangesColor:
+      - "#bf4d3f"
+    defaultFgColor:
+      - "#422617"
+    searchingActiveBorderColor:
+      - "#d9710b"
+
+  authorColors:
+    "*": "#a26650"

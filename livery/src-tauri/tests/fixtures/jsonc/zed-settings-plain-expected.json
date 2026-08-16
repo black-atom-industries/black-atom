@@ -1,0 +1,10 @@
+{
+  "vim_mode": true,
+  "buffer_font_size": 16.0,
+  "theme": "Black Atom — TERRA ∷ Spring Day",
+  "ui_font_size": 16.0,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  }
+}

@@ -1,0 +1,10 @@
+.root {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-1);
+    color: var(--ba-color-fg-hint);
+    white-space: nowrap;
+}
+
+.keys {
+    color: var(--ba-color-fg-subtle);
+}

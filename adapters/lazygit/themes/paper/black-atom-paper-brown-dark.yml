@@ -1,0 +1,29 @@
+# Black Atom — PAPER ∷ Brown Dark
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#e5ddd0"
+      - bold
+    inactiveBorderColor:
+      - "#9b9082"
+    optionsTextColor:
+      - "#b4a99a"
+    selectedLineBgColor:
+      - "#4e463d"
+    cherryPickedCommitBgColor:
+      - "#37322c"
+    cherryPickedCommitFgColor:
+      - "#e5ddd0"
+    unstagedChangesColor:
+      - "#dd7577"
+    defaultFgColor:
+      - "#e8dccc"
+    searchingActiveBorderColor:
+      - "#9b9082"
+
+  authorColors:
+    "*": "#9b9082"

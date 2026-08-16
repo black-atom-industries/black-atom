@@ -1,0 +1,29 @@
+# Black Atom — JPN ∷ Murasaki Yoru
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#dca23a"
+      - bold
+    inactiveBorderColor:
+      - "#946996"
+    optionsTextColor:
+      - "#8cb6c5"
+    selectedLineBgColor:
+      - "#5b3e47"
+    cherryPickedCommitBgColor:
+      - "#452a32"
+    cherryPickedCommitFgColor:
+      - "#dca23a"
+    unstagedChangesColor:
+      - "#ff857b"
+    defaultFgColor:
+      - "#d4bfd6"
+    searchingActiveBorderColor:
+      - "#dca23a"
+
+  authorColors:
+    "*": "#d49bb2"

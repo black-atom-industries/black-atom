@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style data-omelette-print-defaults>
+@media print {
+  @page { margin: 0.5in; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  figure, table, pre, blockquote, img, svg, tr, [class~="card" i] { break-inside: avoid; }
+  img, svg { max-width: 100%; }
+  p { orphans: 3; widows: 3; }
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Recursive:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500&amp;family=Fragment+Mono&amp;family=Geist:wght@400;500&amp;family=Public+Sans:wght@400;500&amp;family=Source+Sans+3:wght@400;500&amp;family=Instrument+Sans:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/fontsource/css/iosevka@latest/index.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/fontsource/css/iosevka@latest/700.css" rel="stylesheet">
+<style>
+body { margin: 0; background: #131109; }
+</style>
+</helmet>
+
+<section style="padding:56px;display:flex;flex-direction:column;gap:40px;font-family:'Iosevka',monospace">
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;letter-spacing:0.18em;color:#857D6E">TURN 02 — REGISTRY SYNTHESIS</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:#EDE9E2;letter-spacing:-0.01em">REGISTRY + CHIP SEARCH + COLOR BANDS · IOSEVKA</div>
+    <div style="font-size:12px;color:#B8B1A4;max-width:80ch;line-height:1.6"><a href="#2a" style="color:#63AD79">2a</a> Registry v2, dark + light — chip filters under a name-only search prompt, accent bands + semantic tokens in the datasheet, Stack B type. <a href="#2b" style="color:#63AD79">2b</a> the f-key filter popup. <a href="#2c" style="color:#63AD79">2c</a> more body-sans candidates.</div>
+  </div>
+
+  <!-- ============================================================ 2a REGISTRY V2 -->
+  <div id="2a" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <a href="#2a" style="text-decoration:none;background:#EDE9E2;color:#1D1A17;font-size:12px;font-weight:700;padding:3px 8px">2A</a>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#EDE9E2">REGISTRY V2</span>
+      <span style="font-size:11px;color:#857D6E;letter-spacing:0.08em">NAME SEARCH + CLICKABLE CHIPS · ACCENT BANDS + SEMANTIC TOKENS · IOSEVKA / PLEX SANS</span>
+    </div>
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
+
+      <!-- 2a DARK -->
+      <div style="flex:none;width:1080px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #3C362C">
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.02em">BLACK AT<span style="display:inline-block;width:11px;height:11px;background:#EDE9E2"></span>M LIVERY</span>
+            <span style="font-size:11px;color:#857D6E">V0.3.0</span>
+          </div>
+          <div style="font-size:11px;color:#857D6E;letter-spacing:0.1em">24 THEMES · 6 COLLECTIONS · ENV DARK</div>
+        </div>
+        <!-- search: name-only prompt -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #2E2922;background:#252119">
+          <span style="color:#63AD79;font-weight:700;font-size:13px">»</span>
+          <span style="font-size:13px;color:#857D6E;flex:1">search theme names — /</span>
+          <span style="font-size:10px;color:#57503F;letter-spacing:0.1em">f FILTERS · esc CLEAR</span>
+        </div>
+        <!-- chips -->
+        <div style="display:flex;align-items:center;gap:18px;padding:8px 20px;border-bottom:1px solid #3C362C;background:#252119">
+          <div style="display:flex;gap:6px;font-size:10px;letter-spacing:0.08em">
+            <span style="background:#EDE9E2;color:#1D1A17;padding:3px 8px;font-weight:700;cursor:pointer">ALL</span>
+            <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;cursor:pointer">DEFAULT</span>
+            <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;cursor:pointer">JPN</span>
+            <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;cursor:pointer">TERRA</span>
+            <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;cursor:pointer">STATIONS</span>
+            <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;cursor:pointer">CRBN</span>
+            <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;cursor:pointer">NORTH</span>
+          </div>
+          <span style="width:1px;height:16px;background:#3C362C"></span>
+          <div style="display:flex;gap:6px;font-size:10px;letter-spacing:0.08em">
+            <span style="background:#EDE9E2;color:#1D1A17;padding:3px 8px;font-weight:700;cursor:pointer">◐ ALL</span>
+            <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;cursor:pointer">● DARK</span>
+            <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;cursor:pointer">○ LIGHT</span>
+          </div>
+          <span style="width:1px;height:16px;background:#3C362C"></span>
+          <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px;font-size:10px;letter-spacing:0.08em;cursor:pointer">■ SYNCED ONLY</span>
+        </div>
+        <div style="display:grid;grid-template-columns:340px 1fr;min-height:680px">
+          <!-- list -->
+          <div style="border-right:1px solid #3C362C;padding:16px 0;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:baseline;gap:8px;padding:0 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">DEFAULT (4)</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Dark</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Dark Dimmed</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Light</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Light Dimmed</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:14px 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">JPN — JAPAN (4)</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Koyo Hiru</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;background:#2A251E;color:#EDE9E2;border-left:2px solid #63AD79;margin-left:-2px"><span style="width:12px;color:#63AD79">›</span><span style="flex:1;font-weight:700">Koyo Yoru</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#C46A5A"></span><span style="width:7px;height:7px;background:#D9A662"></span><span style="width:7px;height:7px;background:#8FA36B"></span><span style="width:7px;height:7px;background:#A97BA2"></span></span><span style="font-size:9px;border:1px solid #857D6E;color:#B8B1A4;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Murasaki Yoru</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Tsuki Yoru</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:14px 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">TERRA (8)</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Spring Day</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Spring Night</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Summer Day</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Fall Day</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Fall Night</span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px">D</span></div>
+            <div style="font-size:10px;color:#857D6E;padding:12px 20px 0;letter-spacing:0.1em">↓ STATIONS (4) · CRBN (2) · NORTH (2) — 10/24</div>
+          </div>
+          <!-- detail -->
+          <div style="padding:26px 32px;display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;gap:14px">
+                  <span style="font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;letter-spacing:-0.01em;line-height:1">KOYO YORU</span>
+                  <span style="border:1px solid #857D6E;font-size:10px;letter-spacing:0.14em;padding:3px 8px;color:#B8B1A4">DARK</span>
+                </div>
+                <div style="font-size:11px;letter-spacing:0.14em;color:#857D6E">JPN — JAPAN COLLECTION · KEY jpn-koyo-yoru</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#63AD79;letter-spacing:0.1em"><span style="width:8px;height:8px;background:#63AD79"></span>SYNCED 8/8</div>
+            </div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4;max-width:62ch">Autumn dusk in Kyoto. Deep burgundy and amber accents settle over a warm charcoal ground — built for long evening sessions.</div>
+            <!-- accent bands -->
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">ACCENTS · 4</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="display:flex;align-items:center;background:#C46A5A;height:40px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#14100E">ACCENT · BURGUNDY</span><span style="margin-left:auto;font-size:11px;color:#14100E">#C46A5A</span></div>
+                <div style="display:flex;align-items:center;background:#D9A662;height:40px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#14100E">ACCENT · AMBER</span><span style="margin-left:auto;font-size:11px;color:#14100E">#D9A662</span></div>
+                <div style="display:flex;align-items:center;background:#8FA36B;height:40px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#14100E">ACCENT · MOSS</span><span style="margin-left:auto;font-size:11px;color:#14100E">#8FA36B</span></div>
+                <div style="display:flex;align-items:center;background:#A97BA2;height:40px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#14100E">ACCENT · PLUM</span><span style="margin-left:auto;font-size:11px;color:#14100E">#A97BA2</span></div>
+              </div>
+            </div>
+            <!-- primaries -->
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">PRIMARIES · 12</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+              <div style="display:flex;gap:2px">
+                <div style="flex:1"><div style="height:30px;background:#14100E;border:1px solid #2E2922"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">14100E</div></div>
+                <div style="flex:1"><div style="height:30px;background:#1C1714;border:1px solid #2E2922"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">1C1714</div></div>
+                <div style="flex:1"><div style="height:30px;background:#262019;border:1px solid #2E2922"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">262019</div></div>
+                <div style="flex:1"><div style="height:30px;background:#322A21"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">322A21</div></div>
+                <div style="flex:1"><div style="height:30px;background:#4A4034"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">4A4034</div></div>
+                <div style="flex:1"><div style="height:30px;background:#6B5D4C"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">6B5D4C</div></div>
+                <div style="flex:1"><div style="height:30px;background:#8C7B64"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">8C7B64</div></div>
+                <div style="flex:1"><div style="height:30px;background:#A8957A"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">A8957A</div></div>
+                <div style="flex:1"><div style="height:30px;background:#C4B295"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">C4B295</div></div>
+                <div style="flex:1"><div style="height:30px;background:#D9CBAE"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">D9CBAE</div></div>
+                <div style="flex:1"><div style="height:30px;background:#E8DEC6"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">E8DEC6</div></div>
+                <div style="flex:1"><div style="height:30px;background:#F4EDDD"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">F4EDDD</div></div>
+              </div>
+            </div>
+            <!-- semantic / feedback -->
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">SEMANTIC · FEEDBACK</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px">
+                <div style="display:flex;align-items:center;background:#8FA36B;height:32px;padding:0 12px"><span style="font-size:9px;letter-spacing:0.12em;color:#14100E">POSITIVE</span><span style="margin-left:auto;font-size:10px;color:#14100E">#8FA36B</span></div>
+                <div style="display:flex;align-items:center;background:#C46A5A;height:32px;padding:0 12px"><span style="font-size:9px;letter-spacing:0.12em;color:#14100E">NEGATIVE</span><span style="margin-left:auto;font-size:10px;color:#14100E">#C46A5A</span></div>
+                <div style="display:flex;align-items:center;background:#D9A662;height:32px;padding:0 12px"><span style="font-size:9px;letter-spacing:0.12em;color:#14100E">WARN</span><span style="margin-left:auto;font-size:10px;color:#14100E">#D9A662</span></div>
+                <div style="display:flex;align-items:center;background:#7E93B0;height:32px;padding:0 12px"><span style="font-size:9px;letter-spacing:0.12em;color:#14100E">INFO</span><span style="margin-left:auto;font-size:10px;color:#14100E">#7E93B0</span></div>
+              </div>
+            </div>
+            <!-- preview + spec -->
+            <div style="display:grid;grid-template-columns:1fr 250px;gap:20px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">PREVIEW · RENDERED IN THEME</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+                <div style="background:#14100E;border:1px solid #322A21;padding:14px 16px;font-size:12px;line-height:1.75;color:#D9CBAE">
+                  <div><span style="color:#6B5D4C">// adapters/ghostty.ts</span></div>
+                  <div><span style="color:#C46A5A">export function</span> <span style="color:#7E93B0">apply</span>(theme: <span style="color:#D9A662">Theme</span>) {</div>
+                  <div>&nbsp;&nbsp;<span style="color:#C46A5A">const</span> path = <span style="color:#7E93B0">expand</span>(<span style="color:#8FA36B">"~/.config/ghostty"</span>);</div>
+                  <div>&nbsp;&nbsp;<span style="color:#C46A5A">return</span> <span style="color:#7E93B0">write</span>(path, <span style="color:#7E93B0">render</span>(theme));</div>
+                  <div>}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">SPEC</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+                <div style="display:flex;flex-direction:column;gap:6px;font-size:11px">
+                  <div style="display:flex;justify-content:space-between"><span style="color:#857D6E;letter-spacing:0.1em">COLLECTION</span><span style="color:#B8B1A4">JPN</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#857D6E;letter-spacing:0.1em">APPEARANCE</span><span style="color:#B8B1A4">DARK</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#857D6E;letter-spacing:0.1em">CORE VERSION</span><span style="color:#B8B1A4">1.0.2</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#857D6E;letter-spacing:0.1em">STATUS</span><span style="color:#63AD79">■ SYNCED</span></div>
+                </div>
+                <div style="margin-top:auto;font-size:9px;letter-spacing:0.12em;border-top:1px solid #2E2922;padding-top:8px;color:#857D6E">DOC LVR-JPN-KY-D · REV 04</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-top:1px solid #3C362C;font-size:11px;color:#857D6E">
+          <div style="display:flex;gap:18px;white-space:nowrap"><span><span style="color:#B8B1A4">j/k</span> NAVIGATE</span><span><span style="color:#B8B1A4">/</span> SEARCH</span><span><span style="color:#B8B1A4">f</span> FILTERS</span><span><span style="color:#B8B1A4">⏎</span> APPLY</span><span><span style="color:#B8B1A4">s</span> SETTINGS</span><span><span style="color:#B8B1A4">q</span> QUIT</span></div>
+          <div style="display:flex;align-items:center;gap:8px;color:#63AD79"><span style="width:8px;height:8px;background:#63AD79"></span>READY</div>
+        </div>
+      </div>
+
+      <!-- 2a LIGHT -->
+      <div style="flex:none;width:1080px;background:#F5F1E6;border:1px solid #CEC6AE;color:#2A251C;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #CEC6AE">
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.02em">BLACK AT<span style="display:inline-block;width:11px;height:11px;background:#2A251C"></span>M LIVERY</span>
+            <span style="font-size:11px;color:#8A8268">V0.3.0</span>
+          </div>
+          <div style="font-size:11px;color:#8A8268;letter-spacing:0.1em">24 THEMES · 6 COLLECTIONS · ENV LIGHT</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #DED7C2;background:#EDE8D9">
+          <span style="color:#3E8757;font-weight:700;font-size:13px">»</span>
+          <span style="font-size:13px;color:#8A8268;flex:1">search theme names — /</span>
+          <span style="font-size:10px;color:#B0A88E;letter-spacing:0.1em">f FILTERS · esc CLEAR</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:18px;padding:8px 20px;border-bottom:1px solid #CEC6AE;background:#EDE8D9">
+          <div style="display:flex;gap:6px;font-size:10px;letter-spacing:0.08em">
+            <span style="background:#2A251C;color:#F5F1E6;padding:3px 8px;font-weight:700;cursor:pointer">ALL</span>
+            <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;cursor:pointer">DEFAULT</span>
+            <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;cursor:pointer">JPN</span>
+            <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;cursor:pointer">TERRA</span>
+            <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;cursor:pointer">STATIONS</span>
+            <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;cursor:pointer">CRBN</span>
+            <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;cursor:pointer">NORTH</span>
+          </div>
+          <span style="width:1px;height:16px;background:#CEC6AE"></span>
+          <div style="display:flex;gap:6px;font-size:10px;letter-spacing:0.08em">
+            <span style="background:#2A251C;color:#F5F1E6;padding:3px 8px;font-weight:700;cursor:pointer">◐ ALL</span>
+            <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;cursor:pointer">● DARK</span>
+            <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;cursor:pointer">○ LIGHT</span>
+          </div>
+          <span style="width:1px;height:16px;background:#CEC6AE"></span>
+          <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px;font-size:10px;letter-spacing:0.08em;cursor:pointer">■ SYNCED ONLY</span>
+        </div>
+        <div style="display:grid;grid-template-columns:340px 1fr;min-height:680px">
+          <div style="border-right:1px solid #CEC6AE;padding:16px 0;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:baseline;gap:8px;padding:0 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">JPN — JAPAN (4)</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Koyo Hiru</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Koyo Yoru</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:14px 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">TERRA (8)</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;background:#EAE4D2;color:#2A251C;border-left:2px solid #3E8757;margin-left:-2px"><span style="width:12px;color:#3E8757">›</span><span style="flex:1;font-weight:700">Spring Day</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#2E8B57"></span><span style="width:7px;height:7px;background:#E8708A"></span><span style="width:7px;height:7px;background:#D4A028"></span><span style="width:7px;height:7px;background:#4499CC"></span></span><span style="font-size:9px;border:1px solid #8A8268;color:#5D5744;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Spring Night</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Summer Day</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Summer Night</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Fall Day</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Fall Night</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Winter Day</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Winter Night</span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px">D</span></div>
+            <div style="font-size:10px;color:#8A8268;padding:12px 20px 0;letter-spacing:0.1em">↓ STATIONS (4) · CRBN (2) · NORTH (2) — 11/24</div>
+          </div>
+          <div style="padding:26px 32px;display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;gap:14px">
+                  <span style="font-family:'Space Grotesk',sans-serif;font-size:42px;font-weight:700;letter-spacing:-0.01em;line-height:1">SPRING DAY</span>
+                  <span style="border:1px solid #8A8268;font-size:10px;letter-spacing:0.14em;padding:3px 8px;color:#5D5744">LIGHT</span>
+                </div>
+                <div style="font-size:11px;letter-spacing:0.14em;color:#8A8268">TERRA COLLECTION · KEY terra-spring-day</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#3E8757;letter-spacing:0.1em"><span style="width:8px;height:8px;background:#3E8757"></span>SYNCED 8/8</div>
+            </div>
+            <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.7;color:#5D5744;max-width:62ch">Fresh growth and morning dew. Soft greens with blossom pinks on a bright day — a high-clarity palette for daylight work.</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">ACCENTS · 4</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="display:flex;align-items:center;background:#2E8B57;height:40px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#FDFCF0">ACCENT · GREEN</span><span style="margin-left:auto;font-size:11px;color:#FDFCF0">#2E8B57</span></div>
+                <div style="display:flex;align-items:center;background:#E8708A;height:40px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#FDFCF0">ACCENT · BLOSSOM</span><span style="margin-left:auto;font-size:11px;color:#FDFCF0">#E8708A</span></div>
+                <div style="display:flex;align-items:center;background:#D4A028;height:40px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#FDFCF0">ACCENT · GOLD</span><span style="margin-left:auto;font-size:11px;color:#FDFCF0">#D4A028</span></div>
+                <div style="display:flex;align-items:center;background:#4499CC;height:40px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#FDFCF0">ACCENT · SKY</span><span style="margin-left:auto;font-size:11px;color:#FDFCF0">#4499CC</span></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">PRIMARIES · 12</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+              <div style="display:flex;gap:2px">
+                <div style="flex:1"><div style="height:30px;background:#FDFCF0;border:1px solid #DED7C2"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">FDFCF0</div></div>
+                <div style="flex:1"><div style="height:30px;background:#F7F3E3;border:1px solid #DED7C2"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">F7F3E3</div></div>
+                <div style="flex:1"><div style="height:30px;background:#EDEADB;border:1px solid #DED7C2"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">EDEADB</div></div>
+                <div style="flex:1"><div style="height:30px;background:#E0E2DB"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">E0E2DB</div></div>
+                <div style="flex:1"><div style="height:30px;background:#D2D4C8"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">D2D4C8</div></div>
+                <div style="flex:1"><div style="height:30px;background:#BFC3BA"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">BFC3BA</div></div>
+                <div style="flex:1"><div style="height:30px;background:#A8B09B"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">A8B09B</div></div>
+                <div style="flex:1"><div style="height:30px;background:#8C9A7E"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">8C9A7E</div></div>
+                <div style="flex:1"><div style="height:30px;background:#70845F"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">70845F</div></div>
+                <div style="flex:1"><div style="height:30px;background:#5C7050"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">5C7050</div></div>
+                <div style="flex:1"><div style="height:30px;background:#475A3D"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">475A3D</div></div>
+                <div style="flex:1"><div style="height:30px;background:#33422C"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">33422C</div></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">SEMANTIC · FEEDBACK</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px">
+                <div style="display:flex;align-items:center;background:#28A745;height:32px;padding:0 12px"><span style="font-size:9px;letter-spacing:0.12em;color:#FDFCF0">POSITIVE</span><span style="margin-left:auto;font-size:10px;color:#FDFCF0">#28A745</span></div>
+                <div style="display:flex;align-items:center;background:#DC3545;height:32px;padding:0 12px"><span style="font-size:9px;letter-spacing:0.12em;color:#FDFCF0">NEGATIVE</span><span style="margin-left:auto;font-size:10px;color:#FDFCF0">#DC3545</span></div>
+                <div style="display:flex;align-items:center;background:#D4A028;height:32px;padding:0 12px"><span style="font-size:9px;letter-spacing:0.12em;color:#FDFCF0">WARN</span><span style="margin-left:auto;font-size:10px;color:#FDFCF0">#D4A028</span></div>
+                <div style="display:flex;align-items:center;background:#17A2B8;height:32px;padding:0 12px"><span style="font-size:9px;letter-spacing:0.12em;color:#FDFCF0">INFO</span><span style="margin-left:auto;font-size:10px;color:#FDFCF0">#17A2B8</span></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 250px;gap:20px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">PREVIEW · RENDERED IN THEME</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+                <div style="background:#FDFCF0;border:1px solid #D2D4C8;padding:14px 16px;font-size:12px;line-height:1.75;color:#4A4A42">
+                  <div><span style="color:#A8B09B">// adapters/ghostty.ts</span></div>
+                  <div><span style="color:#DC3545">export function</span> <span style="color:#4499CC">apply</span>(theme: <span style="color:#D4A028">Theme</span>) {</div>
+                  <div>&nbsp;&nbsp;<span style="color:#DC3545">const</span> path = <span style="color:#4499CC">expand</span>(<span style="color:#2E8B57">"~/.config/ghostty"</span>);</div>
+                  <div>&nbsp;&nbsp;<span style="color:#DC3545">return</span> <span style="color:#4499CC">write</span>(path, <span style="color:#4499CC">render</span>(theme));</div>
+                  <div>}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">SPEC</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+                <div style="display:flex;flex-direction:column;gap:6px;font-size:11px">
+                  <div style="display:flex;justify-content:space-between"><span style="color:#8A8268;letter-spacing:0.1em">COLLECTION</span><span style="color:#5D5744">TERRA</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#8A8268;letter-spacing:0.1em">APPEARANCE</span><span style="color:#5D5744">LIGHT</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#8A8268;letter-spacing:0.1em">CORE VERSION</span><span style="color:#5D5744">1.0.2</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#8A8268;letter-spacing:0.1em">STATUS</span><span style="color:#3E8757">■ SYNCED</span></div>
+                </div>
+                <div style="margin-top:auto;font-size:9px;letter-spacing:0.12em;border-top:1px solid #DED7C2;padding-top:8px;color:#8A8268">DOC LVR-TER-SD-L · REV 03</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-top:1px solid #CEC6AE;font-size:11px;color:#8A8268">
+          <div style="display:flex;gap:18px;white-space:nowrap"><span><span style="color:#5D5744">j/k</span> NAVIGATE</span><span><span style="color:#5D5744">/</span> SEARCH</span><span><span style="color:#5D5744">f</span> FILTERS</span><span><span style="color:#5D5744">⏎</span> APPLY</span><span><span style="color:#5D5744">s</span> SETTINGS</span><span><span style="color:#5D5744">q</span> QUIT</span></div>
+          <div style="display:flex;align-items:center;gap:8px;color:#3E8757"><span style="width:8px;height:8px;background:#3E8757"></span>READY</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ 2b FILTER POPUP -->
+  <div id="2b" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <a href="#2b" style="text-decoration:none;background:#EDE9E2;color:#1D1A17;font-size:12px;font-weight:700;padding:3px 8px">2B</a>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#EDE9E2">FILTER POPUP — PRESSED f</span>
+      <span style="font-size:11px;color:#857D6E;letter-spacing:0.08em">EVERY CHIP HAS A KEY · TOGGLES INSTANTLY · CHIPS REMAIN CLICKABLE</span>
+    </div>
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
+      <div style="flex:none;width:1080px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #3C362C">
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.02em">BLACK AT<span style="display:inline-block;width:11px;height:11px;background:#EDE9E2"></span>M LIVERY</span>
+            <span style="font-size:11px;color:#857D6E">V0.3.0</span>
+          </div>
+          <div style="font-size:11px;color:#857D6E;letter-spacing:0.1em">FILTERING — 12 OF 24 SHOWN</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #3C362C;background:#252119">
+          <span style="color:#63AD79;font-weight:700;font-size:13px">»</span>
+          <span style="font-size:13px;color:#857D6E;flex:1">search theme names — /</span>
+          <span style="font-size:10px;color:#57503F;letter-spacing:0.1em">esc CLOSE FILTERS</span>
+        </div>
+        <div style="position:relative;min-height:480px">
+          <!-- dimmed list behind -->
+          <div style="opacity:0.3;padding:16px 0;display:flex;flex-direction:column;gap:4px;width:340px;border-right:1px solid #3C362C;min-height:480px">
+            <div style="display:flex;align-items:baseline;gap:8px;padding:0 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">JPN — JAPAN (4)</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Koyo Hiru</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Koyo Yoru</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Murasaki Yoru</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Tsuki Yoru</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:14px 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">TERRA (8)</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Spring Day</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Spring Night</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Summer Day</span></div>
+          </div>
+          <!-- popup -->
+          <div style="position:absolute;top:28px;left:50%;transform:translateX(-50%);width:680px;background:#252119;border:1px solid #857D6E;display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-bottom:1px solid #3C362C">
+              <span style="font-size:11px;letter-spacing:0.16em;color:#EDE9E2;font-weight:700">FILTERS</span>
+              <span style="font-size:10px;color:#857D6E;letter-spacing:0.1em">PRESS KEY TO TOGGLE · esc CLOSE</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;padding:18px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">COLLECTION</span>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:11px">
+                  <span style="border:1px solid #3C362C;color:#B8B1A4;padding:4px 10px;cursor:pointer"><span style="color:#63AD79">1</span> ALL</span>
+                  <span style="border:1px solid #3C362C;color:#B8B1A4;padding:4px 10px;cursor:pointer"><span style="color:#63AD79">2</span> DEFAULT</span>
+                  <span style="background:#EDE9E2;color:#1D1A17;padding:4px 10px;font-weight:700;cursor:pointer"><span>3</span> JPN</span>
+                  <span style="background:#EDE9E2;color:#1D1A17;padding:4px 10px;font-weight:700;cursor:pointer;outline:1px solid #63AD79;outline-offset:2px"><span>4</span> TERRA</span>
+                  <span style="border:1px solid #3C362C;color:#B8B1A4;padding:4px 10px;cursor:pointer"><span style="color:#63AD79">5</span> STATIONS</span>
+                  <span style="border:1px solid #3C362C;color:#B8B1A4;padding:4px 10px;cursor:pointer"><span style="color:#63AD79">6</span> CRBN</span>
+                  <span style="border:1px solid #3C362C;color:#B8B1A4;padding:4px 10px;cursor:pointer"><span style="color:#63AD79">7</span> NORTH</span>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">APPEARANCE</span>
+                <div style="display:flex;gap:6px;font-size:11px">
+                  <span style="background:#EDE9E2;color:#1D1A17;padding:4px 10px;font-weight:700;cursor:pointer"><span>a</span> ALL</span>
+                  <span style="border:1px solid #3C362C;color:#B8B1A4;padding:4px 10px;cursor:pointer"><span style="color:#63AD79">d</span> DARK</span>
+                  <span style="border:1px solid #3C362C;color:#B8B1A4;padding:4px 10px;cursor:pointer"><span style="color:#63AD79">l</span> LIGHT</span>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">SYNC</span>
+                <div style="display:flex;gap:6px;font-size:11px">
+                  <span style="border:1px solid #3C362C;color:#B8B1A4;padding:4px 10px;cursor:pointer"><span style="color:#63AD79">s</span> SYNCED ONLY</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #3C362C;font-size:10px;color:#857D6E;letter-spacing:0.1em">
+              <span>12 THEMES MATCH</span>
+              <span><span style="color:#B8B1A4">r</span> RESET · <span style="color:#B8B1A4">⏎</span> DONE</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-top:1px solid #3C362C;font-size:11px;color:#857D6E">
+          <div style="display:flex;gap:18px;white-space:nowrap"><span><span style="color:#B8B1A4">1-7</span> COLLECTION</span><span><span style="color:#B8B1A4">a/d/l</span> APPEARANCE</span><span><span style="color:#B8B1A4">s</span> SYNC</span><span><span style="color:#B8B1A4">r</span> RESET</span><span><span style="color:#B8B1A4">esc</span> CLOSE</span></div>
+          <div style="display:flex;align-items:center;gap:8px;color:#63AD79"><span style="width:8px;height:8px;background:#63AD79"></span>FILTER MODE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ 2c BODY SANS -->
+  <div id="2c" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <a href="#2c" style="text-decoration:none;background:#EDE9E2;color:#1D1A17;font-size:12px;font-weight:700;padding:3px 8px">2C</a>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#EDE9E2">BODY SANS CANDIDATES</span>
+      <span style="font-size:11px;color:#857D6E;letter-spacing:0.08em">PAIRED WITH IOSEVKA MONO + SPACE GROTESK DISPLAY · ALL OFL/OPEN</span>
+    </div>
+    <div style="display:flex;gap:24px;align-items:stretch;flex-wrap:wrap">
+      <div style="flex:none;width:400px;background:#1D1A17;border:1px solid #63AD79;color:#EDE9E2;padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #2E2922;padding-bottom:8px"><span style="font-size:11px;letter-spacing:0.14em;color:#63AD79">IBM PLEX SANS — BASELINE</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4">Autumn dusk in Kyoto. Deep burgundy and amber accents settle over a warm charcoal ground — built for long evening sessions across eight tools.</div>
+        <div style="font-size:11px;color:#857D6E;line-height:1.6;margin-top:auto">Engineered grotesque, made for datasheets. Sits naturally next to mono chrome; slightly formal.</div>
+      </div>
+      <div style="flex:none;width:400px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #2E2922;padding-bottom:8px"><span style="font-size:11px;letter-spacing:0.14em;color:#857D6E">PUBLIC SANS</span></div>
+        <div style="font-family:'Public Sans',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4">Autumn dusk in Kyoto. Deep burgundy and amber accents settle over a warm charcoal ground — built for long evening sessions across eight tools.</div>
+        <div style="font-size:11px;color:#857D6E;line-height:1.6;margin-top:auto">US government's typeface (USWDS). Bureaucratic-utilitarian register — very "official document", a touch dry.</div>
+      </div>
+      <div style="flex:none;width:400px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #2E2922;padding-bottom:8px"><span style="font-size:11px;letter-spacing:0.14em;color:#857D6E">SOURCE SANS 3</span></div>
+        <div style="font-family:'Source Sans 3',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4">Autumn dusk in Kyoto. Deep burgundy and amber accents settle over a warm charcoal ground — built for long evening sessions across eight tools.</div>
+        <div style="font-size:11px;color:#857D6E;line-height:1.6;margin-top:auto">Adobe's UI workhorse. Warmest and most humanist of the set — friendly, reads effortlessly at small sizes.</div>
+      </div>
+      <div style="flex:none;width:400px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;padding:22px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #2E2922;padding-bottom:8px"><span style="font-size:11px;letter-spacing:0.14em;color:#857D6E">INSTRUMENT SANS</span></div>
+        <div style="font-family:'Instrument Sans',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4">Autumn dusk in Kyoto. Deep burgundy and amber accents settle over a warm charcoal ground — built for long evening sessions across eight tools.</div>
+        <div style="font-size:11px;color:#857D6E;line-height:1.6;margin-top:auto">Neo-grotesque with quiet quirks; closest cousin to Space Grotesk, so display and body feel related — risk: too similar.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section style="padding:56px;display:flex;flex-direction:column;gap:40px;font-family:'JetBrains Mono',monospace">
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="font-size:12px;letter-spacing:0.18em;color:#857D6E">TURN 01 — LIVERY UI REWORK</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:#EDE9E2;letter-spacing:-0.01em">MAIN VIEW — THREE DIRECTIONS + TYPE STACKS</div>
+    <div style="font-size:12px;color:#B8B1A4;max-width:72ch;line-height:1.6">Each direction shown dark + light. <a href="#1a" style="color:#63AD79">1a</a> REGISTRY — balanced datasheet. <a href="#1b" style="color:#63AD79">1b</a> CONSOLE — dense, prompt-first. <a href="#1c" style="color:#63AD79">1c</a> SPECIMEN — airy, theme-forward. <a href="#1d" style="color:#63AD79">1d</a> type stack proposals.</div>
+  </div>
+
+  <!-- ============================================================ 1a REGISTRY -->
+  <div id="1a" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <a href="#1a" style="text-decoration:none;background:#EDE9E2;color:#1D1A17;font-size:12px;font-weight:700;padding:3px 8px">1A</a>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#EDE9E2">REGISTRY</span>
+      <span style="font-size:11px;color:#857D6E;letter-spacing:0.08em">BALANCED DATASHEET · FULL-WIDTH COMMAND PROMPT · BOXED SPEC PANEL</span>
+    </div>
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
+
+      <!-- 1a DARK -->
+      <div style="flex:none;width:1080px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;display:flex;flex-direction:column">
+        <!-- header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #3C362C">
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.02em">BLACK AT<span style="display:inline-block;width:11px;height:11px;background:#EDE9E2"></span>M LIVERY</span>
+            <span style="font-size:11px;color:#857D6E">V0.3.0</span>
+          </div>
+          <div style="font-size:11px;color:#857D6E;letter-spacing:0.1em">24 THEMES · 6 COLLECTIONS · ENV DARK</div>
+        </div>
+        <!-- command prompt -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #3C362C;background:#252119">
+          <span style="color:#63AD79;font-weight:700;font-size:13px">»</span>
+          <span style="font-size:13px;color:#857D6E;flex:1">type to filter — press /</span>
+          <div style="display:flex;gap:8px;font-size:11px">
+            <span style="border:1px solid #3C362C;padding:3px 8px;color:#B8B1A4;letter-spacing:0.06em">COLLECTION · ALL</span>
+            <span style="border:1px solid #3C362C;padding:3px 8px;color:#B8B1A4;letter-spacing:0.06em">APPEARANCE · ALL</span>
+            <span style="border:1px solid #3C362C;padding:3px 8px;color:#B8B1A4;letter-spacing:0.06em">SYNC · ALL</span>
+          </div>
+        </div>
+        <!-- body -->
+        <div style="display:grid;grid-template-columns:360px 1fr;min-height:640px">
+          <!-- list -->
+          <div style="border-right:1px solid #3C362C;padding:16px 0;display:flex;flex-direction:column;gap:4px;overflow:hidden">
+            <div style="display:flex;align-items:baseline;gap:8px;padding:0 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">DEFAULT (4)</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Dark</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#96A9C6"></span><span style="width:7px;height:7px;background:#7FA99A"></span><span style="width:7px;height:7px;background:#A97BA2"></span><span style="width:7px;height:7px;background:#D9A662"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Dark Dimmed</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#8496AD"></span><span style="width:7px;height:7px;background:#749588"></span><span style="width:7px;height:7px;background:#93718D"></span><span style="width:7px;height:7px;background:#BD9459"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Light</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#4A6B94"></span><span style="width:7px;height:7px;background:#3E7A63"></span><span style="width:7px;height:7px;background:#7E5578"></span><span style="width:7px;height:7px;background:#A87A32"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Light Dimmed</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#5F7490"></span><span style="width:7px;height:7px;background:#578270"></span><span style="width:7px;height:7px;background:#8A6B84"></span><span style="width:7px;height:7px;background:#A8853F"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:14px 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">JPN — JAPAN (4)</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Koyo Hiru</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#B0543F"></span><span style="width:7px;height:7px;background:#7A8B4C"></span><span style="width:7px;height:7px;background:#B08D3E"></span><span style="width:7px;height:7px;background:#5F7A94"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;background:#2A251E;color:#EDE9E2;border-left:2px solid #63AD79;margin-left:-2px"><span style="width:12px;color:#63AD79">›</span><span style="flex:1;font-weight:500">Koyo Yoru</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#C46A5A"></span><span style="width:7px;height:7px;background:#8FA36B"></span><span style="width:7px;height:7px;background:#D9A662"></span><span style="width:7px;height:7px;background:#A97BA2"></span></span><span style="font-size:9px;border:1px solid #857D6E;color:#B8B1A4;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Murasaki Yoru</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#9B72B8"></span><span style="width:7px;height:7px;background:#7FA99A"></span><span style="width:7px;height:7px;background:#C0A0D8"></span><span style="width:7px;height:7px;background:#D9A662"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Tsuki Yoru</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#8CA3C4"></span><span style="width:7px;height:7px;background:#93BDAE"></span><span style="width:7px;height:7px;background:#C4B295"></span><span style="width:7px;height:7px;background:#A97BA2"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:14px 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">TERRA (8)</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Spring Day</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#2E8B57"></span><span style="width:7px;height:7px;background:#98D898"></span><span style="width:7px;height:7px;background:#E8708A"></span><span style="width:7px;height:7px;background:#D4A028"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Spring Night</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#3CB371"></span><span style="width:7px;height:7px;background:#98D898"></span><span style="width:7px;height:7px;background:#E8708A"></span><span style="width:7px;height:7px;background:#FFC107"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Fall Day</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#B0543F"></span><span style="width:7px;height:7px;background:#A8853F"></span><span style="width:7px;height:7px;background:#7A8B4C"></span><span style="width:7px;height:7px;background:#5F7A94"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#B8B1A4"><span style="width:12px"></span><span style="flex:1">Fall Night</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#C46A5A"></span><span style="width:7px;height:7px;background:#D9A662"></span><span style="width:7px;height:7px;background:#8FA36B"></span><span style="width:7px;height:7px;background:#7E93B0"></span></span><span style="font-size:9px;border:1px solid #3C362C;color:#857D6E;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="font-size:10px;color:#857D6E;padding:12px 20px 0;letter-spacing:0.1em">↓ STATIONS (4) · CRBN (2) · NORTH (2) — 9/24</div>
+          </div>
+          <!-- detail -->
+          <div style="padding:28px 32px;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;gap:14px">
+                  <span style="font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;letter-spacing:-0.01em;line-height:1">KOYO YORU</span>
+                  <span style="border:1px solid #857D6E;font-size:10px;letter-spacing:0.14em;padding:3px 8px;color:#B8B1A4">DARK</span>
+                </div>
+                <div style="font-size:11px;letter-spacing:0.14em;color:#857D6E">JPN — JAPAN COLLECTION · KEY jpn-koyo-yoru</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#63AD79;letter-spacing:0.1em"><span style="width:8px;height:8px;background:#63AD79"></span>SYNCED</div>
+            </div>
+            <div style="font-family:'Recursive',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4;max-width:62ch">Autumn dusk in Kyoto. Deep burgundy and amber accents settle over a warm charcoal ground — built for long evening sessions.</div>
+            <!-- primaries -->
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">PRIMARIES · 12</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+              <div style="display:flex;gap:2px">
+                <div style="flex:1"><div style="height:34px;background:#14100E;border:1px solid #2E2922"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">14100E</div></div>
+                <div style="flex:1"><div style="height:34px;background:#1C1714;border:1px solid #2E2922"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">1C1714</div></div>
+                <div style="flex:1"><div style="height:34px;background:#262019;border:1px solid #2E2922"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">262019</div></div>
+                <div style="flex:1"><div style="height:34px;background:#322A21"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">322A21</div></div>
+                <div style="flex:1"><div style="height:34px;background:#4A4034"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">4A4034</div></div>
+                <div style="flex:1"><div style="height:34px;background:#6B5D4C"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">6B5D4C</div></div>
+                <div style="flex:1"><div style="height:34px;background:#8C7B64"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">8C7B64</div></div>
+                <div style="flex:1"><div style="height:34px;background:#A8957A"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">A8957A</div></div>
+                <div style="flex:1"><div style="height:34px;background:#C4B295"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">C4B295</div></div>
+                <div style="flex:1"><div style="height:34px;background:#D9CBAE"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">D9CBAE</div></div>
+                <div style="flex:1"><div style="height:34px;background:#E8DEC6"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">E8DEC6</div></div>
+                <div style="flex:1"><div style="height:34px;background:#F4EDDD"></div><div style="font-size:9px;color:#857D6E;padding-top:4px">F4EDDD</div></div>
+              </div>
+            </div>
+            <!-- palette -->
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">PALETTE · ANSI 16</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+              <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:2px">
+                <div><div style="height:26px;background:#262019;border:1px solid #2E2922"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">262019</div></div>
+                <div><div style="height:26px;background:#C46A5A"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">C46A5A</div></div>
+                <div><div style="height:26px;background:#8FA36B"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">8FA36B</div></div>
+                <div><div style="height:26px;background:#D9A662"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">D9A662</div></div>
+                <div><div style="height:26px;background:#7E93B0"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">7E93B0</div></div>
+                <div><div style="height:26px;background:#A97BA2"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">A97BA2</div></div>
+                <div><div style="height:26px;background:#7FA99A"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">7FA99A</div></div>
+                <div><div style="height:26px;background:#D9CBAE"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">D9CBAE</div></div>
+                <div><div style="height:26px;background:#3A3226"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">3A3226</div></div>
+                <div><div style="height:26px;background:#D98A78"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">D98A78</div></div>
+                <div><div style="height:26px;background:#A9BE85"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">A9BE85</div></div>
+                <div><div style="height:26px;background:#E9BD78"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">E9BD78</div></div>
+                <div><div style="height:26px;background:#94A9C6"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">94A9C6</div></div>
+                <div><div style="height:26px;background:#C094B8"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">C094B8</div></div>
+                <div><div style="height:26px;background:#96C2B1"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">96C2B1</div></div>
+                <div><div style="height:26px;background:#F4EDDD"></div><div style="font-size:9px;color:#857D6E;padding-top:3px">F4EDDD</div></div>
+              </div>
+            </div>
+            <!-- code preview + meta -->
+            <div style="display:grid;grid-template-columns:1fr 260px;gap:20px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">PREVIEW · RENDERED IN THEME</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+                <div style="background:#14100E;border:1px solid #322A21;padding:14px 16px;font-size:12px;line-height:1.75;color:#D9CBAE">
+                  <div><span style="color:#6B5D4C">// adapters/ghostty.ts</span></div>
+                  <div><span style="color:#C46A5A">export function</span> <span style="color:#7E93B0">apply</span>(theme: <span style="color:#D9A662">Theme</span>) {</div>
+                  <div>&nbsp;&nbsp;<span style="color:#C46A5A">const</span> path = <span style="color:#7E93B0">expand</span>(<span style="color:#8FA36B">"~/.config/ghostty"</span>);</div>
+                  <div>&nbsp;&nbsp;<span style="color:#C46A5A">return</span> <span style="color:#7E93B0">write</span>(path, <span style="color:#7E93B0">render</span>(theme)); <span style="color:#6B5D4C">// 8 targets</span></div>
+                  <div>}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#857D6E">SPEC</span><span style="flex:1;border-bottom:1px solid #2E2922"></span></div>
+                <div style="display:flex;flex-direction:column;gap:6px;font-size:11px">
+                  <div style="display:flex;justify-content:space-between"><span style="color:#857D6E;letter-spacing:0.1em">COLLECTION</span><span style="color:#B8B1A4">JPN</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#857D6E;letter-spacing:0.1em">APPEARANCE</span><span style="color:#B8B1A4">DARK</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#857D6E;letter-spacing:0.1em">CORE VERSION</span><span style="color:#B8B1A4">1.0.2</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#857D6E;letter-spacing:0.1em">STATUS</span><span style="color:#63AD79">■ SYNCED · 8/8</span></div>
+                </div>
+                <div style="margin-top:auto;font-size:9px;letter-spacing:0.12em;border-top:1px solid #2E2922;padding-top:8px;color:#857D6E">DOC LVR-JPN-KY-D · REV 03</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- footer -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-top:1px solid #3C362C;font-size:11px;color:#857D6E">
+          <div style="display:flex;gap:18px"><span><span style="color:#B8B1A4">j/k</span> NAVIGATE</span><span><span style="color:#B8B1A4">/</span> SEARCH</span><span><span style="color:#B8B1A4">f</span> FILTER</span><span><span style="color:#B8B1A4">⏎</span> APPLY</span><span><span style="color:#B8B1A4">s</span> SETTINGS</span><span><span style="color:#B8B1A4">q</span> QUIT</span></div>
+          <div style="display:flex;align-items:center;gap:8px;color:#63AD79"><span style="width:8px;height:8px;background:#63AD79"></span>READY</div>
+        </div>
+      </div>
+
+      <!-- 1a LIGHT -->
+      <div style="flex:none;width:1080px;background:#F5F1E6;border:1px solid #CEC6AE;color:#2A251C;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid #CEC6AE">
+          <div style="display:flex;align-items:baseline;gap:12px">
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;letter-spacing:0.02em">BLACK AT<span style="display:inline-block;width:11px;height:11px;background:#2A251C"></span>M LIVERY</span>
+            <span style="font-size:11px;color:#8A8268">V0.3.0</span>
+          </div>
+          <div style="font-size:11px;color:#8A8268;letter-spacing:0.1em">24 THEMES · 6 COLLECTIONS · ENV LIGHT</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 20px;border-bottom:1px solid #CEC6AE;background:#EDE8D9">
+          <span style="color:#3E8757;font-weight:700;font-size:13px">»</span>
+          <span style="font-size:13px;color:#8A8268;flex:1">type to filter — press /</span>
+          <div style="display:flex;gap:8px;font-size:11px">
+            <span style="border:1px solid #CEC6AE;padding:3px 8px;color:#5D5744;letter-spacing:0.06em">COLLECTION · ALL</span>
+            <span style="border:1px solid #CEC6AE;padding:3px 8px;color:#5D5744;letter-spacing:0.06em">APPEARANCE · ALL</span>
+            <span style="border:1px solid #CEC6AE;padding:3px 8px;color:#5D5744;letter-spacing:0.06em">SYNC · ALL</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:360px 1fr;min-height:640px">
+          <div style="border-right:1px solid #CEC6AE;padding:16px 0;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:baseline;gap:8px;padding:0 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">JPN — JAPAN (4)</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Koyo Hiru</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#B0543F"></span><span style="width:7px;height:7px;background:#7A8B4C"></span><span style="width:7px;height:7px;background:#B08D3E"></span><span style="width:7px;height:7px;background:#5F7A94"></span></span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Koyo Yoru</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#C46A5A"></span><span style="width:7px;height:7px;background:#8FA36B"></span><span style="width:7px;height:7px;background:#D9A662"></span><span style="width:7px;height:7px;background:#A97BA2"></span></span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:14px 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">TERRA (8)</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;background:#EAE4D2;color:#2A251C;border-left:2px solid #3E8757;margin-left:-2px"><span style="width:12px;color:#3E8757">›</span><span style="flex:1;font-weight:500">Spring Day</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#2E8B57"></span><span style="width:7px;height:7px;background:#98D898"></span><span style="width:7px;height:7px;background:#E8708A"></span><span style="width:7px;height:7px;background:#D4A028"></span></span><span style="font-size:9px;border:1px solid #8A8268;color:#5D5744;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Spring Night</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#3CB371"></span><span style="width:7px;height:7px;background:#98D898"></span><span style="width:7px;height:7px;background:#E8708A"></span><span style="width:7px;height:7px;background:#FFC107"></span></span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Summer Day</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#2E8B57"></span><span style="width:7px;height:7px;background:#4499CC"></span><span style="width:7px;height:7px;background:#D4A028"></span><span style="width:7px;height:7px;background:#E8708A"></span></span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Fall Day</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#B0543F"></span><span style="width:7px;height:7px;background:#A8853F"></span><span style="width:7px;height:7px;background:#7A8B4C"></span><span style="width:7px;height:7px;background:#5F7A94"></span></span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px;margin-left:8px">L</span></div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding:14px 20px 6px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">STATIONS (4)</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Engineering</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#C99A4E"></span><span style="width:7px;height:7px;background:#7FA99A"></span><span style="width:7px;height:7px;background:#7E93B0"></span><span style="width:7px;height:7px;background:#C46A5A"></span></span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:5px 20px;font-size:13px;color:#5D5744"><span style="width:12px"></span><span style="flex:1">Operations</span><span style="display:flex;gap:2px"><span style="width:7px;height:7px;background:#4499CC"></span><span style="width:7px;height:7px;background:#7FA99A"></span><span style="width:7px;height:7px;background:#C99A4E"></span><span style="width:7px;height:7px;background:#A97BA2"></span></span><span style="font-size:9px;border:1px solid #CEC6AE;color:#8A8268;padding:1px 4px;margin-left:8px">D</span></div>
+            <div style="font-size:10px;color:#8A8268;padding:12px 20px 0;letter-spacing:0.1em">↓ CRBN (2) · NORTH (2) — 11/24</div>
+          </div>
+          <div style="padding:28px 32px;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;gap:14px">
+                  <span style="font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;letter-spacing:-0.01em;line-height:1">SPRING DAY</span>
+                  <span style="border:1px solid #8A8268;font-size:10px;letter-spacing:0.14em;padding:3px 8px;color:#5D5744">LIGHT</span>
+                </div>
+                <div style="font-size:11px;letter-spacing:0.14em;color:#8A8268">TERRA COLLECTION · KEY terra-spring-day</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#3E8757;letter-spacing:0.1em"><span style="width:8px;height:8px;background:#3E8757"></span>SYNCED</div>
+            </div>
+            <div style="font-family:'Recursive',sans-serif;font-size:14px;line-height:1.7;color:#5D5744;max-width:62ch">Fresh growth and morning dew. Soft greens with blossom pinks on a bright day — a high-clarity palette for daylight work.</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">PRIMARIES · 12</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+              <div style="display:flex;gap:2px">
+                <div style="flex:1"><div style="height:34px;background:#FDFCF0;border:1px solid #DED7C2"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">FDFCF0</div></div>
+                <div style="flex:1"><div style="height:34px;background:#F7F3E3;border:1px solid #DED7C2"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">F7F3E3</div></div>
+                <div style="flex:1"><div style="height:34px;background:#EDEADB;border:1px solid #DED7C2"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">EDEADB</div></div>
+                <div style="flex:1"><div style="height:34px;background:#E0E2DB"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">E0E2DB</div></div>
+                <div style="flex:1"><div style="height:34px;background:#D2D4C8"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">D2D4C8</div></div>
+                <div style="flex:1"><div style="height:34px;background:#BFC3BA"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">BFC3BA</div></div>
+                <div style="flex:1"><div style="height:34px;background:#A8B09B"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">A8B09B</div></div>
+                <div style="flex:1"><div style="height:34px;background:#8C9A7E"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">8C9A7E</div></div>
+                <div style="flex:1"><div style="height:34px;background:#70845F"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">70845F</div></div>
+                <div style="flex:1"><div style="height:34px;background:#5C7050"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">5C7050</div></div>
+                <div style="flex:1"><div style="height:34px;background:#475A3D"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">475A3D</div></div>
+                <div style="flex:1"><div style="height:34px;background:#33422C"></div><div style="font-size:9px;color:#8A8268;padding-top:4px">33422C</div></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">PALETTE · ANSI 16</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+              <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:2px">
+                <div><div style="height:26px;background:#4A4A42"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">4A4A42</div></div>
+                <div><div style="height:26px;background:#DC3545"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">DC3545</div></div>
+                <div><div style="height:26px;background:#2E8B57"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">2E8B57</div></div>
+                <div><div style="height:26px;background:#D4A028"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">D4A028</div></div>
+                <div><div style="height:26px;background:#4499CC"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">4499CC</div></div>
+                <div><div style="height:26px;background:#6F42C1"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">6F42C1</div></div>
+                <div><div style="height:26px;background:#17A2B8"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">17A2B8</div></div>
+                <div><div style="height:26px;background:#E8E4D4;border:1px solid #DED7C2"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">E8E4D4</div></div>
+                <div><div style="height:26px;background:#6B6B60"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">6B6B60</div></div>
+                <div><div style="height:26px;background:#E8708A"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">E8708A</div></div>
+                <div><div style="height:26px;background:#3CB371"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">3CB371</div></div>
+                <div><div style="height:26px;background:#FFC107"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">FFC107</div></div>
+                <div><div style="height:26px;background:#63B3E4"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">63B3E4</div></div>
+                <div><div style="height:26px;background:#9B72D8"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">9B72D8</div></div>
+                <div><div style="height:26px;background:#20B2AA"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">20B2AA</div></div>
+                <div><div style="height:26px;background:#FDFCF0;border:1px solid #DED7C2"></div><div style="font-size:9px;color:#8A8268;padding-top:3px">FDFCF0</div></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 260px;gap:20px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">PREVIEW · RENDERED IN THEME</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+                <div style="background:#FDFCF0;border:1px solid #D2D4C8;padding:14px 16px;font-size:12px;line-height:1.75;color:#4A4A42">
+                  <div><span style="color:#A8B09B">// adapters/ghostty.ts</span></div>
+                  <div><span style="color:#DC3545">export function</span> <span style="color:#4499CC">apply</span>(theme: <span style="color:#D4A028">Theme</span>) {</div>
+                  <div>&nbsp;&nbsp;<span style="color:#DC3545">const</span> path = <span style="color:#4499CC">expand</span>(<span style="color:#2E8B57">"~/.config/ghostty"</span>);</div>
+                  <div>&nbsp;&nbsp;<span style="color:#DC3545">return</span> <span style="color:#4499CC">write</span>(path, <span style="color:#4499CC">render</span>(theme)); <span style="color:#A8B09B">// 8 targets</span></div>
+                  <div>}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:10px;letter-spacing:0.14em;color:#8A8268">SPEC</span><span style="flex:1;border-bottom:1px solid #DED7C2"></span></div>
+                <div style="display:flex;flex-direction:column;gap:6px;font-size:11px">
+                  <div style="display:flex;justify-content:space-between"><span style="color:#8A8268;letter-spacing:0.1em">COLLECTION</span><span style="color:#5D5744">TERRA</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#8A8268;letter-spacing:0.1em">APPEARANCE</span><span style="color:#5D5744">LIGHT</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#8A8268;letter-spacing:0.1em">CORE VERSION</span><span style="color:#5D5744">1.0.2</span></div>
+                  <div style="display:flex;justify-content:space-between"><span style="color:#8A8268;letter-spacing:0.1em">STATUS</span><span style="color:#3E8757">■ SYNCED · 8/8</span></div>
+                </div>
+                <div style="margin-top:auto;font-size:9px;letter-spacing:0.12em;border-top:1px solid #DED7C2;padding-top:8px;color:#8A8268">DOC LVR-TER-SD-L · REV 02</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-top:1px solid #CEC6AE;font-size:11px;color:#8A8268">
+          <div style="display:flex;gap:18px"><span><span style="color:#5D5744">j/k</span> NAVIGATE</span><span><span style="color:#5D5744">/</span> SEARCH</span><span><span style="color:#5D5744">f</span> FILTER</span><span><span style="color:#5D5744">⏎</span> APPLY</span><span><span style="color:#5D5744">s</span> SETTINGS</span><span><span style="color:#5D5744">q</span> QUIT</span></div>
+          <div style="display:flex;align-items:center;gap:8px;color:#3E8757"><span style="width:8px;height:8px;background:#3E8757"></span>READY</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ 1b CONSOLE -->
+  <div id="1b" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <a href="#1b" style="text-decoration:none;background:#EDE9E2;color:#1D1A17;font-size:12px;font-weight:700;padding:3px 8px">1B</a>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#EDE9E2">CONSOLE</span>
+      <span style="font-size:11px;color:#857D6E;letter-spacing:0.08em">DENSE · PROMPT LIVES IN THE LIST · INDEXED ROWS · RAW SPEC PANEL</span>
+    </div>
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
+
+      <!-- 1b DARK -->
+      <div style="flex:none;width:1080px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1px solid #3C362C;font-size:12px">
+          <span><span style="font-weight:700">LIVERY</span> <span style="color:#857D6E">V0.3.0 — BLACK ATOM INDUSTRIES</span></span>
+          <span style="color:#857D6E">24 THEMES</span>
+        </div>
+        <div style="display:grid;grid-template-columns:340px 1fr;min-height:620px">
+          <div style="border-right:1px solid #3C362C;display:flex;flex-direction:column">
+            <!-- prompt in list -->
+            <div style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid #3C362C;background:#14100E;font-size:13px">
+              <span style="color:#63AD79">/</span><span>koyo<span style="display:inline-block;width:7px;height:14px;background:#63AD79;vertical-align:text-bottom"></span></span>
+              <span style="margin-left:auto;font-size:11px;color:#857D6E">2/24</span>
+            </div>
+            <div style="display:flex;gap:12px;padding:6px 14px;border-bottom:1px solid #2E2922;font-size:10px;color:#857D6E;letter-spacing:0.08em">
+              <span>[c] COLL:<span style="color:#B8B1A4">ALL</span></span><span>[a] APPEAR:<span style="color:#B8B1A4">ALL</span></span><span>[x] SYNC:<span style="color:#B8B1A4">ALL</span></span>
+            </div>
+            <div style="padding:8px 0;display:flex;flex-direction:column;font-size:12px;line-height:1">
+              <div style="padding:4px 14px;font-size:10px;color:#857D6E;letter-spacing:0.12em">JPN (2 MATCH)</div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#B8B1A4"><span style="color:#857D6E">05</span><span style="flex:1"><span style="background:#3A3226;color:#EDE9E2">Koyo</span> Hiru</span><span style="color:#857D6E">L</span><span style="width:7px;height:7px;background:#3C362C"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;background:#2A251E;color:#EDE9E2;outline:1px solid #63AD79;outline-offset:-1px"><span style="color:#63AD79">06</span><span style="flex:1;font-weight:500"><span style="background:#3A3226">Koyo</span> Yoru</span><span style="color:#B8B1A4">D</span><span style="width:7px;height:7px;background:#63AD79"></span></div>
+              <div style="padding:14px 14px 4px;font-size:10px;color:#857D6E;letter-spacing:0.12em">DIMMED (22 HIDDEN BY QUERY)</div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>01</span><span style="flex:1">Dark</span><span>D</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>02</span><span style="flex:1">Dark Dimmed</span><span>D</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>03</span><span style="flex:1">Light</span><span>L</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>04</span><span style="flex:1">Light Dimmed</span><span>L</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>07</span><span style="flex:1">Murasaki Yoru</span><span>D</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>08</span><span style="flex:1">Tsuki Yoru</span><span>D</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>09</span><span style="flex:1">Spring Day</span><span>L</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>10</span><span style="flex:1">Spring Night</span><span>D</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#57503F"><span>11</span><span style="flex:1">Fall Day</span><span>L</span><span style="width:7px;height:7px;background:#2E2922"></span></div>
+            </div>
+          </div>
+          <!-- detail raw spec -->
+          <div style="padding:24px 28px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:baseline;gap:14px">
+              <span style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;line-height:1">KOYO YORU</span>
+              <span style="border:1px solid #857D6E;font-size:10px;letter-spacing:0.14em;padding:2px 7px;color:#B8B1A4">DARK</span>
+              <span style="margin-left:auto;font-size:11px;color:#63AD79">■ SYNCED 8/8</span>
+            </div>
+            <div style="font-size:11px;color:#857D6E">jpn-koyo-yoru · JPN — JAPAN · CORE 1.0.2 · REV 03</div>
+            <div style="font-size:11px;color:#857D6E;letter-spacing:0.06em">─── PRIMARIES ─────────────────────────────────────────────</div>
+            <div style="display:flex;gap:0">
+              <div style="width:52px;height:40px;background:#14100E;border:1px solid #2E2922"></div><div style="width:52px;height:40px;background:#1C1714"></div><div style="width:52px;height:40px;background:#262019"></div><div style="width:52px;height:40px;background:#322A21"></div><div style="width:52px;height:40px;background:#4A4034"></div><div style="width:52px;height:40px;background:#6B5D4C"></div><div style="width:52px;height:40px;background:#8C7B64"></div><div style="width:52px;height:40px;background:#A8957A"></div><div style="width:52px;height:40px;background:#C4B295"></div><div style="width:52px;height:40px;background:#D9CBAE"></div><div style="width:52px;height:40px;background:#E8DEC6"></div><div style="width:52px;height:40px;background:#F4EDDD"></div>
+            </div>
+            <div style="font-size:10px;color:#857D6E;display:flex;gap:14px;flex-wrap:wrap"><span>d1 14100E</span><span>d2 1C1714</span><span>d3 262019</span><span>d4 322A21</span><span>m1 4A4034</span><span>m2 6B5D4C</span><span>m3 8C7B64</span><span>m4 A8957A</span><span>l1 C4B295</span><span>l2 D9CBAE</span><span>l3 E8DEC6</span><span>l4 F4EDDD</span></div>
+            <div style="font-size:11px;color:#857D6E;letter-spacing:0.06em">─── PALETTE / ANSI ────────────────────────────────────────</div>
+            <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:1px;font-size:10px;color:#857D6E">
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#262019;border:1px solid #2E2922"></span>blk</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#C46A5A"></span>red</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#8FA36B"></span>grn</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#D9A662"></span>ylw</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#7E93B0"></span>blu</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#A97BA2"></span>mag</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#7FA99A"></span>cyn</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#D9CBAE"></span>wht</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#3A3226"></span>bblk</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#D98A78"></span>bred</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#A9BE85"></span>bgrn</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#E9BD78"></span>bylw</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#94A9C6"></span>bblu</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#C094B8"></span>bmag</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#96C2B1"></span>bcyn</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#F4EDDD"></span>bwht</div>
+            </div>
+            <div style="font-size:11px;color:#857D6E;letter-spacing:0.06em">─── PREVIEW ───────────────────────────────────────────────</div>
+            <div style="background:#14100E;border:1px solid #322A21;padding:16px 18px;font-size:12.5px;line-height:1.8;color:#D9CBAE;flex:1">
+              <div><span style="color:#6B5D4C">// lib/updaters.ts — applied sequentially</span></div>
+              <div><span style="color:#C46A5A">export async function</span> <span style="color:#7E93B0">applyTheme</span>(updaters: <span style="color:#D9A662">UpdaterEntry</span>[]) {</div>
+              <div>&nbsp;&nbsp;<span style="color:#C46A5A">for</span> (<span style="color:#C46A5A">const</span> u <span style="color:#C46A5A">of</span> updaters) {</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#C46A5A">const</span> result = <span style="color:#C46A5A">await</span> u.<span style="color:#7E93B0">run</span>();</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7E93B0">report</span>(u.app, result.status); <span style="color:#6B5D4C">// "ok" | "error"</span></div>
+              <div>&nbsp;&nbsp;}</div>
+              <div>}</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-top:1px solid #3C362C;font-size:11px;color:#857D6E">
+          <div style="display:flex;gap:16px;white-space:nowrap"><span><span style="color:#B8B1A4">j/k</span> NAV</span><span><span style="color:#B8B1A4">/</span> FIND</span><span><span style="color:#B8B1A4">c a x</span> FILTER</span><span><span style="color:#B8B1A4">⏎</span> APPLY</span><span><span style="color:#B8B1A4">esc</span> CLEAR</span><span><span style="color:#B8B1A4">q</span> QUIT</span></div>
+          <div style="color:#63AD79">■ READY · CURRENTLY KOYO YORU</div>
+        </div>
+      </div>
+
+      <!-- 1b LIGHT -->
+      <div style="flex:none;width:1080px;background:#F5F1E6;border:1px solid #CEC6AE;color:#2A251C;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1px solid #CEC6AE;font-size:12px">
+          <span><span style="font-weight:700">LIVERY</span> <span style="color:#8A8268">V0.3.0 — BLACK ATOM INDUSTRIES</span></span>
+          <span style="color:#8A8268">24 THEMES</span>
+        </div>
+        <div style="display:grid;grid-template-columns:340px 1fr;min-height:620px">
+          <div style="border-right:1px solid #CEC6AE;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid #CEC6AE;background:#FDFCF0;font-size:13px">
+              <span style="color:#3E8757">/</span><span>spring<span style="display:inline-block;width:7px;height:14px;background:#3E8757;vertical-align:text-bottom"></span></span>
+              <span style="margin-left:auto;font-size:11px;color:#8A8268">2/24</span>
+            </div>
+            <div style="display:flex;gap:12px;padding:6px 14px;border-bottom:1px solid #DED7C2;font-size:10px;color:#8A8268;letter-spacing:0.08em">
+              <span>[c] COLL:<span style="color:#5D5744">TERRA</span></span><span>[a] APPEAR:<span style="color:#5D5744">LIGHT</span></span><span>[x] SYNC:<span style="color:#5D5744">ALL</span></span>
+            </div>
+            <div style="padding:8px 0;display:flex;flex-direction:column;font-size:12px;line-height:1">
+              <div style="padding:4px 14px;font-size:10px;color:#8A8268;letter-spacing:0.12em">TERRA (2 MATCH)</div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;background:#EAE4D2;color:#2A251C;outline:1px solid #3E8757;outline-offset:-1px"><span style="color:#3E8757">09</span><span style="flex:1;font-weight:500"><span style="background:#DED7C2">Spring</span> Day</span><span style="color:#5D5744">L</span><span style="width:7px;height:7px;background:#3E8757"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#5D5744"><span style="color:#8A8268">10</span><span style="flex:1"><span style="background:#DED7C2;color:#2A251C">Spring</span> Night</span><span style="color:#8A8268">D</span><span style="width:7px;height:7px;background:#CEC6AE"></span></div>
+              <div style="padding:14px 14px 4px;font-size:10px;color:#8A8268;letter-spacing:0.12em">DIMMED (22 HIDDEN BY QUERY + FILTERS)</div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#B0A88E"><span>11</span><span style="flex:1">Summer Day</span><span>L</span><span style="width:7px;height:7px;background:#DED7C2"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#B0A88E"><span>12</span><span style="flex:1">Summer Night</span><span>D</span><span style="width:7px;height:7px;background:#DED7C2"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#B0A88E"><span>13</span><span style="flex:1">Fall Day</span><span>L</span><span style="width:7px;height:7px;background:#DED7C2"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#B0A88E"><span>14</span><span style="flex:1">Fall Night</span><span>D</span><span style="width:7px;height:7px;background:#DED7C2"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#B0A88E"><span>15</span><span style="flex:1">Winter Day</span><span>L</span><span style="width:7px;height:7px;background:#DED7C2"></span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 14px;color:#B0A88E"><span>16</span><span style="flex:1">Winter Night</span><span>D</span><span style="width:7px;height:7px;background:#DED7C2"></span></div>
+            </div>
+          </div>
+          <div style="padding:24px 28px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:baseline;gap:14px">
+              <span style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;line-height:1">SPRING DAY</span>
+              <span style="border:1px solid #8A8268;font-size:10px;letter-spacing:0.14em;padding:2px 7px;color:#5D5744">LIGHT</span>
+              <span style="margin-left:auto;font-size:11px;color:#3E8757">■ SYNCED 8/8</span>
+            </div>
+            <div style="font-size:11px;color:#8A8268">terra-spring-day · TERRA · CORE 1.0.2 · REV 02</div>
+            <div style="font-size:11px;color:#8A8268;letter-spacing:0.06em">─── PRIMARIES ─────────────────────────────────────────────</div>
+            <div style="display:flex;gap:0">
+              <div style="width:52px;height:40px;background:#FDFCF0;border:1px solid #DED7C2"></div><div style="width:52px;height:40px;background:#F7F3E3"></div><div style="width:52px;height:40px;background:#EDEADB"></div><div style="width:52px;height:40px;background:#E0E2DB"></div><div style="width:52px;height:40px;background:#D2D4C8"></div><div style="width:52px;height:40px;background:#BFC3BA"></div><div style="width:52px;height:40px;background:#A8B09B"></div><div style="width:52px;height:40px;background:#8C9A7E"></div><div style="width:52px;height:40px;background:#70845F"></div><div style="width:52px;height:40px;background:#5C7050"></div><div style="width:52px;height:40px;background:#475A3D"></div><div style="width:52px;height:40px;background:#33422C"></div>
+            </div>
+            <div style="font-size:10px;color:#8A8268;display:flex;gap:14px;flex-wrap:wrap"><span>d1 FDFCF0</span><span>d2 F7F3E3</span><span>d3 EDEADB</span><span>d4 E0E2DB</span><span>m1 D2D4C8</span><span>m2 BFC3BA</span><span>m3 A8B09B</span><span>m4 8C9A7E</span><span>l1 70845F</span><span>l2 5C7050</span><span>l3 475A3D</span><span>l4 33422C</span></div>
+            <div style="font-size:11px;color:#8A8268;letter-spacing:0.06em">─── PALETTE / ANSI ────────────────────────────────────────</div>
+            <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:1px;font-size:10px;color:#8A8268">
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#4A4A42"></span>blk</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#DC3545"></span>red</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#2E8B57"></span>grn</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#D4A028"></span>ylw</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#4499CC"></span>blu</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#6F42C1"></span>mag</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#17A2B8"></span>cyn</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#E8E4D4;border:1px solid #DED7C2"></span>wht</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#6B6B60"></span>bblk</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#E8708A"></span>bred</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#3CB371"></span>bgrn</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#FFC107"></span>bylw</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#63B3E4"></span>bblu</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#9B72D8"></span>bmag</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#20B2AA"></span>bcyn</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:14px;height:14px;background:#FDFCF0;border:1px solid #DED7C2"></span>bwht</div>
+            </div>
+            <div style="font-size:11px;color:#8A8268;letter-spacing:0.06em">─── PREVIEW ───────────────────────────────────────────────</div>
+            <div style="background:#FDFCF0;border:1px solid #D2D4C8;padding:16px 18px;font-size:12.5px;line-height:1.8;color:#4A4A42;flex:1">
+              <div><span style="color:#A8B09B">// lib/updaters.ts — applied sequentially</span></div>
+              <div><span style="color:#DC3545">export async function</span> <span style="color:#4499CC">applyTheme</span>(updaters: <span style="color:#D4A028">UpdaterEntry</span>[]) {</div>
+              <div>&nbsp;&nbsp;<span style="color:#DC3545">for</span> (<span style="color:#DC3545">const</span> u <span style="color:#DC3545">of</span> updaters) {</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#DC3545">const</span> result = <span style="color:#DC3545">await</span> u.<span style="color:#4499CC">run</span>();</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#4499CC">report</span>(u.app, result.status); <span style="color:#A8B09B">// "ok" | "error"</span></div>
+              <div>&nbsp;&nbsp;}</div>
+              <div>}</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-top:1px solid #CEC6AE;font-size:11px;color:#8A8268">
+          <div style="display:flex;gap:16px;white-space:nowrap"><span><span style="color:#5D5744">j/k</span> NAV</span><span><span style="color:#5D5744">/</span> FIND</span><span><span style="color:#5D5744">c a x</span> FILTER</span><span><span style="color:#5D5744">⏎</span> APPLY</span><span><span style="color:#5D5744">esc</span> CLEAR</span><span><span style="color:#5D5744">q</span> QUIT</span></div>
+          <div style="color:#3E8757">■ READY · CURRENTLY SPRING DAY</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ 1c SPECIMEN -->
+  <div id="1c" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <a href="#1c" style="text-decoration:none;background:#EDE9E2;color:#1D1A17;font-size:12px;font-weight:700;padding:3px 8px">1C</a>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#EDE9E2">SPECIMEN</span>
+      <span style="font-size:11px;color:#857D6E;letter-spacing:0.08em">AIRY · THEME AS PANTONE SHEET · FULL-WIDTH COLOR BANDS · FILTER CHIPS</span>
+    </div>
+    <div style="display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap">
+
+      <!-- 1c DARK -->
+      <div style="flex:none;width:1080px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:22px 28px 16px;border-bottom:1px solid #3C362C">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px">BLACK AT<span style="display:inline-block;width:13px;height:13px;background:#EDE9E2"></span>M LIVERY</span>
+            <span style="font-size:10px;letter-spacing:0.22em;color:#C99A4E">PAINT YOUR COCKPIT</span>
+          </div>
+          <div style="font-size:11px;color:#857D6E">V0.3.0 · ENV DARK</div>
+        </div>
+        <div style="display:grid;grid-template-columns:320px 1fr;min-height:660px">
+          <div style="border-right:1px solid #3C362C;display:flex;flex-direction:column">
+            <div style="padding:16px 22px;border-bottom:1px solid #2E2922;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px;border:1px solid #3C362C;background:#14100E;padding:8px 12px;font-size:13px">
+                <span style="color:#63AD79">»</span><span style="color:#857D6E">search themes…</span><span style="margin-left:auto;font-size:10px;color:#57503F">/</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:10px;letter-spacing:0.08em">
+                <span style="background:#EDE9E2;color:#1D1A17;padding:3px 8px;font-weight:700">ALL</span>
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">DEFAULT</span>
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">JPN</span>
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">TERRA</span>
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">STATIONS</span>
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">CRBN</span>
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">NORTH</span>
+              </div>
+              <div style="display:flex;gap:6px;font-size:10px;letter-spacing:0.08em">
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">◐ ALL</span>
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">● DARK</span>
+                <span style="border:1px solid #3C362C;color:#B8B1A4;padding:3px 8px">○ LIGHT</span>
+              </div>
+            </div>
+            <div style="padding:14px 0;display:flex;flex-direction:column">
+              <div style="padding:6px 22px;font-size:10px;letter-spacing:0.18em;color:#857D6E">JPN — JAPAN</div>
+              <div style="padding:9px 22px;font-size:14px;color:#B8B1A4">Koyo Hiru</div>
+              <div style="padding:9px 22px;font-size:14px;background:#EDE9E2;color:#1D1A17;font-weight:500;display:flex;justify-content:space-between;align-items:center"><span>Koyo Yoru</span><span style="font-size:10px;letter-spacing:0.1em">● DARK</span></div>
+              <div style="padding:9px 22px;font-size:14px;color:#B8B1A4">Murasaki Yoru</div>
+              <div style="padding:9px 22px;font-size:14px;color:#B8B1A4">Tsuki Yoru</div>
+              <div style="padding:16px 22px 6px;font-size:10px;letter-spacing:0.18em;color:#857D6E">TERRA</div>
+              <div style="padding:9px 22px;font-size:14px;color:#B8B1A4">Spring Day</div>
+              <div style="padding:9px 22px;font-size:14px;color:#B8B1A4">Spring Night</div>
+              <div style="padding:9px 22px;font-size:14px;color:#B8B1A4">Summer Day</div>
+              <div style="padding:9px 22px;font-size:14px;color:#B8B1A4">Fall Day</div>
+              <div style="padding:9px 22px;font-size:14px;color:#B8B1A4">Fall Night</div>
+              <div style="padding:16px 22px 0;font-size:10px;color:#57503F;letter-spacing:0.1em">↓ 14 MORE</div>
+            </div>
+          </div>
+          <div style="padding:36px 44px;display:flex;flex-direction:column;gap:22px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:11px;letter-spacing:0.2em;color:#857D6E">JPN — JAPAN COLLECTION · SPECIMEN 06/24</div>
+              <div style="display:flex;align-items:center;gap:18px">
+                <span style="font-family:'Space Grotesk',sans-serif;font-size:64px;font-weight:700;letter-spacing:-0.02em;line-height:0.95">KOYO YORU</span>
+                <span style="border:1px solid #857D6E;font-size:11px;letter-spacing:0.14em;padding:4px 10px;color:#B8B1A4">DARK</span>
+              </div>
+              <div style="font-family:'Recursive',sans-serif;font-size:15px;line-height:1.7;color:#B8B1A4;max-width:58ch">Autumn dusk in Kyoto. Deep burgundy and amber accents settle over a warm charcoal ground — built for long evening sessions.</div>
+            </div>
+            <!-- bands -->
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="display:flex;align-items:center;background:#14100E;height:42px;padding:0 16px;border:1px solid #2E2922"><span style="font-size:10px;letter-spacing:0.14em;color:#8C7B64">BG · DEFAULT</span><span style="margin-left:auto;font-size:11px;color:#8C7B64">#14100E</span></div>
+              <div style="display:flex;align-items:center;background:#262019;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#A8957A">BG · PANEL</span><span style="margin-left:auto;font-size:11px;color:#A8957A">#262019</span></div>
+              <div style="display:flex;align-items:center;background:#D9CBAE;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#4A4034">FG · DEFAULT</span><span style="margin-left:auto;font-size:11px;color:#4A4034">#D9CBAE</span></div>
+              <div style="display:flex;align-items:center;background:#C46A5A;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#14100E">ACCENT · RED</span><span style="margin-left:auto;font-size:11px;color:#14100E">#C46A5A</span></div>
+              <div style="display:flex;align-items:center;background:#D9A662;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#14100E">ACCENT · YELLOW</span><span style="margin-left:auto;font-size:11px;color:#14100E">#D9A662</span></div>
+              <div style="display:flex;align-items:center;background:#8FA36B;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#14100E">ACCENT · GREEN</span><span style="margin-left:auto;font-size:11px;color:#14100E">#8FA36B</span></div>
+            </div>
+            <div style="display:flex;gap:2px">
+              <div style="flex:1;height:26px;background:#7E93B0"></div><div style="flex:1;height:26px;background:#A97BA2"></div><div style="flex:1;height:26px;background:#7FA99A"></div><div style="flex:1;height:26px;background:#D98A78"></div><div style="flex:1;height:26px;background:#A9BE85"></div><div style="flex:1;height:26px;background:#E9BD78"></div><div style="flex:1;height:26px;background:#94A9C6"></div><div style="flex:1;height:26px;background:#C094B8"></div><div style="flex:1;height:26px;background:#96C2B1"></div><div style="flex:1;height:26px;background:#F4EDDD"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-top:1px solid #2E2922;padding-top:14px;font-size:10px;letter-spacing:0.12em;color:#857D6E">
+              <span>KEY jpn-koyo-yoru</span><span>CORE 1.0.2</span><span>REV 03</span><span style="color:#63AD79">■ SYNCED 8/8</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 28px;border-top:1px solid #3C362C;font-size:11px;color:#857D6E">
+          <div style="display:flex;gap:18px"><span><span style="color:#B8B1A4">j/k</span> NAVIGATE</span><span><span style="color:#B8B1A4">/</span> SEARCH</span><span><span style="color:#B8B1A4">tab</span> FILTERS</span><span><span style="color:#B8B1A4">⏎</span> APPLY</span><span><span style="color:#B8B1A4">q</span> QUIT</span></div>
+          <div style="display:flex;align-items:center;gap:8px;color:#63AD79"><span style="width:8px;height:8px;background:#63AD79"></span>CURRENTLY KOYO YORU</div>
+        </div>
+      </div>
+
+      <!-- 1c LIGHT -->
+      <div style="flex:none;width:1080px;background:#F5F1E6;border:1px solid #CEC6AE;color:#2A251C;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:22px 28px 16px;border-bottom:1px solid #CEC6AE">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px">BLACK AT<span style="display:inline-block;width:13px;height:13px;background:#2A251C"></span>M LIVERY</span>
+            <span style="font-size:10px;letter-spacing:0.22em;color:#9A7A2E">PAINT YOUR COCKPIT</span>
+          </div>
+          <div style="font-size:11px;color:#8A8268">V0.3.0 · ENV LIGHT</div>
+        </div>
+        <div style="display:grid;grid-template-columns:320px 1fr;min-height:660px">
+          <div style="border-right:1px solid #CEC6AE;display:flex;flex-direction:column">
+            <div style="padding:16px 22px;border-bottom:1px solid #DED7C2;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px;border:1px solid #CEC6AE;background:#FDFCF0;padding:8px 12px;font-size:13px">
+                <span style="color:#3E8757">»</span><span style="color:#8A8268">search themes…</span><span style="margin-left:auto;font-size:10px;color:#B0A88E">/</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:10px;letter-spacing:0.08em">
+                <span style="background:#2A251C;color:#F5F1E6;padding:3px 8px;font-weight:700">ALL</span>
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">DEFAULT</span>
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">JPN</span>
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">TERRA</span>
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">STATIONS</span>
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">CRBN</span>
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">NORTH</span>
+              </div>
+              <div style="display:flex;gap:6px;font-size:10px;letter-spacing:0.08em">
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">◐ ALL</span>
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">● DARK</span>
+                <span style="border:1px solid #CEC6AE;color:#5D5744;padding:3px 8px">○ LIGHT</span>
+              </div>
+            </div>
+            <div style="padding:14px 0;display:flex;flex-direction:column">
+              <div style="padding:6px 22px;font-size:10px;letter-spacing:0.18em;color:#8A8268">TERRA</div>
+              <div style="padding:9px 22px;font-size:14px;background:#2A251C;color:#F5F1E6;font-weight:500;display:flex;justify-content:space-between;align-items:center"><span>Spring Day</span><span style="font-size:10px;letter-spacing:0.1em">○ LIGHT</span></div>
+              <div style="padding:9px 22px;font-size:14px;color:#5D5744">Spring Night</div>
+              <div style="padding:9px 22px;font-size:14px;color:#5D5744">Summer Day</div>
+              <div style="padding:9px 22px;font-size:14px;color:#5D5744">Summer Night</div>
+              <div style="padding:9px 22px;font-size:14px;color:#5D5744">Fall Day</div>
+              <div style="padding:9px 22px;font-size:14px;color:#5D5744">Fall Night</div>
+              <div style="padding:9px 22px;font-size:14px;color:#5D5744">Winter Day</div>
+              <div style="padding:9px 22px;font-size:14px;color:#5D5744">Winter Night</div>
+              <div style="padding:16px 22px 0;font-size:10px;color:#B0A88E;letter-spacing:0.1em">↓ 16 MORE</div>
+            </div>
+          </div>
+          <div style="padding:36px 44px;display:flex;flex-direction:column;gap:22px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:11px;letter-spacing:0.2em;color:#8A8268">TERRA COLLECTION · SPECIMEN 09/24</div>
+              <div style="display:flex;align-items:center;gap:18px">
+                <span style="font-family:'Space Grotesk',sans-serif;font-size:64px;font-weight:700;letter-spacing:-0.02em;line-height:0.95">SPRING DAY</span>
+                <span style="border:1px solid #8A8268;font-size:11px;letter-spacing:0.14em;padding:4px 10px;color:#5D5744">LIGHT</span>
+              </div>
+              <div style="font-family:'Recursive',sans-serif;font-size:15px;line-height:1.7;color:#5D5744;max-width:58ch">Fresh growth and morning dew. Soft greens with blossom pinks on a bright day — a high-clarity palette for daylight work.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="display:flex;align-items:center;background:#FDFCF0;height:42px;padding:0 16px;border:1px solid #DED7C2"><span style="font-size:10px;letter-spacing:0.14em;color:#8C9A7E">BG · DEFAULT</span><span style="margin-left:auto;font-size:11px;color:#8C9A7E">#FDFCF0</span></div>
+              <div style="display:flex;align-items:center;background:#E0E2DB;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#70845F">BG · PANEL</span><span style="margin-left:auto;font-size:11px;color:#70845F">#E0E2DB</span></div>
+              <div style="display:flex;align-items:center;background:#33422C;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#D2D4C8">FG · DEFAULT</span><span style="margin-left:auto;font-size:11px;color:#D2D4C8">#33422C</span></div>
+              <div style="display:flex;align-items:center;background:#2E8B57;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#FDFCF0">ACCENT · GREEN</span><span style="margin-left:auto;font-size:11px;color:#FDFCF0">#2E8B57</span></div>
+              <div style="display:flex;align-items:center;background:#E8708A;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#FDFCF0">ACCENT · BLOSSOM</span><span style="margin-left:auto;font-size:11px;color:#FDFCF0">#E8708A</span></div>
+              <div style="display:flex;align-items:center;background:#D4A028;height:42px;padding:0 16px"><span style="font-size:10px;letter-spacing:0.14em;color:#FDFCF0">ACCENT · GOLD</span><span style="margin-left:auto;font-size:11px;color:#FDFCF0">#D4A028</span></div>
+            </div>
+            <div style="display:flex;gap:2px">
+              <div style="flex:1;height:26px;background:#3CB371"></div><div style="flex:1;height:26px;background:#98D898"></div><div style="flex:1;height:26px;background:#4499CC"></div><div style="flex:1;height:26px;background:#17A2B8"></div><div style="flex:1;height:26px;background:#6F42C1"></div><div style="flex:1;height:26px;background:#FFC107"></div><div style="flex:1;height:26px;background:#DC3545"></div><div style="flex:1;height:26px;background:#FD7E14"></div><div style="flex:1;height:26px;background:#28A745"></div><div style="flex:1;height:26px;background:#20B2AA"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;border-top:1px solid #DED7C2;padding-top:14px;font-size:10px;letter-spacing:0.12em;color:#8A8268">
+              <span>KEY terra-spring-day</span><span>CORE 1.0.2</span><span>REV 02</span><span style="color:#3E8757">■ SYNCED 8/8</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 28px;border-top:1px solid #CEC6AE;font-size:11px;color:#8A8268">
+          <div style="display:flex;gap:18px"><span><span style="color:#5D5744">j/k</span> NAVIGATE</span><span><span style="color:#5D5744">/</span> SEARCH</span><span><span style="color:#5D5744">tab</span> FILTERS</span><span><span style="color:#5D5744">⏎</span> APPLY</span><span><span style="color:#5D5744">q</span> QUIT</span></div>
+          <div style="display:flex;align-items:center;gap:8px;color:#3E8757"><span style="width:8px;height:8px;background:#3E8757"></span>CURRENTLY SPRING DAY</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ 1d TYPE STACKS -->
+  <div id="1d" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <a href="#1d" style="text-decoration:none;background:#EDE9E2;color:#1D1A17;font-size:12px;font-weight:700;padding:3px 8px">1D</a>
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#EDE9E2">TYPE STACK PROPOSALS</span>
+      <span style="font-size:11px;color:#857D6E;letter-spacing:0.08em">SPACE GROTESK STAYS AS DISPLAY · MONO + BODY CANDIDATES BELOW</span>
+    </div>
+    <div style="display:flex;gap:24px;align-items:stretch;flex-wrap:wrap">
+
+      <!-- Stack A -->
+      <div style="flex:none;width:520px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #2E2922;padding-bottom:10px">
+          <span style="font-size:11px;letter-spacing:0.16em;color:#857D6E">STACK A — CURRENT INTERIM</span>
+          <span style="font-size:10px;color:#57503F">OFL / OFL</span>
+        </div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;line-height:1">KOYO YORU</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#B8B1A4">COLLECTION: JPN · APPEARANCE: DARK · <span style="color:#63AD79">■ SYNCED</span></div>
+        <div style="font-family:'Recursive',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4">Livery watches your config and repaints eight tools the moment you pick a theme. Body text set in Recursive at relaxed leading.</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#D9CBAE;background:#14100E;border:1px solid #322A21;padding:10px 12px">const path = expand("~/.config/ghostty");</div>
+        <div style="font-size:11px;color:#857D6E;line-height:1.6;margin-top:auto">JetBrains Mono + Recursive. Safe and legible, but JB Mono reads "IDE default" and Recursive's personality axes go unused — two variable fonts of payload for one voice each.</div>
+      </div>
+
+      <!-- Stack B -->
+      <div style="flex:none;width:520px;background:#1D1A17;border:1px solid #63AD79;color:#EDE9E2;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #2E2922;padding-bottom:10px">
+          <span style="font-size:11px;letter-spacing:0.16em;color:#63AD79">STACK B — TERMINAL GRADE (RECOMMENDED)</span>
+          <span style="font-size:10px;color:#57503F">OFL / OFL</span>
+        </div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;line-height:1">KOYO YORU</div>
+        <div style="font-family:'Iosevka',monospace;font-size:13px;letter-spacing:0.08em;color:#B8B1A4">COLLECTION: JPN · APPEARANCE: DARK · <span style="color:#63AD79">■ SYNCED</span></div>
+        <div style="font-family:'IBM Plex Sans',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4">Livery watches your config and repaints eight tools the moment you pick a theme. Body text set in IBM Plex Sans at relaxed leading.</div>
+        <div style="font-family:'Iosevka',monospace;font-size:13px;color:#D9CBAE;background:#14100E;border:1px solid #322A21;padding:10px 12px">const path = expand("~/.config/ghostty");</div>
+        <div style="font-size:11px;color:#857D6E;line-height:1.6;margin-top:auto">Iosevka + IBM Plex Sans. Iosevka's narrow grid is the closest open-license relative of Berkeley Mono — dense, vertical, unmistakably terminal. Plex Sans shares the engineered-grotesque DNA and was literally designed for datasheets.</div>
+      </div>
+
+      <!-- Stack C -->
+      <div style="flex:none;width:520px;background:#1D1A17;border:1px solid #3C362C;color:#EDE9E2;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #2E2922;padding-bottom:10px">
+          <span style="font-size:11px;letter-spacing:0.16em;color:#857D6E">STACK C — SWISS LAB</span>
+          <span style="font-size:10px;color:#57503F">OFL / OFL</span>
+        </div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;line-height:1">KOYO YORU</div>
+        <div style="font-family:'Fragment Mono',monospace;font-size:12px;letter-spacing:0.08em;color:#B8B1A4">COLLECTION: JPN · APPEARANCE: DARK · <span style="color:#63AD79">■ SYNCED</span></div>
+        <div style="font-family:'Geist',sans-serif;font-size:14px;line-height:1.7;color:#B8B1A4">Livery watches your config and repaints eight tools the moment you pick a theme. Body text set in Geist at relaxed leading.</div>
+        <div style="font-family:'Fragment Mono',monospace;font-size:12px;color:#D9CBAE;background:#14100E;border:1px solid #322A21;padding:10px 12px">const path = expand("~/.config/ghostty");</div>
+        <div style="font-size:11px;color:#857D6E;line-height:1.6;margin-top:auto">Fragment Mono + Geist. Fragment is a monospaced Helvetica — cool, archival, very NASA-documentation. Warmer register lost; chrome reads slightly more museum than cockpit.</div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+</x-dc>
+<script>
+(async () => {
+  if (!document.title || !document.title.trim()) document.title = "Livery Explorations";
+  // Prepend so page-supplied @page / break rules (deck-stage's margin:0,
+  // author CSS) keep source-order precedence over the baseline.
+  const baseCss = document.createElement('style');
+  baseCss.textContent = "@media print {\n  figure, table { break-inside: avoid; }\n  *, *::before, *::after {\n    print-color-adjust: exact; -webkit-print-color-adjust: exact;\n    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;\n    animation-delay: -99s !important; animation-duration: .001s !important;\n    animation-iteration-count: 1 !important; animation-fill-mode: both !important;\n    animation-play-state: running !important; transition-duration: 0s !important;\n  }\n}";
+  document.head.prepend(baseCss);
+  if (document.readyState === 'loading') {
+    await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+  }
+  let ds = document.querySelector('deck-stage');
+  // whenDefined never resolves when nothing registers the element, so only
+  // await it when a <deck-stage> tag exists (and race a timeout regardless).
+  if (ds && !customElements.get('deck-stage')) {
+    try {
+      await Promise.race([
+        customElements.whenDefined('deck-stage'),
+        new Promise((r) => setTimeout(r, 3000)),
+      ]);
+    } catch (e) {}
+    ds = document.querySelector('deck-stage');
+  }
+  // dc-runtime assigns window.DCLogic at init and mounts into #dc-root on
+  // DOMContentLoaded; settle on that subtree so React has rendered before
+  // print(). Non-DC pages fall through to weighing body.
+  const isDc = !ds && 'DCLogic' in window;
+  const settleRoot = ds || (isDc ? document.getElementById('dc-root') : null) || document.body;
+  if (settleRoot) {
+    // Weigh only content children — skip script/style/template so inline
+    // Babel/CSS doesn't register as stable "content" before the framework
+    // has mounted anything.
+    const MEDIA = 'img,svg,canvas,video,picture,iframe,embed,object';
+    const weigh = () => {
+      let text = 0, media = 0;
+      for (const c of settleRoot.children) {
+        const t = c.tagName;
+        if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+        text += (c.textContent || '').trim().length;
+        media += c.querySelectorAll(MEDIA).length + (c.matches(MEDIA) ? 1 : 0);
+      }
+      return text + media * 100;
+    };
+    // "Non-zero and stable" alone is not sufficient to mean rendered: generic
+    // body can carry a static shell while async main content is pending, and
+    // #dc-root can carry the root DC's static text while child refs are still
+    // .sc-placeholder boxes. Gate generic on readyState 'complete', and never
+    // accept stability while a dc-runtime placeholder is present.
+    const isGeneric = settleRoot === document.body;
+    const deadline = Date.now() + 15000;
+    let last = -1, stable = 0;
+    while (Date.now() < deadline) {
+      const n = weigh();
+      const ready =
+        (!isGeneric || document.readyState === 'complete') &&
+        !settleRoot.querySelector('.sc-placeholder');
+      if (n > 0 && n === last && ready) { if (++stable >= 2) break; } else { stable = 0; }
+      last = n;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+  }
+  // Project support.js may predate runtime default-seeding; push via bridge.
+  if (isDc && window.__dcSetProps && window.__dcRootName) {
+    try {
+      const dpEl = document.querySelector('script[data-dc-script]');
+      const meta = JSON.parse((dpEl && dpEl.getAttribute('data-props')) || '{}');
+      const bag = {};
+      for (const k in meta)
+        if (k[0] !== '$' && meta[k] && meta[k].default !== undefined)
+          bag[k] = meta[k].default;
+      if (Object.keys(bag).length) {
+        window.__dcSetProps(window.__dcRootName(), bag);
+        await new Promise((r) => setTimeout(r, 50));
+      }
+    } catch (e) {}
+  }
+  // Reveal content gated on scroll or visibility before printing. Lazy <img>,
+  // IntersectionObserver fade-ins, and collapsed <details> don't render while
+  // off-screen, so a long page would print with them blank or closed. Open
+  // every <details>, force native-lazy images eager, and scroll the document
+  // through its full height to trip lazy-load + IO; then wait (bounded) for the
+  // newly-triggered images. Inert for deck-stage (slides aren't scroll-gated).
+  try {
+    for (const d of document.querySelectorAll('details')) d.open = true;
+    for (const img of document.querySelectorAll('img[loading="lazy"]'))
+      img.loading = 'eager';
+    const scroller = document.scrollingElement || document.documentElement;
+    const full = Math.max(scroller.scrollHeight, document.body.scrollHeight);
+    const step = window.innerHeight || 800;
+    for (let y = 0; y <= full; y += step) {
+      window.scrollTo(0, y);
+      await new Promise((r) => requestAnimationFrame(r));
+    }
+    window.scrollTo(0, 0);
+    await Promise.race([
+      Promise.all(
+        [...document.images].map((img) =>
+          img.complete
+            ? null
+            : new Promise((res) => {
+                img.addEventListener('load', res, { once: true });
+                img.addEventListener('error', res, { once: true });
+              })
+        )
+      ),
+      new Promise((r) => setTimeout(r, 4000)),
+    ]);
+  } catch (e) {}
+  try { await document.fonts.ready; } catch (e) {}
+  // Jump every animation to its end state so print() never captures a slide
+  // mid-entrance. Ordering matters: the 0s-transition style must be live
+  // BEFORE data-deck-active is set so attribute-keyed transitions don't
+  // start a (now-0s) run from the pre-active base.
+  const st = document.createElement('style');
+  st.textContent = '*,*::before,*::after{animation-delay:-99s !important;animation-duration:.001s !important;animation-iteration-count:1 !important;animation-fill-mode:both !important;animation-play-state:running !important;transition-duration:0s !important}';
+  document.head.appendChild(st);
+  for (const d of document.querySelectorAll('deck-stage')) {
+    for (const c of d.children) {
+      const t = c.tagName;
+      if (t === 'SCRIPT' || t === 'STYLE' || t === 'TEMPLATE') continue;
+      c.setAttribute('data-deck-active', '');
+    }
+  }
+  // Re-append deck-stage's @page last so no author @page can add a margin and
+  // spill each full-bleed slide onto two sheets. Backstop for old copies.
+  if (ds) {
+    let pg = document.getElementById('deck-stage-print-page');
+    if (!pg) {
+      pg = document.createElement('style');
+      pg.textContent = '@page{size:' + (+ds.getAttribute('width') || 1920) +
+        'px ' + (+ds.getAttribute('height') || 1080) + 'px;margin:0}';
+    }
+    document.body.appendChild(pg);
+  }
+  try {
+    const sweep = () => {
+      for (const a of document.getAnimations()) {
+        try { a.finish(); } catch (e) {
+          try { a.currentTime = (a.effect && a.effect.getComputedTiming().duration) || 0; a.pause(); } catch (e2) {}
+        }
+      }
+    };
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+    sweep();
+    await new Promise((r) => requestAnimationFrame(r));
+  } catch (e) {}
+  // Size the PDF page to the rendered design unless the file opted into
+  // standard paper via @page{size:letter|A4|…}. Decks own their own @page.
+  // Wrappers (body, …) lose padding+margin so the frame sits at (0,0); the
+  // frame itself loses only margin — its padding is INSIDE the measured
+  // rect and must stay, or content shifts and leaves a gap at bottom/right.
+  var __m = null;
+  try { __m = (() => {
+  var STAMP = true;
+  var docEl = document.documentElement;
+  var doc = { width: docEl.scrollWidth, height: docEl.scrollHeight };
+
+  var ds = document.querySelector('deck-stage');
+  if (ds) {
+    var dw = Number(ds.getAttribute('width')) || 1920;
+    var dh = Number(ds.getAttribute('height')) || 1080;
+    var n = typeof ds.length === 'number' ? ds.length : ds.children.length;
+    var idx = typeof ds.index === 'number' ? ds.index : 0;
+    var frames = [];
+    for (var i = 0; i < n; i++) frames.push({ left: 0, top: 0, width: dw, height: dh });
+    return { kind: 'deck', source: 'declared', doc: doc, frames: frames,
+      authored: frames.map(function(){return{width:true,height:true}}),
+      deck: { width: dw, height: dh, slideCount: n, index: idx },
+      signals: { paperPage: false, pxPage: false } };
+  }
+
+  // Declared kind: a doc-page tag names the kind outright, so no signal
+  // heuristics run (like the deck branch above, signals report false —
+  // they describe inferred classifications only). The tag alone is not
+  // trusted: the element must have upgraded (shadowRoot present), so a
+  // leftover tag whose script was deleted falls through to the heuristics
+  // that handle plain markup.
+  var stageSx = window.scrollX || 0, stageSy = window.scrollY || 0;
+  var dp = document.querySelector('doc-page');
+  if (dp && dp.shadowRoot) {
+    // Crop to the sheet, not the host — the desk around it is screen-only
+    // chrome that must not land in PNG exports.
+    var sheet = dp.shadowRoot.querySelector('.sheet');
+    var sr = (sheet || dp).getBoundingClientRect();
+    return { kind: 'paper-doc', source: 'declared', doc: doc,
+      frames: [{ left: sr.left + stageSx, top: sr.top + stageSy,
+        width: sr.width, height: sr.height }],
+      authored: [{ width: false, height: false }],
+      signals: { paperPage: false, pxPage: false } };
+  }
+  var paperPage = false, pxPage = false;
+  var eachRule = function (fn) {
+    for (var s = 0; s < document.styleSheets.length; s++) {
+      var rs; try { rs = document.styleSheets[s].cssRules; } catch (e) { continue; }
+      for (var r = 0; r < rs.length; r++) {
+        fn(rs[r]);
+        if (rs[r].cssRules) for (var n = 0; n < rs[r].cssRules.length; n++) fn(rs[r].cssRules[n]);
+      }
+    }
+  };
+  eachRule(function (r) {
+    if (r.type !== 6) return;
+    var m = /\bsize\s*:\s*([^;}]+)/i.exec(r.cssText || '');
+    if (!m) return;
+    if (/\b(letter|a[3-5]|legal|ledger)\b/i.test(m[1])) paperPage = true;
+    if (/\d+(?:\.\d+)?px\b/i.test(m[1])) pxPage = true;
+  });
+  var signals = { paperPage: paperPage, pxPage: pxPage };
+
+  var pxVal = function (v) {
+    var m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? +m[1] : 0;
+  };
+  var authoredPx = function (el, prop) {
+    if (pxVal(el.style[prop])) return true;
+    var attr = el.getAttribute(prop);
+    if (attr && /^\d+$/.test(attr)) return true;
+    var hit = false;
+    eachRule(function (r) {
+      if (hit || r.type !== 1 || !r.style) return;
+      try { if (el.matches(r.selectorText) && pxVal(r.style[prop])) hit = true; } catch (e) {}
+    });
+    return hit;
+  };
+
+  var el = document.body, rootPxW = false;
+  for (;;) {
+    var kids = [];
+    for (var c = 0; c < el.children.length; c++) {
+      var t = el.children[c].tagName;
+      if (t !== 'SCRIPT' && t !== 'STYLE' && t !== 'TEMPLATE') kids.push(el.children[c]);
+    }
+    if (kids.length !== 1 || !(kids[0] instanceof HTMLElement)) break;
+    if (STAMP) el.setAttribute('data-om-frame-wrap', '');
+    el = kids[0];
+    rootPxW = authoredPx(el, 'width');
+    if (rootPxW) break;
+  }
+  if (!rootPxW) rootPxW = authoredPx(el, 'width');
+
+  // @page{size:letter} alone is a flowing doc; with a px-width root it's a
+  // fixed sheet pretending to be paper — fall through and size to render.
+  if (paperPage && !rootPxW) {
+    return { kind: 'paper-doc', source: 'inferred', doc: doc, signals: signals,
+      frames: [{ left: 0, top: 0, width: doc.width, height: doc.height }],
+      authored: [{ width: false, height: false }] };
+  }
+
+  var sx = window.scrollX || 0, sy = window.scrollY || 0;
+  var rectOf = function (e) {
+    var r = e.getBoundingClientRect();
+    var oy; try { oy = getComputedStyle(e).overflowY; } catch (err) {}
+    var h = oy === 'visible' ? Math.max(r.height, e.scrollHeight || 0) : r.height;
+    return { left: r.left + sx, top: r.top + sy, width: r.width, height: h };
+  };
+
+  // Multi-frame: ≥2 visible non-fixed children, each with authored px width
+  // AND height, all within ±2px of each other. Off unless the page opts in
+  // via data-om-multi-frame on the stop element — guards against card grids
+  // and pricing tables that match the geometry but aren't separate canvases.
+  if (el.hasAttribute('data-om-multi-frame')) {
+    var cands = [];
+    for (var k = 0; k < el.children.length; k++) {
+      var ch = el.children[k];
+      var cs; try { cs = getComputedStyle(ch); } catch (e) { continue; }
+      if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position === 'fixed') continue;
+      var rc = rectOf(ch);
+      if (rc.width < 2 || rc.height < 2) continue;
+      if (!authoredPx(ch, 'width') || !authoredPx(ch, 'height')) continue;
+      cands.push(rc);
+    }
+    if (cands.length >= 2) {
+      var w0 = cands[0].width, h0 = cands[0].height, ok = true;
+      for (var q = 1; q < cands.length; q++)
+        if (Math.abs(cands[q].width - w0) > 2 || Math.abs(cands[q].height - h0) > 2) ok = false;
+      if (ok) return { kind: 'multi-frame', source: 'inferred', doc: doc, signals: signals,
+        frames: cands, authored: cands.map(function(){return{width:true,height:true}}) };
+    }
+  }
+
+  if (STAMP) el.setAttribute('data-om-frame', '');
+  return { kind: 'single-canvas', source: 'inferred', doc: doc, signals: signals,
+    frames: [rectOf(el)],
+    authored: [{ width: rootPxW, height: authoredPx(el, 'height') }] };
+})(); } catch (e) {}
+  var frame = null;
+  if (__m && __m.kind === 'single-canvas') {
+    var f = __m.frames && __m.frames[0];
+    if (f && f.width >= 200 && f.height >= 200) {
+      frame = f;
+      var fst = document.createElement('style');
+      fst.textContent = '@media print{@page{size:' + Math.ceil(f.width) + 'px ' +
+        Math.ceil(f.height) + 'px;margin:0}' +
+        'html,body,[data-om-frame-wrap]{padding:0!important;margin:0!important;background:none!important}' +
+        '[data-om-frame]{margin:0!important}}';
+      document.body.appendChild(fst);
+    }
+  }
+  // Relax break-inside on oversized elements. An element taller than a
+  // printable page can't honor break-inside: avoid — browsers either overflow
+  // it or push it whole to the next page, leaving a blank gap, then break it
+  // anyway at an arbitrary point. After the final layout (content revealed,
+  // animations jumped), find elements taller than a page that still compute
+  // break-inside: avoid and reset them to auto, so the browser breaks them at
+  // their children's boundaries instead (children keep their own avoid). PAGE_PX
+  // is a conservative portrait estimate at 96 CSS px/in — Letter/A4 usable
+  // height minus our 0.5in margins — so only clearly-oversized elements are
+  // touched and under-page elements still stay whole. Skipped for decks (slides
+  // are sized to the page) and for fixed-size canvases (frame set, or an author
+  // px-based @page) — runs as before for flowing docs on letter/A4.
+  try {
+    if (!ds && !frame && !(__m && __m.signals && __m.signals.pxPage)) {
+      const PAGE_PX = 1024;
+      // Our print defaults add a real @page margin only when the source has
+      // no @page of its own; computed style can't tell us (it reports screen
+      // media), so read the injected rule directly.
+      const defaults = document.querySelector('style[data-omelette-print-defaults]');
+      const pageInset = /@page\s*\{[^}]*margin/.test(defaults ? defaults.textContent || '' : '');
+      const SEL = 'section,article,figure,table,pre,blockquote,[class~="card" i],[class~="page" i],[class~="sheet" i]';
+      for (const el of document.body.querySelectorAll(SEL)) {
+        if (el instanceof HTMLElement && el.offsetHeight > PAGE_PX) {
+          el.setAttribute('data-om-oversized', '');
+          // Fake-paged docs simulate sheets with over-tall break-after:page
+          // boxes; honoring the break spills half-blank pages and ends a
+          // colored box mid-sheet. Flow them, and (only when we own the page
+          // inset) drop the redundant padding/background via the rule below.
+          const cs = getComputedStyle(el);
+          if (cs.breakAfter === 'page' || cs.pageBreakAfter === 'always') {
+            el.setAttribute('data-om-fakepage', '');
+          }
+        }
+      }
+      const ost = document.createElement('style');
+      ost.textContent = '@media print{' +
+        '[data-om-oversized]{break-inside:auto !important;page-break-inside:auto !important}' +
+        '[data-om-fakepage]{break-after:auto !important;page-break-after:auto !important}' +
+        (pageInset ? '[data-om-fakepage]{padding:0 !important;background:none !important}' : '') +
+        '}';
+      document.head.appendChild(ost);
+    }
+  } catch (e) {}
+  // macOS Preview renders Skia-PDF Luminosity soft-masks as opaque grey boxes;
+  // swap the CSS that triggers them for Preview-safe forms.
+  try {
+    for (const el of document.body.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+
+      if (cs.boxShadow !== 'none' && cs.filter === 'none') {
+        const outs = [], kept = [];
+        for (const s of cs.boxShadow.split(/,(?![^(]*[)])/)) {
+          const t = s.trim();
+          const m = t.match(/^(rgba?[(][^)]+[)]) (-?[0-9.]+px) (-?[0-9.]+px) ([0-9.]+px) -?[0-9.]+px$/);
+          if (m && parseFloat(m[4]) > 0) outs.push('drop-shadow(' + m[2] + ' ' + m[3] + ' ' + m[4] + ' ' + m[1] + ')');
+          else kept.push(t);
+        }
+        if (outs.length) {
+          el.style.setProperty('filter', outs.join(' '), 'important');
+          el.style.setProperty('box-shadow', kept.join(', ') || 'none', 'important');
+        }
+      }
+
+      const mask = cs.maskImage && cs.maskImage !== 'none' ? cs.maskImage : cs.webkitMaskImage;
+      if (mask && mask !== 'none' && cs.filter === 'none') el.style.setProperty('filter', 'opacity(1)', 'important');
+    }
+  } catch (e) {}
+  setTimeout(() => { try { window.print(); } catch (e) {} }, 200);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jesseduffield/lazygit/master/schema/config.json
+# https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+os:
+  open: "zed {{filename}}"
+  editInTerminal: false
+promptToReturnFromSubprocess: false
+gui:
+  # Theme colors managed by pick-theme
+  theme:
+    activeBorderColor:
+      - "#d68c00"
+      - bold
+    inactiveBorderColor:
+      - "#c59174"
+    optionsTextColor:
+      - "#d08c62"
+    selectedLineBgColor:
+      - "#382a23"
+    cherryPickedCommitBgColor:
+      - "#2e2119"
+    cherryPickedCommitFgColor:
+      - "#d68c00"
+    unstagedChangesColor:
+      - "#e87a69"
+    defaultFgColor:
+      - "#eac5b1"
+    searchingActiveBorderColor:
+      - "#d68c00"
+  authorColors:
+    "*": "#d4896e"
+  branchColors:
+    "main": "#e74c3c"
+    "master": "#e74c3c"
+  # stuff relating to the UI
+  scrollHeight: 10 # how many lines you scroll by
+  scrollPastBottom: true
+  nerdFontsVersion: "3"
+  border: "single" # one of 'single' | 'double' | 'rounded' | 'hidden'
+git:
+  autoFetch: true
+  mainBranches: [master, main]
+confirmOnQuit: false

@@ -1,0 +1,79 @@
+import type { ThemeAccentColors, ThemeDefinition, ThemePrimaryColors } from "../../types/theme.ts";
+import { themeKeyMetaMap } from "../../types/themes.ts";
+import { oklch } from "../../utils/color.ts";
+
+import createFeedback from "./create-feedback-dark.ts";
+import createPalette from "./create-palette-dark.ts";
+import createSyntax from "./create-syntax-dark.ts";
+import createUi from "./create-ui-dark.ts";
+
+const meta = themeKeyMetaMap["black-atom-terra-winter-night"];
+
+const primaries: ThemePrimaryColors = {
+    // Dark range - icy deep blues
+    d10: oklch(0.16, 0.010, 260),
+    d20: oklch(0.20, 0.015, 258),
+    d30: oklch(0.25, 0.025, 255),
+    d40: oklch(0.30, 0.035, 252),
+
+    // Mid range - cold steel blues
+    m10: oklch(0.44, 0.045, 250),
+    m20: oklch(0.50, 0.05, 248),
+    m30: oklch(0.55, 0.045, 250),
+    m40: oklch(0.60, 0.04, 252),
+
+    // Light range - icy whites with blue tint
+    l10: oklch(0.84, 0.025, 255),
+    l20: oklch(0.89, 0.02, 258),
+    l30: oklch(0.93, 0.015, 260),
+    l40: oklch(0.96, 0.01, 260),
+};
+
+const palette = createPalette(primaries, {
+    // Cold violet/mauve - red shifted toward blue
+    darkRed: oklch(0.68, 0.08, 290),
+    red: oklch(0.75, 0.09, 285),
+
+    // Icy teal - green shifted cold
+    darkGreen: oklch(0.70, 0.06, 220),
+    green: oklch(0.78, 0.07, 215),
+
+    // Warm amber - lamplight in the cold
+    darkYellow: oklch(0.72, 0.14, 45),
+    yellow: oklch(0.80, 0.14, 65),
+
+    // Signature blue - slightly more present
+    darkBlue: oklch(0.68, 0.09, 255),
+    blue: oklch(0.76, 0.10, 250),
+
+    // Cold purple
+    darkMagenta: oklch(0.68, 0.07, 300),
+    magenta: oklch(0.76, 0.08, 295),
+
+    // Ice cyan - frost accent
+    darkCyan: oklch(0.72, 0.08, 210),
+    cyan: oklch(0.80, 0.09, 205),
+});
+
+const accents: ThemeAccentColors = {
+    a10: palette.yellow,
+    a20: palette.darkYellow,
+};
+
+const feedback = createFeedback(palette);
+const options = { primaries, palette, feedback, accents };
+
+const ui = createUi(options);
+const syntax = createSyntax(options);
+
+const theme: ThemeDefinition = {
+    meta,
+    primaries,
+    palette,
+    accents,
+    feedback,
+    ui,
+    syntax,
+};
+
+export default theme;

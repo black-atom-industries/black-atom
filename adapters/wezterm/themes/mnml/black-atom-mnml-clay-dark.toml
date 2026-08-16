@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — MNML ∷ Clay Dark"
+
+[colors]
+foreground = "#e3decc"
+background = "#302e28"
+cursor_bg = "#fc8a61"
+cursor_border = "#fc8a61"
+cursor_fg = "#302e28"
+selection_bg = "#4a4842"
+selection_fg = "#e3decc"
+split = "#fc8a61"
+compose_cursor = "#dd7577"
+scrollbar_thumb = "#a49e8d"
+
+ansi = [
+  "#4a4842", # black
+  "#b4ae9c", # dark_red
+  "#a49e8d", # dark_green
+  "#a49e8d", # dark_yellow
+  "#b4ae9c", # dark_blue
+  "#a49e8d", # dark_magenta
+  "#b4ae9c", # dark_cyan
+  "#b4ae9c" # light_gray
+]
+
+brights = [
+  "#777161", # gray
+  "#b4ae9c", # red
+  "#a49e8d", # green
+  "#a49e8d", # yellow
+  "#b4ae9c", # blue
+  "#a49e8d", # magenta
+  "#b4ae9c", # cyan
+  "#b4ae9c" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#23211c"
+background = "#302e28"
+
+[colors.tab_bar.active_tab]
+fg_color = "#302e28"
+bg_color = "#fc8a61"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#302e28"
+bg_color = "#4a4842"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#302e28"
+bg_color = "#3c3a35"
+
+[colors.tab_bar.new_tab]
+fg_color = "#302e28"
+bg_color = "#a9ba78"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#302e28"
+bg_color = "#3c3a35"
+intensity = "Bold"

@@ -1,0 +1,182 @@
+.fieldWithPicker {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--ba-size-2);
+    width: 100%;
+}
+
+.fieldWithPicker > button {
+    align-self: flex-start;
+}
+
+/* =============================================================
+   Adapter settings page — shared building blocks used by every
+   per-adapter page (header, class note, field grid, action row).
+   ============================================================= */
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-4);
+    min-width: 0;
+    font-family: var(--ba-font-mono);
+}
+
+.name {
+    flex-shrink: 0;
+    font-size: var(--ba-font-size-5);
+    color: var(--ba-color-fg-subtle);
+}
+
+.nameEnabled {
+    flex-shrink: 0;
+    font-size: var(--ba-font-size-5);
+    font-weight: var(--ba-font-weight-bold);
+    color: var(--ba-color-fg-default);
+}
+
+.pathFault {
+    flex-shrink: 0;
+    font-size: var(--ba-font-size-1);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-warn);
+    white-space: nowrap;
+}
+
+.headerSpacer {
+    flex: 1;
+}
+
+/* The provisioning class definition — a bordered box separate from the
+   rest of the page. Same content for every adapter of the same class;
+   adapter-specific setup notes render below this, not inside it. */
+.classDefinition {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-3);
+    padding: var(--ba-size-4);
+    border: var(--ba-border);
+}
+
+.classDefinitionHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-3);
+}
+
+.classDefinitionLabel {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-0);
+    font-weight: var(--ba-font-weight-bold);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-hint);
+}
+
+.classDescription {
+    margin: 0;
+    font-family: var(--ba-font-body);
+    font-size: var(--ba-font-size-2);
+    line-height: 1.6;
+    color: var(--ba-color-fg-subtle);
+}
+
+/* Adapter-specific setup note, rendered by each page below ClassDefinition. */
+.classPrerequisite {
+    margin: 0;
+    font-family: var(--ba-font-body);
+    font-size: var(--ba-font-size-2);
+    line-height: 1.6;
+    color: var(--ba-color-fg-warn);
+}
+
+.classLink {
+    color: var(--ba-color-fg-warn);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+}
+
+.classLink:hover {
+    color: var(--ba-color-fg-default);
+}
+
+.actionRow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-5);
+}
+
+.actionGroupLabel {
+    margin: calc(-1 * var(--ba-size-3)) 0 calc(-1 * var(--ba-size-2));
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-0);
+    font-weight: var(--ba-font-weight-bold);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-hint);
+}
+
+/* One action: description + actuator on top, result line once it has run. */
+.actionEntry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-2);
+}
+
+.actionEntryRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ba-size-5);
+}
+
+/* Fixed width so SET UP / VERIFY PATH / LINK THEMES / TEST APPLY align on
+   a shared right edge instead of ragged auto-sized buttons. */
+.actionButtonSlot {
+    flex-shrink: 0;
+    width: 160px;
+}
+
+.actionButtonSlot > * {
+    width: 100%;
+}
+
+.actionDescription {
+    margin: 0;
+    max-width: 46ch;
+    font-family: var(--ba-font-body);
+    font-size: var(--ba-font-size-2);
+    line-height: 1.5;
+    color: var(--ba-color-fg-subtle);
+}
+
+/* Reserves the result line's height whether or not one is rendered — a
+   result appearing/disappearing must never shift the rows around it. */
+.resultSlot {
+    min-height: 1.4em;
+}
+
+.resultLine {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-2);
+    margin: 0;
+    font-size: var(--ba-font-size-1);
+    letter-spacing: var(--ba-font-letterspacing-label);
+}
+
+.resultOk {
+    color: var(--ba-color-fg-positive);
+}
+
+.resultRunning {
+    color: var(--ba-color-fg-default);
+}
+
+.resultWarn {
+    color: var(--ba-color-fg-warn);
+}
+
+.resultError {
+    color: var(--ba-color-fg-negative);
+}

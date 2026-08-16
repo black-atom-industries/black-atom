@@ -1,0 +1,53 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 20px;
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-3);
+    color: var(--ba-color-fg-subtle);
+    cursor: pointer;
+    background: transparent;
+    transition: background var(--ba-duration-1) var(--ba-ease);
+}
+
+.root:hover {
+    background: var(--ba-color-bg-subtle);
+}
+
+.root:focus-visible {
+    outline: var(--ba-focus-outline);
+    outline-offset: var(--ba-focus-offset);
+}
+
+.selected {
+    color: var(--ba-color-fg-default);
+    background: var(--ba-color-bg-hint);
+    border-left: var(--ba-selection-edge);
+    margin-left: -2px;
+}
+
+.selected:hover {
+    background: var(--ba-color-bg-hint);
+}
+
+.dimmed {
+    color: var(--ba-color-fg-disabled);
+}
+
+.indented {
+    padding-left: 36px;
+}
+
+.cursor {
+    width: 12px;
+    color: var(--ba-color-fg-positive);
+}
+
+.name {
+    flex: 1;
+}
+
+.nameSelected {
+    font-weight: var(--ba-font-weight-bold);
+}

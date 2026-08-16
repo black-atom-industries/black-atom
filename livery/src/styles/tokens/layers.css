@@ -1,0 +1,15 @@
+/* =============================================================
+   Black Atom — Layer (z-index) tokens
+   APP-LOCAL: no counterpart in the design system reference
+   (docs/design-system/reference/tokens/). Kept under the --ba-*
+   prefix for a single token namespace.
+   ============================================================= */
+
+:root {
+    --ba-layer-1: 1;
+    --ba-layer-2: 2;
+    --ba-layer-3: 3;
+    --ba-layer-4: 4;
+    --ba-layer-5: 5;
+    --ba-layer-important: 999;
+}

@@ -1,0 +1,33 @@
+/* Black Atom design tokens (--ba-*) — mirrors docs/design-system/reference/tokens/ */
+@import "./styles/tokens/index.css";
+
+/* Fonts — the three voices: Space Grotesk (display), Iosevka (mono/UI), IBM Plex Sans (body).
+   Static weights, so family names match the design tokens verbatim ("Space Grotesk", not
+   "Space Grotesk Variable"). Weights per tokens: regular 400 · medium 500 · bold 700. */
+@import "@fontsource/space-grotesk/400.css";
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/iosevka/400.css";
+@import "@fontsource/iosevka/500.css";
+@import "@fontsource/iosevka/700.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/700.css";
+
+html {
+    font-size: 100%; /* 19px — readability bump for desktop use */
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: var(--ba-font-mono);
+}
+
+#root {
+    height: 100%;
+}

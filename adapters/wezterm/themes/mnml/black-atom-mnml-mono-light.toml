@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — MNML ∷ Mono Light"
+
+[colors]
+foreground = "#181614"
+background = "#fefbf8"
+cursor_bg = "#2e2e2e"
+cursor_border = "#2e2e2e"
+cursor_fg = "#fefbf8"
+selection_bg = "#e0ddda"
+selection_fg = "#181614"
+split = "#2e2e2e"
+compose_cursor = "#f14d4c"
+scrollbar_thumb = "#8e8c89"
+
+ansi = [
+  "#3f3d3a", # black
+  "#c6c3c1", # dark_red
+  "#b3b0ae", # dark_green
+  "#b3b0ae", # dark_yellow
+  "#c6c3c1", # dark_blue
+  "#b3b0ae", # dark_magenta
+  "#c6c3c1", # dark_cyan
+  "#c6c3c1" # light_gray
+]
+
+brights = [
+  "#8e8c89", # gray
+  "#c6c3c1", # red
+  "#b3b0ae", # green
+  "#b3b0ae", # yellow
+  "#c6c3c1", # blue
+  "#b3b0ae", # magenta
+  "#c6c3c1", # cyan
+  "#c6c3c1" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#f1eeeb"
+background = "#fefbf8"
+
+[colors.tab_bar.active_tab]
+fg_color = "#f1eeeb"
+bg_color = "#2e2e2e"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#f1eeeb"
+bg_color = "#e0ddda"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#f1eeeb"
+bg_color = "#f1eeeb"
+
+[colors.tab_bar.new_tab]
+fg_color = "#f1eeeb"
+bg_color = "#819e00"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#f1eeeb"
+bg_color = "#f1eeeb"
+intensity = "Bold"

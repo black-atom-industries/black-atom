@@ -1,0 +1,14 @@
+/* =============================================================
+   Black Atom design tokens (--ba-*)
+   colors/typography/spacing/borders/motion mirror the design
+   system reference 1:1 (docs/design-system/reference/tokens/) —
+   keep them byte-comparable; change them only via a design
+   re-import. layers.css is app-local.
+   ============================================================= */
+
+@import "./colors.css";
+@import "./typography.css";
+@import "./spacing.css";
+@import "./borders.css";
+@import "./motion.css";
+@import "./layers.css";

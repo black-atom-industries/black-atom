@@ -1,0 +1,29 @@
+# <%= theme.meta.label %>
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "<%= theme.ui.fg.accent %>"
+      - bold
+    inactiveBorderColor:
+      - "<%= theme.ui.fg.subtle %>"
+    optionsTextColor:
+      - "<%= theme.palette.blue %>"
+    selectedLineBgColor:
+      - "<%= theme.ui.bg.selection %>"
+    cherryPickedCommitBgColor:
+      - "<%= theme.ui.bg.hover %>"
+    cherryPickedCommitFgColor:
+      - "<%= theme.ui.fg.accent %>"
+    unstagedChangesColor:
+      - "<%= theme.ui.fg.negative %>"
+    defaultFgColor:
+      - "<%= theme.ui.fg.default %>"
+    searchingActiveBorderColor:
+      - "<%= theme.palette.yellow %>"
+
+  authorColors:
+    "*": "<%= theme.palette.magenta %>"

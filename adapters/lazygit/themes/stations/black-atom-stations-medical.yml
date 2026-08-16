@@ -1,0 +1,29 @@
+# Black Atom — Stations ∷ Medical
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#66bd10"
+      - bold
+    inactiveBorderColor:
+      - "#669a84"
+    optionsTextColor:
+      - "#476a5f"
+    selectedLineBgColor:
+      - "#c6d1cc"
+    cherryPickedCommitBgColor:
+      - "#c6d1cc"
+    cherryPickedCommitFgColor:
+      - "#66bd10"
+    unstagedChangesColor:
+      - "#f472a0"
+    defaultFgColor:
+      - "#2b3b33"
+    searchingActiveBorderColor:
+      - "#66bd10"
+
+  authorColors:
+    "*": "#998ed9"

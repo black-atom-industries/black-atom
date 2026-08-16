@@ -1,0 +1,29 @@
+# Black Atom — Stations ∷ Operations
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#b7db6e"
+      - bold
+    inactiveBorderColor:
+      - "#91bcad"
+    optionsTextColor:
+      - "#abe7ca"
+    selectedLineBgColor:
+      - "#354e46"
+    cherryPickedCommitBgColor:
+      - "#293c36"
+    cherryPickedCommitFgColor:
+      - "#b7db6e"
+    unstagedChangesColor:
+      - "#f08cb4"
+    defaultFgColor:
+      - "#c1efd5"
+    searchingActiveBorderColor:
+      - "#b7db6e"
+
+  authorColors:
+    "*": "#b6bee0"

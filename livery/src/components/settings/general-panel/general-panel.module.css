@@ -1,0 +1,48 @@
+/* =============================================================
+   GeneralPanel — SETTINGS · GENERAL panel
+   BEHAVIOR toggle row(s) + SYSTEM KVRow section, per board 3b.
+   ============================================================= */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-3);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-4);
+    border: var(--ba-border-width) solid transparent;
+    padding: var(--ba-size-3) var(--ba-size-4);
+}
+
+.rowCursored {
+    border-color: var(--ba-color-fg-hint);
+}
+
+.rowCopy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-1);
+}
+
+.rowTitle {
+    font-family: var(--ba-font-mono);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    text-transform: uppercase;
+    font-size: var(--ba-font-size-0);
+    font-weight: var(--ba-font-weight-bold);
+}
+
+.system {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-2);
+}
+
+.syncRows {
+    display: flex;
+    flex-direction: column;
+    padding-inline: var(--ba-size-2);
+}

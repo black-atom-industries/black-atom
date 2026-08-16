@@ -1,0 +1,30 @@
+/* <%= theme.meta.label %> */
+
+/* Background colors */
+@define-color ba-bg-default <%= theme.ui.bg.default %>;
+@define-color ba-bg-panel <%= theme.ui.bg.panel %>;
+@define-color ba-bg-hover <%= theme.ui.bg.hover %>;
+@define-color ba-bg-active <%= theme.ui.bg.active %>;
+@define-color ba-bg-selection <%= theme.ui.bg.selection %>;
+@define-color ba-bg-contrast <%= theme.ui.bg.contrast %>;
+
+/* Foreground colors */
+@define-color ba-fg-default <%= theme.ui.fg.default %>;
+@define-color ba-fg-subtle <%= theme.ui.fg.subtle %>;
+@define-color ba-fg-accent <%= theme.ui.fg.accent %>;
+@define-color ba-fg-disabled <%= theme.ui.fg.disabled %>;
+@define-color ba-fg-contrast <%= theme.ui.fg.contrast %>;
+
+/* Feedback colors */
+@define-color ba-fg-negative <%= theme.ui.fg.negative %>;
+@define-color ba-fg-positive <%= theme.ui.fg.positive %>;
+@define-color ba-fg-warn <%= theme.ui.fg.warn %>;
+@define-color ba-fg-info <%= theme.ui.fg.info %>;
+
+/* Palette colors */
+@define-color ba-red <%= theme.palette.red %>;
+@define-color ba-green <%= theme.palette.green %>;
+@define-color ba-yellow <%= theme.palette.yellow %>;
+@define-color ba-blue <%= theme.palette.blue %>;
+@define-color ba-magenta <%= theme.palette.magenta %>;
+@define-color ba-cyan <%= theme.palette.cyan %>;

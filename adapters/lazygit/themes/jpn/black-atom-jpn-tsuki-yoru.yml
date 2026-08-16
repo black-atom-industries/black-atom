@@ -1,0 +1,29 @@
+# Black Atom — JPN ∷ Tsuki Yoru
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#eab899"
+      - bold
+    inactiveBorderColor:
+      - "#9d9daf"
+    optionsTextColor:
+      - "#a1b0cf"
+    selectedLineBgColor:
+      - "#373737"
+    cherryPickedCommitBgColor:
+      - "#282828"
+    cherryPickedCommitFgColor:
+      - "#eab899"
+    unstagedChangesColor:
+      - "#f591b2"
+    defaultFgColor:
+      - "#e6e6e6"
+    searchingActiveBorderColor:
+      - "#eab899"
+
+  authorColors:
+    "*": "#aca1cf"

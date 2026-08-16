@@ -1,0 +1,32 @@
+/* =============================================================
+   SectionHeader — Uppercase mono label + hairline rule
+   Spec: docs/design-system/reference/components/display/SectionHeader.jsx
+   ============================================================= */
+
+.root {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ba-size-2);
+    font-family: var(--ba-font-mono);
+}
+
+.label {
+    font-size: var(--ba-font-size-0);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-hint);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.rule {
+    flex: 1;
+    border: none;
+    border-bottom: var(--ba-border-subtle);
+    margin: 0;
+}
+
+.meta {
+    font-size: var(--ba-font-size-0);
+    color: var(--ba-color-fg-disabled);
+    white-space: nowrap;
+}

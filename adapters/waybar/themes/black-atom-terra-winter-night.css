@@ -1,0 +1,30 @@
+/* Black Atom — TERRA ∷ Winter Night */
+
+/* Background colors */
+@define-color ba-bg-default #12161d;
+@define-color ba-bg-panel #0b0d12;
+@define-color ba-bg-hover #1a222e;
+@define-color ba-bg-active #1a222e;
+@define-color ba-bg-selection #212f3f;
+@define-color ba-bg-contrast #e2e8f2;
+
+/* Foreground colors */
+@define-color ba-fg-default #e2e8f2;
+@define-color ba-fg-subtle #6f8298;
+@define-color ba-fg-accent #fba952;
+@define-color ba-fg-disabled #5e748b;
+@define-color ba-fg-contrast #12161d;
+
+/* Feedback colors */
+@define-color ba-fg-negative #a8a6e5;
+@define-color ba-fg-positive #82c3d3;
+@define-color ba-fg-warn #fba952;
+@define-color ba-fg-info #7fb6ee;
+
+/* Palette colors */
+@define-color ba-red #a8a6e5;
+@define-color ba-green #82c3d3;
+@define-color ba-yellow #fba952;
+@define-color ba-blue #7fb6ee;
+@define-color ba-magenta #b4a7df;
+@define-color ba-cyan #71cfd9;

@@ -1,0 +1,121 @@
+/* =============================================================
+   AdapterStatusRow — one adapter's line in the ApplyRail.
+   Pip + mono name + tabular duration; warn previews its reason,
+   error expands in place. 0 radius, 1px borders, tokens only.
+   ============================================================= */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: var(--ba-size-2) var(--ba-size-4);
+}
+
+.statusError {
+    cursor: pointer;
+}
+
+/* Cursor: subtle fill + 2px intent-tinted left edge; the edge eats into
+   the padding so the content column never shifts. Radius stays 0. */
+.cursored {
+    background: var(--ba-color-bg-subtle);
+    border-left: 2px solid var(--ba-color-fg-positive);
+    padding-left: calc(var(--ba-size-4) - 2px);
+}
+
+.cursored.statusWarn {
+    border-left-color: var(--ba-color-fg-warn);
+}
+
+.cursored.statusError {
+    border-left-color: var(--ba-color-fg-negative);
+}
+
+.line {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-3);
+}
+
+.name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-1);
+    color: var(--ba-color-fg-default);
+}
+
+.statusPending .name {
+    color: var(--ba-color-fg-disabled);
+}
+
+.duration {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-0);
+    font-variant-numeric: tabular-nums;
+    color: var(--ba-color-fg-hint);
+}
+
+.statusPending .duration,
+.statusRunning .duration {
+    color: var(--ba-color-fg-disabled);
+}
+
+.tag {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-0);
+    letter-spacing: var(--ba-font-letterspacing-label);
+}
+
+.statusWarn .tag {
+    color: var(--ba-color-fg-warn);
+}
+
+.statusError .tag {
+    color: var(--ba-color-fg-negative);
+}
+
+/* Truncated one-line reason under a DEGRADED row's name, aligned with it. */
+.reason {
+    padding-left: calc(var(--ba-size-pip) + var(--ba-size-3));
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-0);
+    color: var(--ba-color-fg-hint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Expanded error detail — recessed block pushing rows down, no overlay. */
+.detail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-3);
+    padding: var(--ba-size-3) var(--ba-size-4);
+    background: var(--ba-color-bg-recessed);
+    border-top: var(--ba-border-subtle);
+    border-bottom: var(--ba-border-subtle);
+}
+
+.detailMessage {
+    margin: 0;
+    font-family: var(--ba-font-body);
+    font-size: var(--ba-font-size-1);
+    line-height: var(--ba-font-lineheight-body);
+    color: var(--ba-color-fg-subtle);
+}
+
+.detailRows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-1);
+    /* Rail is 280px — tilde paths must wrap, not overflow the seam. */
+    word-break: break-all;
+}
+
+.retry {
+    align-self: flex-start;
+}

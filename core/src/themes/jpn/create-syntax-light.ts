@@ -1,0 +1,106 @@
+import type { ThemeCreatorOptions, ThemeSyntaxColors } from "../../types/theme.ts";
+
+export default function (
+    { primaries, palette, feedback }: ThemeCreatorOptions,
+): ThemeSyntaxColors {
+    return {
+        variable: {
+            default: palette.blue,
+            builtin: palette.darkBlue,
+            member: palette.darkMagenta,
+            parameter: palette.darkMagenta,
+        },
+        property: {
+            default: palette.blue,
+        },
+        string: {
+            default: palette.green,
+            doc: palette.green,
+            regexp: palette.red,
+            escape: palette.red,
+        },
+        constant: {
+            default: palette.darkBlue,
+            builtin: palette.darkRed,
+        },
+        module: {
+            default: palette.darkBlue,
+        },
+        boolean: {
+            default: palette.darkGreen,
+        },
+        number: {
+            default: palette.darkGreen,
+        },
+        type: {
+            default: palette.cyan,
+            builtin: palette.darkCyan,
+        },
+        attribute: {
+            default: palette.darkYellow,
+            builtin: palette.darkYellow,
+        },
+        func: {
+            default: palette.yellow,
+            builtin: palette.yellow,
+            method: palette.yellow,
+        },
+        constructor: {
+            default: palette.yellow,
+        },
+        keyword: {
+            default: palette.magenta,
+            import: palette.red,
+            export: palette.red,
+        },
+        operator: {
+            default: palette.darkBlue,
+        },
+        punctuation: {
+            default: palette.gray,
+            delimiter: palette.darkBlue,
+            bracket: palette.gray,
+            special: palette.gray,
+        },
+        comment: {
+            default: palette.gray,
+            doc: palette.darkGreen,
+            todo: feedback.success,
+            error: feedback.negative,
+            warn: feedback.warning,
+            info: feedback.info,
+            hint: palette.darkYellow,
+        },
+        markup: {
+            heading: {
+                h1: palette.yellow,
+                h2: palette.yellow,
+                h3: palette.yellow,
+                h4: palette.gray,
+                h5: palette.gray,
+                h6: palette.gray,
+            },
+            strong: palette.yellow,
+            italic: palette.yellow,
+            strikethrough: palette.yellow,
+            quote: palette.green,
+            math: palette.darkGreen,
+            link: palette.green,
+            list: {
+                default: palette.gray,
+                checked: palette.green,
+                unchecked: palette.gray,
+            },
+            code: {
+                fg: palette.gray,
+                bg: primaries.l20,
+            },
+        },
+        tag: {
+            default: palette.yellow,
+            builtin: palette.darkYellow,
+            attribute: primaries.m10,
+            delimiter: primaries.d40,
+        },
+    };
+}

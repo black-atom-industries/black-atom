@@ -1,0 +1,261 @@
+/* Fallback: Black Atom — Light (no Style Settings plugin) */
+.theme-light {
+  --color-base-00: #f9fcff;
+  --color-base-05: #eceff1;
+  --color-base-10: #dbdee1;
+  --color-base-20: #d3d6d9;
+  --color-base-25: #bbbec1;
+  --color-base-30: #999fa4;
+  --color-base-35: #788288;
+  --color-base-40: #576570;
+  --color-base-50: #3c3d3e;
+  --color-base-60: #313334;
+  --color-base-70: #28292a;
+  --color-base-100: #191b1c;
+
+  /* Extended Colors */
+  --color-red: #788288;
+  --color-red-rgb: 120, 130, 136;
+  --color-orange: #999fa4;
+  --color-orange-rgb: 153, 159, 164;
+  --color-yellow: #999fa4;
+  --color-yellow-rgb: 153, 159, 164;
+  --color-green: #bbbec1;
+  --color-green-rgb: 187, 190, 193;
+  --color-cyan: #60a259;
+  --color-cyan-rgb: 96, 162, 89;
+  --color-blue: #788288;
+  --color-blue-rgb: 120, 130, 136;
+  --color-purple: #2f8728;
+  --color-purple-rgb: 47, 135, 40;
+  --color-pink: #2f8728;
+  --color-pink-rgb: 47, 135, 40;
+
+  /* Backgrounds */
+  --background-primary: #eceff1;
+  --background-primary-alt: #f9fcff;
+  --background-secondary: #dbdee1;
+  --background-secondary-alt: #dbdee1;
+  --background-modifier-hover: #d3d6d9;
+  --background-modifier-active-hover: #d3d6d9;
+  --background-modifier-border: #f9fcff;
+  --background-modifier-border-hover: #d3d6d9;
+  --background-modifier-border-focus: #60a259;
+  --background-modifier-error-rgb: 205, 211, 252;
+  --background-modifier-error: #cdd3fc;
+  --background-modifier-error-hover: #cdd3fc;
+  --background-modifier-success-rgb: 179, 222, 237;
+  --background-modifier-success: #b3deed;
+  --background-modifier-message: #c8dbea;
+  --background-modifier-form-field: #eceff1;
+
+  /* Text */
+  --text-normal: #28292a;
+  --text-muted: #576570;
+  --text-faint: #999fa4;
+  --text-accent: #60a259;
+  --text-accent-hover: #60a259;
+  --text-on-accent: #dbdee1;
+  --text-on-accent-inverted: #28292a;
+  --text-error: #c70050;
+  --text-warning: #ba2000;
+  --text-success: #008400;
+  --text-selection: #d3d6d9;
+  --text-highlight-bg: #d3d6d9;
+
+  /* Interactive */
+  --interactive-normal: #eceff1;
+  --interactive-hover: #d3d6d9;
+  --interactive-accent: #60a259;
+  --interactive-accent-hover: #60a259;
+
+  /* Headings */
+  --h1-color: #60a259;
+  --h2-color: #60a259;
+  --h3-color: #60a259;
+  --h4-color: #3c3d3e;
+  --h5-color: #3c3d3e;
+  --h6-color: #3c3d3e;
+
+  /* Markup */
+  --bold-color: #60a259;
+  --italic-color: #60a259;
+  --blockquote-border-color: #788288;
+  --link-color: #2f8728;
+  --link-color-hover: #2f8728;
+  --link-external-color: #2f8728;
+  --link-external-color-hover: #2f8728;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #3c3d3e;
+  --code-comment: #788288;
+  --code-function: #60a259;
+  --code-important: #8f81d6;
+  --code-keyword: #8f81d6;
+  --code-operator: #313334;
+  --code-property: #788288;
+  --code-punctuation: #3c3d3e;
+  --code-string: #2f8728;
+  --code-tag: #60a259;
+  --code-value: #3c3d3e;
+  --code-background: #dbdee1;
+
+  /* Tags */
+  --tag-color: #60a259;
+  --tag-color-hover: #60a259;
+  --tag-background: #d3d6d9;
+  --tag-background-hover: #f9fcff;
+
+  /* Graph */
+  --graph-line: #f9fcff;
+  --graph-node: #60a259;
+  --graph-node-focused: #60a259;
+  --graph-node-tag: #60a259;
+  --graph-node-attachment: #bbbec1;
+
+  /* Scrollbar */
+  --scrollbar-bg: #eceff1;
+  --scrollbar-thumb-bg: #f9fcff;
+  --scrollbar-active-thumb-bg: #576570;
+
+  /* Nav */
+  --nav-item-background-hover: #d3d6d9;
+  --nav-item-background-active: #f9fcff;
+  --nav-item-background-selected: #d3d6d9;
+  --nav-item-color: #28292a;
+  --nav-item-color-hover: #28292a;
+  --nav-item-color-active: #60a259;
+  --nav-item-color-selected: #28292a;
+}
+
+/* Black Atom — Light */
+.theme-light.black-atom-default-light {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #f9fcff;
+  --color-base-05: #eceff1;
+  --color-base-10: #dbdee1;
+  --color-base-20: #d3d6d9;
+  --color-base-25: #bbbec1;
+  --color-base-30: #999fa4;
+  --color-base-35: #788288;
+  --color-base-40: #576570;
+  --color-base-50: #3c3d3e;
+  --color-base-60: #313334;
+  --color-base-70: #28292a;
+  --color-base-100: #191b1c;
+
+  /* Extended Colors */
+  --color-red: #788288;
+  --color-red-rgb: 120, 130, 136;
+  --color-orange: #999fa4;
+  --color-orange-rgb: 153, 159, 164;
+  --color-yellow: #999fa4;
+  --color-yellow-rgb: 153, 159, 164;
+  --color-green: #bbbec1;
+  --color-green-rgb: 187, 190, 193;
+  --color-cyan: #60a259;
+  --color-cyan-rgb: 96, 162, 89;
+  --color-blue: #788288;
+  --color-blue-rgb: 120, 130, 136;
+  --color-purple: #2f8728;
+  --color-purple-rgb: 47, 135, 40;
+  --color-pink: #2f8728;
+  --color-pink-rgb: 47, 135, 40;
+
+  /* Backgrounds */
+  --background-primary: #eceff1;
+  --background-primary-alt: #f9fcff;
+  --background-secondary: #dbdee1;
+  --background-secondary-alt: #dbdee1;
+  --background-modifier-hover: #d3d6d9;
+  --background-modifier-active-hover: #d3d6d9;
+  --background-modifier-border: #f9fcff;
+  --background-modifier-border-hover: #d3d6d9;
+  --background-modifier-border-focus: #60a259;
+  --background-modifier-error-rgb: 205, 211, 252;
+  --background-modifier-error: #cdd3fc;
+  --background-modifier-error-hover: #cdd3fc;
+  --background-modifier-success-rgb: 179, 222, 237;
+  --background-modifier-success: #b3deed;
+  --background-modifier-message: #c8dbea;
+  --background-modifier-form-field: #eceff1;
+
+  /* Text */
+  --text-normal: #28292a;
+  --text-muted: #576570;
+  --text-faint: #999fa4;
+  --text-accent: #60a259;
+  --text-accent-hover: #60a259;
+  --text-on-accent: #dbdee1;
+  --text-on-accent-inverted: #28292a;
+  --text-error: #c70050;
+  --text-warning: #ba2000;
+  --text-success: #008400;
+  --text-selection: #d3d6d9;
+  --text-highlight-bg: #d3d6d9;
+
+  /* Interactive */
+  --interactive-normal: #eceff1;
+  --interactive-hover: #d3d6d9;
+  --interactive-accent: #60a259;
+  --interactive-accent-hover: #60a259;
+
+  /* Headings */
+  --h1-color: #60a259;
+  --h2-color: #60a259;
+  --h3-color: #60a259;
+  --h4-color: #3c3d3e;
+  --h5-color: #3c3d3e;
+  --h6-color: #3c3d3e;
+
+  /* Markup */
+  --bold-color: #60a259;
+  --italic-color: #60a259;
+  --blockquote-border-color: #788288;
+  --link-color: #2f8728;
+  --link-color-hover: #2f8728;
+  --link-external-color: #2f8728;
+  --link-external-color-hover: #2f8728;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #3c3d3e;
+  --code-comment: #788288;
+  --code-function: #60a259;
+  --code-important: #8f81d6;
+  --code-keyword: #8f81d6;
+  --code-operator: #313334;
+  --code-property: #788288;
+  --code-punctuation: #3c3d3e;
+  --code-string: #2f8728;
+  --code-tag: #60a259;
+  --code-value: #3c3d3e;
+  --code-background: #dbdee1;
+
+  /* Tags */
+  --tag-color: #60a259;
+  --tag-color-hover: #60a259;
+  --tag-background: #d3d6d9;
+  --tag-background-hover: #f9fcff;
+
+  /* Graph */
+  --graph-line: #f9fcff;
+  --graph-node: #60a259;
+  --graph-node-focused: #60a259;
+  --graph-node-tag: #60a259;
+  --graph-node-attachment: #bbbec1;
+
+  /* Scrollbar */
+  --scrollbar-bg: #eceff1;
+  --scrollbar-thumb-bg: #f9fcff;
+  --scrollbar-active-thumb-bg: #576570;
+
+  /* Nav */
+  --nav-item-background-hover: #d3d6d9;
+  --nav-item-background-active: #f9fcff;
+  --nav-item-background-selected: #d3d6d9;
+  --nav-item-color: #28292a;
+  --nav-item-color-hover: #28292a;
+  --nav-item-color-active: #60a259;
+  --nav-item-color-selected: #28292a;
+}

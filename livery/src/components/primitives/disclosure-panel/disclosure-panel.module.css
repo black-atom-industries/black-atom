@@ -1,0 +1,70 @@
+/* =============================================================
+   DisclosurePanel — Collapsible bordered section
+   Spec: docs/design-system/reference/components/containers/DisclosurePanel.jsx
+   Expand/collapse within --ba-duration-3 (240ms max); no entrance
+   animation on the body itself, only the border/background settle.
+   ============================================================= */
+
+.root {
+    border: var(--ba-border);
+    font-family: var(--ba-font-mono);
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--ba-duration-3) var(--ba-ease);
+}
+
+.expanded {
+    border: var(--ba-border-strong);
+}
+
+.headerRow {
+    display: flex;
+    align-items: center;
+    transition:
+        background var(--ba-duration-3) var(--ba-ease),
+        border-color var(--ba-duration-3) var(--ba-ease);
+}
+
+.headerRow > :first-child:not(.header) {
+    margin-left: var(--ba-size-4);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-3);
+    width: 100%;
+    min-width: 0;
+    flex: 1;
+    padding: var(--ba-size-3) var(--ba-size-4);
+    background: transparent;
+    border: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        background var(--ba-duration-3) var(--ba-ease),
+        border-color var(--ba-duration-3) var(--ba-ease);
+}
+
+.header:focus-visible {
+    outline: var(--ba-focus-outline);
+    outline-offset: var(--ba-focus-offset);
+}
+
+.expanded > .headerRow {
+    border-bottom: var(--ba-border);
+    background: var(--ba-color-bg-subtle);
+}
+
+.hint {
+    margin-left: auto;
+    font-size: var(--ba-font-size-0);
+    color: var(--ba-color-fg-disabled);
+    white-space: nowrap;
+}
+
+.body {
+    padding: var(--ba-size-4);
+}

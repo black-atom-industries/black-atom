@@ -1,0 +1,29 @@
+# Black Atom — MNML ∷ Clay Light
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#e76b3e"
+      - bold
+    inactiveBorderColor:
+      - "#5d553f"
+    optionsTextColor:
+      - "#888069"
+    selectedLineBgColor:
+      - "#ddd8c2"
+    cherryPickedCommitBgColor:
+      - "#ebe5cf"
+    cherryPickedCommitFgColor:
+      - "#e76b3e"
+    unstagedChangesColor:
+      - "#f14d4c"
+    defaultFgColor:
+      - "#322e22"
+    searchingActiveBorderColor:
+      - "#79715a"
+
+  authorColors:
+    "*": "#79715a"

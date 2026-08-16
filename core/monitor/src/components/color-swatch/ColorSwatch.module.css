@@ -1,0 +1,65 @@
+.swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 0;
+    cursor: pointer;
+}
+
+/* Background variant — filled block */
+.colorBg {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-2);
+    border: var(--border-size-1) solid var(--ba-ui-bg-float);
+    flex-shrink: 0;
+}
+
+/* Foreground variant — "Aa" typographic sample */
+.colorFg {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-2);
+    border: var(--border-size-1) solid var(--ba-ui-bg-float);
+    flex-shrink: 0;
+    background: var(--ba-ui-bg-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-6);
+    letter-spacing: -0.5px;
+}
+
+.label {
+    font-size: var(--font-size-00);
+    color: var(--ba-ui-fg-subtle);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 52px;
+}
+
+.colorText {
+    font-size: var(--font-size-00);
+    text-align: center;
+    font-family: var(--font-mono);
+    max-width: 52px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hex {
+    font-size: var(--font-size-00);
+    color: var(--ba-ui-fg-disabled);
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.swatch:hover .hex {
+    opacity: 1;
+}

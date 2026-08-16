@@ -1,0 +1,59 @@
+/* =============================================================
+   AppHeader — Application title bar
+   Spec: docs/design-system/reference/components/containers/AppHeader.jsx
+   Wordmark uses the display font; the brand dot is the system's sole
+   border-radius exception (--ba-radius-dot).
+   ============================================================= */
+
+.root {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--ba-font-mono);
+}
+
+/* The undecorated window drags by its header. data-tauri-drag-region only
+   fires when the mousedown target IS the .root element, so the children
+   (static chrome text, nothing interactive) must let events pass through. */
+.root > * {
+    pointer-events: none;
+}
+
+.wordmarkRow {
+    display: flex;
+    align-items: baseline;
+    gap: var(--ba-size-3);
+}
+
+.wordmark {
+    font-family: var(--ba-font-display);
+    font-weight: var(--ba-font-weight-bold);
+    font-size: var(--ba-font-size-3);
+    letter-spacing: 0.02em;
+    display: inline-flex;
+    align-items: baseline;
+}
+
+.dot {
+    display: inline-block;
+    width: 0.62em;
+    height: 0.62em;
+    border-radius: var(--ba-radius-dot);
+    background: var(--ba-color-fg-default);
+    margin: 0 0.03em;
+}
+
+.version {
+    font-family: var(--ba-font-mono);
+    font-variation-settings: "MONO" 1;
+    font-size: var(--ba-font-size-1);
+    font-weight: var(--ba-font-weight-regular);
+    color: var(--ba-color-fg-hint);
+}
+
+.context {
+    font-size: var(--ba-font-size-1);
+    color: var(--ba-color-fg-hint);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}

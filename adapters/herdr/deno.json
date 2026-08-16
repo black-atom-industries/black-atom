@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "@std/path": "jsr:@std/path@1.0.8"
+  },
+  "lock": false,
+  "tasks": {
+    "generate": "deno run -A jsr:@black-atom/core/cli generate && deno task postGenerate",
+    "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
+    "dev": "deno run -A scripts/dev.ts",
+    "update": "deno cache --reload jsr:@black-atom/core/cli"
+  }
+}

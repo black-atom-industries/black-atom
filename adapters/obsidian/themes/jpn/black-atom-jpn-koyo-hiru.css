@@ -1,0 +1,131 @@
+/* Black Atom — JPN ∷ Koyo Hiru */
+.theme-light.black-atom-jpn-koyo-hiru {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #fff5e5;
+  --color-base-05: #fef2e1;
+  --color-base-10: #f8e7d0;
+  --color-base-20: #f2daba;
+  --color-base-25: #d1ba9b;
+  --color-base-30: #b19b7c;
+  --color-base-35: #907691;
+  --color-base-40: #725a73;
+  --color-base-50: #634c64;
+  --color-base-60: #4e3b4f;
+  --color-base-70: #3a2e3b;
+  --color-base-100: #29212a;
+
+  /* Extended Colors */
+  --color-red: #f5345e;
+  --color-red-rgb: 245, 52, 94;
+  --color-orange: #f1771e;
+  --color-orange-rgb: 241, 119, 30;
+  --color-yellow: #ed9a00;
+  --color-yellow-rgb: 237, 154, 0;
+  --color-green: #3aa85b;
+  --color-green-rgb: 58, 168, 91;
+  --color-cyan: #00ab93;
+  --color-cyan-rgb: 0, 171, 147;
+  --color-blue: #9e77dc;
+  --color-blue-rgb: 158, 119, 220;
+  --color-purple: #f88f4f;
+  --color-purple-rgb: 248, 143, 79;
+  --color-pink: #f2943c;
+  --color-pink-rgb: 242, 148, 60;
+
+  /* Backgrounds */
+  --background-primary: #fef2e1;
+  --background-primary-alt: #fff5e5;
+  --background-secondary: #f8e7d0;
+  --background-secondary-alt: #f8e7d0;
+  --background-modifier-hover: #f8e7d0;
+  --background-modifier-active-hover: #f8e7d0;
+  --background-modifier-border: #fff5e5;
+  --background-modifier-border-hover: #f8e7d0;
+  --background-modifier-border-focus: #ed9a00;
+  --background-modifier-error-rgb: 254, 206, 166;
+  --background-modifier-error: #fecea6;
+  --background-modifier-error-hover: #fecea6;
+  --background-modifier-success-rgb: 229, 218, 176;
+  --background-modifier-success: #e5dab0;
+  --background-modifier-message: #fccebd;
+  --background-modifier-form-field: #fef2e1;
+
+  /* Text */
+  --text-normal: #3a2e3b;
+  --text-muted: #b19b7c;
+  --text-faint: #d1ba9b;
+  --text-accent: #ed9a00;
+  --text-accent-hover: #ed9a00;
+  --text-on-accent: #fef2e1;
+  --text-on-accent-inverted: #3a2e3b;
+  --text-error: #f5345e;
+  --text-warning: #ed9a00;
+  --text-success: #3aa85b;
+  --text-selection: #f8e7d0;
+  --text-highlight-bg: #f8e7d0;
+
+  /* Interactive */
+  --interactive-normal: #fef2e1;
+  --interactive-hover: #f8e7d0;
+  --interactive-accent: #ed9a00;
+  --interactive-accent-hover: #ed9a00;
+
+  /* Headings */
+  --h1-color: #ed9a00;
+  --h2-color: #ed9a00;
+  --h3-color: #ed9a00;
+  --h4-color: #725a73;
+  --h5-color: #725a73;
+  --h6-color: #725a73;
+
+  /* Markup */
+  --bold-color: #ed9a00;
+  --italic-color: #ed9a00;
+  --blockquote-border-color: #3aa85b;
+  --link-color: #3aa85b;
+  --link-color-hover: #3aa85b;
+  --link-external-color: #3aa85b;
+  --link-external-color-hover: #3aa85b;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #9e77dc;
+  --code-comment: #725a73;
+  --code-function: #ed9a00;
+  --code-important: #f88f4f;
+  --code-keyword: #f88f4f;
+  --code-operator: #d1649c;
+  --code-property: #9e77dc;
+  --code-punctuation: #725a73;
+  --code-string: #3aa85b;
+  --code-tag: #ed9a00;
+  --code-value: #d1649c;
+  --code-background: #f8e7d0;
+
+  /* Tags */
+  --tag-color: #ed9a00;
+  --tag-color-hover: #ed9a00;
+  --tag-background: #f8e7d0;
+  --tag-background-hover: #fff5e5;
+
+  /* Graph */
+  --graph-line: #fff5e5;
+  --graph-node: #ed9a00;
+  --graph-node-focused: #ed9a00;
+  --graph-node-tag: #00ab93;
+  --graph-node-attachment: #3aa85b;
+
+  /* Scrollbar */
+  --scrollbar-bg: #fef2e1;
+  --scrollbar-thumb-bg: #fff5e5;
+  --scrollbar-active-thumb-bg: #b19b7c;
+
+  /* Nav */
+  --nav-item-background-hover: #f8e7d0;
+  --nav-item-background-active: #fff5e5;
+  --nav-item-background-selected: #f8e7d0;
+  --nav-item-color: #3a2e3b;
+  --nav-item-color-hover: #3a2e3b;
+  --nav-item-color-active: #ed9a00;
+  --nav-item-color-selected: #3a2e3b;
+}

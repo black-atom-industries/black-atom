@@ -1,0 +1,30 @@
+/* Black Atom — TERRA ∷ Spring Night */
+
+/* Background colors */
+@define-color ba-bg-default #212523;
+@define-color ba-bg-panel #1d201f;
+@define-color ba-bg-hover #272c2a;
+@define-color ba-bg-active #272c2a;
+@define-color ba-bg-selection #313634;
+@define-color ba-bg-contrast #d6d0c2;
+
+/* Foreground colors */
+@define-color ba-fg-default #d6d0c2;
+@define-color ba-fg-subtle #82978c;
+@define-color ba-fg-accent #d1a762;
+@define-color ba-fg-disabled #677e72;
+@define-color ba-fg-contrast #212523;
+
+/* Feedback colors */
+@define-color ba-fg-negative #ba6e5f;
+@define-color ba-fg-positive #92d49a;
+@define-color ba-fg-warn #d1a762;
+@define-color ba-fg-info #99b9e6;
+
+/* Palette colors */
+@define-color ba-red #ba6e5f;
+@define-color ba-green #92d49a;
+@define-color ba-yellow #d1a762;
+@define-color ba-blue #99b9e6;
+@define-color ba-magenta #c6b3da;
+@define-color ba-cyan #85ad9f;

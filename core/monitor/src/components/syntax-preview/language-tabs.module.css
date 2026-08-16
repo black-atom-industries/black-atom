@@ -1,0 +1,26 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-3);
+}
+
+.list {
+    display: flex;
+    gap: var(--size-2);
+    flex-wrap: wrap;
+}
+
+.tab {
+    padding: var(--size-1) var(--size-3);
+    border-radius: var(--radius-2);
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-0);
+    background: var(--ba-ui-bg-float);
+    color: var(--ba-ui-fg-subtle);
+}
+
+.tab[data-active] {
+    background: var(--ba-ui-fg-default);
+    color: var(--ba-ui-bg-default);
+}

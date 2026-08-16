@@ -1,0 +1,6 @@
+.sectionTitle {
+    font-size: var(--font-size-0);
+    font-weight: var(--font-weight-6);
+    color: var(--ba-ui-fg-subtle);
+    margin-bottom: var(--size-1);
+}

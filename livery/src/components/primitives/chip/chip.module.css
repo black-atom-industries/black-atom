@@ -1,0 +1,56 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-0);
+    letter-spacing: var(--ba-font-letterspacing-chip);
+    text-transform: uppercase;
+    padding: 3px 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: var(--ba-border);
+    background: transparent;
+    color: var(--ba-color-fg-subtle);
+    transition: background var(--ba-duration-1) var(--ba-ease);
+}
+
+/* Hover = one surface tier lighter (states spec). */
+.root:hover {
+    background: var(--ba-color-bg-subtle);
+    color: var(--ba-color-fg-default);
+}
+
+/* Keyboard cursor / focus: hint surface + positive outline. The surface
+   change matters — a 1px outline alone is invisible in near-monochrome
+   themes. Plain :focus (not :focus-visible): programmatic focus moves
+   don't satisfy WebKit's focus-visible heuristic. */
+.root:focus,
+.root[data-focused] {
+    background: var(--ba-color-bg-hint);
+    color: var(--ba-color-fg-default);
+    outline: var(--ba-focus-outline);
+    outline-offset: var(--ba-focus-offset);
+}
+
+.active:hover,
+.active:focus,
+.active[data-focused] {
+    background: var(--ba-color-bg-contrast);
+    color: var(--ba-color-fg-contrast);
+}
+
+.active {
+    background: var(--ba-color-bg-contrast);
+    color: var(--ba-color-fg-contrast);
+    font-weight: var(--ba-font-weight-bold);
+    border-color: transparent;
+}
+
+.hotkey {
+    color: var(--ba-color-fg-positive);
+    margin-right: 0.35em;
+}
+
+.active .hotkey {
+    color: inherit;
+}

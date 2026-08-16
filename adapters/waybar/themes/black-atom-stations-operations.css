@@ -1,0 +1,30 @@
+/* Black Atom — Stations ∷ Operations */
+
+/* Background colors */
+@define-color ba-bg-default #21302d;
+@define-color ba-bg-panel #192323;
+@define-color ba-bg-hover #293c36;
+@define-color ba-bg-active #293c36;
+@define-color ba-bg-selection #354e46;
+@define-color ba-bg-contrast #c1efd5;
+
+/* Foreground colors */
+@define-color ba-fg-default #c1efd5;
+@define-color ba-fg-subtle #91bcad;
+@define-color ba-fg-accent #b7db6e;
+@define-color ba-fg-disabled #75a490;
+@define-color ba-fg-contrast #21302d;
+
+/* Feedback colors */
+@define-color ba-fg-negative #f08cb4;
+@define-color ba-fg-positive #80c980;
+@define-color ba-fg-warn #b7db6e;
+@define-color ba-fg-info #abe7ca;
+
+/* Palette colors */
+@define-color ba-red #f08cb4;
+@define-color ba-green #80c980;
+@define-color ba-yellow #b7db6e;
+@define-color ba-blue #abe7ca;
+@define-color ba-magenta #b6bee0;
+@define-color ba-cyan #75d69e;

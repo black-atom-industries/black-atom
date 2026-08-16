@@ -1,0 +1,43 @@
+{
+    "permissions": {
+        "allow": [
+            "Bash(python3:*)",
+            "Bash(deno:*)",
+            "Skill(bai:create)",
+            "Bash(gh pr:*)",
+            "Bash(gh release:*)",
+            "Bash(head:*)",
+            "Bash(gh api:*)",
+            "Bash(git pull:*)",
+            "Bash(ls:*)",
+            "Bash(which rustc:*)",
+            "Bash(which node:*)",
+            "Bash(git checkout:*)",
+            "Bash(npx jsr:*)",
+            "Skill(bai:update)",
+            "Bash(cd:*)",
+            "Bash(npm view:*)"
+        ]
+    },
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Write|Edit|MultiEdit",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "deno fmt $FILEPATH 2>/dev/null; if echo $FILEPATH | grep -q 'src-tauri/'; then cd src-tauri && cargo fmt 2>/dev/null; fi; true"
+                    },
+                    {
+                        "type": "command",
+                        "command": ".claude/hooks/enforce/no-fs-plugin.sh"
+                    },
+                    {
+                        "type": "command",
+                        "command": ".claude/hooks/enforce/check-bindings.sh"
+                    }
+                ]
+            }
+        ]
+    }
+}

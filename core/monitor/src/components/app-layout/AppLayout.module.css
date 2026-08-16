@@ -1,0 +1,46 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--ba-ui-bg-default);
+    color: var(--ba-ui-fg-default);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-0);
+}
+
+.topBar {
+    flex-shrink: 0;
+    background: var(--ba-ui-bg-panel);
+    border-bottom: var(--border-size-1) solid var(--ba-ui-bg-float);
+}
+
+.body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.leftSidebar {
+    width: 50ch;
+    flex-shrink: 0;
+    background: var(--ba-ui-bg-panel);
+    border-right: var(--border-size-1) solid var(--ba-ui-bg-float);
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.leftSidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.main {
+    flex: 1;
+    overflow-y: auto;
+    min-width: 0;
+    scrollbar-width: none;
+}
+
+.main::-webkit-scrollbar {
+    display: none;
+}

@@ -1,0 +1,30 @@
+/* Black Atom — Stations ∷ Engineering */
+
+/* Background colors */
+@define-color ba-bg-default #0d1818;
+@define-color ba-bg-panel #030b0b;
+@define-color ba-bg-hover #1c2626;
+@define-color ba-bg-active #1c2626;
+@define-color ba-bg-selection #2a3535;
+@define-color ba-bg-contrast #d5f4e3;
+
+/* Foreground colors */
+@define-color ba-fg-default #d5f4e3;
+@define-color ba-fg-subtle #91bcad;
+@define-color ba-fg-accent #c6de68;
+@define-color ba-fg-disabled #75a490;
+@define-color ba-fg-contrast #0d1818;
+
+/* Feedback colors */
+@define-color ba-fg-negative #f08cb4;
+@define-color ba-fg-positive #7fcd81;
+@define-color ba-fg-warn #c6de68;
+@define-color ba-fg-info #c3eed9;
+
+/* Palette colors */
+@define-color ba-red #f08cb4;
+@define-color ba-green #7fcd81;
+@define-color ba-yellow #c6de68;
+@define-color ba-blue #c3eed9;
+@define-color ba-magenta #a5a9e5;
+@define-color ba-cyan #81d6a5;

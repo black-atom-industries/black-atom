@@ -1,0 +1,38 @@
+/* =============================================================
+   App.Shell — Outer application chrome
+   Full-height flex column. Header, main content, progress bar,
+   and footer slots separated by 1px borders in --ba-color-border-subtle.
+   All colors via --ba-* tokens — no hardcoded values.
+   ============================================================= */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--ba-color-bg-default);
+    color: var(--ba-color-fg-default);
+    font-family: var(--ba-font-mono);
+}
+
+.header {
+    flex-shrink: 0;
+    padding: var(--ba-size-4) var(--ba-size-6);
+    border-bottom: var(--ba-border-subtle);
+}
+
+.main {
+    flex: 1;
+    min-height: 0;
+}
+
+.progress {
+    flex-shrink: 0;
+    padding: var(--ba-size-2) var(--ba-size-6);
+    border-top: var(--ba-border-subtle);
+}
+
+.footer {
+    flex-shrink: 0;
+    padding: var(--ba-size-2) var(--ba-size-6);
+    border-top: var(--ba-border-subtle);
+}

@@ -1,0 +1,179 @@
+/* =============================================================
+   ApplyRail — right-docked vertical apply status (280px).
+   Register header / AdapterStatusRows in run order / vocabulary
+   footer. The docking seam + width collapse live on the layout
+   slot in _app/route; this fills whatever height it is given.
+   ============================================================= */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* The layout slot animates width to 0 on dismiss — keep content
+       laid out at full rail width so it slides out instead of squishing. */
+    min-width: 280px;
+    width: 280px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-2);
+    padding: var(--ba-size-3) var(--ba-size-4);
+    border-bottom: var(--ba-border-subtle);
+}
+
+.statusLine {
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-00);
+    letter-spacing: var(--ba-font-letterspacing-wide);
+    color: var(--ba-color-fg-hint);
+}
+
+.root[data-kind="clean"] .statusLine {
+    color: var(--ba-color-fg-positive);
+}
+
+.root[data-kind="degraded"] .statusLine {
+    color: var(--ba-color-fg-warn);
+}
+
+.root[data-kind="error"] .statusLine {
+    color: var(--ba-color-fg-negative);
+}
+
+.counters {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-0);
+    font-variant-numeric: tabular-nums;
+    color: var(--ba-color-fg-subtle);
+}
+
+.root[data-kind="clean"] .counters {
+    color: var(--ba-color-fg-positive);
+}
+
+.root[data-kind="degraded"] .counters {
+    color: var(--ba-color-fg-warn);
+}
+
+.root[data-kind="error"] .counters {
+    color: var(--ba-color-fg-negative);
+}
+
+.track {
+    height: var(--ba-size-bar);
+    overflow: hidden;
+    background-color: var(--ba-color-bg-hint);
+}
+
+/* Conveyor — while the pass runs, the unfilled track carries marching
+   45° hatching (industrial stripe, left → right). Honest: it shows the
+   machine running, never slows the data down. */
+.root[data-kind="running"] .track {
+    background-image: repeating-linear-gradient(
+        -45deg,
+        color-mix(in srgb, var(--ba-color-fg-hint) 35%, transparent) 0 4px,
+        transparent 4px 8px
+    );
+    animation: conveyor 700ms var(--ba-ease-linear) infinite;
+}
+
+@keyframes conveyor {
+    to {
+        /* one stripe period (8px along the 45° axis ≈ 11.31px horizontal) */
+        background-position: 11.31px 0;
+    }
+}
+
+.fill {
+    position: relative;
+    height: 100%;
+    background: var(--ba-color-fg-positive);
+    transition: width var(--ba-duration-3) var(--ba-ease);
+}
+
+/* Scanhead — a cream leading edge on the fill while the pass runs. */
+.root[data-kind="running"] .fill::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--ba-color-fg-default);
+}
+
+.root[data-kind="degraded"] .fill {
+    background: var(--ba-color-fg-warn);
+}
+
+/* Verdict cascade — the moment the pass resolves, a one-shot confirm
+   flash sweeps the rows top → bottom (25ms/row). Pure celebration layered
+   over instantly-visible data; gated to a live pass via data-live so
+   nothing flashes on mount or in settled display. */
+.root[data-kind="clean"] .rows[data-live="true"] [data-component="adapter-status-row"],
+.root[data-kind="degraded"] .rows[data-live="true"] [data-component="adapter-status-row"],
+.root[data-kind="error"] .rows[data-live="true"] [data-component="adapter-status-row"] {
+    animation: confirm-tick var(--ba-duration-2) var(--ba-ease);
+    animation-delay: calc(var(--i, 0) * 25ms);
+}
+
+@keyframes confirm-tick {
+    from {
+        background-color: var(--ba-color-bg-hint);
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
+/* The running row's pip hard-blinks — terminal cursor, not a spinner.
+   Only perceivable on slower adapters; costs nothing on fast ones. */
+.rows[data-live="true"] [data-status="running"] [data-component="status-pip"] {
+    animation: cursor-blink 860ms step-end infinite;
+}
+
+@keyframes cursor-blink {
+    0%,
+    49% {
+        opacity: 1;
+    }
+    50%,
+    100% {
+        opacity: 0.3;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fill {
+        transition: none;
+    }
+
+    .root[data-kind="running"] .track,
+    .root[data-kind="clean"] .rows[data-live="true"] [data-component="adapter-status-row"],
+    .root[data-kind="degraded"] .rows[data-live="true"] [data-component="adapter-status-row"],
+    .root[data-kind="error"] .rows[data-live="true"] [data-component="adapter-status-row"],
+    .rows[data-live="true"] [data-status="running"] [data-component="status-pip"] {
+        animation: none;
+    }
+}
+
+.rows {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--ba-size-2) 0;
+}
+
+.vocabulary {
+    padding: var(--ba-size-2) var(--ba-size-4);
+    border-top: var(--ba-border-subtle);
+    font-family: var(--ba-font-mono);
+    font-size: var(--ba-font-size-00);
+    letter-spacing: var(--ba-font-letterspacing-wide);
+    color: var(--ba-color-fg-disabled);
+    white-space: nowrap;
+}

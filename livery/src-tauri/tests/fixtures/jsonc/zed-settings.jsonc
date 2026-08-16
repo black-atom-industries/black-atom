@@ -1,0 +1,11 @@
+{
+  // User preferences
+  "vim_mode": true,
+  "buffer_font_size": 16.0,
+  "theme": "Black Atom — TERRA ∷ Fall Night",
+  "ui_font_size": 16.0,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+}
