@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use super::types::{AppConfig, AppName, Config, Keymappings};
+use super::types::{AppConfig, AppName, Config, Keymappings, NvimSettings, NVIM_SETTINGS_PATH};
 
 /// A Merged adapter points at the unpacked theme files directly. Stored
 /// absolute: the themes root follows `$XDG_DATA_HOME`, so a `~`-relative
@@ -26,6 +26,8 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: Some(r"^theme\s*=\s*.+$".to_string()),
                 replace_template: Some("theme = {themeKey}.conf".to_string()),
+                settings_path: None,
+                settings: None,
             },
         );
         apps.insert(
@@ -36,6 +38,8 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: Some(r#"colorscheme\s*=\s*"[^"]*""#.to_string()),
                 replace_template: Some(r#"colorscheme = "{themeKey}""#.to_string()),
+                settings_path: Some(NVIM_SETTINGS_PATH.to_string()),
+                settings: Some(NvimSettings::default()),
             },
         );
         apps.insert(
@@ -50,6 +54,8 @@ impl Default for Config {
                 themes_path: Some("~/.config/tmux/themes".to_string()),
                 match_pattern: Some(r"^source-file\s+.+/themes/.+\.conf$".to_string()),
                 replace_template: Some("source-file {themesPath}/{themeKey}.conf".to_string()),
+                settings_path: None,
+                settings: None,
             },
         );
         apps.insert(
@@ -60,6 +66,8 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: Some(r"features\s*=\s*black-atom-(dark|light)".to_string()),
                 replace_template: Some("features = black-atom-{appearance}".to_string()),
+                settings_path: None,
+                settings: None,
             },
         );
         apps.insert(
@@ -70,6 +78,8 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: None, // not used — JSONC editing is structural
                 replace_template: None,
+                settings_path: None,
+                settings: None,
             },
         );
         apps.insert(
@@ -80,6 +90,8 @@ impl Default for Config {
                 themes_path: Some(themes_path("lazygit")),
                 match_pattern: None,
                 replace_template: None,
+                settings_path: None,
+                settings: None,
             },
         );
         apps.insert(
@@ -90,6 +102,8 @@ impl Default for Config {
                 themes_path: Some(themes_path("herdr")),
                 match_pattern: None,
                 replace_template: None,
+                settings_path: None,
+                settings: None,
             },
         );
         apps.insert(
@@ -100,6 +114,8 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: None,
                 replace_template: None,
+                settings_path: None,
+                settings: None,
             },
         );
         apps.insert(
@@ -110,6 +126,8 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: Some(r"^theme:\s*\S*$".to_string()),
                 replace_template: Some("theme: {themeKey}".to_string()),
+                settings_path: None,
+                settings: None,
             },
         );
         Config {

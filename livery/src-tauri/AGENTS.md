@@ -3,9 +3,11 @@
 The Rust backend is the executor. Every OS operation lives here: file I/O, process signals,
 socket communication.
 
-It is two crates. `livery/core` (`livery_core`) holds the domain logic and depends on no Tauri
+It is three crates. `livery/core` (`livery_core`) holds the domain logic and depends on no Tauri
 crate — `cargo tree -p livery_core -e normal | grep -c tauri` must stay `0`. `livery/src-tauri`
-(`livery_lib`) is the Tauri shell: command wrappers, plugins, window setup.
+(`livery_lib`) is the Tauri shell: command wrappers, plugins, window setup. `livery/cli`
+(`livery-cli`, binary `livery`) is the terminal client, calling `livery_core` directly with no
+Tauri wrapper in between.
 
 ## Modules
 
@@ -28,6 +30,11 @@ crate — `cargo tree -p livery_core -e normal | grep -c tauri` must stay `0`. `
 - `dev_bridge.rs` — loopback HTTP IPC for browser dev mode, dispatching to `commands::*`
 - `bin/perf_benchmark.rs` — benchmark binary, calls `livery_core` directly
 
+`livery/cli/src/`:
+
+- `main.rs` — the clap `Command` enum; a bare invocation opens the theme picker
+- `commands.rs` — one handler per subcommand (`apply`, `list`, `status`, `setup`)
+
 The frontend calls `update_app(app, theme_key, appearance, collection_key)`. The dispatcher reads
 that app's config, builds the template variables, and routes to the per-app function. No per-app
 branching exists on the frontend.
@@ -41,10 +48,11 @@ Commands validate that a path is under `$HOME` before writing. Writes are atomic
 Unit tests live in `#[cfg(test)] mod tests` inside the source file. File operations get fixtures,
 see the `backend-testing` skill.
 
-`livery/core/tests/setup_smoke.rs` is the end-to-end suite. It points `$HOME` and the `XDG_*`
-variables at a tempdir, so it never touches a real config. Extend that file for new setup
-scenarios rather than adding a parallel suite: those variables are process-global and the scenario
-has to stay sequential.
+Two end-to-end suites: `livery/core/tests/setup_smoke.rs` calls the crate functions directly, and
+`livery/cli/tests/cli_smoke.rs` spawns the built `livery` binary. Both point `$HOME` and the
+`XDG_*` variables at a tempdir, so neither touches a real config. Extend the matching file for new
+setup scenarios rather than adding a parallel suite: those variables are process-global and each
+scenario has to stay sequential.
 
 ## Bindings
 

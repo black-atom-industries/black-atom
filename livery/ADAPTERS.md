@@ -100,6 +100,15 @@ verify — always ending with verification, so the row reflects the true state.
 - **Switch pointer:** a `colorscheme = "<themeKey>"` (or `vim.cmd.colorscheme(...)`) line in your
   config.
 - **Reload:** `nvim --server <socket> --remote-expr` against every running instance.
+- **Plugin options:** the settings page writes `vim.g.black_atom_core_config` into a managed block
+  in `settings_path` (default `~/.config/nvim/init.lua`), between
+  `-- BEGIN BLACK ATOM LIVERY CONFIG` and `-- END BLACK ATOM LIVERY CONFIG`. The file must already
+  exist; Livery patches a Neovim entry point, it never creates one. Options are stored in
+  `apps.nvim.settings` and the block is their projection, so config stays the source of truth.
+  The plugin deep-merges the block over its own defaults, so a flag is only written when the
+  plugin's defaults declare it or the user turned it on — writing `bold = false` unasked would
+  strip the hardcoded bold on `@function.call` and `@method.call`. New options land after a Neovim
+  restart.
 
 ### helm-tmux — External
 

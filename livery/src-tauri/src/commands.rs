@@ -1,7 +1,7 @@
 //! Tauri command surface. Every command is a thin wrapper over a plain
 //! `livery_core` function, so the domain logic stays callable without Tauri.
 
-use livery_core::config::types::{AppName, Config};
+use livery_core::config::types::{AppName, Config, NvimSettings};
 use livery_core::themes::commands::{AppStatus, LinkThemesResult};
 use livery_core::themes::detect::AppDetection;
 use livery_core::updaters::{AppPathVerification, ThemeContext, UpdateResult};
@@ -63,6 +63,15 @@ pub async fn update_app(app: AppName, theme: ThemeContext) -> UpdateResult {
 #[specta::specta]
 pub fn update_system_appearance(appearance: String) -> UpdateResult {
     livery_core::updaters::update_system_appearance(appearance)
+}
+
+/// Save the Neovim plugin settings and write them into the managed Lua
+/// block in nvim's SETTINGS_PATH. The file must already exist — Livery
+/// patches a Neovim entry point, it does not create one.
+#[tauri::command]
+#[specta::specta]
+pub async fn write_nvim_settings(settings: NvimSettings) -> UpdateResult {
+    livery_core::updaters::write_nvim_settings(settings).await
 }
 
 /// Check one adapter's config_path: does it exist, and does its

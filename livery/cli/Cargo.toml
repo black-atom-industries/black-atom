@@ -1,0 +1,22 @@
+[package]
+name = "livery-cli"
+version = "0.2.0"
+description = "Black Atom livery command line interface"
+authors = ["Black Atom Industries"]
+license = "MIT"
+repository = "https://github.com/black-atom-industries/livery"
+edition = "2021"
+rust-version = "1.82"
+
+[[bin]]
+name = "livery"
+path = "src/main.rs"
+
+[dependencies]
+livery_core = { path = "../core" }
+clap = { version = "4", features = ["derive"] }
+inquire = "0.7"
+tokio = { version = "1", features = ["rt"] }
+
+[dev-dependencies]
+tempfile = "3"

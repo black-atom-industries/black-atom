@@ -24,6 +24,7 @@
         "dev:livery": "cd livery && deno task dev",
         "generate": "cd core && deno task generate",
         "check": "deno check && deno lint && deno fmt --check",
+        "cli": "cargo run -q -p livery-cli --",
         "test": "deno test -P && cargo test",
         "install-hooks": "git config core.hooksPath .githooks"
     },

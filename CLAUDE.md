@@ -11,7 +11,8 @@ across the tools on a machine.
 - `adapters/<name>/` — one directory per platform (ghostty, herdr, lazygit, niri, nvim, obsidian,
   tmux, waybar, wezterm, zed)
 - `livery/` — Tauri v2 desktop app, Deno + Vite + React frontend in `livery/src/`, domain logic in
-  `livery/core/` (crate `livery_core`, no Tauri dependency), Tauri shell in `livery/src-tauri/`
+  `livery/core/` (crate `livery_core`, no Tauri dependency), Tauri shell in `livery/src-tauri/`,
+  terminal client in `livery/cli/` (crate `livery-cli`, binary `livery`)
 - `ui/`, `website/` — placeholders
 
 Deno workspace at the root (`deno.json`), Cargo workspace at the root (`Cargo.toml`).
@@ -28,11 +29,13 @@ Run from the repo root.
 | `deno task dev:livery`    | livery only                                   |
 | `deno task generate`      | regenerate every adapter once                 |
 | `deno task check`         | `deno check`, `deno lint`, `deno fmt --check` |
+| `deno task cli -- <args>` | the `livery` CLI                              |
 | `deno task test`          | `deno test -P` and `cargo test`               |
 | `deno task install-hooks` | point `core.hooksPath` at `.githooks`         |
 
 `cargo test`, `cargo fmt`, and `cargo clippy` also run from the root. The Tauri bundle needs
-`cd livery && deno task build`.
+`cd livery && deno task build`. The CLI runs as `cargo run -p livery-cli -- <args>` (or
+`deno task cli -- <args>`) — never against the real `$HOME`, see Sandbox below.
 
 ## Themes
 

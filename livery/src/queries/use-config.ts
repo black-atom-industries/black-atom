@@ -1,6 +1,12 @@
 import { useMemo } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { type AppConfig, type AppName, commands, type Config } from "../bindings.ts";
+import {
+    type AppConfig,
+    type AppName,
+    commands,
+    type Config,
+    type NvimSettings,
+} from "../bindings.ts";
 
 const TOPIC = "config" as const;
 const queryKey = (keys: string[] = []) => [TOPIC, ...keys] as const;
@@ -27,9 +33,19 @@ export const useConfig = () => {
         mutationFn: (config: Config) => commands.saveConfig(config),
     });
 
+    // Neovim's plugin options are stored in config AND projected into a
+    // managed Lua block, so the backend owns both halves — the frontend must
+    // not saveConfig them separately. Same ["config", ...] topic, so the
+    // MutationCache refetches the config query on success.
+    const writeNvimSettings = useMutation({
+        mutationKey: queryKey(["nvim-settings"]),
+        mutationFn: (settings: NvimSettings) => commands.writeNvimSettings(settings),
+    });
+
     return {
         query,
         enabledApps,
         save,
+        writeNvimSettings,
     };
 };

@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { ActionRow, AdapterHeader, ClassDefinition, DraftField } from "../adapter-shared/index.ts";
+import { NvimSettingsPanel } from "../nvim-settings-panel/index.ts";
+import type { NvimSettings as NvimPluginSettings } from "../../../bindings.ts";
 import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
@@ -21,8 +24,19 @@ export function NvimSettings(
         linkThemesResult,
         onTestApply,
         testApplyResult,
+        onWriteNvimSettings,
+        writingNvimSettings,
+        nvimSettingsResult,
     }: AdapterPageProps,
 ) {
+    // The adapters route remounts this page on every adapter switch, so the
+    // draft starts from the saved settings each time it appears.
+    const saved = appConfig.settings ?? null;
+    const [draft, setDraft] = useState<NvimPluginSettings | null>(saved);
+    const settings = draft ?? saved;
+    const dirty = settings !== null && saved !== null &&
+        JSON.stringify(settings) !== JSON.stringify(saved);
+
     return (
         <div className={styles.root}>
             <AdapterHeader
@@ -52,6 +66,16 @@ export function NvimSettings(
                         onCommit={(value) => onFieldCommit("match_pattern", value)}
                     />
                 )}
+                {editableFields.has("settings_path") && (
+                    <DraftField
+                        label="SETTINGS_PATH"
+                        note="LUA FILE FOR THE MANAGED OPTIONS BLOCK"
+                        value={appConfig.settings_path ?? ""}
+                        onCommit={(value) => onFieldCommit("settings_path", value)}
+                        pathKind="file"
+                        onPickPath={onPickPath}
+                    />
+                )}
                 {editableFields.has("replace_template") && (
                     <DraftField
                         label="REPLACE_TEMPLATE"
@@ -79,6 +103,18 @@ export function NvimSettings(
                 onTestApply={onTestApply}
                 testApplyResult={testApplyResult}
             />
+            {settings && onWriteNvimSettings && (
+                <NvimSettingsPanel
+                    settings={settings}
+                    dirty={dirty}
+                    saving={writingNvimSettings ?? false}
+                    resultMessage={nvimSettingsResult?.message ?? undefined}
+                    resultFailed={nvimSettingsResult?.status === "error"}
+                    onChange={setDraft}
+                    onSave={() => onWriteNvimSettings(settings)}
+                    onReset={() => setDraft(saved)}
+                />
+            )}
             <ClassDefinition provisioning="linked" />
         </div>
     );

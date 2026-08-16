@@ -59,6 +59,12 @@ fn merge_with_defaults(mut user_config: Config) -> Config {
                 if app.replace_template.is_none() {
                     app.replace_template = default_app.replace_template.clone();
                 }
+                if app.settings_path.is_none() {
+                    app.settings_path = default_app.settings_path.clone();
+                }
+                if app.settings.is_none() {
+                    app.settings = default_app.settings.clone();
+                }
             }
             None => {
                 user_config.apps.insert(*name, default_app.clone());
@@ -144,6 +150,32 @@ pub fn collapse_app_paths(config: &mut Config) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn merge_backfills_nvim_settings_for_a_config_written_before_they_existed() {
+        let mut config = Config::default();
+        let nvim = config
+            .apps
+            .get_mut(&crate::config::types::AppName::Nvim)
+            .unwrap();
+        nvim.settings = None;
+        nvim.settings_path = None;
+
+        let merged = merge_with_defaults(config);
+        let nvim = merged
+            .apps
+            .get(&crate::config::types::AppName::Nvim)
+            .unwrap();
+
+        assert_eq!(
+            nvim.settings_path.as_deref(),
+            Some(crate::config::types::NVIM_SETTINGS_PATH)
+        );
+        assert_eq!(
+            nvim.settings,
+            Some(crate::config::types::NvimSettings::default())
+        );
+    }
 
     #[test]
     fn test_expand_covers_config_path_but_keeps_themes_path_portable() {

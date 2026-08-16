@@ -20,8 +20,10 @@ If the function touches files, read the `backend-testing` skill and follow its f
 real config fixtures under `livery/core/tests/fixtures/`, not inline test strings, plus an
 idempotency test. Add `#[cfg(test)] mod tests` in the source file for anything else.
 
-Once `livery/cli` exists, this step also adds a subcommand there plus a variant on its `Capability`
-enum. Say so explicitly if you land this before that migration phase, and stop after step 1.
+A user-facing action worth a subcommand also gets one in `livery/cli`: a variant on the `Command`
+enum in `livery/cli/src/main.rs` and its handler in `livery/cli/src/commands.rs`. The CLI calls
+`livery_core` directly, so it needs no Tauri wrapper. Run it as
+`cargo run -p livery-cli -- <args>`, always under a sandbox `$HOME`.
 
 ## 2. Command wrapper
 

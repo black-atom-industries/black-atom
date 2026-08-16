@@ -64,6 +64,14 @@ async updateSystemAppearance(appearance: string) : Promise<UpdateResult> {
  */
 async verifyAppPath(app: AppName) : Promise<AppPathVerification> {
     return await TAURI_INVOKE("verify_app_path", { app });
+},
+/**
+ * Save the Neovim plugin settings and write them into the managed Lua
+ * block in nvim's SETTINGS_PATH. The file must already exist — Livery
+ * patches a Neovim entry point, it does not create one.
+ */
+async writeNvimSettings(settings: NvimSettings) : Promise<UpdateResult> {
+    return await TAURI_INVOKE("write_nvim_settings", { settings });
 }
 }
 
@@ -82,8 +90,20 @@ async verifyAppPath(app: AppName) : Promise<AppPathVerification> {
  * the settings UI offers per adapter — editing a field the updater ignores
  * is silent noise; editing one it does read, wrongly, breaks switching.
  */
-export type AdapterEditableField = "config_path" | "themes_path" | "match_pattern" | "replace_template"
-export type AppConfig = { enabled?: boolean; config_path: string; themes_path?: string | null; match_pattern?: string | null; replace_template?: string | null }
+export type AdapterEditableField = "config_path" | "themes_path" | "match_pattern" | "replace_template" | 
+/**
+ * nvim only: the file the managed Lua settings block is written into.
+ */
+"settings_path"
+export type AppConfig = { enabled?: boolean; config_path: string; themes_path?: string | null; match_pattern?: string | null; replace_template?: string | null; 
+/**
+ * nvim only: the file the managed Lua block is written into.
+ */
+settings_path?: string | null; 
+/**
+ * nvim only: the plugin options the managed Lua block renders.
+ */
+settings?: NvimSettings | null }
 /**
  * One adapter's detection outcome — backs the settings AUTO-DETECT action.
  */
@@ -136,6 +156,32 @@ export type Keymappings = { toggle_window: string }
  * Outcome of wiring one adapter's themes dir via managed symlinks.
  */
 export type LinkThemesResult = { app: string; status: UpdateStatus; message?: string | null; linked: number | null; pruned: number | null }
+export type NvimDiagnostics = { undercurl: boolean; background: boolean }
+/**
+ * The plugin's `vim.g.black_atom_core_config` table, one field per option
+ * `adapters/nvim/lua/black-atom/config.lua` declares. The shape is the
+ * contract: it is rendered back into Lua verbatim, so a renamed field here
+ * silently stops reaching the plugin.
+ */
+export type NvimSettings = { term_colors: boolean; styles: NvimStyles }
+/**
+ * Bold/italic pair for one syntax group. Mirrors
+ * `BlackAtom.HighlightDefinition` as far as the settings page exposes it.
+ */
+export type NvimStyle = { bold: boolean; italic: boolean }
+export type NvimStyles = { 
+/**
+ * `"none"`, `"partial"`, or `"full"`.
+ */
+transparency: string; ending_tildes: boolean; 
+/**
+ * `"fg"` or `"bg"`.
+ */
+cmp_kind_color_mode: string; dark_sidebars: boolean; dark_floats: boolean; diagnostics: NvimDiagnostics; syntax: NvimSyntax }
+/**
+ * Per-group syntax styling. One entry per group the plugin reads.
+ */
+export type NvimSyntax = { comments: NvimStyle; keywords: NvimStyle; functions: NvimStyle; strings: NvimStyle; variables: NvimStyle; messages: NvimStyle }
 /**
  * Theme metadata passed from the frontend.
  */

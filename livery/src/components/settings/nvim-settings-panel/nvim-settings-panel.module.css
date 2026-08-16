@@ -1,0 +1,71 @@
+/* =============================================================
+   NvimSettingsPanel — the Neovim plugin options Livery renders
+   into the managed Lua block. Toggle rows, two segmented choices,
+   and the six-group bold/italic grid.
+   ============================================================= */
+
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-3);
+    font-family: var(--ba-font-mono);
+}
+
+.rows {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-4);
+    padding: var(--ba-size-3) 0;
+}
+
+.rowCopy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ba-size-1);
+}
+
+.rowTitle {
+    letter-spacing: var(--ba-font-letterspacing-label);
+    text-transform: uppercase;
+    font-size: var(--ba-font-size-0);
+    font-weight: var(--ba-font-weight-bold);
+}
+
+.choiceRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ba-size-4);
+    padding: var(--ba-size-3) 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: var(--ba-size-3) var(--ba-size-5);
+}
+
+.gridHead {
+    font-size: var(--ba-font-size-1);
+    letter-spacing: var(--ba-font-letterspacing-label);
+    color: var(--ba-color-fg-subtle);
+    justify-self: center;
+}
+
+.gridLabel {
+    letter-spacing: var(--ba-font-letterspacing-label);
+    font-size: var(--ba-font-size-0);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: var(--ba-size-3);
+    flex-wrap: wrap;
+}

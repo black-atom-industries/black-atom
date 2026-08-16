@@ -53,6 +53,106 @@ fn default_true() -> bool {
     true
 }
 
+/// Bold/italic pair for one syntax group. Mirrors
+/// `BlackAtom.HighlightDefinition` as far as the settings page exposes it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+pub struct NvimStyle {
+    pub bold: bool,
+    pub italic: bool,
+}
+
+/// Per-group syntax styling. One entry per group the plugin reads.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+pub struct NvimSyntax {
+    pub comments: NvimStyle,
+    pub keywords: NvimStyle,
+    pub functions: NvimStyle,
+    pub strings: NvimStyle,
+    pub variables: NvimStyle,
+    pub messages: NvimStyle,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+pub struct NvimDiagnostics {
+    pub undercurl: bool,
+    pub background: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
+pub struct NvimStyles {
+    /// `"none"`, `"partial"`, or `"full"`.
+    pub transparency: String,
+    pub ending_tildes: bool,
+    /// `"fg"` or `"bg"`.
+    pub cmp_kind_color_mode: String,
+    pub dark_sidebars: bool,
+    pub dark_floats: bool,
+    pub diagnostics: NvimDiagnostics,
+    pub syntax: NvimSyntax,
+}
+
+/// Where the managed Lua block goes when the user has not chosen a file.
+pub const NVIM_SETTINGS_PATH: &str = "~/.config/nvim/init.lua";
+
+/// The plugin's `vim.g.black_atom_core_config` table, one field per option
+/// `adapters/nvim/lua/black-atom/config.lua` declares. The shape is the
+/// contract: it is rendered back into Lua verbatim, so a renamed field here
+/// silently stops reaching the plugin.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
+pub struct NvimSettings {
+    pub term_colors: bool,
+    pub styles: NvimStyles,
+}
+
+/// Mirrors `M.defaults` in `adapters/nvim/lua/black-atom/config.lua`. The
+/// plugin deep-merges the global over those defaults, so every field the
+/// block writes overrides the plugin — an unfaithful default here changes
+/// highlights for a user who never opened the settings page.
+impl Default for NvimSettings {
+    fn default() -> Self {
+        Self {
+            term_colors: true,
+            styles: NvimStyles {
+                transparency: "none".to_string(),
+                ending_tildes: false,
+                cmp_kind_color_mode: "bg".to_string(),
+                dark_sidebars: true,
+                dark_floats: true,
+                diagnostics: NvimDiagnostics {
+                    undercurl: false,
+                    background: false,
+                },
+                syntax: NvimSyntax {
+                    comments: NvimStyle {
+                        bold: false,
+                        italic: true,
+                    },
+                    keywords: NvimStyle {
+                        bold: true,
+                        italic: false,
+                    },
+                    functions: NvimStyle {
+                        bold: false,
+                        italic: false,
+                    },
+                    strings: NvimStyle {
+                        bold: false,
+                        italic: false,
+                    },
+                    variables: NvimStyle {
+                        bold: false,
+                        italic: false,
+                    },
+                    messages: NvimStyle {
+                        bold: true,
+                        italic: false,
+                    },
+                },
+            },
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
 pub struct AppConfig {
     #[serde(default = "default_true")]
@@ -64,6 +164,12 @@ pub struct AppConfig {
     pub match_pattern: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub replace_template: Option<String>,
+    /// nvim only: the file the managed Lua block is written into.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub settings_path: Option<String>,
+    /// nvim only: the plugin options the managed Lua block renders.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub settings: Option<NvimSettings>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]

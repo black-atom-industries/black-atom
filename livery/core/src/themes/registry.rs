@@ -66,6 +66,8 @@ pub enum AdapterEditableField {
     ThemesPath,
     MatchPattern,
     ReplaceTemplate,
+    /// nvim only: the file the managed Lua settings block is written into.
+    SettingsPath,
 }
 
 /// Config fields each adapter's updater actually reads — HAND-MAINTAINED
@@ -76,10 +78,12 @@ pub enum AdapterEditableField {
 /// the shared `patch_text_updater`, so all five read pattern+template. zed
 /// and obsidian patch structurally (JSONC) off `config_path` alone. tmux,
 /// lazygit, and herdr additionally point `themes_path` at the managed themes dir.
+/// nvim additionally writes its managed Lua settings block into `settings_path`.
 pub fn editable_fields(app: AppName) -> Vec<AdapterEditableField> {
     use AdapterEditableField::*;
     match app {
-        AppName::Nvim | AppName::Ghostty | AppName::HelmTmux | AppName::Delta => {
+        AppName::Nvim => vec![ConfigPath, MatchPattern, ReplaceTemplate, SettingsPath],
+        AppName::Ghostty | AppName::HelmTmux | AppName::Delta => {
             vec![ConfigPath, MatchPattern, ReplaceTemplate]
         }
         AppName::Tmux => vec![ConfigPath, ThemesPath, MatchPattern, ReplaceTemplate],
@@ -100,7 +104,7 @@ mod tests {
         // updater change must consciously update this alongside it.
         assert_eq!(
             editable_fields(AppName::Nvim),
-            vec![ConfigPath, MatchPattern, ReplaceTemplate]
+            vec![ConfigPath, MatchPattern, ReplaceTemplate, SettingsPath]
         );
         assert_eq!(
             editable_fields(AppName::Ghostty),

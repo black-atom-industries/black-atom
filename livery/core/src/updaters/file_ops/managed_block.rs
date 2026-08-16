@@ -8,16 +8,29 @@ pub struct ManagedBlockUpdate {
     pub appended: bool,
 }
 
+/// Markers and the format checks one managed-block format needs. `conflicting_table_pattern`
+/// guards the append path against an unmanaged live stanza; formats without that hazard pass
+/// `None`.
+pub struct ManagedBlock<'a> {
+    pub begin_marker: &'a str,
+    pub end_marker: &'a str,
+    pub conflicting_table_pattern: Option<&'a str>,
+    /// Format check for the replacement fragment on its own.
+    pub validate_fragment: &'a dyn Fn(&str) -> Result<(), String>,
+    /// Format check for the whole file as it would be written.
+    pub validate_file: &'a dyn Fn(&str) -> Result<(), String>,
+}
+
 /// Replace one marked block, or append it when the target has neither markers nor a conflicting
-/// live table. The replacement and complete candidate are parsed as TOML before any write.
-pub fn patch_toml_managed_block_file(
+/// live table. The fragment and the complete candidate go through the format's validators before
+/// any write.
+pub fn patch_managed_block_file(
     path: String,
     replacement: &str,
-    begin_marker: &str,
-    end_marker: &str,
-    conflicting_table_pattern: &str,
+    block: &ManagedBlock,
 ) -> Result<ManagedBlockUpdate, String> {
-    validate_fragment(replacement, begin_marker, end_marker)?;
+    check_marker_span(replacement, block.begin_marker, block.end_marker)?;
+    (block.validate_fragment)(replacement)?;
 
     let (display_path, resolved) = resolve_home_file(&path)?;
     let content = std::fs::read_to_string(&resolved)
@@ -25,13 +38,12 @@ pub fn patch_toml_managed_block_file(
     let (updated, appended) = build_candidate(
         &content,
         replacement,
-        begin_marker,
-        end_marker,
-        conflicting_table_pattern,
+        block.begin_marker,
+        block.end_marker,
+        block.conflicting_table_pattern,
     )?;
 
-    toml::from_str::<toml::Value>(&updated)
-        .map_err(|e| format!("Managed theme would make {display_path} invalid TOML: {e}"))?;
+    (block.validate_file)(&updated).map_err(|e| format!("{e} ({display_path})"))?;
 
     if updated == content {
         return Ok(ManagedBlockUpdate {
@@ -47,7 +59,37 @@ pub fn patch_toml_managed_block_file(
     })
 }
 
-fn validate_fragment(
+/// Replace or append a TOML managed block. Fragment and result are parsed as TOML before any
+/// write.
+pub fn patch_toml_managed_block_file(
+    path: String,
+    replacement: &str,
+    begin_marker: &str,
+    end_marker: &str,
+    conflicting_table_pattern: &str,
+) -> Result<ManagedBlockUpdate, String> {
+    patch_managed_block_file(
+        path,
+        replacement,
+        &ManagedBlock {
+            begin_marker,
+            end_marker,
+            conflicting_table_pattern: Some(conflicting_table_pattern),
+            validate_fragment: &|fragment| {
+                toml::from_str::<toml::Value>(fragment)
+                    .map(|_| ())
+                    .map_err(|e| format!("Invalid managed theme fragment TOML: {e}"))
+            },
+            validate_file: &|candidate| {
+                toml::from_str::<toml::Value>(candidate)
+                    .map(|_| ())
+                    .map_err(|e| format!("Managed theme would make the file invalid TOML: {e}"))
+            },
+        },
+    )
+}
+
+fn check_marker_span(
     replacement: &str,
     begin_marker: &str,
     end_marker: &str,
@@ -57,8 +99,6 @@ fn validate_fragment(
     if begin >= end {
         return Err("Invalid managed theme fragment: end marker precedes begin marker".to_string());
     }
-    toml::from_str::<toml::Value>(replacement)
-        .map_err(|e| format!("Invalid managed theme fragment TOML: {e}"))?;
     Ok(())
 }
 
@@ -67,20 +107,22 @@ fn build_candidate(
     replacement: &str,
     begin_marker: &str,
     end_marker: &str,
-    conflicting_table_pattern: &str,
+    conflicting_table_pattern: Option<&str>,
 ) -> Result<(String, bool), String> {
     let begin_lines = marker_lines(content, begin_marker);
     let end_lines = marker_lines(content, end_marker);
 
     match (begin_lines.as_slice(), end_lines.as_slice()) {
         ([], []) => {
-            let conflicts = Regex::new(&format!("(?m){conflicting_table_pattern}"))
-                .map_err(|e| format!("Invalid conflicting table pattern: {e}"))?;
-            if conflicts.is_match(content) {
-                return Err(
-                    "No managed markers found, but an unmanaged [theme] or [theme.custom] table exists; wrap the existing theme stanza with the Livery markers before applying"
-                        .to_string(),
-                );
+            if let Some(pattern) = conflicting_table_pattern {
+                let conflicts = Regex::new(&format!("(?m){pattern}"))
+                    .map_err(|e| format!("Invalid conflicting table pattern: {e}"))?;
+                if conflicts.is_match(content) {
+                    return Err(
+                        "No managed markers found, but an unmanaged [theme] or [theme.custom] table exists; wrap the existing theme stanza with the Livery markers before applying"
+                            .to_string(),
+                    );
+                }
             }
             Ok((append_block(content, replacement), true))
         }

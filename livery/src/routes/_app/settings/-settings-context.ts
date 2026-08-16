@@ -1,6 +1,12 @@
 import { createContext, useContext } from "react";
 import type { RefObject } from "react";
-import type { AdapterEditableField, AppName, ThemeProvisioning } from "../../../bindings.ts";
+import type {
+    AdapterEditableField,
+    AppName,
+    NvimSettings,
+    ThemeProvisioning,
+    UpdateResult,
+} from "../../../bindings.ts";
 import type { SetUpOutcome } from "../../../lib/adapter-setup.ts";
 import type {
     LinkThemesRowResult,
@@ -42,6 +48,10 @@ export type SettingsContextValue = {
     onFieldCommit: (appName: AppName, field: AdapterField, value: string) => void;
     onPickPath: (kind: PathKind) => Promise<string | null>;
     onOpenUrl: (url: string) => void;
+
+    onWriteNvimSettings: (settings: NvimSettings) => void;
+    writingNvimSettings: boolean;
+    nvimSettingsResult?: UpdateResult;
 
     firstFieldRef: RefObject<HTMLInputElement | null>;
 };

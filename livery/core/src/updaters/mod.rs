@@ -148,6 +148,28 @@ pub async fn update_app(app: AppName, theme: ThemeContext) -> UpdateResult {
     result
 }
 
+/// Save the Neovim plugin settings into config, then write them into the
+/// managed Lua block in nvim's `settings_path`. Config is the source of
+/// truth; the block is the projection of it Neovim can read.
+pub async fn write_nvim_settings(settings: crate::config::types::NvimSettings) -> UpdateResult {
+    let mut config = config_io::read_config_from_disk();
+    let Some(app_config) = config.apps.get_mut(&AppName::Nvim) else {
+        return UpdateResult::error("nvim", "nvim not found in config");
+    };
+
+    app_config.settings = Some(settings.clone());
+    let settings_path = app_config
+        .settings_path
+        .clone()
+        .unwrap_or_else(|| crate::config::types::NVIM_SETTINGS_PATH.to_string());
+
+    if let Err(e) = crate::config::commands::save_config(config) {
+        return UpdateResult::error("nvim", e);
+    }
+
+    nvim::write_settings(&settings_path, &settings)
+}
+
 /// Dispatch an update to the appropriate per-app updater.
 /// Public so the benchmark binary can call it without going through the Tauri command wrapper.
 pub fn dispatch_update(

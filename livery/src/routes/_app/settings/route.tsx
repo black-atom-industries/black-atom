@@ -22,7 +22,9 @@ import type {
     AppConfig,
     AppName,
     Config,
+    NvimSettings,
     ThemeProvisioning,
+    UpdateResult,
 } from "../../../bindings.ts";
 import { homeDir, sep } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
@@ -71,6 +73,10 @@ function SettingsRoute() {
         Partial<Record<AppName, LinkThemesRowResult>>
     >({});
     const currentTheme = useStore(appStore, (s) => s.currentTheme);
+    // Session-local SAVE SETTINGS outcome for the nvim page.
+    const [nvimSettingsResult, setNvimSettingsResult] = useState<UpdateResult | undefined>(
+        undefined,
+    );
 
     // Linked adapters (symlink placement) — drives LINK THEMES visibility.
     const adapterEntries = appStatus.query.data ?? [];
@@ -357,6 +363,20 @@ function SettingsRoute() {
         navigate({ to: "/" });
     }
 
+    /** nvim's plugin options: one backend write for config + Lua block. */
+    function writeNvimSettings(settings: NvimSettings) {
+        config.writeNvimSettings.mutate(settings, {
+            onSuccess: setNvimSettingsResult,
+            onError: (error) =>
+                setNvimSettingsResult({
+                    app: "nvim",
+                    status: "error",
+                    message: error instanceof Error ? error.message : String(error),
+                    duration_ms: null,
+                }),
+        });
+    }
+
     async function pickPath(kind: PathKind) {
         const selected = await open({ multiple: false, directory: kind === "directory" });
         if (typeof selected !== "string") return null;
@@ -413,6 +433,9 @@ function SettingsRoute() {
         onToggleEnabled: toggleAppEnabled,
         onFieldCommit: commitAdapterField,
         onPickPath: pickPath,
+        onWriteNvimSettings: writeNvimSettings,
+        writingNvimSettings: config.writeNvimSettings.isPending,
+        nvimSettingsResult,
         onOpenUrl: (url) => {
             openUrl(url).catch((error) => console.error(error));
         },
