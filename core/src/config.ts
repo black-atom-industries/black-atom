@@ -7,7 +7,7 @@ export const config = {
         return {
             core: Deno.cwd(),
             themes: join(Deno.cwd(), "src", "themes"),
-            org: join(dirname(Deno.cwd()), "adapters"),
+            adapters: join(dirname(Deno.cwd()), "adapters"),
         };
     },
 } as const;

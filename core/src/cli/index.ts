@@ -22,7 +22,7 @@ if (import.meta.main) {
 
     switch (command) {
         case "generate":
-            generate(options);
+            await generate(options);
             break;
 
         case "-h":

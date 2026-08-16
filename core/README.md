@@ -25,6 +25,7 @@ For details on the color token system, see [Color Token System](./docs/color_tok
 | **JPN**      | koyo-hiru, koyo-yoru, murasaki-yoru, tsuki-yoru            | Japanese-inspired themes      |
 | **Terra**    | seasons (spring, summer, fall, winter) x time (day, night) | Earth season-inspired themes  |
 | **MNML**     | 47, clay, eink, ita, mikado, mono, orange, osman           | Minimalist themes             |
+| **Paper**    | brown-light, brown-dark, blue-light, blue-dark             | Paper-inspired themes         |
 
 ## Usage
 
@@ -140,4 +141,4 @@ Contributions are welcome. If you'd like to improve existing themes or add new f
 
 ## License
 
-MIT - See [LICENSE](./LICENSE) for details
+MIT - See [LICENSE](./LICENSE.md) for details

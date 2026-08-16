@@ -15,7 +15,7 @@ import { generateAllAdapters, generateSingleAdapter } from "./generate.ts";
  */
 export async function watch() {
     const coreThemesDir = config.dir.themes;
-    const orgDir = config.dir.org;
+    const adaptersDir = config.dir.adapters;
 
     // Collect all directories to watch
     const watchDirs: {
@@ -35,7 +35,7 @@ export async function watch() {
 
     // Add adapter template directories by reading their configurations
     for (const adapter of adapters) {
-        const adapterDir = join(orgDir, adapter);
+        const adapterDir = join(adaptersDir, adapter);
         const adapterConfigPath = join(adapterDir, config.adapterFileName);
 
         if (existsSync(adapterConfigPath)) {
@@ -71,7 +71,7 @@ export async function watch() {
 
     log.info(`👁️  Multi-adapter watching enabled:`);
     watchDirs.forEach((dir) => {
-        const relativePath = relative(dirname(orgDir), dir.path);
+        const relativePath = relative(dirname(adaptersDir), dir.path);
         if (dir.type === "core") {
             log.info(`  ${colors.cyan("🎨 CORE")}: ${colors.dim(relativePath)}`);
         } else {
@@ -89,8 +89,17 @@ export async function watch() {
     // Run initial generation
     log.hr_thick("🚀 Running initial generation...");
     try {
-        await generateAllAdapters({ logErrors: true });
-        log.success("Initial generation completed successfully");
+        const results = await generateAllAdapters();
+        const failedAdapters = results.filter((r) => r.error);
+
+        if (failedAdapters.length > 0) {
+            for (const failed of failedAdapters) {
+                log.error(`Error in ${failed.adapter}: ${failed.error}`);
+            }
+            log.error(`${failedAdapters.length}/${results.length} adapters failed`);
+        } else {
+            log.success("Initial generation completed successfully");
+        }
     } catch (error) {
         log.error(
             `Initial generation failed: ${error instanceof Error ? error.message : String(error)}`,
@@ -162,14 +171,11 @@ export async function watch() {
                 const errorAdapters = results.filter((r) => r.error);
 
                 if (errorAdapters.length > 0) {
-                    const firstError = errorAdapters[0].error;
-                    const cleanError = firstError?.includes("Template contains undefined variable:")
-                        ? firstError
-                        : "Template error occurred";
-
-                    log.error(`⚠️ Encountered error: ${cleanError}`);
+                    for (const failed of errorAdapters) {
+                        log.error(`⚠️ Error in ${failed.adapter}: ${failed.error}`);
+                    }
                     log.warn(
-                        `⚠️ ${results.length - errorAdapters.length} adapters updated partially`,
+                        `⚠️ ${errorAdapters.length}/${results.length} adapters failed`,
                     );
                 } else {
                     log.success(`✅ ${results.length} adapters updated successfully`);

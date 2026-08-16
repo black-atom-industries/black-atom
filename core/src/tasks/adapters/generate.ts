@@ -42,10 +42,10 @@ export async function generateAllAdapters({
 }: { logErrors?: boolean } = {}) {
     const results: { adapter: string; error?: string }[] = [];
     const adapters = await getAdapters();
-    const orgDir = config.dir.org;
+    const adaptersDir = config.dir.adapters;
 
     for (const adapter of adapters) {
-        const adapterDir = join(orgDir, adapter);
+        const adapterDir = join(adaptersDir, adapter);
 
         try {
             await runGenerate(adapterDir);
@@ -72,7 +72,7 @@ export async function generateAllAdapters({
 export async function generateSingleAdapter(
     adapterName: string,
 ): Promise<{ adapter: string; error?: string }> {
-    const adapterDir = join(config.dir.org, adapterName);
+    const adapterDir = join(config.dir.adapters, adapterName);
 
     try {
         await runGenerate(adapterDir);
