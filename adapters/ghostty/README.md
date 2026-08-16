@@ -4,13 +4,9 @@
 
 ## What is a Black Atom Adapter?
 
-This repository is a **Ghostty adapter** for the Black Atom theme ecosystem. In the Black Atom architecture:
-
-- The [core repository](https://github.com/black-atom-industries/core) is the single source of truth for all theme definitions
-- Each adapter implements these themes for a specific platform (Neovim, VS Code, Alacritty, etc.)
-- The adapter uses templates to transform core theme definitions into platform-specific files
-
-This modular approach ensures consistent colors and styling across all supported platforms while allowing for platform-specific optimizations.
+This directory is the **Ghostty adapter** for Black Atom. Themes are defined once in
+[`../../core/`](../../core/), and each adapter renders them for one platform through Eta
+templates, keeping colors identical everywhere while leaving room for platform-specific tuning.
 
 ## Available Themes
 
@@ -29,38 +25,28 @@ Black Atom includes multiple theme collections, each with dark and light variant
 ### Prerequisites
 
 - [Ghostty](https://github.com/mitchellh/ghostty) terminal emulator
-- [Deno](https://deno.land/) runtime (for generating themes)
 
-### Setup
+### Install the theme files
 
-1. Clone this repository:
-
-```bash
-git clone https://github.com/black-atom-industries/ghostty.git
-cd ghostty
-```
-
-2. Generate the theme files:
+Copy the generated `.conf` files to your Ghostty themes directory:
 
 ```bash
-deno task generate
+mkdir -p ~/.config/ghostty/themes
+cp themes/*/*.conf ~/.config/ghostty/themes/
 ```
 
-3. Copy the adapted `.conf` files to your Ghostty themes directory:
-
-```bash
-COPY_PATH=~/.config/ghostty/themes
-mkdir -p $COPY_PATH
-cp themes/*/*.conf $COPY_PATH
-```
+Or apply themes through [Livery](../../livery/README.md), which manages this directory for you:
+`livery apply <theme>`.
 
 ## Usage
 
-Ghostty supports various ways to use themes. Below are the recommended methods for using Black Atom themes with Ghostty.
+Ghostty supports various ways to use themes. Below are the recommended methods for using Black
+Atom themes with Ghostty.
 
 ### Method 1: Using the `theme` Configuration Option
 
-After installing the themes to your Ghostty themes directory, you can use the built-in `theme` option:
+After installing the themes to your Ghostty themes directory, you can use the built-in `theme`
+option:
 
 ```ini
 # In your ~/.config/ghostty/config file
@@ -92,14 +78,6 @@ For Ghostty to find themes by name, they must be placed in one of these director
 1. `$XDG_CONFIG_HOME/ghostty/themes` (typically `~/.config/ghostty/themes`)
 2. `$PREFIX/share/ghostty/themes`
 
-```bash
-# Create the themes directory if it doesn't exist
-mkdir -p ~/.config/ghostty/themes
-
-# Copy the generated theme files
-cp themes/*/*.conf ~/.config/ghostty/themes/
-```
-
 ### Listing Available Themes
 
 To see all available themes including the Black Atom themes:
@@ -110,21 +88,17 @@ ghostty +list-themes
 
 ## Development
 
-### Generating Themes
-
-Theme files are generated from templates using [Black Atom Core](https://jsr.io/@black-atom/core). You need [Deno](https://deno.land/) installed.
+Requirements: [Deno](https://deno.land/).
 
 ```bash
-# Generate all theme files
-deno task generate
-
-# Or use watch mode for live regeneration
-deno task dev
+deno task generate  # regenerate theme files
+deno task dev        # watch mode
 ```
 
 ### Theme Format
 
-Ghostty themes are simple configuration files that set color options. Black Atom themes define the following properties:
+Ghostty themes are simple configuration files that set color options. Black Atom themes define the
+following properties:
 
 ```ini
 # Basic terminal colors
@@ -146,7 +120,8 @@ For more information on Ghostty themes, see the [official documentation](https:/
 
 ### Template Structure
 
-Our templates use the Eta template engine syntax to inject theme values from the Black Atom core definitions:
+Templates use the Eta template engine syntax to inject theme values from the Black Atom core
+definitions:
 
 ```ini
 background = <%= theme.ui.bg.default %>
@@ -155,76 +130,9 @@ cursor-color = <%= theme.ui.fg.accent %>
 # ...and so on
 ```
 
-### Creating New Templates
-
-To create a new template:
-
-1. Create a `.template.conf` file in the appropriate collection directory
-2. Use template variables to reference color values from the core definitions
-3. Add the template to `black-atom-adapter.json`
-4. Adapt the theme using the core CLI
-
-### Adapting Themes
-
-To adapt all themes from the templates:
-
-```bash
-deno task generate
-```
-
-This will process all template files defined in `black-atom-adapter.json` and create the corresponding `.conf` files.
-
-### Development with Symlinks
-
-For theme development, it's more efficient to use symlinks rather than copying files. This allows you to see changes immediately after adapting new theme files without having to copy them again:
-
-```bash
-# Create the Ghostty themes directory if it doesn't exist
-mkdir -p ~/.config/ghostty/themes
-
-# Create symlinks for all theme files
-find ~/repos/black-atom-industries/ghostty/themes -name "*.conf" -type f -exec ln -sf {} ~/.config/ghostty/themes/ \;
-```
-
-Alternatively, you can create symlinks for specific collections:
-
-```bash
-# JPN Collection
-ln -sf ~/repos/black-atom-industries/ghostty/themes/jpn/black-atom-jpn-koyo-hiru.conf ~/.config/ghostty/themes/
-ln -sf ~/repos/black-atom-industries/ghostty/themes/jpn/black-atom-jpn-koyo-yoru.conf ~/.config/ghostty/themes/
-ln -sf ~/repos/black-atom-industries/ghostty/themes/jpn/black-atom-jpn-tsuki-yoru.conf ~/.config/ghostty/themes/
-
-# Stations Collection
-ln -sf ~/repos/black-atom-industries/ghostty/themes/stations/black-atom-stations-engineering.conf ~/.config/ghostty/themes/
-ln -sf ~/repos/black-atom-industries/ghostty/themes/stations/black-atom-stations-operations.conf ~/.config/ghostty/themes/
-ln -sf ~/repos/black-atom-industries/ghostty/themes/stations/black-atom-stations-medical.conf ~/.config/ghostty/themes/
-ln -sf ~/repos/black-atom-industries/ghostty/themes/stations/black-atom-stations-research.conf ~/.config/ghostty/themes/
-
-# And so on for Default, Terra, and MNML collections...
-```
-
-With symlinks in place, your workflow becomes:
-
-1. Make changes to templates
-2. Run `deno task generate`
-3. Reload Ghostty to see changes immediately
-
-## Contributing
-
-Contributions are welcome! If you'd like to improve existing themes or add new features:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Create a pull request
+Templates live at `themes/<collection>/collection.template.conf`. Add a new template to
+`black-atom-adapter.json` before generating.
 
 ## License
 
 MIT - See [LICENSE](./LICENSE) for details
-
-## Related Projects
-
-- [Black Atom Core](https://github.com/black-atom-industries/core) - Core theme definitions
-- [Black Atom for Neovim](https://github.com/black-atom-industries/nvim) - Neovim adapter
-- [Black Atom for Zed](https://github.com/black-atom-industries/zed) - Zed editor adapter
-- [Black Atom for Obsidian](https://github.com/black-atom-industries/obsidian) - Obsidian adapter

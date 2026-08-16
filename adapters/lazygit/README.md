@@ -4,13 +4,9 @@
 
 ## What is a Black Atom Adapter?
 
-This repository is a **Lazygit adapter** for the Black Atom theme ecosystem. In the Black Atom architecture:
-
-- The [core repository](https://github.com/black-atom-industries/core) is the single source of truth for all theme definitions
-- Each adapter implements these themes for a specific platform (Neovim, Ghostty, Lazygit, etc.)
-- The adapter uses templates to transform core theme definitions into platform-specific files
-
-This modular approach ensures consistent colors and styling across all supported platforms while allowing for platform-specific optimizations.
+This directory is the **Lazygit adapter** for Black Atom. Themes are defined once in
+[`../../core/`](../../core/), and each adapter renders them for one platform through Eta
+templates, keeping colors identical everywhere while leaving room for platform-specific tuning.
 
 ## Available Themes
 
@@ -21,7 +17,7 @@ Black Atom includes multiple theme collections, each with its own distinct style
 | **Default**  | dark, dark-dimmed, light, light-dimmed                     | Core Black Atom themes        |
 | **JPN**      | koyo-hiru, koyo-yoru, tsuki-yoru, murasaki-yoru            | Japanese-inspired themes      |
 | **Stations** | engineering, operations, medical, research                 | Space station-inspired themes |
-| **Terra**    | seasons (spring, summer, fall, winter) × time (day, night) | Earth season-inspired themes  |
+| **Terra**    | seasons (spring, summer, fall, winter) x time (day, night) | Earth season-inspired themes  |
 | **MNML**     | clay, orange, osman, mikado, 47, eink (dark/light)         | Minimalist themes             |
 
 ## Installation
@@ -44,15 +40,10 @@ To find your actual config directory:
 lazygit --print-config-dir
 ```
 
-### Download Themes
+### Theme files
 
-Clone this repository to get all pre-generated theme files:
-
-```bash
-git clone https://github.com/black-atom-industries/lazygit.git
-```
-
-The theme files are located in `themes/{collection}/{theme-name}.yml` and are ready to use.
+The generated theme files live at `themes/<collection>/<theme-name>.yml` in this adapter, ready
+to use.
 
 ## Usage
 
@@ -134,7 +125,9 @@ You can add this to your shell profile for permanent use.
 
 **Q: Why is my background color wrong?**
 
-A: Lazygit uses your terminal's background color. Make sure your terminal theme matches your Lazygit theme. Black Atom provides matching themes for [Ghostty](https://github.com/black-atom-industries/ghostty), [WezTerm](https://github.com/black-atom-industries/wezterm), and other terminals.
+A: Lazygit uses your terminal's background color. Make sure your terminal theme matches your
+Lazygit theme. Black Atom provides matching themes for [Ghostty](../ghostty/README.md),
+[WezTerm](../wezterm/README.md), and other terminals.
 
 **Q: The colors don't look right in tmux?**
 
@@ -147,16 +140,11 @@ set -ag terminal-overrides ",*:RGB"
 
 ## Development
 
-### Generating Themes
-
-Theme files are generated from templates using [Black Atom Core](https://jsr.io/@black-atom/core). You need [Deno](https://deno.land/) installed.
+Requirements: [Deno](https://deno.land/).
 
 ```bash
-# Generate all theme files
-deno task generate
-
-# Or use watch mode for live regeneration
-deno task dev
+deno task generate  # regenerate theme files
+deno task dev        # watch mode
 ```
 
 ### Template Structure
@@ -174,47 +162,8 @@ gui:
         # ...and so on
 ```
 
-### Regenerating Themes
-
-To regenerate all themes from templates:
-
-```bash
-deno task generate
-```
-
-### Development with Symlinks
-
-For active development, symlink the theme files to your config directory:
-
-```bash
-mkdir -p ~/.config/lazygit/themes
-ln -sf ~/repos/black-atom-industries/lazygit/themes/*/*.yml ~/.config/lazygit/themes/
-```
-
-Then use yq to switch themes:
-
-```bash
-THEME_FILE="~/.config/lazygit/themes/black-atom-jpn-koyo-yoru.yml"
-yq -i ".gui.theme = load(\"$THEME_FILE\").gui.theme" ~/.config/lazygit/config.yml
-```
-
-## Contributing
-
-Contributions are welcome! If you'd like to improve existing themes or add new features:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Create a pull request
+Templates live at `themes/<collection>/collection.template.yml`.
 
 ## License
 
-MIT - See [LICENSE](./LICENSE) for details
-
-## Related Projects
-
-- [Black Atom Core](https://github.com/black-atom-industries/core) - Core theme definitions
-- [Black Atom for Neovim](https://github.com/black-atom-industries/nvim) - Neovim adapter
-- [Black Atom for Ghostty](https://github.com/black-atom-industries/ghostty) - Ghostty adapter
-- [Black Atom for tmux](https://github.com/black-atom-industries/tmux) - tmux adapter
-- [Black Atom for Zed](https://github.com/black-atom-industries/zed) - Zed editor adapter
+MIT

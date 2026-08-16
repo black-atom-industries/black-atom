@@ -4,13 +4,9 @@
 
 ## What is a Black Atom Adapter?
 
-This repository is a **WezTerm adapter** for the Black Atom theme ecosystem. In the Black Atom architecture:
-
-- The [core repository](https://github.com/black-atom-industries/core) is the single source of truth for all theme definitions
-- Each adapter implements these themes for a specific platform (Neovim, VS Code, terminals, etc.)
-- The adapter uses templates to transform core theme definitions into platform-specific files
-
-This modular approach ensures consistent colors and styling across all supported platforms while allowing for platform-specific optimizations.
+This directory is the **WezTerm adapter** for Black Atom. Themes are defined once in
+[`../../core/`](../../core/), and each adapter renders them for one platform through Eta
+templates, keeping colors identical everywhere while leaving room for platform-specific tuning.
 
 ## Available Themes
 
@@ -29,26 +25,14 @@ Black Atom includes multiple theme collections, each with dark and light variant
 ### Prerequisites
 
 - [WezTerm](https://wezfurlong.org/wezterm/index.html) terminal emulator
-- [Deno](https://deno.land/) runtime (for generating themes)
 
-### Setup
+### Install the theme files
 
-1. Clone this repository:
-
-```bash
-git clone https://github.com/black-atom-industries/wezterm.git
-cd wezterm
-```
-
-2. Generate the theme files:
+Generate the theme files (requires [Deno](https://deno.land/)) and copy the `.toml` files to your
+WezTerm configuration directory:
 
 ```bash
 deno task generate
-```
-
-3. Copy the adapted `.toml` files to your WezTerm configuration directory:
-
-```bash
 mkdir -p ~/.config/wezterm/colors
 cp themes/*/*.toml ~/.config/wezterm/colors/
 ```
@@ -107,26 +91,13 @@ For WezTerm to find themes by name, they must be placed in one of these director
 1. `~/.config/wezterm/colors` (Linux/macOS)
 2. `%USERPROFILE%\.config\wezterm\colors` (Windows)
 
-```bash
-# Create the colors directory if it doesn't exist
-mkdir -p ~/.config/wezterm/colors
-
-# Copy the generated theme files
-cp themes/*/*.toml ~/.config/wezterm/colors/
-```
-
 ## Development
 
-### Generating Themes
-
-Theme files are generated from templates using [Black Atom Core](https://jsr.io/@black-atom/core). You need [Deno](https://deno.land/) installed.
+Requirements: [Deno](https://deno.land/).
 
 ```bash
-# Generate all theme files
-deno task generate
-
-# Or use watch mode for live regeneration
-deno task dev
+deno task generate  # regenerate theme files
+deno task dev        # watch mode
 ```
 
 ### Theme Format
@@ -181,7 +152,8 @@ For more information on WezTerm themes, see the [official documentation](https:/
 
 ### Template Structure
 
-Our templates use the Eta template engine syntax to inject theme values from the Black Atom core definitions:
+Templates use the Eta template engine syntax to inject theme values from the Black Atom core
+definitions:
 
 ```toml
 [metadata]
@@ -195,80 +167,9 @@ cursor_bg = "<%= theme.ui.fg.accent %>"
 # ...and so on
 ```
 
-### Creating New Templates
-
-To create a new template:
-
-1. Create a `.template.toml` file in the appropriate collection directory
-2. Use template variables to reference color values from the core definitions
-3. Add the template to `black-atom-adapter.json`
-4. Adapt the theme using the core CLI
-
-### Adapting Themes
-
-To adapt all themes from the templates:
-
-```bash
-deno task generate
-```
-
-This will process all template files defined in `black-atom-adapter.json` and create the corresponding `.toml` files.
-
-### Development with Symlinks
-
-For theme development, it's more efficient to use symlinks rather than copying files. This allows you to see changes immediately after adapting new theme files without having to copy them again:
-
-```bash
-# Create the WezTerm colors directory if it doesn't exist
-mkdir -p ~/.config/wezterm/colors
-
-# Create symlinks for all theme files
-find ~/repos/black-atom-industries/wezterm/themes -name "*.toml" -not -name "*.template.toml" -type f -exec ln -sf {} ~/.config/wezterm/colors/ \;
-
-# Or link it to another folder
-find ~/repos/black-atom-industries/wezterm/themes -name "*.toml" -not -name "*.template.toml" -type f -exec ln -sf {} path/to/folder/ \;
-```
-
-Alternatively, you can create symlinks for specific collections:
-
-```bash
-# JPN Collection
-ln -sf ~/repos/black-atom-industries/wezterm/themes/jpn/black-atom-jpn-koyo-hiru.toml ~/.config/wezterm/colors/
-ln -sf ~/repos/black-atom-industries/wezterm/themes/jpn/black-atom-jpn-koyo-yoru.toml ~/.config/wezterm/colors/
-ln -sf ~/repos/black-atom-industries/wezterm/themes/jpn/black-atom-jpn-tsuki-yoru.toml ~/.config/wezterm/colors/
-
-# Stations Collection
-ln -sf ~/repos/black-atom-industries/wezterm/themes/stations/black-atom-stations-engineering.toml ~/.config/wezterm/colors/
-ln -sf ~/repos/black-atom-industries/wezterm/themes/stations/black-atom-stations-operations.toml ~/.config/wezterm/colors/
-ln -sf ~/repos/black-atom-industries/wezterm/themes/stations/black-atom-stations-medical.toml ~/.config/wezterm/colors/
-ln -sf ~/repos/black-atom-industries/wezterm/themes/stations/black-atom-stations-research.toml ~/.config/wezterm/colors/
-
-# And so on for Default, Terra, and MNML collections...
-```
-
-With symlinks in place, your workflow becomes:
-
-1. Make changes to templates
-2. Run `deno task generate`
-3. Restart WezTerm or reload your configuration to see changes immediately
-
-## Contributing
-
-Contributions are welcome! If you'd like to improve existing themes or add new features:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Create a pull request
+Templates live at `themes/<collection>/collection.template.toml`. Add a new template to
+`black-atom-adapter.json` before generating.
 
 ## License
 
 MIT - See [LICENSE](./LICENSE) for details
-
-## Related Projects
-
-- [Black Atom Core](https://github.com/black-atom-industries/core) - Core theme definitions
-- [Black Atom for Neovim](https://github.com/black-atom-industries/nvim) - Neovim adapter
-- [Black Atom for Zed](https://github.com/black-atom-industries/zed) - Zed editor adapter
-- [Black Atom for Ghostty](https://github.com/black-atom-industries/ghostty) - Ghostty terminal adapter
-- [Black Atom for Obsidian](https://github.com/black-atom-industries/obsidian) - Obsidian adapter

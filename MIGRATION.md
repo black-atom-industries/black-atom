@@ -23,4 +23,4 @@ Decisions made in-run:
 - 2026-08-16 17:35 unpack replaces an adapter dir with two renames (retire, activate); the dangling window is microseconds and apps read theme files on demand, so it stays as is.
 - 2026-08-16 17:38 session usage limit hit mid Phase 5; five subagents died before writing (only the release-please files survived); resumed 20:21.
 
-Follow-up issues filed: (none)
+Follow-up issues filed: #2 helm-tmux consumption, #3 archive/cleanup of the source repos (incl. JSR, livery issues), #4 Homebrew cask + Linux install, #5 niri/waybar/wezterm updaters, #6 first release version, #7 post-migration polish. release-please PR #1 is open and stays open.

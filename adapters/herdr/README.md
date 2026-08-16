@@ -4,14 +4,13 @@
 
 ## About
 
-This repository is the [Herdr](https://herdr.dev/) adapter for
-[Black Atom](https://github.com/black-atom-industries/core). It contains committed TOML fragments
-for every Black Atom theme.
+This directory is the [Herdr](https://herdr.dev/) adapter for Black Atom. It contains committed
+TOML fragments for every Black Atom theme.
 
 Herdr does not load dedicated theme files. Its custom colors live in `[theme.custom]` inside
 `~/.config/herdr/config.toml`, so each generated file is a complete managed block that can be copied
-into that config. [Livery](https://github.com/black-atom-industries/livery) is the recommended way
-to download, apply, and switch these fragments safely.
+into that config. [Livery](../../livery/README.md) is the recommended way to apply and switch these
+fragments safely.
 
 ## Collections
 
@@ -61,12 +60,11 @@ block; switch complete Black Atom variants through Livery instead.
 
 ## Development
 
-Requirements: [Deno](https://deno.com/) and Black Atom Core.
+Requirements: [Deno](https://deno.com/).
 
 ```sh
 deno task generate  # regenerate committed TOML files
 deno task dev       # regenerate on template changes
-deno task update    # refresh the cached core CLI
 ```
 
 Templates use Eta syntax and semantic Black Atom colors only. `surface_dim` uses `ui.bg.panel`, and

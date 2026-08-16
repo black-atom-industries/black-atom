@@ -4,11 +4,9 @@
 
 ## What is a Black Atom Adapter?
 
-This repository is a **Waybar adapter** for the Black Atom theme ecosystem. In the Black Atom architecture:
-
-- The [core repository](https://github.com/black-atom-industries/core) is the single source of truth for all theme definitions
-- Each adapter implements these themes for a specific platform (Waybar, Neovim, terminals, etc.)
-- The adapter uses templates to transform core theme definitions into platform-specific files
+This directory is the **Waybar adapter** for Black Atom. Themes are defined once in
+[`../../core/`](../../core/), and each adapter renders them for one platform through Eta
+templates, keeping colors identical everywhere while leaving room for platform-specific tuning.
 
 ## How It Works
 
@@ -44,24 +42,16 @@ This adapter generates CSS files containing GTK color definitions using `@define
 ### Prerequisites
 
 - Waybar
-- [Deno](https://deno.land/) runtime (for generating themes)
 
 ### Setup
 
-1. Clone this repository:
-
-```bash
-git clone https://github.com/black-atom-industries/waybar.git
-cd waybar
-```
-
-2. Generate theme files (requires [Deno](https://deno.land/)):
+Generate the theme files (requires [Deno](https://deno.land/)):
 
 ```bash
 deno task generate
 ```
 
-3. Import a theme in your `style.css`:
+Import a theme in your `style.css`:
 
 ```css
 @import "path/to/themes/jpn/black-atom-jpn-koyo-yoru.css";
@@ -97,7 +87,12 @@ window#waybar {
 
 ## Development
 
-### Repository Structure
+```bash
+deno task generate  # regenerate theme files
+deno task dev        # watch mode
+```
+
+### Layout
 
 ```
 .
@@ -105,10 +100,10 @@ window#waybar {
 ├── README.md
 ├── black-atom-adapter.json
 └── themes/
-    ├── collection.template.css     # Single template for all themes
-    ├── black-atom-jpn-koyo-yoru.css
-    ├── black-atom-mnml-clay-dark.css
-    └── ...                         # 31 generated theme files
+    ├── collection.template.css     # single template for all collections
+    ├── default/black-atom-default-dark.css
+    ├── jpn/black-atom-jpn-koyo-yoru.css
+    └── ...                         # one directory per collection
 ```
 
 ## License

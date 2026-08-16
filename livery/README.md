@@ -2,64 +2,57 @@
 
 > Paint your cockpit.
 
-A desktop app for managing [Black Atom](https://github.com/black-atom-industries) themes across your
-developer tools. Pick a theme once, apply it everywhere.
+A desktop app and CLI for applying [Black Atom](../core/) themes across your developer tools. Pick
+a theme once, apply it everywhere.
 
-## Supported Apps
+## How it works
 
-| App                   | What it does                                | Reload                    |
-| --------------------- | ------------------------------------------- | ------------------------- |
-| **Ghostty**           | Updates `theme = ...` in config             | SIGUSR2 (instant repaint) |
-| **Neovim**            | Updates `colorscheme = "..."` in Lua config | Live via server sockets   |
-| **Tmux**              | Updates `source-file` theme path            | `tmux source-file`        |
-| **Delta**             | Switches `features = black-atom-dark/light` | On next git command       |
-| **Zed**               | Patches `theme` in settings.json (JSONC)    | Auto-watches file changes |
-| **Lazygit**           | Merges theme YAML into config               | On next lazygit launch    |
-| **Herdr**             | Replaces a managed TOML theme block         | Socket config reload      |
-| **Obsidian**          | Patches appearance + style settings JSON    | `obsidian reload`         |
-| **System Appearance** | Toggles macOS dark/light mode               | Immediate                 |
+Livery embeds every adapter's generated theme files in its binary and unpacks them into
+`$XDG_DATA_HOME/black-atom/themes/<adapter>/` (`~/.local/share` if `XDG_DATA_HOME` is unset).
+Livery's own settings live in `$XDG_CONFIG_HOME/black-atom/livery/config.json`.
 
-## Architecture
+Each supported app falls into one provisioning class: Linked, Merged, or External. See
+[ADAPTERS.md](ADAPTERS.md) for the class definitions and per-app contracts.
 
-- **Frontend**: React + TanStack (Router, Store, Query) in a Tauri v2 webview
-- **Backend**: Rust handles all file I/O and OS operations via typed commands
-- **Config**: `~/.config/black-atom/livery/config.json` — per-app settings with configurable
-  match/replace patterns
+## CLI
 
-## Status
+```sh
+livery                       # interactive theme picker
+livery apply <theme>         # apply a theme to every enabled app
+livery list                  # list every available theme, grouped by collection
+livery status                # show each app's enabled, provisioning, linked and config state
+livery setup [--yes]         # enable detected apps, link their themes, verify config paths
+livery appearance <dark|light>  # switch the system between dark and light mode
+livery nvim-settings         # write stored Neovim plugin settings into nvim's managed Lua block
+```
 
-Active development. See the
-[livery project](https://linear.app/black-atom-industries/project/livery-ebebb9cdaef9) for progress.
+## GUI
+
+`livery-gui` is the Tauri desktop app. Same picker, status, and setup flows as the CLI, in a
+window.
 
 ## Development
 
-Run the desktop app with:
-
 ```sh
-deno task dev
+deno task dev:livery   # from the repo root: frontend + Tauri shell together
+cargo test              # from the repo root: livery_core and livery-cli tests
 ```
 
-For browser-based visual editing with Airship:
+Bundle the desktop app:
 
 ```sh
-deno task airship
+cd livery && deno task build
 ```
 
-This starts the Tauri app, Vite, and Airship together. Debug builds expose the Rust command bridge
-on loopback so Airship frames can use the real configuration and settings.
+Never run `livery apply`, `livery setup`, or `deno task dev:livery` against your real `$HOME`. See
+the Sandbox section in the root `CLAUDE.md`.
 
-## Tech Stack
+## Architecture
 
-| Layer      | Technology                                      | Notes                                     |
-| ---------- | ----------------------------------------------- | ----------------------------------------- |
-| Runtime    | [Deno](https://deno.com/)                       | Dev server, formatting, linting, testing  |
-| App shell  | [Tauri v2](https://tauri.app/)                  | Rust + system webview                     |
-| Frontend   | [React](https://react.dev/) 18                  | Automatic JSX transform                   |
-| State      | [TanStack](https://tanstack.com/) Store + Query | Client + server state                     |
-| Build      | [Vite](https://vite.dev/) 6                     | Via `deno run -A npm:vite`                |
-| Styling    | [Tailwind CSS](https://tailwindcss.com/) v4     | Vite plugin                               |
-| Theme data | `@black-atom/core`                              | JSR package                               |
-| Config     | JSON                                            | `~/.config/black-atom/livery/config.json` |
+- **Frontend**: React + TanStack (Router, Store, Query) in a Tauri v2 webview, `livery/src/`
+- **Domain logic**: `livery/core/` (crate `livery_core`), no Tauri dependency
+- **Tauri shell**: `livery/src-tauri/` (binary `livery-gui`)
+- **CLI**: `livery/cli/` (crate `livery-cli`, binary `livery`)
 
 ## Logs
 
@@ -72,15 +65,10 @@ Livery writes logs to the platform log directory:
 
 Logs rotate automatically at 5 MB. Previous log files are kept alongside the current one.
 
-## Origin of Name
+## Origin of name
 
-[Livery](https://en.wikipedia.org/wiki/Livery_(aircraft)) is the paint scheme of an aircraft — its
+[Livery](https://en.wikipedia.org/wiki/Livery_(aircraft)) is the paint scheme of an aircraft, its
 visual identity.
-
-## Other Black Atom Utils
-
-- [helm](https://github.com/black-atom-industries/helm) — tmux session and repo management
-- [radar.nvim](https://github.com/black-atom-industries/radar.nvim) — file nav
 
 ## License
 

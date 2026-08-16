@@ -1,7 +1,6 @@
 # Black Atom for Obsidian
 
-A theme for [Obsidian](https://obsidian.md/) by
-[Black Atom Industries](https://github.com/black-atom-industries).
+A theme for [Obsidian](https://obsidian.md/) by Black Atom Industries.
 
 ## Available Themes
 
@@ -33,15 +32,9 @@ To switch between all available theme variants, install the
 
 ## Development
 
-This adapter uses a pure CSS template approach.
-[Black Atom Core](https://jsr.io/@black-atom/core) processes Eta templates to
+This adapter uses a pure CSS template approach. Black Atom's core processes Eta templates to
 generate per-theme CSS, and a build script assembles them into `theme.css`. You
 need [Deno](https://deno.land/) installed.
-
-```bash
-git clone https://github.com/black-atom-industries/obsidian.git
-cd obsidian
-```
 
 Edit templates in `themes/`, then build:
 
@@ -58,17 +51,6 @@ cp .env.example .env
 # Edit .env with your vault path
 deno task dev
 ```
-
-## Related Projects
-
-- [Black Atom Core](https://github.com/black-atom-industries/core) -- Core theme
-  definitions
-- [Black Atom for Neovim](https://github.com/black-atom-industries/nvim) --
-  Neovim adapter
-- [Black Atom for Ghostty](https://github.com/black-atom-industries/ghostty) --
-  Ghostty terminal adapter
-- [Black Atom for Zed](https://github.com/black-atom-industries/zed) -- Zed
-  editor adapter
 
 ## License
 

@@ -4,9 +4,9 @@
 
 ## What is a Black Atom Adapter?
 
-This is the **Neovim adapter** in the Black Atom monorepo. Themes are defined once in `core/`,
-and each adapter renders them for one platform through Eta templates. That keeps the colors
-identical everywhere while leaving room for platform-specific tuning.
+This directory is the **Neovim adapter** for Black Atom. Themes are defined once in
+[`../../core/`](../../core/), and each adapter renders them for one platform through Eta
+templates, keeping colors identical everywhere while leaving room for platform-specific tuning.
 
 ## Available Themes
 
@@ -26,7 +26,7 @@ Put this directory on the runtimepath. Any plugin manager that can point at a
 directory works, or do it by hand:
 
 ```lua
-vim.opt.rtp:append("/path/to/black-atom/adapters/nvim")
+vim.opt.rtp:prepend("/path/to/black-atom/adapters/nvim")
 vim.cmd.colorscheme("black-atom-jpn-koyo-yoru")
 ```
 
@@ -226,7 +226,8 @@ Individual tasks are also available: `mise run lint`, `mise run typecheck`,
 
 ### Working with Templates
 
-Theme files are generated from templates using [Black Atom Core](https://jsr.io/@black-atom/core). You need [Deno](https://deno.land/) installed.
+Theme files are generated from templates through the Black Atom core CLI. You need
+[Deno](https://deno.land/) installed.
 
 1. Edit the template in `templates/collection.template.lua` (one template, all collections)
 2. Generate theme files:
@@ -241,7 +242,3 @@ Theme files are generated from templates using [Black Atom Core](https://jsr.io/
 ## License
 
 MIT - See [LICENSE](./LICENSE) for details
-
-## Related
-
-Theme definitions live in `core/`. The other adapters sit next to this one under `adapters/`.

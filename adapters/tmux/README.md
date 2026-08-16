@@ -4,36 +4,16 @@ Beautiful tmux color schemes from the Black Atom Industries theme collection.
 
 ## Installation
 
-### Using Deno
-
-1. Clone this repository:
-
-```bash
-git clone https://github.com/black-atom-industries/tmux.git
-cd tmux
-```
-
-2. Generate theme files (requires [Deno](https://deno.land/)):
+Generate the theme files (requires [Deno](https://deno.land/)):
 
 ```bash
 deno task generate
 ```
 
-This will generate all theme files from the templates.
-
-### Manual Installation
-
-After generating the theme files, source your preferred theme in your `~/.tmux.conf`:
+Then source your preferred theme in your `~/.tmux.conf`:
 
 ```bash
-# Example: Using the MNML Clay Dark theme
-source-file ~/.config/tmux/themes/black-atom-mnml-clay-dark.conf
-```
-
-Or if you cloned to a different location:
-
-```bash
-source-file ~/path/to/black-atom-industries/tmux/themes/mnml/black-atom-mnml-clay-dark.conf
+source-file /path/to/black-atom/adapters/tmux/themes/mnml/black-atom-mnml-clay-dark.conf
 ```
 
 ## Available Themes
@@ -74,12 +54,6 @@ source-file ~/path/to/black-atom-industries/tmux/themes/mnml/black-atom-mnml-cla
 - `black-atom-terra-winter-day` - Winter daytime (light)
 - `black-atom-terra-winter-night` - Winter evening (dark)
 
-### North Collection (Nordic-inspired)
-
-- `black-atom-north-night` - Nordic night (dark)
-- `black-atom-north-dark-night` - Deep Nordic night (dark)
-- `black-atom-north-day` - Nordic day (light)
-
 ## What Gets Themed
 
 The Black Atom tmux themes customize the following elements:
@@ -104,11 +78,10 @@ Each collection has its own styling philosophy:
 - **MNML**: Minimal contrast, subtle indicators
 - **Stations**: Bold, technical appearance
 - **Terra**: Natural, seasonal variations
-- **North**: Nordic minimalism with frost-inspired accents
 
 ## Development
 
-This repository uses the Black Atom adapter pattern. Theme files are generated from templates using [Black Atom Core](https://jsr.io/@black-atom/core). To modify themes:
+Theme files are generated from templates through the Black Atom core CLI. To modify themes:
 
 1. Edit the appropriate template file in `themes/*/collection.template.conf`
 2. Run `deno task generate` to regenerate theme files (or `deno task dev` for watch mode)
@@ -117,7 +90,3 @@ This repository uses the Black Atom adapter pattern. Theme files are generated f
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-
-## Credits
-
-Created by [Black Atom Industries](https://github.com/black-atom-industries)
