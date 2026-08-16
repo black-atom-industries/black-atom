@@ -10,22 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PreviewUiRouteImport } from './routes/preview/ui'
 import { Route as PreviewSyntaxRouteImport } from './routes/preview/syntax'
+import { Route as PreviewUiRouteImport } from './routes/preview/ui'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PreviewUiRoute = PreviewUiRouteImport.update({
-  id: '/preview/ui',
-  path: '/preview/ui',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PreviewSyntaxRoute = PreviewSyntaxRouteImport.update({
   id: '/preview/syntax',
   path: '/preview/syntax',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PreviewUiRoute = PreviewUiRouteImport.update({
+  id: '/preview/ui',
+  path: '/preview/ui',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -68,18 +68,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/preview/ui': {
-      id: '/preview/ui'
-      path: '/preview/ui'
-      fullPath: '/preview/ui'
-      preLoaderRoute: typeof PreviewUiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/preview/syntax': {
       id: '/preview/syntax'
       path: '/preview/syntax'
       fullPath: '/preview/syntax'
       preLoaderRoute: typeof PreviewSyntaxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/preview/ui': {
+      id: '/preview/ui'
+      path: '/preview/ui'
+      fullPath: '/preview/ui'
+      preLoaderRoute: typeof PreviewUiRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

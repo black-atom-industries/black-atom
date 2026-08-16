@@ -1,54 +1,48 @@
-# Backend (Rust / Tauri)
+# Livery backend
 
-The Rust backend is the **executor** — all OS operations (file I/O, process signals, socket
-communication) happen here. TypeScript never touches the filesystem directly.
+The Rust backend is the executor. Every OS operation lives here: file I/O, downloads, process
+signals, socket communication.
 
-## Module Structure
+## Modules
 
-```
-src-tauri/src/
-  lib.rs                    # Tauri command registration
-  bin/
-    perf_benchmark.rs       # Performance benchmark binary (deno task test:perf-benchmark)
-  config/
-    types.rs                # AppName enum, AppConfig, Config structs
-    defaults.rs             # Config::default() — pattern defaults per app
-    commands.rs             # get_config, save_config Tauri commands
-    io.rs                   # Disk I/O, tilde expansion, default merging
-  updaters/
-    mod.rs                  # update_app + update_system_appearance commands, UpdateResult, dispatcher
-    file_ops/
-      text.rs               # patch_text_file — regex replace with template variables
-      yaml.rs               # patch_yaml_file — lossless YAML merge (yaml-edit + yaml_serde)
-      jsonc.rs              # patch_jsonc_file — JSONC CST editing (jsonc-parser, format-preserving)
-    ghostty.rs              # ghostty update + reload (SIGUSR2)
-    nvim.rs                 # nvim update + reload (socket)
-    tmux.rs                 # tmux update + reload (source-file)
-    lazygit.rs              # lazygit update (YAML merge, no reload)
-    zed.rs                  # zed update (JSONC patching, no reload — auto-watches)
-    obsidian.rs             # obsidian update (JSONC patching + URI reload)
-    system_appearance.rs    # macOS/Linux system dark/light mode toggle
-```
+- `src/lib.rs` — Tauri command registration and the tauri-specta builder
+- `src/config/` — `types.rs` (`AppName`, `AppConfig`, `Config`), `defaults.rs`, `commands.rs`,
+  `io.rs` (disk I/O, tilde expansion, default merging)
+- `src/themes/` — theme registry, manifest, download and extraction, symlinks, app detection
+- `src/updaters/` — `mod.rs` holds `update_app`, `update_system_appearance`, and the dispatcher;
+  one module per app next to it
+- `src/updaters/file_ops/` — `text.rs`, `yaml.rs`, `jsonc.rs`, `managed_block.rs`, plus `secure.rs`
+  for the path guard and `verify.rs`
+- `src/bin/perf_benchmark.rs` — benchmark binary
+
+The frontend calls `update_app(app, theme_key, appearance, collection_key)`. The dispatcher reads
+that app's config, builds the template variables, and routes to the per-app function. No per-app
+branching exists on the frontend.
 
 ## Conventions
 
-- Every Tauri command validates paths are under `$HOME` before writing
-- Atomic writes via `tempfile::NamedTempFile` + `persist()`
-- Tilde expansion (`shellexpand::tilde`) on paths received from the frontend
-- Tests use `#[cfg(test)] mod tests` within source files
-- Fixture-based testing for file operations — see the `backend-testing` skill
+Commands validate that a path is under `$HOME` before writing. Writes are atomic through
+`tempfile::NamedTempFile` and `persist()`. Paths arriving from the frontend go through
+`shellexpand::tilde`.
 
-## Updater Architecture
+Unit tests live in `#[cfg(test)] mod tests` inside the source file. File operations get fixtures,
+see the `backend-testing` skill.
 
-The frontend calls a single Tauri command: `update_app(app, theme_key, appearance, collection_key)`.
-The backend dispatcher in `updaters/mod.rs` reads the app's config, builds template variables,
-and routes to the per-app update function. No per-app logic exists on the frontend.
+`tests/setup_smoke.rs` is the end-to-end suite. It points `$HOME` at a tempdir and serves theme
+tarballs from a local listener, so it never touches a real config. Extend that file for new setup
+scenarios rather than adding a parallel suite: `$HOME` is process-global and the scenario has to
+stay sequential.
 
-## Adding a New Updater
+## Bindings
 
-1. Add variant to `AppName` enum in `config/types.rs` and its `as_str()` match arm
-2. Add default config in `config/defaults.rs`
-3. TypeScript bindings update automatically via tauri-specta on next dev build
-4. Create a Rust updater module in `updaters/` (e.g., `updaters/foo.rs`)
-5. Add the module and dispatch arm in `updaters/mod.rs`
-6. Add fixture files in `tests/fixtures/` and write tests
+`cargo test` regenerates `livery/src/bindings.ts` through tauri-specta. Adding or changing a command
+means running it before the frontend can see the new signature.
+
+## Adding an updater
+
+1. Add the `AppName` variant in `src/config/types.rs` and its `as_str()` arm
+2. Add the default config in `src/config/defaults.rs`
+3. Write the updater module in `src/updaters/`
+4. Register it in `src/updaters/mod.rs`
+5. Add fixtures under `tests/fixtures/` and write the tests
+6. Run `cargo test` to regenerate the bindings
