@@ -98,8 +98,8 @@ theme picker.
 
 ## Releases
 
-Releases run through release-please on conventional commits, tagged `livery-v*` and `core-v*` per
-package. Nothing is published yet.
+Releases run through release-please on conventional commits. The repo carries one version for
+core, the adapters and livery together, tagged `v*`. Nothing is published yet.
 
 ## License
 

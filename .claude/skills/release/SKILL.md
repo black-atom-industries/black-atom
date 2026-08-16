@@ -7,7 +7,7 @@ description: Cut a livery release. Load when asked to release livery, cut a vers
 
 Livery ships as a Tauri desktop app (`livery-gui`) with a CLI (`livery`). release-please drives
 the version from `.github/release-please-config.json` and `.github/.release-please-manifest.json`
-(packages `livery` and `core`, tags `livery-v<version>` and `core-v<version>`); a merged release
+(one package at the repo root, one version for everything, tag `v<version>`); a merged release
 PR creates the tag. There is no artifact build job yet: the Homebrew cask and Linux artifact are
 tracked in a follow-up issue, so a release today is a tag and a changelog.
 
@@ -47,18 +47,17 @@ tracked in a follow-up issue, so a release today is a tag and a changelog.
    changelog. Review and merge it like any other PR. Never tag by hand, the merge is what creates
    the tag. The `release` workflow also syncs the root `Cargo.lock` on the PR branch.
 
-5. The merge creates tag `livery-v<version>` (or `core-v<version>`) and a GitHub release. Until
+5. The merge creates tag `v<version>` and a GitHub release. Until
    the artifact job exists, build the bundle locally (step 3) and attach it by hand if a build is
    needed.
 
 ## Versions
 
-Five files carry livery's version number, all bumped together by release-please `extra-files`:
+The repo has one version. release-please bumps every field through `extra-files`:
 
 - `livery/deno.json` (`version`)
 - `livery/src-tauri/Cargo.toml` (`package.version`)
 - `livery/core/Cargo.toml` (`package.version`)
 - `livery/cli/Cargo.toml` (`package.version`)
 - `livery/src-tauri/tauri.conf.json` (`version`)
-
-Core's version lives in `core/deno.json`.
+- `core/deno.json` (`version`)
