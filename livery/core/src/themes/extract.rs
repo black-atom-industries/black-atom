@@ -5,12 +5,6 @@ use tar::Archive;
 
 use super::registry::ExtractLayout;
 
-/// Root of the managed themes directory: `~/.config/black-atom/themes`.
-pub fn managed_themes_root() -> Result<PathBuf, String> {
-    let home = dirs::home_dir().ok_or("Cannot determine home directory")?;
-    Ok(home.join(".config").join("black-atom").join("themes"))
-}
-
 /// Extract an adapter repo tarball's theme output into
 /// `<managed_root>/<adapter>/`, replacing whatever was there. Returns the
 /// number of theme files written.

@@ -50,6 +50,17 @@ pub fn start_app() {
                 .build(),
         )
         .setup(|app| {
+            match livery_core::themes::unpack::ensure_unpacked() {
+                Ok(report) if report.unpacked => log::info!(
+                    "Unpacked {} theme files for {} adapters (stamp {})",
+                    report.files,
+                    report.adapters,
+                    report.stamp
+                ),
+                Ok(report) => log::info!("Themes already unpacked (stamp {})", report.stamp),
+                Err(e) => log::error!("Failed to unpack the bundled themes: {e}"),
+            }
+
             #[cfg(debug_assertions)]
             if let Some(bridge) = dev_bridge::start() {
                 use tauri::Manager;

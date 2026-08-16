@@ -1,11 +1,12 @@
 //! Hermetic end-to-end smoke test of the adapter setup chain.
 //!
-//! Runs the real core functions — get_config → detect_apps → save_config →
-//! download_theme → link_app_themes → verify_app_path → get_themes_status —
-//! against a tempdir `$HOME` with planted app configs, downloading from a
-//! local listener that serves in-memory fixture tarballs. One test function:
-//! `$HOME` and `LIVERY_THEMES_BASE_URL` are process-global, so the scenario
-//! must stay sequential.
+//! Runs the real core functions — ensure_unpacked → get_config → detect_apps
+//! → save_config → download_theme → link_app_themes → verify_app_path →
+//! get_themes_status — against a tempdir `$HOME` with planted app configs,
+//! downloading from a local listener that serves in-memory fixture tarballs.
+//! One test function: `$HOME`, the `XDG_*` variables, and
+//! `LIVERY_THEMES_BASE_URL` are process-global, so the scenario must stay
+//! sequential.
 
 use std::collections::HashMap;
 use std::io::{Read, Write};
@@ -15,8 +16,9 @@ use std::path::Path;
 use tokio::runtime::Runtime;
 
 use livery_core::config::types::AppName;
-use livery_core::themes::registry::{provisioning, ThemeProvisioning};
-use livery_core::themes::{commands as themes, detect, manifest};
+use livery_core::paths;
+use livery_core::themes::registry::provisioning;
+use livery_core::themes::{commands as themes, detect, registry, unpack};
 use livery_core::updaters::UpdateStatus;
 
 fn runtime() -> &'static Runtime {
@@ -150,6 +152,30 @@ fn write_file(path: &Path, content: &str) {
     std::fs::write(path, content).unwrap();
 }
 
+/// Every file below `root`, as root-relative paths, sorted. Symlinked
+/// directories are not followed.
+fn walk_names(root: &Path) -> Vec<String> {
+    let mut names = Vec::new();
+    let mut stack = vec![root.to_path_buf()];
+    while let Some(dir) = stack.pop() {
+        for entry in std::fs::read_dir(&dir).unwrap().flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                stack.push(path);
+            } else {
+                names.push(
+                    path.strip_prefix(root)
+                        .unwrap()
+                        .to_string_lossy()
+                        .into_owned(),
+                );
+            }
+        }
+    }
+    names.sort();
+    names
+}
+
 fn assert_managed_symlink(link: &Path, managed_root: &Path) {
     let target = std::fs::read_link(link)
         .unwrap_or_else(|e| panic!("expected symlink at {}: {e}", link.display()));
@@ -171,6 +197,22 @@ fn setup_chain_end_to_end() {
         dirs::home_dir().as_deref(),
         Some(home),
         "HOME override must reach dirs::home_dir"
+    );
+    // Deliberately not `$HOME/.config` and `$HOME/.local/share`: livery's own
+    // state must follow the XDG variables, not a home-relative guess.
+    let xdg_config = home.join("xdg-config");
+    let xdg_data = home.join("xdg-data");
+    std::env::set_var("XDG_CONFIG_HOME", &xdg_config);
+    std::env::set_var("XDG_DATA_HOME", &xdg_data);
+    assert_eq!(
+        paths::themes_root(),
+        xdg_data.join("black-atom/themes"),
+        "themes root must follow XDG_DATA_HOME"
+    );
+    assert_eq!(
+        paths::livery_config_dir(),
+        xdg_config.join("black-atom/livery"),
+        "livery config dir must follow XDG_CONFIG_HOME"
     );
 
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
@@ -194,6 +236,65 @@ fn setup_chain_end_to_end() {
     );
     let vault_appearance = home.join("vault/.obsidian/appearance.json");
     write_file(&vault_appearance, "{\"cssTheme\":\"Black Atom\"}\n");
+
+    // 0. Startup unpack: the embedded adapter output lands under the themes
+    // root before anything else runs.
+    let managed_root = paths::themes_root();
+    let report = unpack::ensure_unpacked().unwrap();
+    assert!(report.unpacked, "first run must write the embedded themes");
+    assert_eq!(report.adapters, 10);
+    assert!(report.files > 200, "unpacked only {} files", report.files);
+
+    for (adapter, file) in [
+        ("ghostty", "default/black-atom-default-dark.conf"),
+        ("tmux", "jpn/black-atom-jpn-koyo-yoru.conf"),
+        ("zed", "jpn/black-atom-jpn-koyo-yoru.json"),
+        ("obsidian", "jpn/black-atom-jpn-koyo-yoru.css"),
+        ("obsidian", "theme.css"),
+        ("obsidian", "manifest.json"),
+        ("nvim", "colors/black-atom-jpn-koyo-yoru.lua"),
+        ("nvim", "lua/black-atom/init.lua"),
+        ("niri", "default/black-atom-default-dark.kdl"),
+        ("waybar", "default/black-atom-default-dark.css"),
+        ("wezterm", "default/black-atom-default-dark.toml"),
+        ("herdr", "default/black-atom-default-dark.toml"),
+        ("lazygit", "default/black-atom-default-dark.yml"),
+    ] {
+        let path = managed_root.join(adapter).join(file);
+        assert!(path.is_file(), "missing unpacked file: {}", path.display());
+    }
+
+    // Templates and repo noise stay in the binary.
+    let unpacked: Vec<String> = walk_names(&managed_root);
+    assert!(
+        unpacked.iter().all(|n| !n.contains("collection.template.")),
+        "templates reached the disk"
+    );
+    assert!(
+        unpacked
+            .iter()
+            .all(|n| !n.ends_with("README.md") && !n.ends_with("LICENSE")),
+        "repo noise reached the disk"
+    );
+
+    let stamp = std::fs::read_to_string(managed_root.join(".stamp")).unwrap();
+    assert_eq!(stamp, report.stamp);
+    assert_eq!(stamp.len(), 16, "stamp must be a hex payload hash");
+
+    // A second call sees its own stamp and writes nothing.
+    let rerun = unpack::ensure_unpacked().unwrap();
+    assert!(!rerun.unpacked, "unchanged payload must not re-unpack");
+    assert_eq!(rerun.stamp, report.stamp);
+    assert_eq!(walk_names(&managed_root), unpacked);
+
+    // A stale stamp forces a fresh unpack, and staging leftovers are swept.
+    std::fs::write(managed_root.join(".stamp"), "0000000000000000").unwrap();
+    std::fs::create_dir_all(managed_root.join(".staging-abc")).unwrap();
+    std::fs::create_dir_all(managed_root.join(".retired-tmux")).unwrap();
+    let restamped = unpack::ensure_unpacked().unwrap();
+    assert!(restamped.unpacked, "a differing stamp must re-unpack");
+    assert!(!managed_root.join(".staging-abc").exists());
+    assert!(!managed_root.join(".retired-tmux").exists());
 
     // 1. First config read materializes the defaults: everything disabled.
     let mut config = livery_core::config::commands::get_config();
@@ -232,23 +333,10 @@ fn setup_chain_end_to_end() {
     }
     livery_core::config::commands::save_config(config).unwrap();
 
-    // 4. Pre-plant a stale nvim download to prove the self-heal.
-    let managed_root = home.join(".config/black-atom/themes");
-    write_file(&managed_root.join("nvim/black-atom-stub.lua"), "-- stub");
-    manifest::upsert_entry(
-        &managed_root,
-        "nvim",
-        manifest::ManifestEntry {
-            etag: None,
-            fetched_at_epoch: 1,
-            file_count: 1,
-        },
-    )
-    .unwrap();
-
-    // 5. Download every non-External adapter from the fixture listener.
+    // 4. Download every downloadable adapter from the fixture listener,
+    // replacing what the unpack wrote.
     for app in AppName::all() {
-        if provisioning(*app) == ThemeProvisioning::External {
+        if registry::distribution(*app).is_none() {
             continue;
         }
         let result = block_on(themes::download_theme(*app));
@@ -266,27 +354,38 @@ fn setup_chain_end_to_end() {
             assert!(result.file_count.unwrap_or(0) > 0);
         }
     }
-    // External adapters have nothing to fetch — a skip, not a failure.
+    // Adapters without a distribution have nothing to fetch — a skip.
     let nvim_download = block_on(themes::download_theme(AppName::Nvim));
     assert!(matches!(nvim_download.status, UpdateStatus::Skipped));
 
-    // 6. Status: every app carries its class, the stale nvim download is gone.
+    // 5. Status: every app carries its class. The unpacked nvim dir survives
+    // the download flow — it is the source a Linked nvim points at.
     let status = block_on(themes::get_themes_status());
     assert_eq!(status.adapters.len(), AppName::all().len());
     assert!(status.any_downloaded);
     for (app, adapter) in &status.adapters {
-        let external = provisioning(*app) == ThemeProvisioning::External;
         assert_eq!(adapter.provisioning, provisioning(*app));
-        assert_eq!(adapter.downloaded, !external, "{}", app.as_str());
+        assert_eq!(
+            adapter.downloaded,
+            registry::distribution(*app).is_some(),
+            "{}",
+            app.as_str()
+        );
     }
-    assert!(!managed_root.join("nvim").exists(), "stale nvim dir healed");
+    assert!(
+        managed_root
+            .join("nvim/colors/black-atom-jpn-koyo-yoru.lua")
+            .is_file(),
+        "the unpacked nvim tree must survive the download flow"
+    );
 
-    // 7. Link the Linked adapters, then check the placements on disk.
+    // 6. Link the Linked adapters, then check the placements on disk.
     for app in [
         AppName::Ghostty,
         AppName::Zed,
         AppName::Tmux,
         AppName::Obsidian,
+        AppName::Nvim,
     ] {
         let result = block_on(themes::link_app_themes(app));
         assert!(
@@ -307,6 +406,18 @@ fn setup_chain_end_to_end() {
     ] {
         assert_managed_symlink(&link, &managed_root);
     }
+    // nvim gets one directory symlink into the runtimepath instead of
+    // per-file links: neovim adds `pack/*/start/*` itself.
+    let pack_link = xdg_data.join("nvim/site/pack/black-atom/start/black-atom");
+    assert_eq!(
+        std::fs::read_link(&pack_link).unwrap(),
+        managed_root.join("nvim"),
+        "nvim pack dir must point at the unpacked themes"
+    );
+    assert!(pack_link
+        .join("colors/black-atom-jpn-koyo-yoru.lua")
+        .is_file());
+    assert!(pack_link.join("lua/black-atom/init.lua").is_file());
     // Merged adapters consume the managed dir directly — linking is a skip.
     for app in [AppName::Lazygit, AppName::Herdr] {
         let link = block_on(themes::link_app_themes(app));

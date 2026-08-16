@@ -96,6 +96,30 @@ pub fn sync_vault_theme_links(
     Ok(stats)
 }
 
+/// Neovim's packpath entry for the unpacked nvim adapter, relative to
+/// `data_home()`.
+pub const NVIM_PACK_DIR: &str = "nvim/site/pack/black-atom/start/black-atom";
+
+/// Point the packpath entry at the unpacked nvim dir. Neovim adds
+/// `pack/*/start/*` to the runtimepath itself, so one directory symlink
+/// exposes both `colors/` and the runtime under `lua/`. A real directory
+/// already sitting there is someone else's plugin install — left alone.
+#[cfg(unix)]
+pub fn sync_pack_dir_link(managed_dir: &Path) -> Result<SymlinkSyncStats, String> {
+    let link = crate::paths::data_home().join(NVIM_PACK_DIR);
+    let parent = link
+        .parent()
+        .ok_or_else(|| format!("{} has no parent", link.display()))?;
+    std::fs::create_dir_all(parent)
+        .map_err(|e| format!("Failed to create {}: {e}", parent.display()))?;
+    super::extract::ensure_under_home(parent)?;
+    super::extract::ensure_under_home(managed_dir)?;
+
+    let mut stats = SymlinkSyncStats::default();
+    place_link(&link, managed_dir, NVIM_PACK_DIR, &mut stats)?;
+    Ok(stats)
+}
+
 /// Create or heal one symlink: re-aim symlinks that don't point at the
 /// fresh target (heals dangling and clone-farm links), never touch a real
 /// file already sitting there.

@@ -4,26 +4,27 @@ How each supported app gets its Black Atom themes, what livery automates, and wh
 
 ## Theme Provisioning
 
-Livery downloads each adapter's committed theme output into the **managed themes directory**
-(`~/.config/black-atom/themes/<adapter>/`). What happens next depends on one question — **who
-consumes those files** — and every adapter falls into exactly one class:
+Livery ships every adapter's generated theme output in its binary and unpacks it into the **managed
+themes directory** (`$XDG_DATA_HOME/black-atom/themes/<adapter>/`, falling back to
+`~/.local/share`). What happens next depends on one question — **who consumes those files** — and
+every adapter falls into exactly one class:
 
-| Class        | Adapters                     | Definition                                                                                                                                                                   |
-| ------------ | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **External** | nvim, helm-tmux, delta       | The app's theme files are provided outside of livery — by a plugin, a compiled binary, or the user — so livery only performs switching.                                      |
-| **Linked**   | ghostty, zed, tmux, obsidian | Livery symlinks the downloaded theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer setup may add once. |
-| **Merged**   | lazygit, herdr               | The app cannot read external theme files, so on every switch livery reads the downloaded theme and writes its values directly into the app's config.                         |
+| Class        | Adapters                           | Definition                                                                                                                                                                |
+| ------------ | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **External** | helm-tmux, delta                   | The app's theme files are provided outside of livery — by a compiled binary or the user — so livery only performs switching.                                              |
+| **Linked**   | ghostty, zed, tmux, obsidian, nvim | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer setup may add once. |
+| **Merged**   | lazygit, herdr                     | The app cannot read external theme files, so on every switch livery reads the managed theme and writes its values directly into the app's config.                         |
 
 Two per-adapter properties are deliberately **not** classes:
 
-- **Setup precondition** — a one-time manual step livery cannot automate (install the nvim plugin;
-  tell livery which obsidian vault). Orthogonal to who consumes the files.
+- **Setup precondition** — a one-time manual step livery cannot automate (tell livery which obsidian
+  vault). Orthogonal to who consumes the files.
 - **Switch pointer** — the config line or property that selects the active theme. Every adapter has
   one; livery's apply step rewrites it.
 
 In the settings screen, **AUTO-DETECT** checks which apps exist (conservatively: does the configured
-config file exist?), and **SET UP** runs the class-appropriate chain — enable → download → link
-(Linked only) → verify — always ending with verification, so the row reflects the true state.
+config file exist?), and **SET UP** runs the class-appropriate chain — enable → link (Linked only) →
+verify — always ending with verification, so the row reflects the true state.
 
 ## Per-adapter contracts
 
@@ -89,20 +90,20 @@ config file exist?), and **SET UP** runs the class-appropriate chain — enable 
 - **Precondition:** existing `[theme]` / `[theme.custom]` tables must be wrapped in
   `# BEGIN BLACK ATOM LIVERY THEME` and `# END BLACK ATOM LIVERY THEME` markers before first apply.
 
-### nvim — External
+### nvim — Linked
 
-- **Files:** ship with the
-  [black-atom-industries/nvim](https://github.com/black-atom-industries/nvim) plugin — its
-  `colors/*.lua` entry points `require("black-atom")`, so standalone files can never work. Install
-  the plugin with your plugin manager; livery downloads nothing.
+- **Files:** the colorschemes in `colors/` plus the runtime under `lua/black-atom/`, both unpacked
+  into the managed themes dir.
+- **Placement:** one directory symlink,
+  `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/black-atom` → the managed `nvim` dir. Neovim puts
+  `pack/*/start/*` on the runtimepath itself, so no plugin manager is involved.
 - **Switch pointer:** a `colorscheme = "<themeKey>"` (or `vim.cmd.colorscheme(...)`) line in your
   config.
 - **Reload:** `nvim --server <socket> --remote-expr` against every running instance.
-- **Precondition:** the plugin, installed and on your runtimepath.
 
 ### helm-tmux — External
 
-- **Files:** compiled into the Helm binary — nothing to download or install.
+- **Files:** compiled into the Helm binary — nothing to install.
 - **Switch pointer:** `theme: <themeKey>` in `~/.config/black-atom/helm-tmux/config.yml`.
 
 ### delta — External

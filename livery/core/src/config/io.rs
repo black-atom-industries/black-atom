@@ -5,17 +5,42 @@ use super::types::Config;
 
 /// Path to the livery config file.
 fn config_path() -> PathBuf {
-    let home = match dirs::home_dir() {
-        Some(h) => h,
-        None => {
-            log::warn!("Could not determine home directory, using current directory");
-            PathBuf::new()
-        }
-    };
-    home.join(".config")
+    crate::paths::livery_config_dir().join("config.json")
+}
+
+/// Livery's config used to live under `~/.config` unconditionally. On a
+/// machine with `$XDG_CONFIG_HOME` pointing elsewhere the new path is a
+/// different file, so the old one is copied over once.
+fn migrate_legacy_config() {
+    let target = config_path();
+    if target.exists() {
+        return;
+    }
+    let Some(home) = dirs::home_dir() else { return };
+    let legacy = home
+        .join(".config")
         .join("black-atom")
         .join("livery")
-        .join("config.json")
+        .join("config.json");
+    if legacy == target || !legacy.is_file() {
+        return;
+    }
+
+    let Some(parent) = target.parent() else {
+        return;
+    };
+    if let Err(e) = fs::create_dir_all(parent) {
+        log::warn!("Failed to create the config dir for migration: {e}");
+        return;
+    }
+    match fs::copy(&legacy, &target) {
+        Ok(_) => log::info!(
+            "Migrated livery config from {} to {}",
+            legacy.display(),
+            target.display()
+        ),
+        Err(e) => log::warn!("Failed to migrate the livery config: {e}"),
+    }
 }
 
 /// Merge user config with defaults — fills in missing fields from the default config.
@@ -46,6 +71,7 @@ fn merge_with_defaults(mut user_config: Config) -> Config {
 
 /// Read config from disk and merge with defaults.
 pub fn read_config_from_disk() -> Config {
+    migrate_legacy_config();
     let path = config_path();
     let user_config = match fs::read_to_string(&path) {
         Ok(content) => match serde_json::from_str(&content) {

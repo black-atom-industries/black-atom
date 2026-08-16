@@ -2,6 +2,16 @@ use std::collections::HashMap;
 
 use super::types::{AppConfig, AppName, Config, Keymappings};
 
+/// A Merged adapter points at the unpacked theme files directly. Stored
+/// absolute: the themes root follows `$XDG_DATA_HOME`, so a `~`-relative
+/// form would be a lie on machines that set it.
+fn themes_path(adapter: &str) -> String {
+    crate::paths::themes_root()
+        .join(adapter)
+        .to_string_lossy()
+        .into_owned()
+}
+
 impl Default for Config {
     fn default() -> Self {
         let mut apps = HashMap::new();
@@ -67,7 +77,7 @@ impl Default for Config {
             AppConfig {
                 enabled: false,
                 config_path: "~/.config/lazygit/config.yml".to_string(),
-                themes_path: Some("~/.config/black-atom/themes/lazygit".to_string()),
+                themes_path: Some(themes_path("lazygit")),
                 match_pattern: None,
                 replace_template: None,
             },
@@ -77,7 +87,7 @@ impl Default for Config {
             AppConfig {
                 enabled: false,
                 config_path: "~/.config/herdr/config.toml".to_string(),
-                themes_path: Some("~/.config/black-atom/themes/herdr".to_string()),
+                themes_path: Some(themes_path("herdr")),
                 match_pattern: None,
                 replace_template: None,
             },

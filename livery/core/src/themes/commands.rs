@@ -100,13 +100,7 @@ pub async fn download_theme(app: AppName) -> DownloadResult {
 }
 
 pub async fn get_themes_status() -> ThemesStatus {
-    let Ok(root) = extract::managed_themes_root() else {
-        return ThemesStatus {
-            adapters: HashMap::new(),
-            any_downloaded: false,
-            dismissed: false,
-        };
-    };
+    let root = crate::paths::themes_root();
     self_heal_stale_downloads(&root);
     let stored = manifest::read_manifest(&root);
 
@@ -133,26 +127,14 @@ pub async fn get_themes_status() -> ThemesStatus {
     }
 }
 
-/// Drop managed downloads for apps that are no longer downloadable — a
-/// leftover dir/manifest entry would otherwise claim themes nothing can
-/// consume (nvim's colors files turned out to be plugin-entry stubs).
-/// Strictly scoped to `<managed_root>/<app>` for known app names.
+/// Drop manifest entries for apps that are no longer downloadable — a
+/// leftover entry would otherwise report a fetch that can never happen
+/// again. The directories themselves belong to the unpack now, so nothing
+/// on disk is removed here.
 fn self_heal_stale_downloads(root: &std::path::Path) {
     for app in AppName::all() {
         if registry::distribution(*app).is_some() {
             continue;
-        }
-        let leftover = root.join(app.as_str());
-        if leftover.is_dir() {
-            match std::fs::remove_dir_all(&leftover) {
-                Ok(()) => log::info!("Removed stale managed themes dir for {}", app.as_str()),
-                Err(e) => {
-                    log::warn!(
-                        "Failed to remove stale themes dir for {}: {e}",
-                        app.as_str()
-                    )
-                }
-            }
         }
         if let Err(e) = manifest::remove_entry(root, app.as_str()) {
             log::warn!("Failed to prune manifest entry for {}: {e}", app.as_str());
@@ -213,13 +195,19 @@ fn link_app_themes_inner(
     app: AppName,
     placement: registry::LinkedPlacement,
 ) -> Result<symlinks::SymlinkSyncStats, String> {
-    let root = extract::managed_themes_root()?;
+    let root = crate::paths::themes_root();
     let managed_dir = root.join(app.as_str());
     if !managed_dir.is_dir() {
         return Err(format!(
-            "No downloaded themes for {} — run SYNC THEMES first",
+            "No managed themes for {} — the themes directory is missing",
             app.as_str()
         ));
+    }
+
+    // The packpath entry is a fixed XDG location, not derived from the app's
+    // own config file.
+    if placement == registry::LinkedPlacement::PackDir {
+        return symlinks::sync_pack_dir_link(&managed_dir);
     }
 
     let mut config = crate::config::io::read_config_from_disk();
@@ -243,6 +231,7 @@ fn link_app_themes_inner(
         registry::LinkedPlacement::VaultThemeDir => {
             symlinks::sync_vault_theme_links(&managed_dir, &themes_dir)
         }
+        registry::LinkedPlacement::PackDir => unreachable!("handled above"),
     }
 }
 
@@ -268,7 +257,7 @@ fn app_themes_dir(config_path: &str, configured_path: Option<&str>) -> Option<st
 }
 
 pub async fn dismiss_themes_greeting() -> Result<(), String> {
-    let root = extract::managed_themes_root()?;
+    let root = crate::paths::themes_root();
     let mut stored = manifest::read_manifest(&root);
     stored.greeting_dismissed = true;
     manifest::write_manifest(&root, &stored)
@@ -287,7 +276,7 @@ async fn download_theme_inner(app: AppName) -> Result<u32, DownloadError> {
             app.as_str()
         )));
     };
-    let root = extract::managed_themes_root().map_err(DownloadError::Failed)?;
+    let root = crate::paths::themes_root();
 
     // HEAD resolves each repo's default branch (obsidian uses master, the
     // rest main) — no per-adapter branch knowledge needed. The base URL is
@@ -346,7 +335,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_self_heal_removes_only_non_downloadable_leftovers() {
+    fn test_self_heal_prunes_stale_entries_and_keeps_the_unpacked_dirs() {
         let home = dirs::home_dir().expect("Cannot determine home directory");
         let root = tempfile::TempDir::new_in(home).unwrap();
 
@@ -367,10 +356,11 @@ mod tests {
         self_heal_stale_downloads(root.path());
 
         let stored = manifest::read_manifest(root.path());
-        assert!(!root.path().join("nvim").exists());
         assert!(!stored.adapters.contains_key("nvim"));
-        assert!(root.path().join("ghostty").is_dir());
         assert!(stored.adapters.contains_key("ghostty"));
+        // The unpack owns the directories now — the entry goes, the files stay.
+        assert!(root.path().join("nvim").is_dir());
+        assert!(root.path().join("ghostty").is_dir());
     }
 
     #[test]

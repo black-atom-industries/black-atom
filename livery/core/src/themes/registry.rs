@@ -18,8 +18,8 @@ pub enum ThemeProvisioning {
 
 pub fn provisioning(app: AppName) -> ThemeProvisioning {
     match app {
-        AppName::Nvim | AppName::HelmTmux | AppName::Delta => ThemeProvisioning::External,
-        AppName::Ghostty | AppName::Zed | AppName::Tmux | AppName::Obsidian => {
+        AppName::HelmTmux | AppName::Delta => ThemeProvisioning::External,
+        AppName::Ghostty | AppName::Zed | AppName::Tmux | AppName::Obsidian | AppName::Nvim => {
             ThemeProvisioning::Linked
         }
         AppName::Lazygit | AppName::Herdr => ThemeProvisioning::Merged,
@@ -46,9 +46,9 @@ pub struct AdapterDistribution {
 
 /// V1 stand-in for a distribution/readiness flag in `black-atom-adapter.json`
 /// (planned core schema addition) — until adapters declare it themselves,
-/// livery carries the knowledge. `None` ⇔ External provisioning: nothing to
-/// download (nvim's files ship with its plugin, helm compiles themes into its
-/// binary, delta has no adapter repo).
+/// livery carries the knowledge. `None` means there is nothing to fetch:
+/// nvim's themes ship in the binary, helm compiles them in, delta has no
+/// adapter repo.
 pub fn distribution(app: AppName) -> Option<AdapterDistribution> {
     match app {
         AppName::Ghostty => Some(AdapterDistribution {
@@ -91,6 +91,12 @@ pub enum LinkedPlacement {
     /// The vault's `themes/Black Atom/` dir gets the merged `theme.css` +
     /// `manifest.json` pair — Obsidian scans per-theme subdirectories.
     VaultThemeDir,
+    /// One directory symlink into neovim's packpath at
+    /// `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/black-atom` — neovim
+    /// puts `pack/*/start/*` on the runtimepath itself, so the colorschemes
+    /// in `colors/` and the runtime under `lua/` are found without a plugin
+    /// manager.
+    PackDir,
 }
 
 pub fn linked_placement(app: AppName) -> Option<LinkedPlacement> {
@@ -98,9 +104,8 @@ pub fn linked_placement(app: AppName) -> Option<LinkedPlacement> {
         AppName::Ghostty | AppName::Tmux => Some(LinkedPlacement::FlatByExtension(".conf")),
         AppName::Zed => Some(LinkedPlacement::FlatByExtension(".json")),
         AppName::Obsidian => Some(LinkedPlacement::VaultThemeDir),
-        AppName::Nvim | AppName::HelmTmux | AppName::Delta | AppName::Lazygit | AppName::Herdr => {
-            None
-        }
+        AppName::Nvim => Some(LinkedPlacement::PackDir),
+        AppName::HelmTmux | AppName::Delta | AppName::Lazygit | AppName::Herdr => None,
     }
 }
 
@@ -191,14 +196,15 @@ mod tests {
     }
 
     #[test]
-    fn test_external_iff_no_distribution() {
+    fn test_no_external_adapter_has_a_distribution() {
         for app in AppName::all() {
-            assert_eq!(
-                distribution(*app).is_none(),
-                provisioning(*app) == ThemeProvisioning::External,
-                "distribution/provisioning mismatch for {}",
-                app.as_str()
-            );
+            if provisioning(*app) == ThemeProvisioning::External {
+                assert!(
+                    distribution(*app).is_none(),
+                    "{} is External but claims a distribution",
+                    app.as_str()
+                );
+            }
         }
     }
 }

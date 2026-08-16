@@ -1,9 +1,9 @@
 # Migration state
 
 Phase: 4
-Last completed task: 4.1 livery_core split out of the tauri crate (Phase 3 gate green before it: nine adapters emit themes/<collection>/, nvim emits colors/, headless checks pass)
+Last completed task: 4.1 livery_core split out of the tauri crate; repo created and pushed (github.com/black-atom-industries/black-atom), first CI run watching (Phase 3 gate green before it: nine adapters emit themes/<collection>/, nvim emits colors/, headless checks pass)
 Next: 4.2 binary names (livery-gui) and 4.3 embed themes + XDG paths
-Blocked on Nik: `gh repo create black-atom-industries/black-atom --public --source . --push` is refused by the Claude Code permission classifier. Run it from `black-atom/` (or `! gh repo create ...` in the session), then CI on the first push is checked at the next gate. Phase 2 continues locally meanwhile.
+Blocked on Nik: (none)
 Decisions made in-run:
 
 - 2026-08-16 core's org-dir resolution and per-adapter git calls were re-pointed/removed in Phase 1 (task 1.4) so no dev task can write into the old checkouts.
