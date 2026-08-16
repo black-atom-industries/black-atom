@@ -4,10 +4,10 @@ use crate::config::types::AppName;
 ///
 /// - `External`: the app's theme files are provided outside of livery (plugin,
 ///   compiled binary, or the user), so livery only performs switching.
-/// - `Linked`: livery symlinks the downloaded files into a location the app
+/// - `Linked`: livery symlinks the unpacked theme files into a location the app
 ///   itself reads; switching selects one via a pointer in the app's config.
 /// - `Merged`: the app cannot read external theme files, so on every switch
-///   livery reads the downloaded theme and writes its values into the config.
+///   livery reads the unpacked theme file and writes its values into the config.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, specta::Type)]
 #[serde(rename_all = "lowercase")]
 pub enum ThemeProvisioning {
@@ -23,59 +23,6 @@ pub fn provisioning(app: AppName) -> ThemeProvisioning {
             ThemeProvisioning::Linked
         }
         AppName::Lazygit | AppName::Herdr => ThemeProvisioning::Merged,
-    }
-}
-
-/// How an adapter repo lays out its committed theme output.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum ExtractLayout {
-    /// `themes/<collection>/black-atom-*.<ext>` — the common adapter layout
-    /// (ghostty, tmux, lazygit, zed, herdr).
-    Collections,
-    /// The common layout plus the merged root `theme.css` + `manifest.json`
-    /// pair Obsidian installs into a vault.
-    ObsidianMerged,
-}
-
-/// Where an adapter's theme files come from.
-pub struct AdapterDistribution {
-    /// Repo name under the black-atom-industries GitHub org.
-    pub repo: &'static str,
-    pub layout: ExtractLayout,
-}
-
-/// V1 stand-in for a distribution/readiness flag in `black-atom-adapter.json`
-/// (planned core schema addition) — until adapters declare it themselves,
-/// livery carries the knowledge. `None` means there is nothing to fetch:
-/// nvim's themes ship in the binary, helm compiles them in, delta has no
-/// adapter repo.
-pub fn distribution(app: AppName) -> Option<AdapterDistribution> {
-    match app {
-        AppName::Ghostty => Some(AdapterDistribution {
-            repo: "ghostty",
-            layout: ExtractLayout::Collections,
-        }),
-        AppName::Tmux => Some(AdapterDistribution {
-            repo: "tmux",
-            layout: ExtractLayout::Collections,
-        }),
-        AppName::Lazygit => Some(AdapterDistribution {
-            repo: "lazygit",
-            layout: ExtractLayout::Collections,
-        }),
-        AppName::Zed => Some(AdapterDistribution {
-            repo: "zed",
-            layout: ExtractLayout::Collections,
-        }),
-        AppName::Obsidian => Some(AdapterDistribution {
-            repo: "obsidian",
-            layout: ExtractLayout::ObsidianMerged,
-        }),
-        AppName::Herdr => Some(AdapterDistribution {
-            repo: "herdr",
-            layout: ExtractLayout::Collections,
-        }),
-        AppName::Nvim | AppName::Delta | AppName::HelmTmux => None,
     }
 }
 
@@ -128,7 +75,7 @@ pub enum AdapterEditableField {
 /// nvim/ghostty/tmux have dedicated updaters; delta and helm route through
 /// the shared `patch_text_updater`, so all five read pattern+template. zed
 /// and obsidian patch structurally (JSONC) off `config_path` alone. tmux,
-/// lazygit, and herdr additionally point `themes_path` at the managed download dir.
+/// lazygit, and herdr additionally point `themes_path` at the managed themes dir.
 pub fn editable_fields(app: AppName) -> Vec<AdapterEditableField> {
     use AdapterEditableField::*;
     match app {
@@ -192,19 +139,6 @@ mod tests {
                 "placement/provisioning mismatch for {}",
                 app.as_str()
             );
-        }
-    }
-
-    #[test]
-    fn test_no_external_adapter_has_a_distribution() {
-        for app in AppName::all() {
-            if provisioning(*app) == ThemeProvisioning::External {
-                assert!(
-                    distribution(*app).is_none(),
-                    "{} is External but claims a distribution",
-                    app.as_str()
-                );
-            }
         }
     }
 }

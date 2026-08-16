@@ -9,10 +9,8 @@ fn specta_builder() -> Builder<tauri::Wry> {
     Builder::<tauri::Wry>::new().commands(collect_commands![
         commands::get_config,
         commands::save_config,
-        commands::download_theme,
-        commands::get_themes_status,
+        commands::get_app_status,
         commands::link_app_themes,
-        commands::dismiss_themes_greeting,
         commands::detect_apps,
         commands::update_app,
         commands::update_system_appearance,

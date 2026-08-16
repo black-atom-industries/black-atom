@@ -1,14 +1,8 @@
-import {
-    ActionRow,
-    AdapterHeader,
-    ClassDefinition,
-    DraftField,
-    PrerequisiteNote,
-} from "../adapter-shared/index.ts";
+import { ActionRow, AdapterHeader, ClassDefinition, DraftField } from "../adapter-shared/index.ts";
 import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
-/** nvim — external provisioning, patches a colorscheme line via regex. */
+/** nvim — linked provisioning, patches a colorscheme line via regex. */
 export function NvimSettings(
     {
         appConfig,
@@ -18,7 +12,6 @@ export function NvimSettings(
         onFieldCommit,
         firstFieldRef,
         onPickPath,
-        onOpenUrl,
         onSetUp,
         setUpResult,
         onVerifyPath,
@@ -86,17 +79,7 @@ export function NvimSettings(
                 onTestApply={onTestApply}
                 testApplyResult={testApplyResult}
             />
-            <ClassDefinition provisioning="external" />
-            <PrerequisiteNote
-                link={{
-                    label: "black-atom-industries/nvim",
-                    url: "https://github.com/black-atom-industries/nvim",
-                }}
-                onOpenUrl={onOpenUrl}
-            >
-                Install the plugin via your plugin manager and keep a colorscheme line in your
-                config.
-            </PrerequisiteNote>
+            <ClassDefinition provisioning="linked" />
         </div>
     );
 }

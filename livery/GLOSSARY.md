@@ -33,8 +33,8 @@
 | **Theme Provisioning** | The classification of who consumes livery's managed theme files for an adapter — External, Linked, or Merged                                                            | Adapter type, integration mode |
 | **External**           | The app's theme files are provided outside of livery — by a compiled binary or the user — so livery only performs switching                                             | Unmanaged, manual              |
 | **Linked**             | Livery symlinks the managed theme files into a location the app itself reads; switching selects one via a pointer in the app's config, which setup may need to add once | Symlinked, placed              |
-| **Merged**             | The app cannot read external theme files, so on every switch livery reads the downloaded theme and writes its values directly into the app's config                     | Inline, embedded               |
-| **Managed Themes Dir** | `$XDG_DATA_HOME/black-atom/themes/<adapter>/` — where the themes bundled in the binary unpack; the single source Linked placements point at and Merged reads from       | Download folder, cache         |
+| **Merged**             | The app cannot read external theme files, so on every switch livery reads the unpacked theme file and writes its values directly into the app's config                  | Inline, embedded               |
+| **Managed Themes Dir** | `$XDG_DATA_HOME/black-atom/themes/<adapter>/` — where the themes bundled in the binary unpack; the single source Linked placements point at and Merged reads from       | Theme cache, staging dir       |
 | **Setup Precondition** | A one-time manual prerequisite livery cannot automate — obsidian's vault path                                                                                           | Requirement, dependency        |
 | **Switch Pointer**     | The line or property in an app's config that selects the active theme — the thing MatchPattern finds and ReplaceTemplate rewrites                                       | Theme line, theme setting      |
 

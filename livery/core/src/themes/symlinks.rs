@@ -27,8 +27,8 @@ pub fn sync_flat_symlinks(
 ) -> Result<SymlinkSyncStats, String> {
     std::fs::create_dir_all(app_themes_dir)
         .map_err(|e| format!("Failed to create {}: {e}", app_themes_dir.display()))?;
-    super::extract::ensure_under_home(app_themes_dir)?;
-    super::extract::ensure_under_home(managed_dir)?;
+    ensure_under_home(app_themes_dir)?;
+    ensure_under_home(managed_dir)?;
 
     let fresh = fresh_theme_files(managed_dir, extension)?;
     let mut stats = SymlinkSyncStats::default();
@@ -82,8 +82,8 @@ pub fn sync_vault_theme_links(
     let theme_dir = vault_themes_dir.join(OBSIDIAN_THEME_DIR);
     std::fs::create_dir_all(&theme_dir)
         .map_err(|e| format!("Failed to create {}: {e}", theme_dir.display()))?;
-    super::extract::ensure_under_home(&theme_dir)?;
-    super::extract::ensure_under_home(managed_dir)?;
+    ensure_under_home(&theme_dir)?;
+    ensure_under_home(managed_dir)?;
 
     let mut stats = SymlinkSyncStats::default();
     for name in ["theme.css", "manifest.json"] {
@@ -112,8 +112,8 @@ pub fn sync_pack_dir_link(managed_dir: &Path) -> Result<SymlinkSyncStats, String
         .ok_or_else(|| format!("{} has no parent", link.display()))?;
     std::fs::create_dir_all(parent)
         .map_err(|e| format!("Failed to create {}: {e}", parent.display()))?;
-    super::extract::ensure_under_home(parent)?;
-    super::extract::ensure_under_home(managed_dir)?;
+    ensure_under_home(parent)?;
+    ensure_under_home(managed_dir)?;
 
     let mut stats = SymlinkSyncStats::default();
     place_link(&link, managed_dir, NVIM_PACK_DIR, &mut stats)?;
@@ -177,6 +177,74 @@ fn fresh_theme_files(
         }
     }
     Ok(fresh)
+}
+
+/// Is `link` a symlink resolving to `target`? The read-only counterpart of
+/// `place_link` — no directories are created, nothing is healed.
+#[cfg(unix)]
+fn link_points_at(link: &Path, target: &Path) -> bool {
+    std::fs::read_link(link).ok().as_deref() == Some(target)
+}
+
+/// Does the app's flat themes dir hold at least one managed link? Anything
+/// less means the placement was never run, or was undone.
+#[cfg(unix)]
+pub fn has_managed_links(app_themes_dir: &Path, managed_dir: &Path, extension: &str) -> bool {
+    let Ok(fresh) = fresh_theme_files(managed_dir, extension) else {
+        return false;
+    };
+    fresh
+        .iter()
+        .any(|(name, target)| link_points_at(&app_themes_dir.join(name), target))
+}
+
+/// Is the vault's `Black Atom` theme dir wired to the managed pair?
+#[cfg(unix)]
+pub fn vault_pair_is_wired(vault_themes_dir: &Path, managed_dir: &Path) -> bool {
+    let theme_dir = vault_themes_dir.join(OBSIDIAN_THEME_DIR);
+    ["theme.css", "manifest.json"]
+        .iter()
+        .all(|name| link_points_at(&theme_dir.join(name), &managed_dir.join(name)))
+}
+
+/// Does neovim's packpath entry resolve to the unpacked nvim dir?
+#[cfg(unix)]
+pub fn pack_dir_link_is_wired(managed_dir: &Path) -> bool {
+    link_points_at(&crate::paths::data_home().join(NVIM_PACK_DIR), managed_dir)
+}
+
+#[cfg(not(unix))]
+pub fn has_managed_links(_app_themes_dir: &Path, _managed_dir: &Path, _extension: &str) -> bool {
+    false
+}
+
+#[cfg(not(unix))]
+pub fn vault_pair_is_wired(_vault_themes_dir: &Path, _managed_dir: &Path) -> bool {
+    false
+}
+
+#[cfg(not(unix))]
+pub fn pack_dir_link_is_wired(_managed_dir: &Path) -> bool {
+    false
+}
+
+/// Same discipline as `file_ops` writers: never touch anything outside the
+/// user's home directory.
+fn ensure_under_home(path: &Path) -> Result<(), String> {
+    let home = dirs::home_dir()
+        .ok_or("Cannot determine home directory")?
+        .canonicalize()
+        .map_err(|e| format!("Cannot resolve home directory: {e}"))?;
+    let resolved = path
+        .canonicalize()
+        .map_err(|e| format!("Cannot resolve {}: {e}", path.display()))?;
+    if !resolved.starts_with(&home) {
+        return Err(format!(
+            "Refusing to write outside the home directory: {}",
+            resolved.display()
+        ));
+    }
+    Ok(())
 }
 
 #[cfg(all(test, unix))]

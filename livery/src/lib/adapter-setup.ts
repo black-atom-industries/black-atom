@@ -1,12 +1,11 @@
 import type {
     AppName,
     AppPathVerification,
-    DownloadResult,
     LinkThemesResult,
     ThemeProvisioning,
 } from "../bindings.ts";
 
-export type SetUpStep = "enable" | "download" | "link" | "verify";
+export type SetUpStep = "enable" | "link" | "verify";
 
 export type SetUpStepStatus = "pending" | "running" | "ok" | "error" | "skipped";
 
@@ -27,7 +26,6 @@ export type SetUpOutcome = {
 /** Injected commands, so the chain is testable without a Tauri backend. */
 export type SetUpDeps = {
     enable: (app: AppName) => Promise<void>;
-    download: (app: AppName) => Promise<DownloadResult>;
     link: (app: AppName) => Promise<LinkThemesResult>;
     verify: (app: AppName) => Promise<AppPathVerification>;
 };
@@ -36,20 +34,19 @@ export type SetUpDeps = {
 function stepsFor(provisioning: ThemeProvisioning): SetUpStep[] {
     switch (provisioning) {
         case "external":
-            return ["enable", "verify"];
         case "merged":
-            return ["enable", "download", "verify"];
+            return ["enable", "verify"];
         case "linked":
-            return ["enable", "download", "link", "verify"];
+            return ["enable", "link", "verify"];
     }
 }
 
 /**
- * One-click adapter setup: enable → download → link → verify, trimmed to
- * the provisioning class. A failed enable aborts; a failed download skips
- * the link step; verify always runs last so the row ends in a truthful
- * state. An empty config_path blocks the whole chain (obsidian until a
- * vault path is supplied).
+ * One-click adapter setup: enable → link → verify, trimmed to the
+ * provisioning class. Merged adapters read the unpacked files directly, so
+ * they only enable and verify. A failed enable aborts; verify always runs
+ * last so the row ends in a truthful state. An empty config_path blocks the
+ * whole chain (obsidian until a vault path is supplied).
  */
 export async function setUpAdapter(
     app: AppName,
@@ -87,28 +84,13 @@ export async function setUpAdapter(
         onUpdate?.(structuredClone(outcome));
     };
 
-    let downloadFailed = false;
     for (const { step } of outcome.steps) {
-        if (step === "link" && downloadFailed) {
-            mark("link", "skipped", "download failed");
-            continue;
-        }
         mark(step, "running");
         try {
             switch (step) {
                 case "enable": {
                     await deps.enable(app);
                     mark("enable", "ok");
-                    break;
-                }
-                case "download": {
-                    const result = await deps.download(app);
-                    if (result.status === "error") {
-                        downloadFailed = true;
-                        mark("download", "error", result.message ?? "download failed");
-                    } else {
-                        mark("download", "ok");
-                    }
                     break;
                 }
                 case "link": {
@@ -145,7 +127,6 @@ export async function setUpAdapter(
                 onUpdate?.(structuredClone(outcome));
                 return outcome;
             }
-            if (step === "download") downloadFailed = true;
         }
     }
 

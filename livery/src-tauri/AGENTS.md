@@ -1,7 +1,7 @@
 # Livery backend
 
-The Rust backend is the executor. Every OS operation lives here: file I/O, downloads, process
-signals, socket communication.
+The Rust backend is the executor. Every OS operation lives here: file I/O, process signals,
+socket communication.
 
 It is two crates. `livery/core` (`livery_core`) holds the domain logic and depends on no Tauri
 crate — `cargo tree -p livery_core -e normal | grep -c tauri` must stay `0`. `livery/src-tauri`
@@ -13,7 +13,8 @@ crate — `cargo tree -p livery_core -e normal | grep -c tauri` must stay `0`. `
 
 - `config/` — `types.rs` (`AppName`, `AppConfig`, `Config`), `defaults.rs`, `commands.rs`,
   `io.rs` (disk I/O, tilde expansion, default merging)
-- `themes/` — theme registry, manifest, download and extraction, symlinks, app detection
+- `themes/` — theme registry, the embedded adapter payload and its unpack, symlinks, app
+  detection
 - `updaters/` — `mod.rs` holds `update_app`, `update_system_appearance`, and the dispatcher;
   one module per app next to it
 - `updaters/file_ops/` — `text.rs`, `yaml.rs`, `jsonc.rs`, `managed_block.rs`, plus `secure.rs`
@@ -40,10 +41,10 @@ Commands validate that a path is under `$HOME` before writing. Writes are atomic
 Unit tests live in `#[cfg(test)] mod tests` inside the source file. File operations get fixtures,
 see the `backend-testing` skill.
 
-`livery/core/tests/setup_smoke.rs` is the end-to-end suite. It points `$HOME` at a tempdir and
-serves theme tarballs from a local listener, so it never touches a real config. Extend that file
-for new setup scenarios rather than adding a parallel suite: `$HOME` is process-global and the
-scenario has to stay sequential.
+`livery/core/tests/setup_smoke.rs` is the end-to-end suite. It points `$HOME` and the `XDG_*`
+variables at a tempdir, so it never touches a real config. Extend that file for new setup
+scenarios rather than adding a parallel suite: those variables are process-global and the scenario
+has to stay sequential.
 
 ## Bindings
 

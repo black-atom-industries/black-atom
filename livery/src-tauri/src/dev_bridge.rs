@@ -120,24 +120,14 @@ fn dispatch(command: &str, args: Value) -> Result<Value, String> {
             crate::commands::save_config(argument(&args, "config")?)?;
             Ok(Value::Null)
         }
-        "download_theme" => {
-            let app = argument(&args, "app")?;
-            to_value(tauri::async_runtime::block_on(
-                crate::commands::download_theme(app),
-            ))
-        }
-        "get_themes_status" => to_value(tauri::async_runtime::block_on(
-            crate::commands::get_themes_status(),
+        "get_app_status" => to_value(tauri::async_runtime::block_on(
+            crate::commands::get_app_status(),
         )),
         "link_app_themes" => {
             let app = argument(&args, "app")?;
             to_value(tauri::async_runtime::block_on(
                 crate::commands::link_app_themes(app),
             ))
-        }
-        "dismiss_themes_greeting" => {
-            tauri::async_runtime::block_on(crate::commands::dismiss_themes_greeting())?;
-            Ok(Value::Null)
         }
         "detect_apps" => to_value(tauri::async_runtime::block_on(
             crate::commands::detect_apps(),

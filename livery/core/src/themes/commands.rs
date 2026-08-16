@@ -1,145 +1,73 @@
-use std::collections::HashMap;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
-
 use serde::Serialize;
 use specta::Type;
 
 use crate::config::types::AppName;
 use crate::updaters::UpdateStatus;
 
-use super::manifest::ManifestEntry;
-use super::{extract, manifest, registry, symlinks};
+use super::{registry, symlinks};
 
-/// Outcome of one adapter's theme download. Shares `UpdateStatus` with the
-/// apply flow so the frontend reuses the same row-status mapping.
+/// One adapter's setup state: which class it belongs to, which config fields
+/// its updater reads, and whether its Linked placement is wired on disk.
 #[derive(Debug, Serialize, Type)]
-pub struct DownloadResult {
-    pub app: String,
-    pub status: UpdateStatus,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub message: Option<String>,
-    pub file_count: Option<u32>,
-    pub duration_ms: Option<u32>,
-}
-
-impl DownloadResult {
-    fn done(app: &str, file_count: u32) -> Self {
-        Self {
-            app: app.to_string(),
-            status: UpdateStatus::Done,
-            message: None,
-            file_count: Some(file_count),
-            duration_ms: None,
-        }
-    }
-
-    fn error(app: &str, msg: impl Into<String>) -> Self {
-        Self {
-            app: app.to_string(),
-            status: UpdateStatus::Error,
-            message: Some(msg.into()),
-            file_count: None,
-            duration_ms: None,
-        }
-    }
-
-    fn skipped(app: &str, msg: impl Into<String>) -> Self {
-        Self {
-            app: app.to_string(),
-            status: UpdateStatus::Skipped,
-            message: Some(msg.into()),
-            file_count: None,
-            duration_ms: None,
-        }
-    }
-}
-
-#[derive(Debug, Serialize, Type)]
-pub struct AdapterThemesStatus {
+pub struct AppStatus {
+    pub app: AppName,
     /// Who consumes the managed theme files — drives the class-specific
     /// settings row content and the SET UP chain.
     pub provisioning: registry::ThemeProvisioning,
     /// Config fields this adapter's updater actually reads — trims the
     /// settings field grid to what's safe to edit.
     pub editable_fields: Vec<registry::AdapterEditableField>,
-    pub downloaded: bool,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub etag: Option<String>,
-    /// Unix epoch seconds (u32 carries us to 2106; tauri-specta has no u64).
-    pub fetched_at_epoch: Option<u32>,
-    pub file_count: Option<u32>,
+    /// The adapter's placement resolves to the managed themes dir right now.
+    /// Always `false` for External and Merged adapters, which have no
+    /// placement to wire.
+    pub linked: bool,
 }
 
-#[derive(Debug, Serialize, Type)]
-pub struct ThemesStatus {
-    /// One entry per adapter; External adapters carry their class with
-    /// `downloaded: false` — nothing is ever fetched for them.
-    pub adapters: HashMap<AppName, AdapterThemesStatus>,
-    pub any_downloaded: bool,
-    /// The first-run greeting's "continue without" flag.
-    pub dismissed: bool,
+pub async fn get_app_status() -> Vec<AppStatus> {
+    AppName::all()
+        .iter()
+        .map(|app| AppStatus {
+            app: *app,
+            provisioning: registry::provisioning(*app),
+            editable_fields: registry::editable_fields(*app),
+            linked: is_linked(*app),
+        })
+        .collect()
 }
 
-pub async fn download_theme(app: AppName) -> DownloadResult {
-    let app_str = app.as_str();
-    let start = std::time::Instant::now();
-
-    let mut result = match download_theme_inner(app).await {
-        Ok(file_count) => DownloadResult::done(app_str, file_count),
-        Err(DownloadError::NotDownloadable(msg)) => DownloadResult::skipped(app_str, msg),
-        Err(DownloadError::Failed(msg)) => DownloadResult::error(app_str, msg),
+/// Does this adapter's placement currently point into the managed themes
+/// dir? Reads the filesystem, never writes.
+fn is_linked(app: AppName) -> bool {
+    let Some(placement) = registry::linked_placement(app) else {
+        return false;
     };
-    result.duration_ms = Some(start.elapsed().as_millis() as u32);
-    log::info!(
-        "theme download for {} finished in {}ms ({})",
-        app_str,
-        result.duration_ms.unwrap_or(0),
-        result.status.as_str()
-    );
-    result
-}
-
-pub async fn get_themes_status() -> ThemesStatus {
-    let root = crate::paths::themes_root();
-    self_heal_stale_downloads(&root);
-    let stored = manifest::read_manifest(&root);
-
-    let mut adapters = HashMap::new();
-    for app in AppName::all() {
-        let entry = stored.adapters.get(app.as_str());
-        adapters.insert(
-            *app,
-            AdapterThemesStatus {
-                provisioning: registry::provisioning(*app),
-                editable_fields: registry::editable_fields(*app),
-                downloaded: entry.is_some(),
-                etag: entry.and_then(|e| e.etag.clone()),
-                fetched_at_epoch: entry.map(|e| e.fetched_at_epoch as u32),
-                file_count: entry.map(|e| e.file_count),
-            },
-        );
+    let managed_dir = crate::paths::themes_root().join(app.as_str());
+    if !managed_dir.is_dir() {
+        return false;
     }
-
-    ThemesStatus {
-        any_downloaded: adapters.values().any(|a| a.downloaded),
-        dismissed: stored.greeting_dismissed,
-        adapters,
+    match placement {
+        registry::LinkedPlacement::PackDir => symlinks::pack_dir_link_is_wired(&managed_dir),
+        registry::LinkedPlacement::FlatByExtension(extension) => {
+            let Some(dir) = configured_themes_dir(app) else {
+                return false;
+            };
+            symlinks::has_managed_links(&dir, &managed_dir, extension)
+        }
+        registry::LinkedPlacement::VaultThemeDir => {
+            let Some(dir) = configured_themes_dir(app) else {
+                return false;
+            };
+            symlinks::vault_pair_is_wired(&dir, &managed_dir)
+        }
     }
 }
 
-/// Drop manifest entries for apps that are no longer downloadable — a
-/// leftover entry would otherwise report a fetch that can never happen
-/// again. The directories themselves belong to the unpack now, so nothing
-/// on disk is removed here.
-fn self_heal_stale_downloads(root: &std::path::Path) {
-    for app in AppName::all() {
-        if registry::distribution(*app).is_some() {
-            continue;
-        }
-        if let Err(e) = manifest::remove_entry(root, app.as_str()) {
-            log::warn!("Failed to prune manifest entry for {}: {e}", app.as_str());
-        }
-    }
+/// The adapter's own themes directory as its config points at it today.
+fn configured_themes_dir(app: AppName) -> Option<std::path::PathBuf> {
+    let mut config = crate::config::io::read_config_from_disk();
+    crate::config::io::expand_app_paths(&mut config);
+    let app_config = config.apps.get(&app)?;
+    app_themes_dir(&app_config.config_path, app_config.themes_path.as_deref())
 }
 
 /// Outcome of wiring one adapter's themes dir via managed symlinks.
@@ -256,112 +184,9 @@ fn app_themes_dir(config_path: &str, configured_path: Option<&str>) -> Option<st
     Some(path.parent()?.join("themes"))
 }
 
-pub async fn dismiss_themes_greeting() -> Result<(), String> {
-    let root = crate::paths::themes_root();
-    let mut stored = manifest::read_manifest(&root);
-    stored.greeting_dismissed = true;
-    manifest::write_manifest(&root, &stored)
-}
-
-enum DownloadError {
-    /// Nothing to download for this adapter — a skip, not a failure.
-    NotDownloadable(String),
-    Failed(String),
-}
-
-async fn download_theme_inner(app: AppName) -> Result<u32, DownloadError> {
-    let Some(dist) = registry::distribution(app) else {
-        return Err(DownloadError::NotDownloadable(format!(
-            "{} has no downloadable theme files",
-            app.as_str()
-        )));
-    };
-    let root = crate::paths::themes_root();
-
-    // HEAD resolves each repo's default branch (obsidian uses master, the
-    // rest main) — no per-adapter branch knowledge needed. The base URL is
-    // env-injectable so the hermetic smoke suite can serve fixture tarballs.
-    let base = std::env::var("LIVERY_THEMES_BASE_URL")
-        .unwrap_or_else(|_| "https://codeload.github.com/black-atom-industries".to_string());
-    let url = format!("{base}/{}/tar.gz/HEAD", dist.repo);
-    let client = reqwest::Client::builder()
-        .timeout(Duration::from_secs(60))
-        .build()
-        .map_err(|e| DownloadError::Failed(format!("Failed to build HTTP client: {e}")))?;
-    let response = client
-        .get(&url)
-        .send()
-        .await
-        .map_err(|e| DownloadError::Failed(format!("Download failed: {e}")))?;
-    if !response.status().is_success() {
-        return Err(DownloadError::Failed(format!(
-            "Download failed: HTTP {} for {url}",
-            response.status()
-        )));
-    }
-    let etag = response
-        .headers()
-        .get(reqwest::header::ETAG)
-        .and_then(|v| v.to_str().ok())
-        .map(str::to_string);
-    let bytes = response
-        .bytes()
-        .await
-        .map_err(|e| DownloadError::Failed(format!("Download failed mid-transfer: {e}")))?;
-
-    let file_count = extract::extract_tarball(&bytes, dist.layout, &root, app.as_str())
-        .map_err(DownloadError::Failed)?;
-
-    let fetched_at_epoch = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map(|d| d.as_secs())
-        .unwrap_or(0);
-    manifest::upsert_entry(
-        &root,
-        app.as_str(),
-        ManifestEntry {
-            etag,
-            fetched_at_epoch,
-            file_count,
-        },
-    )
-    .map_err(DownloadError::Failed)?;
-
-    Ok(file_count)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_self_heal_prunes_stale_entries_and_keeps_the_unpacked_dirs() {
-        let home = dirs::home_dir().expect("Cannot determine home directory");
-        let root = tempfile::TempDir::new_in(home).unwrap();
-
-        for app in ["nvim", "ghostty"] {
-            std::fs::create_dir_all(root.path().join(app)).unwrap();
-            manifest::upsert_entry(
-                root.path(),
-                app,
-                ManifestEntry {
-                    etag: None,
-                    fetched_at_epoch: 1,
-                    file_count: 3,
-                },
-            )
-            .unwrap();
-        }
-
-        self_heal_stale_downloads(root.path());
-
-        let stored = manifest::read_manifest(root.path());
-        assert!(!stored.adapters.contains_key("nvim"));
-        assert!(stored.adapters.contains_key("ghostty"));
-        // The unpack owns the directories now — the entry goes, the files stay.
-        assert!(root.path().join("nvim").is_dir());
-        assert!(root.path().join("ghostty").is_dir());
-    }
 
     #[test]
     fn test_app_themes_dir_derives_from_config_path_sibling() {

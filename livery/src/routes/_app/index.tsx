@@ -7,22 +7,14 @@ import { collectionOrder, type ThemeCollectionKey, themeMap } from "@black-atom/
 import { appStore } from "../../store/app.ts";
 import { commands } from "../../bindings.ts";
 import { applyTheme, createUpdaters, getEnabledApps } from "../../lib/updaters.ts";
-import {
-    type DownloadRowResult,
-    downloadThemes,
-    hasDownloadErrors,
-    missingDownloadableApps,
-} from "../../lib/theme-downloads.ts";
 import { getGroupedThemes } from "../../lib/themes.ts";
 import { useConfig } from "../../queries/use-config.ts";
-import { useThemesStatus } from "../../queries/use-themes-status.ts";
 import { ThemeList } from "../../components/theme-list/index.ts";
 import { ThemeDetail } from "../../components/theme-detail/index.ts";
 import { App } from "../../components/layouts/app.ts";
 import { Prompt } from "../../components/primitives/prompt/prompt.tsx";
 import { Chip } from "../../components/primitives/chip/chip.tsx";
 import { EmptyState } from "../../components/empty-state/index.ts";
-import { ThemeGreeting } from "../../components/theme-greeting/index.ts";
 import styles from "./index.module.css";
 
 export const Route = createFileRoute("/_app/")({
@@ -31,38 +23,7 @@ export const Route = createFileRoute("/_app/")({
 
 function Component() {
     const config = useConfig();
-    const themesStatus = useThemesStatus();
     const navigate = useNavigate();
-
-    // Show the greeting when any downloadable adapter is missing its files.
-    // This also catches adapters added after the initial download pass.
-    const [downloadResults, setDownloadResults] = useState<DownloadRowResult[] | null>(null);
-    const [downloading, setDownloading] = useState(false);
-    const missingApps = themesStatus.query.data
-        ? missingDownloadableApps(themesStatus.query.data.adapters)
-        : [];
-    const showGreeting = !themesStatus.query.isPending && (
-        downloading || hasDownloadErrors(downloadResults) || missingApps.length > 0
-    );
-
-    const handleDownloadThemes = async () => {
-        if (downloading) return;
-        setDownloading(true);
-        try {
-            let adapters = themesStatus.query.data?.adapters;
-            if (!adapters) adapters = (await themesStatus.query.refetch()).data?.adapters;
-            if (!adapters) return;
-            await downloadThemes(missingDownloadableApps(adapters), setDownloadResults);
-        } finally {
-            setDownloading(false);
-            themesStatus.query.refetch();
-        }
-    };
-
-    const handleContinueWithout = () => {
-        setDownloadResults(null);
-        themesStatus.dismiss.mutate();
-    };
 
     const allGroups = useMemo(() => getGroupedThemes(themeMap), []);
     const allThemes = useMemo(() => allGroups.flatMap((g) => g.themes), [allGroups]);
@@ -221,10 +182,6 @@ function Component() {
         getCurrentWindow().close().catch(() => {});
     });
     useHotkey("Escape", () => {
-        if (showGreeting) {
-            if (!downloading) handleContinueWithout();
-            return;
-        }
         if (railOpen) return;
         if (filterCursor !== null) setFilterCursor(null);
         else setQuery("");
@@ -260,10 +217,6 @@ function Component() {
     };
 
     useHotkey("Enter", () => {
-        if (showGreeting) {
-            handleDownloadThemes();
-            return;
-        }
         if (railOpen) return;
         if (filterCursor !== null) {
             // Like the search bar: Enter hands key control back to the
@@ -274,18 +227,6 @@ function Component() {
         }
         handleApplyTheme();
     });
-
-    if (showGreeting) {
-        return (
-            <ThemeGreeting
-                adapterCount={missingApps.length}
-                results={downloadResults}
-                downloading={downloading}
-                onDownload={handleDownloadThemes}
-                onContinueWithout={handleContinueWithout}
-            />
-        );
-    }
 
     const configSettled = !config.query.isPending;
     const hasNoAdapters = configSettled &&

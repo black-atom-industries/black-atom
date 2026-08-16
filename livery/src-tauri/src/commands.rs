@@ -2,7 +2,7 @@
 //! `livery_core` function, so the domain logic stays callable without Tauri.
 
 use livery_core::config::types::{AppName, Config};
-use livery_core::themes::commands::{DownloadResult, LinkThemesResult, ThemesStatus};
+use livery_core::themes::commands::{AppStatus, LinkThemesResult};
 use livery_core::themes::detect::AppDetection;
 use livery_core::updaters::{AppPathVerification, ThemeContext, UpdateResult};
 
@@ -18,41 +18,23 @@ pub fn save_config(config: Config) -> Result<(), String> {
     livery_core::config::commands::save_config(config)
 }
 
-/// Download one adapter's theme files into the managed themes directory.
-/// Pure fetch — wiring apps to the files is adapter setup (link_app_themes
-/// for zed/ghostty, config-pointed themes_path for tmux/lazygit).
+/// Per-adapter setup state: provisioning class, the config fields its
+/// updater reads, and whether its Linked placement is wired on disk.
 #[tauri::command]
 #[specta::specta]
-pub async fn download_theme(app: AppName) -> DownloadResult {
-    livery_core::themes::commands::download_theme(app).await
+pub async fn get_app_status() -> Vec<AppStatus> {
+    livery_core::themes::commands::get_app_status().await
 }
 
-/// Read the managed themes manifest for the frontend's greeting gate and
-/// the settings SYNC display.
-#[tauri::command]
-#[specta::specta]
-pub async fn get_themes_status() -> ThemesStatus {
-    livery_core::themes::commands::get_themes_status().await
-}
-
-/// Wire an adapter's own themes location to the managed downloads via
-/// symlinks (create, heal, prune). Explicit adapter-setup action — never
-/// runs implicitly on download. The target dir is derived from the
-/// adapter's CONFIGURED config_path (its sibling `themes/`; for obsidian
-/// that is `<vault>/.obsidian/themes/`), so custom setups link into the
-/// right place.
+/// Wire an adapter's own themes location to the unpacked theme files via
+/// symlinks (create, heal, prune). Explicit adapter-setup action. The
+/// target dir is derived from the adapter's CONFIGURED config_path (its
+/// sibling `themes/`; for obsidian that is `<vault>/.obsidian/themes/`),
+/// so custom setups link into the right place.
 #[tauri::command]
 #[specta::specta]
 pub async fn link_app_themes(app: AppName) -> LinkThemesResult {
     livery_core::themes::commands::link_app_themes(app).await
-}
-
-/// Persist the greeting's "continue without" choice so hand-managed setups
-/// aren't greeted on every launch.
-#[tauri::command]
-#[specta::specta]
-pub async fn dismiss_themes_greeting() -> Result<(), String> {
-    livery_core::themes::commands::dismiss_themes_greeting().await
 }
 
 /// Conservative app detection: an app counts as found iff its configured

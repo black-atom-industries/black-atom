@@ -1,24 +1,19 @@
 //! Hermetic end-to-end smoke test of the adapter setup chain.
 //!
 //! Runs the real core functions — ensure_unpacked → get_config → detect_apps
-//! → save_config → download_theme → link_app_themes → verify_app_path →
-//! get_themes_status — against a tempdir `$HOME` with planted app configs,
-//! downloading from a local listener that serves in-memory fixture tarballs.
-//! One test function: `$HOME`, the `XDG_*` variables, and
-//! `LIVERY_THEMES_BASE_URL` are process-global, so the scenario must stay
-//! sequential.
+//! → save_config → link_app_themes → verify_app_path → get_app_status —
+//! against a tempdir `$HOME` with planted app configs. One test function:
+//! `$HOME` and the `XDG_*` variables are process-global, so the scenario
+//! must stay sequential.
 
-use std::collections::HashMap;
-use std::io::{Read, Write};
-use std::net::TcpListener;
 use std::path::Path;
 
 use tokio::runtime::Runtime;
 
 use livery_core::config::types::AppName;
 use livery_core::paths;
-use livery_core::themes::registry::provisioning;
-use livery_core::themes::{commands as themes, detect, registry, unpack};
+use livery_core::themes::registry::{provisioning, ThemeProvisioning};
+use livery_core::themes::{commands as themes, detect, unpack};
 use livery_core::updaters::UpdateStatus;
 
 fn runtime() -> &'static Runtime {
@@ -28,123 +23,6 @@ fn runtime() -> &'static Runtime {
 
 fn block_on<F: std::future::Future>(future: F) -> F::Output {
     runtime().block_on(future)
-}
-
-fn gz_tarball(entries: &[(&str, &str)]) -> Vec<u8> {
-    let encoder = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::default());
-    let mut builder = tar::Builder::new(encoder);
-    for (path, content) in entries {
-        let mut header = tar::Header::new_gnu();
-        header.set_size(content.len() as u64);
-        header.set_mode(0o644);
-        header.set_cksum();
-        builder
-            .append_data(&mut header, path, content.as_bytes())
-            .unwrap();
-    }
-    builder.into_inner().unwrap().finish().unwrap()
-}
-
-/// Adapter-repo tarballs matching each layout the extractor understands.
-fn fixture_tarballs() -> HashMap<&'static str, Vec<u8>> {
-    let mut tarballs = HashMap::new();
-    for repo in ["ghostty", "tmux"] {
-        tarballs.insert(
-            repo,
-            gz_tarball(
-                &[
-                    (
-                        format!("{repo}-HEAD/themes/jpn/black-atom-jpn-koyo-yoru.conf").as_str(),
-                        "# theme",
-                    ),
-                    (
-                        format!("{repo}-HEAD/themes/default/black-atom-default-dark.conf").as_str(),
-                        "# theme",
-                    ),
-                ]
-                .iter()
-                .map(|(p, c)| (p.as_ref(), *c))
-                .collect::<Vec<(&str, &str)>>()
-                .as_slice(),
-            ),
-        );
-    }
-    tarballs.insert(
-        "zed",
-        gz_tarball(&[(
-            "zed-HEAD/themes/jpn/black-atom-jpn-koyo-yoru.json",
-            "{\"name\":\"Black Atom — JPN Koyo Yoru\"}",
-        )]),
-    );
-    tarballs.insert(
-        "lazygit",
-        gz_tarball(&[(
-            "lazygit-HEAD/themes/jpn/black-atom-jpn-koyo-yoru.yml",
-            "gui:\n  theme:\n    activeBorderColor:\n      - '#c47a4a'\n",
-        )]),
-    );
-    tarballs.insert(
-        "herdr",
-        gz_tarball(&[(
-            "herdr-HEAD/themes/jpn/black-atom-jpn-koyo-yoru.toml",
-            "# BEGIN BLACK ATOM LIVERY THEME\n[theme]\nname = \"catppuccin\"\n\n[theme.custom]\naccent = \"#e49e22\"\n# END BLACK ATOM LIVERY THEME\n",
-        )]),
-    );
-    tarballs.insert(
-        "obsidian",
-        gz_tarball(&[
-            (
-                "obsidian-HEAD/themes/jpn/black-atom-jpn-koyo-hiru.css",
-                "body{}",
-            ),
-            ("obsidian-HEAD/theme.css", "body{}"),
-            (
-                "obsidian-HEAD/manifest.json",
-                "{\"name\":\"Black Atom\",\"version\":\"0.1.0\"}",
-            ),
-        ]),
-    );
-    tarballs
-}
-
-/// Minimal HTTP/1.1 listener: `GET /<repo>/tar.gz/HEAD` → fixture tarball.
-fn serve_fixtures(listener: TcpListener, tarballs: HashMap<&'static str, Vec<u8>>) {
-    std::thread::spawn(move || {
-        for stream in listener.incoming() {
-            let Ok(mut stream) = stream else { continue };
-            let mut request = Vec::new();
-            let mut buf = [0u8; 1024];
-            while !request.windows(4).any(|w| w == b"\r\n\r\n") {
-                match stream.read(&mut buf) {
-                    Ok(0) | Err(_) => break,
-                    Ok(n) => request.extend_from_slice(&buf[..n]),
-                }
-            }
-            let request_line = String::from_utf8_lossy(&request);
-            let path = request_line
-                .split_whitespace()
-                .nth(1)
-                .unwrap_or("")
-                .to_string();
-            let repo = path
-                .strip_prefix('/')
-                .and_then(|p| p.strip_suffix("/tar.gz/HEAD"));
-            let response = match repo.and_then(|r| tarballs.get(r)) {
-                Some(body) => {
-                    let mut response = format!(
-                        "HTTP/1.1 200 OK\r\nContent-Length: {}\r\nContent-Type: application/gzip\r\nEtag: \"fixture\"\r\nConnection: close\r\n\r\n",
-                        body.len()
-                    )
-                    .into_bytes();
-                    response.extend_from_slice(body);
-                    response
-                }
-                None => b"HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n"
-                    .to_vec(),
-            };
-            let _ = stream.write_all(&response);
-        }
-    });
 }
 
 fn write_file(path: &Path, content: &str) {
@@ -214,11 +92,6 @@ fn setup_chain_end_to_end() {
         xdg_config.join("black-atom/livery"),
         "livery config dir must follow XDG_CONFIG_HOME"
     );
-
-    let listener = TcpListener::bind("127.0.0.1:0").unwrap();
-    let base_url = format!("http://{}", listener.local_addr().unwrap());
-    std::env::set_var("LIVERY_THEMES_BASE_URL", &base_url);
-    serve_fixtures(listener, fixture_tarballs());
 
     // Plant app configs: ghostty/zed/tmux exist, plus an obsidian vault.
     write_file(
@@ -333,53 +206,7 @@ fn setup_chain_end_to_end() {
     }
     livery_core::config::commands::save_config(config).unwrap();
 
-    // 4. Download every downloadable adapter from the fixture listener,
-    // replacing what the unpack wrote.
-    for app in AppName::all() {
-        if registry::distribution(*app).is_none() {
-            continue;
-        }
-        let result = block_on(themes::download_theme(*app));
-        assert!(
-            matches!(result.status, UpdateStatus::Done),
-            "download {} failed: {:?}",
-            app.as_str(),
-            result.message
-        );
-        if *app == AppName::Obsidian {
-            // Exact: the nested collection theme plus the vault-installable
-            // root pair. A dropped nested theme would still leave the pair.
-            assert_eq!(result.file_count, Some(3), "obsidian extraction count");
-        } else {
-            assert!(result.file_count.unwrap_or(0) > 0);
-        }
-    }
-    // Adapters without a distribution have nothing to fetch — a skip.
-    let nvim_download = block_on(themes::download_theme(AppName::Nvim));
-    assert!(matches!(nvim_download.status, UpdateStatus::Skipped));
-
-    // 5. Status: every app carries its class. The unpacked nvim dir survives
-    // the download flow — it is the source a Linked nvim points at.
-    let status = block_on(themes::get_themes_status());
-    assert_eq!(status.adapters.len(), AppName::all().len());
-    assert!(status.any_downloaded);
-    for (app, adapter) in &status.adapters {
-        assert_eq!(adapter.provisioning, provisioning(*app));
-        assert_eq!(
-            adapter.downloaded,
-            registry::distribution(*app).is_some(),
-            "{}",
-            app.as_str()
-        );
-    }
-    assert!(
-        managed_root
-            .join("nvim/colors/black-atom-jpn-koyo-yoru.lua")
-            .is_file(),
-        "the unpacked nvim tree must survive the download flow"
-    );
-
-    // 6. Link the Linked adapters, then check the placements on disk.
+    // 4. Link the Linked adapters, then check the placements on disk.
     for app in [
         AppName::Ghostty,
         AppName::Zed,
@@ -424,7 +251,42 @@ fn setup_chain_end_to_end() {
         assert!(matches!(link.status, UpdateStatus::Skipped));
     }
 
-    // 8. Verify lands truthful per adapter.
+    // 5. Status: every app carries its class and its editable fields, and
+    // the five Linked adapters now report their placement as wired.
+    let status = block_on(themes::get_app_status());
+    assert_eq!(status.len(), AppName::all().len());
+    for entry in &status {
+        assert_eq!(entry.provisioning, provisioning(entry.app));
+        assert_eq!(
+            entry.editable_fields,
+            livery_core::themes::registry::editable_fields(entry.app)
+        );
+        assert_eq!(
+            entry.linked,
+            entry.provisioning == ThemeProvisioning::Linked,
+            "linked state for {}",
+            entry.app.as_str()
+        );
+    }
+
+    // Unwire two placements by hand: `linked` must follow the disk, not the
+    // provisioning class it was just compared against.
+    std::fs::remove_file(&pack_link).unwrap();
+    std::fs::remove_dir_all(home.join(".config/ghostty/themes")).unwrap();
+    let unwired = block_on(themes::get_app_status());
+    for entry in &unwired {
+        let expected = entry.provisioning == ThemeProvisioning::Linked
+            && entry.app != AppName::Nvim
+            && entry.app != AppName::Ghostty;
+        assert_eq!(
+            entry.linked,
+            expected,
+            "linked state after unwiring for {}",
+            entry.app.as_str()
+        );
+    }
+
+    // 6. Verify lands truthful per adapter.
     let ghostty = block_on(livery_core::updaters::verify_app_path(AppName::Ghostty));
     assert!(ghostty.exists);
     assert_eq!(ghostty.pattern_matches, Some(true));

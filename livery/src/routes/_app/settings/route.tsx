@@ -5,7 +5,7 @@ import { useStore } from "@tanstack/react-store";
 import { themeMap } from "@black-atom/core";
 import { Typo } from "../../../components/typo/index.ts";
 import { useConfig } from "../../../queries/use-config.ts";
-import { useThemesStatus } from "../../../queries/use-themes-status.ts";
+import { useAppStatus } from "../../../queries/use-app-status.ts";
 import { pickRandomOtherTheme } from "../../../lib/themes.ts";
 import { App } from "../../../components/layouts/app.ts";
 import { SettingsSidebar } from "../../../components/settings/settings-sidebar/index.ts";
@@ -19,7 +19,6 @@ import type {
 import { commands } from "../../../bindings.ts";
 import type {
     AdapterEditableField,
-    AdapterThemesStatus,
     AppConfig,
     AppName,
     Config,
@@ -66,7 +65,7 @@ function SettingsRoute() {
     const [verifyPathResults, setVerifyPathResults] = useState<
         Partial<Record<AppName, VerifyPathResult>>
     >({});
-    const themesStatus = useThemesStatus();
+    const appStatus = useAppStatus();
     // Session-local LINK THEMES results per adapter.
     const [linkThemesResults, setLinkThemesResults] = useState<
         Partial<Record<AppName, LinkThemesRowResult>>
@@ -74,20 +73,15 @@ function SettingsRoute() {
     const currentTheme = useStore(appStore, (s) => s.currentTheme);
 
     // Linked adapters (symlink placement) — drives LINK THEMES visibility.
-    const adapterEntries = Object.entries(themesStatus.query.data?.adapters ?? {}) as [
-        AppName,
-        AdapterThemesStatus,
-    ][];
+    const adapterEntries = appStatus.query.data ?? [];
     const linkableApps = new Set(
-        adapterEntries
-            .filter(([, status]) => status.provisioning === "linked")
-            .map(([name]) => name),
+        adapterEntries.filter((status) => status.provisioning === "linked").map((s) => s.app),
     );
     const provisioningByApp = Object.fromEntries(
-        adapterEntries.map(([name, status]) => [name, status.provisioning]),
+        adapterEntries.map((status) => [status.app, status.provisioning]),
     ) as Partial<Record<AppName, ThemeProvisioning>>;
     const editableFieldsByApp = Object.fromEntries(
-        adapterEntries.map(([name, status]) => [name, new Set(status.editable_fields)]),
+        adapterEntries.map((status) => [status.app, new Set(status.editable_fields)]),
     ) as Partial<Record<AppName, ReadonlySet<AdapterEditableField>>>;
 
     // AUTO-DETECT scan — session-local, null until the first run.
@@ -145,7 +139,6 @@ function SettingsRoute() {
                     const result = await config.save.mutateAsync(next);
                     if (result.status === "error") throw new Error(result.error);
                 },
-                download: (app) => commands.downloadTheme(app),
                 link: (app) => commands.linkAppThemes(app),
                 verify: (app) => commands.verifyAppPath(app),
             },
@@ -156,7 +149,7 @@ function SettingsRoute() {
         // not cross-populate the VERIFY PATH / LINK THEMES rows below, which
         // only reflect a direct run of those actions.
         setSetUpResults((prev) => ({ ...prev, [appName]: outcome }));
-        themesStatus.query.refetch();
+        appStatus.query.refetch();
     }
 
     async function linkAppThemes(appName: AppName) {
@@ -172,6 +165,7 @@ function SettingsRoute() {
                 }
                 : { status: "error", message: result.message ?? "Unknown error" };
             setLinkThemesResults((prev) => ({ ...prev, [appName]: next }));
+            appStatus.query.refetch();
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             setLinkThemesResults((prev) => ({
