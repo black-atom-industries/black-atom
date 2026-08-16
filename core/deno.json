@@ -15,8 +15,6 @@
     "tasks": {
         "lock": "deno cache --lock=deno.lock --reload .",
         "test": "deno test --allow-all",
-        "checks": "deno check && deno lint && deno fmt && deno task test && cd monitor && deno task checks",
-        "checks:ci": "deno task check && deno task lint && deno test --allow-all && deno fmt --check && cd monitor && deno task checks",
         "schema": "deno run --allow-read --allow-write src/lib/generate-schema.ts && deno fmt .",
         "cli:compile": "deno compile --allow-read --allow-write --allow-env -o black-atom-core src/cli/index.ts",
         "cli:install": "cp black-atom-core /usr/local/bin/",
@@ -26,8 +24,7 @@
         "adapters:each": "deno run -A src/tasks/adapters/each.ts",
         "publish": "deno publish --allow-slow-types",
         "test:terminal-colors": "bash scripts/test-terminal-colors.sh",
-        "test:terminal-colors:dev": "deno run -A scripts/test-terminal-colors-dev.ts",
-        "install-hooks": "cp scripts/hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit && echo 'Hooks installed.'"
+        "test:terminal-colors:dev": "deno run -A scripts/test-terminal-colors-dev.ts"
     },
     "exclude": [
         "monitor/"

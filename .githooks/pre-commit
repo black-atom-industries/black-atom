@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cyan() { printf '\033[36m%s\033[0m\n' "$1"; }
+green() { printf '\033[32m%s\033[0m\n' "$1"; }
+red() { printf '\033[31m%s\033[0m\n' "$1"; }
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+cyan "── Deno checks ──"
+deno task check
+deno test -P
+green "✓ Deno checks passed"
+echo
+
+STAGED="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+RUST_STAGED=false
+if echo "$STAGED" | grep -qE '^livery/src-tauri/|(^|/)Cargo\.(toml|lock)$'; then
+    RUST_STAGED=true
+fi
+
+if [ "$RUST_STAGED" = true ]; then
+    cyan "── Rust checks ──"
+
+    cargo fmt --all --check
+    green "✓ cargo fmt"
+
+    cargo clippy --workspace -- -D warnings
+    green "✓ cargo clippy"
+
+    cargo test --workspace
+    green "✓ cargo test"
+
+    # cargo test regenerates livery/src/bindings.ts via tauri-specta; make sure
+    # the regenerated file matches what's staged/committed.
+    if ! git diff --quiet -- livery/src/bindings.ts; then
+        red "✗ livery/src/bindings.ts changed after cargo test"
+        echo "Stage the regenerated bindings and retry: git add livery/src/bindings.ts"
+        exit 1
+    fi
+
+    BINDINGS="$ROOT/livery/src/bindings.ts"
+    if [ ! -s "$BINDINGS" ] || ! grep -q "tauri-specta" "$BINDINGS"; then
+        red "✗ livery/src/bindings.ts is empty or corrupted"
+        echo "Run the app (deno task dev) to regenerate specta bindings, then retry."
+        exit 1
+    fi
+    green "✓ bindings check"
+    echo
+fi
+
+green "✓ All checks passed"

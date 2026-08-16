@@ -22,8 +22,6 @@
         "vite:build": "deno run -A npm:vite build",
         "check": "deno check src/",
         "test": "deno test -P",
-        "checks": "deno run -A .githooks/checks-frontend.ts && deno run -A .githooks/checks-backend.ts",
-        "install-hooks": "git config core.hooksPath .githooks && echo 'Hooks installed.'",
         "test:perf-benchmark": "cd src-tauri && cargo run --bin perf-benchmark --release",
         "install:macos": "deno run -A npm:@tauri-apps/cli build && rm -rf /Applications/livery.app && cp -R ../target/release/bundle/macos/livery.app /Applications/livery.app",
         "dev:ui": "deno run -A npm:vite --port 1430 --open '/dev'"
