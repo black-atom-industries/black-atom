@@ -20,8 +20,13 @@ async saveConfig(config: Config) : Promise<Result<null, string>> {
  * Per-adapter setup state: provisioning class, the config fields its
  * updater reads, and whether its Linked placement is wired on disk.
  */
-async getAppStatus() : Promise<AppStatus[]> {
-    return await TAURI_INVOKE("get_app_status");
+async getAppStatus() : Promise<Result<AppStatus[], string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_app_status") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 },
 /**
  * Wire an adapter's own themes location to the unpacked theme files via

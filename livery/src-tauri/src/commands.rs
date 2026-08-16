@@ -22,7 +22,7 @@ pub fn save_config(config: Config) -> Result<(), String> {
 /// updater reads, and whether its Linked placement is wired on disk.
 #[tauri::command]
 #[specta::specta]
-pub async fn get_app_status() -> Vec<AppStatus> {
+pub async fn get_app_status() -> Result<Vec<AppStatus>, String> {
     livery_core::themes::commands::get_app_status().await
 }
 

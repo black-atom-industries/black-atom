@@ -2,7 +2,7 @@ import { ActionRow, AdapterHeader, ClassDefinition, DraftField } from "../adapte
 import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
-/** lazygit — merged provisioning, reads the downloaded theme file and
+/** lazygit — merged provisioning, reads the unpacked theme file and
     merges its values into config.yml on every switch. */
 export function LazygitSettings(
     {

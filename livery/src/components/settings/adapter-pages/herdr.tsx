@@ -8,7 +8,7 @@ import {
 import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
-/** Herdr — merged provisioning. Livery reads the downloaded TOML fragment and replaces only the
+/** Herdr — merged provisioning. Livery reads the unpacked TOML fragment and replaces only the
  * marked theme block in config.toml on every switch. */
 export function HerdrSettings(
     {

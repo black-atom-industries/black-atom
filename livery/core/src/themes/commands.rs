@@ -23,8 +23,13 @@ pub struct AppStatus {
     pub linked: bool,
 }
 
-pub async fn get_app_status() -> Vec<AppStatus> {
-    AppName::all()
+/// `linked` is read off the unpacked tree, so an adapter reports as unlinked
+/// whenever the files are missing. Unpacking first makes the answer truthful
+/// even when startup never got that far.
+pub async fn get_app_status() -> Result<Vec<AppStatus>, String> {
+    super::unpack::ensure_unpacked()?;
+
+    Ok(AppName::all()
         .iter()
         .map(|app| AppStatus {
             app: *app,
@@ -32,7 +37,7 @@ pub async fn get_app_status() -> Vec<AppStatus> {
             editable_fields: registry::editable_fields(*app),
             linked: is_linked(*app),
         })
-        .collect()
+        .collect())
 }
 
 /// Does this adapter's placement currently point into the managed themes
@@ -83,6 +88,18 @@ pub struct LinkThemesResult {
 
 pub async fn link_app_themes(app: AppName) -> LinkThemesResult {
     let app_str = app.as_str();
+
+    // The symlinks point into the unpacked tree, so it has to be there
+    // before anything is wired.
+    if let Err(message) = super::unpack::ensure_unpacked() {
+        return LinkThemesResult {
+            app: app_str.to_string(),
+            status: UpdateStatus::Error,
+            message: Some(message),
+            linked: None,
+            pruned: None,
+        };
+    }
 
     let Some(placement) = registry::linked_placement(app) else {
         return LinkThemesResult {

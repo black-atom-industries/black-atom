@@ -117,6 +117,12 @@ pub async fn update_app(app: AppName, theme: ThemeContext) -> UpdateResult {
     let mut config = config_io::read_config_from_disk();
     config_io::expand_app_paths(&mut config);
 
+    // Merged updaters read the unpacked theme files, Linked ones follow
+    // symlinks into the same tree — either way it has to exist first.
+    if let Err(message) = crate::themes::unpack::ensure_unpacked() {
+        return UpdateResult::error(app_str, message);
+    }
+
     let app_config = match config.apps.get(&app) {
         Some(c) => c.clone(),
         None => return UpdateResult::error(app_str, "App not found in config"),
@@ -148,26 +154,32 @@ pub async fn update_app(app: AppName, theme: ThemeContext) -> UpdateResult {
     result
 }
 
-/// Save the Neovim plugin settings into config, then write them into the
-/// managed Lua block in nvim's `settings_path`. Config is the source of
-/// truth; the block is the projection of it Neovim can read.
+/// Write the Neovim plugin settings into the managed Lua block in nvim's
+/// `settings_path`, then store them in config. Config is the source of
+/// truth; the block is the projection of it Neovim can read. Persisting
+/// only after a successful write keeps the two from drifting apart.
 pub async fn write_nvim_settings(settings: crate::config::types::NvimSettings) -> UpdateResult {
     let mut config = config_io::read_config_from_disk();
     let Some(app_config) = config.apps.get_mut(&AppName::Nvim) else {
         return UpdateResult::error("nvim", "nvim not found in config");
     };
 
-    app_config.settings = Some(settings.clone());
     let settings_path = app_config
         .settings_path
         .clone()
         .unwrap_or_else(|| crate::config::types::NVIM_SETTINGS_PATH.to_string());
 
+    let result = nvim::write_settings(&settings_path, &settings);
+    if result.status == UpdateStatus::Error {
+        return result;
+    }
+
+    app_config.settings = Some(settings);
     if let Err(e) = crate::config::commands::save_config(config) {
         return UpdateResult::error("nvim", e);
     }
 
-    nvim::write_settings(&settings_path, &settings)
+    result
 }
 
 /// Dispatch an update to the appropriate per-app updater.

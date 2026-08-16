@@ -122,7 +122,7 @@ fn dispatch(command: &str, args: Value) -> Result<Value, String> {
         }
         "get_app_status" => to_value(tauri::async_runtime::block_on(
             crate::commands::get_app_status(),
-        )),
+        )?),
         "link_app_themes" => {
             let app = argument(&args, "app")?;
             to_value(tauri::async_runtime::block_on(

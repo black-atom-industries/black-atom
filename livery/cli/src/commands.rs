@@ -84,7 +84,7 @@ pub fn status() -> Result<(), String> {
     unpacked()?;
 
     let config = livery_core::config::commands::get_config();
-    let statuses = block_on(themes::get_app_status());
+    let statuses = block_on(themes::get_app_status())?;
 
     for app_status in statuses {
         let app = app_status.app;
@@ -148,6 +148,10 @@ pub fn setup(yes: bool) -> Result<(), String> {
         })
         .collect();
 
+    // Every row is printed before the first failure decides the exit code,
+    // so the user sees the whole run and the shell still sees the failure.
+    let mut failures: Vec<String> = Vec::new();
+
     if !linked.is_empty() && confirm("Link their theme files?", yes)? {
         for app in &linked {
             let result = block_on(themes::link_app_themes(*app));
@@ -157,9 +161,13 @@ pub fn setup(yes: bool) -> Result<(), String> {
                 result.status.as_str(),
                 result
                     .message
+                    .as_ref()
                     .map(|message| format!(" — {message}"))
                     .unwrap_or_default()
             );
+            if result.status == UpdateStatus::Error {
+                failures.push(format!("{} link failed", app.as_str()));
+            }
         }
     }
 
@@ -167,7 +175,14 @@ pub fn setup(yes: bool) -> Result<(), String> {
         for app in &found {
             let verification = block_on(updaters::verify_app_path(*app));
             println!("  {:<10} {}", app.as_str(), config_label(&verification));
+            if let Some(message) = &verification.message {
+                failures.push(format!("{} verification failed: {message}", app.as_str()));
+            }
         }
+    }
+
+    if !failures.is_empty() {
+        return Err(failures.join("; "));
     }
     Ok(())
 }

@@ -25,10 +25,10 @@ pub fn sync_flat_symlinks(
     app_themes_dir: &Path,
     extension: &str,
 ) -> Result<SymlinkSyncStats, String> {
-    std::fs::create_dir_all(app_themes_dir)
-        .map_err(|e| format!("Failed to create {}: {e}", app_themes_dir.display()))?;
     ensure_under_home(app_themes_dir)?;
     ensure_under_home(managed_dir)?;
+    std::fs::create_dir_all(app_themes_dir)
+        .map_err(|e| format!("Failed to create {}: {e}", app_themes_dir.display()))?;
 
     let fresh = fresh_theme_files(managed_dir, extension)?;
     let mut stats = SymlinkSyncStats::default();
@@ -80,10 +80,10 @@ pub fn sync_vault_theme_links(
     vault_themes_dir: &Path,
 ) -> Result<SymlinkSyncStats, String> {
     let theme_dir = vault_themes_dir.join(OBSIDIAN_THEME_DIR);
-    std::fs::create_dir_all(&theme_dir)
-        .map_err(|e| format!("Failed to create {}: {e}", theme_dir.display()))?;
     ensure_under_home(&theme_dir)?;
     ensure_under_home(managed_dir)?;
+    std::fs::create_dir_all(&theme_dir)
+        .map_err(|e| format!("Failed to create {}: {e}", theme_dir.display()))?;
 
     let mut stats = SymlinkSyncStats::default();
     for name in ["theme.css", "manifest.json"] {
@@ -110,10 +110,10 @@ pub fn sync_pack_dir_link(managed_dir: &Path) -> Result<SymlinkSyncStats, String
     let parent = link
         .parent()
         .ok_or_else(|| format!("{} has no parent", link.display()))?;
-    std::fs::create_dir_all(parent)
-        .map_err(|e| format!("Failed to create {}: {e}", parent.display()))?;
     ensure_under_home(parent)?;
     ensure_under_home(managed_dir)?;
+    std::fs::create_dir_all(parent)
+        .map_err(|e| format!("Failed to create {}: {e}", parent.display()))?;
 
     let mut stats = SymlinkSyncStats::default();
     place_link(&link, managed_dir, NVIM_PACK_DIR, &mut stats)?;
@@ -229,15 +229,15 @@ pub fn pack_dir_link_is_wired(_managed_dir: &Path) -> bool {
 }
 
 /// Same discipline as `file_ops` writers: never touch anything outside the
-/// user's home directory.
+/// user's home directory. Runs before any directory is created, so the path
+/// need not exist yet: the lexical form is normalised and the nearest
+/// existing ancestor is canonicalised to defeat symlinked prefixes.
 fn ensure_under_home(path: &Path) -> Result<(), String> {
     let home = dirs::home_dir()
         .ok_or("Cannot determine home directory")?
         .canonicalize()
         .map_err(|e| format!("Cannot resolve home directory: {e}"))?;
-    let resolved = path
-        .canonicalize()
-        .map_err(|e| format!("Cannot resolve {}: {e}", path.display()))?;
+    let resolved = resolve_lexically(path)?;
     if !resolved.starts_with(&home) {
         return Err(format!(
             "Refusing to write outside the home directory: {}",
@@ -245,6 +245,53 @@ fn ensure_under_home(path: &Path) -> Result<(), String> {
         ));
     }
     Ok(())
+}
+
+/// Absolute, `~`-expanded, `.`/`..`-free form of `path`, with the deepest
+/// existing prefix replaced by its canonical form.
+fn resolve_lexically(path: &Path) -> Result<PathBuf, String> {
+    let expanded = PathBuf::from(shellexpand::tilde(&path.to_string_lossy()).to_string());
+    let absolute = if expanded.is_absolute() {
+        expanded
+    } else {
+        std::env::current_dir()
+            .map_err(|e| format!("Cannot resolve {}: {e}", path.display()))?
+            .join(expanded)
+    };
+
+    let mut normalized = PathBuf::new();
+    for component in absolute.components() {
+        match component {
+            std::path::Component::CurDir => {}
+            std::path::Component::ParentDir => {
+                normalized.pop();
+            }
+            other => normalized.push(other),
+        }
+    }
+
+    // The deepest existing ancestor decides where the path really lands —
+    // a symlinked prefix must not smuggle the tail out of home.
+    let mut existing = normalized.as_path();
+    let mut tail = Vec::new();
+    while !existing.exists() {
+        let Some(name) = existing.file_name() else {
+            return Ok(normalized);
+        };
+        tail.push(name.to_owned());
+        let Some(parent) = existing.parent() else {
+            return Ok(normalized);
+        };
+        existing = parent;
+    }
+
+    let mut resolved = existing
+        .canonicalize()
+        .map_err(|e| format!("Cannot resolve {}: {e}", existing.display()))?;
+    for name in tail.iter().rev() {
+        resolved.push(name);
+    }
+    Ok(resolved)
 }
 
 #[cfg(all(test, unix))]
@@ -275,6 +322,36 @@ mod tests {
             managed,
             app_dir,
         }
+    }
+
+    #[test]
+    fn test_rejects_a_target_outside_home_without_creating_it() {
+        let s = setup(".json");
+        let outside = tempfile::TempDir::new().unwrap();
+        let app_dir = outside.path().join("themes");
+
+        let err = sync_flat_symlinks(&s.managed, &app_dir, ".json").unwrap_err();
+
+        assert!(
+            err.contains("outside the home directory"),
+            "unexpected error: {err}"
+        );
+        assert!(!app_dir.exists(), "the rejected dir must not be created");
+    }
+
+    #[test]
+    fn test_rejects_a_target_escaping_home_via_parent_components() {
+        let s = setup(".json");
+        let escaping = s
+            .app_dir
+            .join("../../../../../../../../../tmp/livery-escape");
+
+        let err = sync_flat_symlinks(&s.managed, &escaping, ".json").unwrap_err();
+
+        assert!(
+            err.contains("outside the home directory"),
+            "unexpected error: {err}"
+        );
     }
 
     #[test]

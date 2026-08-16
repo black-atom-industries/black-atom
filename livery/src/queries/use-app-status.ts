@@ -12,7 +12,11 @@ const queryKey = () => [TOPIC] as const;
 export const useAppStatus = () => {
     const query = useQuery({
         queryKey: queryKey(),
-        queryFn: () => commands.getAppStatus(),
+        queryFn: async () => {
+            const result = await commands.getAppStatus();
+            if (result.status === "error") throw new Error(result.error);
+            return result.data;
+        },
         staleTime: Infinity,
     });
 

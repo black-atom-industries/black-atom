@@ -69,7 +69,7 @@ export function ActionRow(
             />
             {linkable && (
                 <ActionEntry
-                    description="Symlinks downloaded themes into the folder this app reads."
+                    description="Symlinks the unpacked theme files into the folder this app reads."
                     button={
                         <Button intent="secondary" onClick={onLinkThemes} disabled={linkRunning}>
                             {linkRunning ? "LINKING…" : "LINK THEMES"}

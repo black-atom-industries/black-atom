@@ -263,7 +263,7 @@ function Component() {
                 <Typo.OrderedList>
                     <li>
                         Create a new module under{" "}
-                        <Typo.InlineCode>src-tauri/src/updaters/</Typo.InlineCode>
+                        <Typo.InlineCode>livery/core/src/updaters/</Typo.InlineCode>
                     </li>
                     <li>
                         Implement <Typo.InlineCode>Updater::apply()</Typo.InlineCode>{" "}

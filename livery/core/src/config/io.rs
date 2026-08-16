@@ -1,5 +1,5 @@
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use super::types::Config;
 
@@ -33,14 +33,32 @@ fn migrate_legacy_config() {
         log::warn!("Failed to create the config dir for migration: {e}");
         return;
     }
-    match fs::copy(&legacy, &target) {
-        Ok(_) => log::info!(
+    match copy_atomic(&legacy, &target) {
+        Ok(()) => log::info!(
             "Migrated livery config from {} to {}",
             legacy.display(),
             target.display()
         ),
         Err(e) => log::warn!("Failed to migrate the livery config: {e}"),
     }
+}
+
+/// Copy `source` onto `target` through a sibling `.tmp`, so a reader never
+/// observes a half-written config. The tmp is removed on any failure.
+fn copy_atomic(source: &Path, target: &Path) -> std::io::Result<()> {
+    let mut tmp_name = target.file_name().unwrap_or_default().to_os_string();
+    tmp_name.push(".tmp");
+    let tmp = target.with_file_name(tmp_name);
+
+    if let Err(e) = fs::copy(source, &tmp) {
+        let _ = fs::remove_file(&tmp);
+        return Err(e);
+    }
+    if let Err(e) = fs::rename(&tmp, target) {
+        let _ = fs::remove_file(&tmp);
+        return Err(e);
+    }
+    Ok(())
 }
 
 /// Merge user config with defaults — fills in missing fields from the default config.
@@ -150,6 +168,47 @@ pub fn collapse_app_paths(config: &mut Config) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn copy_atomic_reproduces_the_source_and_leaves_no_tmp() {
+        let dir = tempfile::TempDir::new().unwrap();
+        let source = dir.path().join("legacy.json");
+        let target = dir.path().join("config.json");
+        let content = b"{\n  \"apps\": {}\n}\n";
+        fs::write(&source, content).unwrap();
+
+        copy_atomic(&source, &target).unwrap();
+
+        assert_eq!(fs::read(&target).unwrap(), content);
+        let leftovers: Vec<String> = fs::read_dir(dir.path())
+            .unwrap()
+            .flatten()
+            .map(|entry| entry.file_name().to_string_lossy().into_owned())
+            .filter(|name| name.contains(".tmp"))
+            .collect();
+        assert!(leftovers.is_empty(), "tmp files left behind: {leftovers:?}");
+    }
+
+    #[test]
+    fn copy_atomic_removes_its_tmp_when_the_rename_fails() {
+        let dir = tempfile::TempDir::new().unwrap();
+        let source = dir.path().join("legacy.json");
+        fs::write(&source, b"{}").unwrap();
+        // A target whose own name is an existing directory: the copy
+        // succeeds, the rename cannot.
+        let target = dir.path().join("config.json");
+        fs::create_dir(&target).unwrap();
+
+        assert!(copy_atomic(&source, &target).is_err());
+
+        let leftovers: Vec<String> = fs::read_dir(dir.path())
+            .unwrap()
+            .flatten()
+            .map(|entry| entry.file_name().to_string_lossy().into_owned())
+            .filter(|name| name.contains(".tmp"))
+            .collect();
+        assert!(leftovers.is_empty(), "tmp files left behind: {leftovers:?}");
+    }
 
     #[test]
     fn merge_backfills_nvim_settings_for_a_config_written_before_they_existed() {

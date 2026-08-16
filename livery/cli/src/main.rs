@@ -62,6 +62,15 @@ fn cli_surface(cap: Capability) -> &'static str {
 }
 
 fn main() -> std::process::ExitCode {
+    // Rust ignores SIGPIPE, which turns `livery status | head -1` into a
+    // broken-pipe panic instead of a quiet exit.
+    #[cfg(unix)]
+    // SAFETY: signal(2) with SIG_DFL on the main thread before any other
+    // thread exists — no handler state can be observed mid-change.
+    unsafe {
+        libc::signal(libc::SIGPIPE, libc::SIG_DFL);
+    }
+
     let cli = Cli::parse();
 
     let result = match cli.command {

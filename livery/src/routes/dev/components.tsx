@@ -44,7 +44,7 @@ const SETTINGS_ADAPTERS_FIXTURE: Config = {
         herdr: {
             enabled: true,
             config_path: "~/.config/herdr/config.toml",
-            themes_path: "~/.config/black-atom/themes/herdr",
+            themes_path: "~/.local/share/black-atom/themes/herdr",
         },
         "helm-tmux": { enabled: true, config_path: "~/.config/black-atom/helm-tmux/config.yml" },
     },

@@ -253,7 +253,7 @@ fn setup_chain_end_to_end() {
 
     // 5. Status: every app carries its class and its editable fields, and
     // the five Linked adapters now report their placement as wired.
-    let status = block_on(themes::get_app_status());
+    let status = block_on(themes::get_app_status()).unwrap();
     assert_eq!(status.len(), AppName::all().len());
     for entry in &status {
         assert_eq!(entry.provisioning, provisioning(entry.app));
@@ -273,7 +273,7 @@ fn setup_chain_end_to_end() {
     // provisioning class it was just compared against.
     std::fs::remove_file(&pack_link).unwrap();
     std::fs::remove_dir_all(home.join(".config/ghostty/themes")).unwrap();
-    let unwired = block_on(themes::get_app_status());
+    let unwired = block_on(themes::get_app_status()).unwrap();
     for entry in &unwired {
         let expected = entry.provisioning == ThemeProvisioning::Linked
             && entry.app != AppName::Nvim
@@ -305,4 +305,35 @@ fn setup_chain_end_to_end() {
 
     let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
     assert!(!nvim.exists, "no nvim config was planted");
+
+    // 7. Settings only get persisted once the Lua block was actually
+    // written. A settings_path in a directory that does not exist fails the
+    // write, so the stored settings must still be the previous ones.
+    let mut config = livery_core::config::commands::get_config();
+    let nvim_config = config.apps.get_mut(&AppName::Nvim).unwrap();
+    nvim_config.settings_path = Some(
+        home.join("no/such/dir/init.lua")
+            .to_string_lossy()
+            .into_owned(),
+    );
+    let before = nvim_config.settings.clone();
+    livery_core::config::commands::save_config(config).unwrap();
+
+    let mut wanted = before.clone().unwrap_or_default();
+    wanted.term_colors = !wanted.term_colors;
+    let result = block_on(livery_core::updaters::write_nvim_settings(wanted));
+    assert_eq!(
+        result.status,
+        UpdateStatus::Error,
+        "a settings_path in a missing directory must fail"
+    );
+
+    let stored = livery_core::config::commands::get_config()
+        .apps
+        .get(&AppName::Nvim)
+        .and_then(|app| app.settings.clone());
+    assert_eq!(
+        stored, before,
+        "a failed settings write must leave the config untouched"
+    );
 }

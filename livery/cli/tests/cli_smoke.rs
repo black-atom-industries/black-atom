@@ -154,6 +154,32 @@ fn cli_end_to_end() {
     );
 }
 
+/// A failing step inside `setup` must reach the exit code — the command is
+/// not "done" just because it printed an error row. No `adopt_env` here: the
+/// binary gets its sandbox through the subprocess environment alone, so this
+/// test stays independent of `cli_end_to_end`.
+#[test]
+fn setup_with_a_failing_step_exits_non_zero() {
+    let sandbox = Sandbox::new();
+    // ghostty sits at its default path so detection finds it, but the
+    // sibling `themes` it links into is a regular file — linking must fail.
+    write(
+        &sandbox.config_home().join("ghostty/config"),
+        "theme = none\n",
+    );
+    write(
+        &sandbox.config_home().join("ghostty/themes"),
+        "not a directory\n",
+    );
+
+    let output = sandbox.run(&["setup", "--yes"]);
+
+    assert!(
+        !output.status.success(),
+        "a failing setup step must exit non-zero: {output:?}"
+    );
+}
+
 #[test]
 fn help_lists_every_subcommand() {
     let output = Command::new(BINARY).arg("--help").output().unwrap();

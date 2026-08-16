@@ -43,10 +43,13 @@ function stepsFor(provisioning: ThemeProvisioning): SetUpStep[] {
 
 /**
  * One-click adapter setup: enable → link → verify, trimmed to the
- * provisioning class. Merged adapters read the unpacked files directly, so
- * they only enable and verify. A failed enable aborts; verify always runs
- * last so the row ends in a truthful state. An empty config_path blocks the
- * whole chain (obsidian until a vault path is supplied).
+ * provisioning class. Linked adapters get the unpacked theme files symlinked
+ * into the location they read; Merged adapters have the theme's content
+ * written into their own config instead, so they only enable and verify;
+ * External adapters bring their own theme files. A failed enable aborts;
+ * verify always runs last so the row ends in a truthful state. An empty
+ * config_path blocks the whole chain (obsidian until a vault path is
+ * supplied).
  */
 export async function setUpAdapter(
     app: AppName,
