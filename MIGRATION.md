@@ -1,8 +1,8 @@
 # Migration state
 
-Phase: 5
-Last completed task: 5.1 release-please configured (Phase 4 tasks 1-7 committed through fe1fe73; Phase 4 review fix pass pending)
-Next: 5.2 READMEs, Phase 4 review fixes (symlinks under-HOME order, CLI exit codes + SIGPIPE, atomic legacy copy, macro-built Capability, nvim settings write-then-persist, unpack errors surfaced), 5.3 follow-up issues
+Phase: complete
+Last completed task: Close (HOW_TO_TEST.md, handoff in handoffs/2026-08-16-monorepo-migration.md, comment on livery#68, cron heartbeat deleted)
+Next: nothing; Nik tests from HOW_TO_TEST.md, then decides the first version (#6) and the old-repo cleanup (#3)
 Blocked on Nik: (none)
 Decisions made in-run:
 
@@ -22,5 +22,7 @@ Decisions made in-run:
 - 2026-08-16 16:10 Neovim settings are stored in livery config as `apps.nvim.settings` and written into a managed Lua block in `apps.nvim.settings_path` (default `~/.config/nvim/init.lua`); the colorscheme-line patch stays.
 - 2026-08-16 17:35 unpack replaces an adapter dir with two renames (retire, activate); the dangling window is microseconds and apps read theme files on demand, so it stays as is.
 - 2026-08-16 17:38 session usage limit hit mid Phase 5; five subagents died before writing (only the release-please files survived); resumed 20:21.
+- 2026-08-16 20:47 the nvim updater reloads every Neovim socket on the machine; a sandbox HOME does not scope it. Sandbox applies switched Nik's live Neovim sessions (files untouched). Worth a HOME-scoped filter or a --no-reload flag later.
+- 2026-08-16 20:52 migration marked complete.
 
 Follow-up issues filed: #2 helm-tmux consumption, #3 archive/cleanup of the source repos (incl. JSR, livery issues), #4 Homebrew cask + Linux install, #5 niri/waybar/wezterm updaters, #6 first release version, #7 post-migration polish. release-please PR #1 is open and stays open.
