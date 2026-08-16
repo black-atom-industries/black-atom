@@ -43,6 +43,7 @@ validated against `core/adapter.schema.json`:
     "collections": {
         "jpn": {
             "template": "./themes/jpn/collection.template.json",
+            "output": "./themes/jpn",
             "themes": [
                 "black-atom-jpn-koyo-yoru",
                 "black-atom-jpn-koyo-hiru",
@@ -63,6 +64,11 @@ validated against `core/adapter.schema.json`:
     }
 }
 ```
+
+A collection can also set `output`, a directory relative to the adapter root that generated files
+are written to instead of next to the template. Useful for a single shared template
+(`themes/collection.template.json`) that should still emit into per-collection directories, e.g.
+`"output": "./themes/jpn"` for the `jpn` collection.
 
 An adapter can also declare a `postGenerate` task, run via `deno task postGenerate` after every
 file is written, for adapters that assemble output beyond a one-to-one template render (see

@@ -1,5 +1,5 @@
 import { Eta } from "@eta";
-import { dirname } from "@std/path";
+import { basename, dirname, join } from "@std/path";
 import type { ThemeDefinition, ThemeKey, ThemeMeta } from "../types/theme.ts";
 
 import type { AdapterConfig } from "./validate-adapter.ts";
@@ -45,7 +45,7 @@ async function processCollectionTemplates(
     for (const [, collectionConfig] of Object.entries(collections)) {
         if (!collectionConfig) continue;
 
-        const { template: templatePath, themes } = collectionConfig;
+        const { template: templatePath, output, themes } = collectionConfig;
 
         try {
             // Read the collection template once
@@ -63,10 +63,12 @@ async function processCollectionTemplates(
                     continue;
                 }
 
-                // Determine the output path by replacing the collection name in the template path
-                const outputPath = templatePath
+                // Determine the output path: collection.output if set, else next to the template
+                const outputDir = output ?? dirname(templatePath);
+                const outputFileName = basename(templatePath)
                     .replace(".template.", ".")
                     .replace(/collection/, themeKey);
+                const outputPath = join(outputDir, outputFileName);
 
                 try {
                     // Render the template with the theme data

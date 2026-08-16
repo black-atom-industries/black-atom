@@ -1,10 +1,6 @@
 {
-    "imports": {
-        "@std/path": "jsr:@std/path@1.0.8"
-    },
     "tasks": {
-        "generate": "deno run -A ../../core/src/cli/index.ts generate && deno task postGenerate",
-        "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
-        "dev": "deno run -A scripts/dev.ts"
+        "generate": "deno run -A ../../core/src/cli/index.ts generate",
+        "dev": "deno run -A ../../core/src/cli/index.ts generate --watch"
     }
 }

@@ -30,7 +30,8 @@
     "test": {
         "permissions": {
             "read": true,
-            "run": true
+            "run": true,
+            "write": true
         }
     },
     "imports": {

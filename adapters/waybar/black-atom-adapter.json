@@ -3,6 +3,7 @@
     "collections": {
         "default": {
             "template": "./themes/collection.template.css",
+            "output": "./themes/default",
             "themes": [
                 "black-atom-default-dark",
                 "black-atom-default-dark-dimmed",
@@ -12,6 +13,7 @@
         },
         "jpn": {
             "template": "./themes/collection.template.css",
+            "output": "./themes/jpn",
             "themes": [
                 "black-atom-jpn-koyo-yoru",
                 "black-atom-jpn-koyo-hiru",
@@ -21,6 +23,7 @@
         },
         "stations": {
             "template": "./themes/collection.template.css",
+            "output": "./themes/stations",
             "themes": [
                 "black-atom-stations-engineering",
                 "black-atom-stations-operations",
@@ -30,6 +33,7 @@
         },
         "terra": {
             "template": "./themes/collection.template.css",
+            "output": "./themes/terra",
             "themes": [
                 "black-atom-terra-spring-day",
                 "black-atom-terra-spring-night",
@@ -43,6 +47,7 @@
         },
         "mnml": {
             "template": "./themes/collection.template.css",
+            "output": "./themes/mnml",
             "themes": [
                 "black-atom-mnml-clay-dark",
                 "black-atom-mnml-clay-light",
@@ -62,6 +67,7 @@
         },
         "paper": {
             "template": "./themes/collection.template.css",
+            "output": "./themes/paper",
             "themes": [
                 "black-atom-paper-brown-light",
                 "black-atom-paper-brown-dark",

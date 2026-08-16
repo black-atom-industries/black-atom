@@ -57,6 +57,11 @@ function generateSchema() {
                         "type": "string",
                         "description": "Path to the collection template file",
                     },
+                    "output": {
+                        "type": "string",
+                        "description":
+                            "Directory the generated files are written to, relative to the adapter root; defaults to the template's directory",
+                    },
                     "themes": {
                         "type": "array",
                         "items": {
