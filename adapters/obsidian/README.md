@@ -1,20 +1,25 @@
 # Black Atom for Obsidian
 
-A theme for [Obsidian](https://obsidian.md/) by Black Atom Industries.
+A theme for [Obsidian](https://obsidian.md/) by Black Atom Industries. Black Atom ships as one
+Obsidian theme; five collections switch as variants within it.
 
 ## Available Themes
 
-| Collection  | Variants                               |
-| ----------- | -------------------------------------- |
-| **Default** | Dark, Dark Dimmed, Light, Light Dimmed |
+| Collection   | Variants                                                              |
+| ------------ | --------------------------------------------------------------------- |
+| **Default**  | Dark, Dark Dimmed, Light, Light Dimmed                                |
+| **JPN**      | Koyo Hiru, Koyo Yoru, Tsuki Yoru, Murasaki Yoru                       |
+| **MNML**     | Clay, Orange, Mikado, 47, Eink, Mono (Dark/Light), Osman, Ita (Light) |
+| **Stations** | Engineering, Operations, Medical, Research                            |
+| **Terra**    | Spring, Summer, Fall, Winter (Day/Night)                              |
 
 ## Installation
 
 Copy `theme.css` and `manifest.json` into your vault's theme directory:
 
 ```bash
-mkdir -p /path/to/vault/.obsidian/themes/Black-Atom
-cp theme.css manifest.json /path/to/vault/.obsidian/themes/Black-Atom/
+mkdir -p "/path/to/vault/.obsidian/themes/Black Atom"
+cp theme.css manifest.json "/path/to/vault/.obsidian/themes/Black Atom/"
 ```
 
 Then in Obsidian: **Settings > Appearance > Theme > Black Atom**.

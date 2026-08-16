@@ -17,6 +17,7 @@ Black Atom includes multiple theme collections, each with dark and light variant
 | **Default**  | Core Black Atom themes        |
 | **JPN**      | Japanese-inspired themes      |
 | **MNML**     | Minimalist accent themes      |
+| **Paper**    | Paper-inspired themes         |
 | **Stations** | Space station-inspired themes |
 | **Terra**    | Earth season-inspired themes  |
 
@@ -28,8 +29,9 @@ Black Atom includes multiple theme collections, each with dark and light variant
 
 ### Install the theme files
 
-Generate the theme files (requires [Deno](https://deno.land/)) and copy the `.json` files to your
-Zed themes directory:
+[Livery](../../livery/README.md) does this for you: `livery setup`, then `livery apply <theme>`.
+To do it by hand instead, generate the theme files (requires [Deno](https://deno.land/)) and copy
+the `.json` files to your Zed themes directory:
 
 ```bash
 deno task generate

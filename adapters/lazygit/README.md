@@ -12,13 +12,14 @@ templates, keeping colors identical everywhere while leaving room for platform-s
 
 Black Atom includes multiple theme collections, each with its own distinct style:
 
-| Collection   | Themes                                                     | Description                   |
-| ------------ | ---------------------------------------------------------- | ----------------------------- |
-| **Default**  | dark, dark-dimmed, light, light-dimmed                     | Core Black Atom themes        |
-| **JPN**      | koyo-hiru, koyo-yoru, tsuki-yoru, murasaki-yoru            | Japanese-inspired themes      |
-| **Stations** | engineering, operations, medical, research                 | Space station-inspired themes |
-| **Terra**    | seasons (spring, summer, fall, winter) x time (day, night) | Earth season-inspired themes  |
-| **MNML**     | clay, orange, osman, mikado, 47, eink (dark/light)         | Minimalist themes             |
+| Collection   | Themes                                                                     | Description                   |
+| ------------ | -------------------------------------------------------------------------- | ----------------------------- |
+| **Default**  | dark, dark-dimmed, light, light-dimmed                                     | Core Black Atom themes        |
+| **JPN**      | koyo-hiru, koyo-yoru, tsuki-yoru, murasaki-yoru                            | Japanese-inspired themes      |
+| **Stations** | engineering, operations, medical, research                                 | Space station-inspired themes |
+| **Terra**    | seasons (spring, summer, fall, winter) x time (day, night)                 | Earth season-inspired themes  |
+| **MNML**     | clay, orange, mikado, 47, eink, mono (dark/light), osman, ita (light-only) | Minimalist themes             |
+| **Paper**    | brown, blue (dark/light)                                                   | Paper-inspired themes         |
 
 ## Installation
 

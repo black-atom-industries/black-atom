@@ -72,4 +72,4 @@ Templates use Eta syntax and semantic Black Atom colors only. `surface_dim` uses
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT, see [LICENSE](./LICENSE).

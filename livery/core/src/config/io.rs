@@ -1,4 +1,5 @@
 use std::fs;
+use std::io::Write;
 use std::path::{Path, PathBuf};
 
 use super::types::Config;
@@ -43,21 +44,22 @@ fn migrate_legacy_config() {
     }
 }
 
-/// Copy `source` onto `target` through a sibling `.tmp`, so a reader never
-/// observes a half-written config. The tmp is removed on any failure.
+/// Copy `source` onto `target` through a temp file in the same directory, so
+/// a reader never observes a half-written config. The name is unpredictable
+/// and created exclusively, so nothing can be squatting on it; the temp file
+/// is removed on any failure.
 fn copy_atomic(source: &Path, target: &Path) -> std::io::Result<()> {
-    let mut tmp_name = target.file_name().unwrap_or_default().to_os_string();
-    tmp_name.push(".tmp");
-    let tmp = target.with_file_name(tmp_name);
+    let parent = target.parent().ok_or_else(|| {
+        std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            format!("{} has no parent directory", target.display()),
+        )
+    })?;
 
-    if let Err(e) = fs::copy(source, &tmp) {
-        let _ = fs::remove_file(&tmp);
-        return Err(e);
-    }
-    if let Err(e) = fs::rename(&tmp, target) {
-        let _ = fs::remove_file(&tmp);
-        return Err(e);
-    }
+    let bytes = fs::read(source)?;
+    let mut tmp = tempfile::NamedTempFile::new_in(parent)?;
+    tmp.write_all(&bytes)?;
+    tmp.persist(target).map_err(|e| e.error)?;
     Ok(())
 }
 
@@ -208,6 +210,31 @@ mod tests {
             .filter(|name| name.contains(".tmp"))
             .collect();
         assert!(leftovers.is_empty(), "tmp files left behind: {leftovers:?}");
+    }
+
+    #[test]
+    fn copy_atomic_never_follows_a_symlink_squatting_on_its_tmp_name() {
+        let dir = tempfile::TempDir::new().unwrap();
+        let source = dir.path().join("legacy.json");
+        let target = dir.path().join("config.json");
+        fs::write(&source, b"{\"migrated\":true}").unwrap();
+
+        let decoy = dir.path().join("decoy.json");
+        fs::write(&decoy, b"do not clobber me").unwrap();
+        let squat = dir.path().join("config.json.tmp");
+        std::os::unix::fs::symlink(&decoy, &squat).unwrap();
+
+        copy_atomic(&source, &target).unwrap();
+
+        assert_eq!(fs::read(&decoy).unwrap(), b"do not clobber me");
+        assert_eq!(fs::read(&target).unwrap(), b"{\"migrated\":true}");
+        assert!(
+            fs::symlink_metadata(&squat)
+                .unwrap()
+                .file_type()
+                .is_symlink(),
+            "the squatting symlink must be left alone"
+        );
     }
 
     #[test]

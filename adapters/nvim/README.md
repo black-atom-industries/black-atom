@@ -17,6 +17,7 @@ Black Atom includes multiple theme collections, each with dark and light variant
 | **Default**  | Core Black Atom themes        |
 | **JPN**      | Japanese-inspired themes      |
 | **MNML**     | Minimalist accent themes      |
+| **Paper**    | Paper-inspired themes         |
 | **Stations** | Space station-inspired themes |
 | **Terra**    | Earth season-inspired themes  |
 
@@ -75,7 +76,7 @@ To change the config at runtime, set the global again and re-run
 Black Atom defines the native `LspKind{Function, Class, Variable, ...}` highlight
 groups (one per LSP `CompletionItemKind`) in `lsp.lua`.
 
-- **`blink.cmp` / `nvim-cmp`** consume the shared kind-color mapping directly —
+- **`blink.cmp` / `nvim-cmp`** consume the shared kind-color mapping directly,
   no wiring required.
 - **`mini.completion`** needs a small `process_items` callback to route the
   theme's `LspKind*` groups to the popup. See the recipe:
@@ -168,10 +169,6 @@ This theme supports the following plugins:
   - 69 Highlight(s)
   - Last updated: 2026-06-05
   - Last commit: style(terra/mnml): refine summer and orange-light palette colors
-- [plugin-name](https://github.com/username/plugin-name)
-  - 27 Highlight(s)
-  - Last updated: 2026-05-18
-  - Last commit: fix(highlights/plugins): override snack picker git status colors
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
   - 6 Highlight(s)
   - Last updated: 2026-06-05
@@ -208,7 +205,7 @@ mise run setup    # luacheck (via luarocks)
 `luacheck` has no prebuilt binary, so it can't be a mise `[tools]` entry. Installing
 `lua` through mise also provides `luarocks` (added to `PATH`), and the `setup` task
 runs `luarocks install luacheck` into that Lua install. Note this lives under the
-shared `lua@5.1` install rather than the repo — re-run `mise run setup` if you bump
+shared `lua@5.1` install rather than the repo. Re-run `mise run setup` if you bump
 the pinned Lua version. Building `luacheck`'s dependencies needs a C compiler
 (Xcode Command Line Tools on macOS).
 

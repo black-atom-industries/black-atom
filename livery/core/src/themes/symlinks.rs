@@ -230,8 +230,8 @@ pub fn pack_dir_link_is_wired(_managed_dir: &Path) -> bool {
 
 /// Same discipline as `file_ops` writers: never touch anything outside the
 /// user's home directory. Runs before any directory is created, so the path
-/// need not exist yet: the lexical form is normalised and the nearest
-/// existing ancestor is canonicalised to defeat symlinked prefixes.
+/// need not exist yet: every existing component is resolved first, so a
+/// symlinked prefix cannot smuggle the tail out of home.
 fn ensure_under_home(path: &Path) -> Result<(), String> {
     let home = dirs::home_dir()
         .ok_or("Cannot determine home directory")?
@@ -247,8 +247,11 @@ fn ensure_under_home(path: &Path) -> Result<(), String> {
     Ok(())
 }
 
-/// Absolute, `~`-expanded, `.`/`..`-free form of `path`, with the deepest
-/// existing prefix replaced by its canonical form.
+/// Absolute, `~`-expanded, `.`/`..`-free form of `path`, walked from the root
+/// so every existing component is resolved: a symlink is replaced by its
+/// canonical target, and components that do not exist yet are appended
+/// lexically. A symlink whose target is missing is an error — where it would
+/// land cannot be known, so the path is refused rather than guessed.
 fn resolve_lexically(path: &Path) -> Result<PathBuf, String> {
     let expanded = PathBuf::from(shellexpand::tilde(&path.to_string_lossy()).to_string());
     let absolute = if expanded.is_absolute() {
@@ -270,26 +273,35 @@ fn resolve_lexically(path: &Path) -> Result<PathBuf, String> {
         }
     }
 
-    // The deepest existing ancestor decides where the path really lands —
-    // a symlinked prefix must not smuggle the tail out of home.
-    let mut existing = normalized.as_path();
-    let mut tail = Vec::new();
-    while !existing.exists() {
-        let Some(name) = existing.file_name() else {
-            return Ok(normalized);
+    let mut resolved = PathBuf::new();
+    let mut lexical_only = false;
+    for component in normalized.components() {
+        resolved.push(component);
+        if lexical_only || !matches!(component, std::path::Component::Normal(_)) {
+            continue;
+        }
+        let Ok(meta) = std::fs::symlink_metadata(&resolved) else {
+            // Nothing exists from here down; the rest is appended lexically.
+            lexical_only = true;
+            continue;
         };
-        tail.push(name.to_owned());
-        let Some(parent) = existing.parent() else {
-            return Ok(normalized);
+        if !meta.file_type().is_symlink() {
+            continue;
+        }
+        let target = std::fs::read_link(&resolved)
+            .map_err(|e| format!("Cannot read the symlink {}: {e}", resolved.display()))?;
+        let joined = if target.is_absolute() {
+            target
+        } else {
+            resolved.parent().unwrap_or(Path::new("/")).join(target)
         };
-        existing = parent;
-    }
-
-    let mut resolved = existing
-        .canonicalize()
-        .map_err(|e| format!("Cannot resolve {}: {e}", existing.display()))?;
-    for name in tail.iter().rev() {
-        resolved.push(name);
+        // Canonicalize also settles relative targets and link cycles.
+        resolved = joined.canonicalize().map_err(|_| {
+            format!(
+                "Refusing to write through the dangling symlink {}",
+                resolved.display()
+            )
+        })?;
     }
     Ok(resolved)
 }
@@ -337,6 +349,63 @@ mod tests {
             "unexpected error: {err}"
         );
         assert!(!app_dir.exists(), "the rejected dir must not be created");
+    }
+
+    #[test]
+    fn test_rejects_a_dangling_symlink_ancestor_pointing_outside_home() {
+        let s = setup(".json");
+        let outside = tempfile::TempDir::new().unwrap();
+        let escape = outside.path().join("escape");
+        let hop = s.app_dir.parent().unwrap().join("hop");
+        std::fs::create_dir_all(hop.parent().unwrap()).unwrap();
+        std::os::unix::fs::symlink(&escape, &hop).unwrap();
+        let app_dir = hop.join("themes");
+
+        let err = sync_flat_symlinks(&s.managed, &app_dir, ".json").unwrap_err();
+
+        assert!(err.contains("dangling symlink"), "unexpected error: {err}");
+        assert!(err.contains("hop"), "error must name the component: {err}");
+        assert!(
+            !escape.exists(),
+            "nothing may be created behind the dangling link"
+        );
+    }
+
+    #[test]
+    fn test_rejects_a_live_symlink_ancestor_pointing_outside_home() {
+        let s = setup(".json");
+        let outside = tempfile::TempDir::new().unwrap();
+        let hop = s.app_dir.parent().unwrap().join("hop");
+        std::fs::create_dir_all(hop.parent().unwrap()).unwrap();
+        std::os::unix::fs::symlink(outside.path(), &hop).unwrap();
+
+        let err = sync_flat_symlinks(&s.managed, &hop.join("themes"), ".json").unwrap_err();
+
+        assert!(
+            err.contains("outside the home directory"),
+            "unexpected error: {err}"
+        );
+        assert!(
+            !outside.path().join("themes").exists(),
+            "the rejected dir must not be created"
+        );
+    }
+
+    #[test]
+    fn test_accepts_a_live_symlink_ancestor_pointing_inside_home() {
+        let s = setup(".json");
+        let real = s.app_dir.parent().unwrap().join("real");
+        std::fs::create_dir_all(&real).unwrap();
+        let hop = s.app_dir.parent().unwrap().join("hop");
+        std::os::unix::fs::symlink(&real, &hop).unwrap();
+
+        let stats = sync_flat_symlinks(&s.managed, &hop.join("themes"), ".json").unwrap();
+
+        assert_eq!(stats.linked, 1);
+        assert!(real
+            .join("themes")
+            .join("black-atom-jpn-koyo-yoru.json")
+            .exists());
     }
 
     #[test]

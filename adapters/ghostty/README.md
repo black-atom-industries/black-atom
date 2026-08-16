@@ -17,6 +17,7 @@ Black Atom includes multiple theme collections, each with dark and light variant
 | **Default**  | Core Black Atom themes        |
 | **JPN**      | Japanese-inspired themes      |
 | **MNML**     | Minimalist accent themes      |
+| **Paper**    | Paper-inspired themes         |
 | **Stations** | Space station-inspired themes |
 | **Terra**    | Earth season-inspired themes  |
 
@@ -28,7 +29,8 @@ Black Atom includes multiple theme collections, each with dark and light variant
 
 ### Install the theme files
 
-Copy the generated `.conf` files to your Ghostty themes directory:
+[Livery](../../livery/README.md) does this for you: `livery setup`, then `livery apply <theme>`.
+To do it by hand instead, copy the generated `.conf` files to your Ghostty themes directory:
 
 ```bash
 mkdir -p ~/.config/ghostty/themes

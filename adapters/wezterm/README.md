@@ -17,6 +17,7 @@ Black Atom includes multiple theme collections, each with dark and light variant
 | **Default**  | Core Black Atom themes        |
 | **JPN**      | Japanese-inspired themes      |
 | **MNML**     | Minimalist accent themes      |
+| **Paper**    | Paper-inspired themes         |
 | **Stations** | Space station-inspired themes |
 | **Terra**    | Earth season-inspired themes  |
 

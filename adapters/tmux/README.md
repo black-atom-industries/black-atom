@@ -18,6 +18,13 @@ source-file /path/to/black-atom/adapters/tmux/themes/mnml/black-atom-mnml-clay-d
 
 ## Available Themes
 
+### Default Collection
+
+- `black-atom-default-dark` - Default dark
+- `black-atom-default-dark-dimmed` - Default dark dimmed
+- `black-atom-default-light` - Default light
+- `black-atom-default-light-dimmed` - Default light dimmed
+
 ### JPN Collection (Japanese-inspired)
 
 - `black-atom-jpn-koyo-yoru` - Autumn evening theme (dark)
@@ -31,10 +38,23 @@ source-file /path/to/black-atom/adapters/tmux/themes/mnml/black-atom-mnml-clay-d
 - `black-atom-mnml-clay-light` - Clay light
 - `black-atom-mnml-orange-dark` - Orange accent dark
 - `black-atom-mnml-orange-light` - Orange accent light
-- `black-atom-mnml-blue-dark` - Blue accent dark
-- `black-atom-mnml-blue-light` - Blue accent light
+- `black-atom-mnml-mikado-dark` - Mikado accent dark
+- `black-atom-mnml-mikado-light` - Mikado accent light
 - `black-atom-mnml-47-dark` - Special variant dark
 - `black-atom-mnml-47-light` - Special variant light
+- `black-atom-mnml-eink-dark` - E-ink dark
+- `black-atom-mnml-eink-light` - E-ink light
+- `black-atom-mnml-mono-dark` - Monochrome dark
+- `black-atom-mnml-mono-light` - Monochrome light
+- `black-atom-mnml-osman-light` - Osman light
+- `black-atom-mnml-ita-light` - Ita light
+
+### Paper Collection (Paper-inspired)
+
+- `black-atom-paper-brown-dark` - Brown dark
+- `black-atom-paper-brown-light` - Brown light
+- `black-atom-paper-blue-dark` - Blue dark
+- `black-atom-paper-blue-light` - Blue light
 
 ### Stations Collection (Space station-inspired)
 

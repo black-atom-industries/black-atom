@@ -103,5 +103,4 @@ package. Nothing is published yet.
 
 ## License
 
-MIT, see the LICENSE file in each package (`core/LICENSE.md`, `adapters/<name>/LICENSE`, and so
-on).
+MIT, see `core/LICENSE.md` and the LICENSE files in the adapters that carry one.

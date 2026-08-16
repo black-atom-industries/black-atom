@@ -81,7 +81,8 @@ window#waybar {
 | ------------ | ------------------------ | --------- |
 | **Default**  | Core Black Atom themes   | 4 themes  |
 | **JPN**      | Japanese-inspired themes | 4 themes  |
-| **MNML**     | Minimal themes           | 11 themes |
+| **MNML**     | Minimal themes           | 14 themes |
+| **Paper**    | Paper-inspired themes    | 4 themes  |
 | **Stations** | Space station-inspired   | 4 themes  |
 | **Terra**    | Earth seasons-inspired   | 8 themes  |
 
