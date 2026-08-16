@@ -9,46 +9,41 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root.tsx'
-import { Route as DevRouteRouteImport } from './routes/dev/route.tsx'
 import { Route as AppRouteRouteImport } from './routes/_app/route.tsx'
-import { Route as DevIndexRouteImport } from './routes/dev/index.tsx'
+import { Route as DevRouteRouteImport } from './routes/dev/route.tsx'
 import { Route as AppIndexRouteImport } from './routes/_app/index.tsx'
-import { Route as DevTypographyRouteImport } from './routes/dev/typography.tsx'
-import { Route as DevPrimitivesRouteImport } from './routes/dev/primitives.tsx'
-import { Route as DevComponentsRouteImport } from './routes/dev/components.tsx'
 import { Route as AppSettingsRouteRouteImport } from './routes/_app/settings/route.tsx'
+import { Route as DevIndexRouteImport } from './routes/dev/index.tsx'
+import { Route as DevComponentsRouteImport } from './routes/dev/components.tsx'
+import { Route as DevPrimitivesRouteImport } from './routes/dev/primitives.tsx'
+import { Route as DevTypographyRouteImport } from './routes/dev/typography.tsx'
 import { Route as AppSettingsIndexRouteImport } from './routes/_app/settings/index.tsx'
 import { Route as AppSettingsGeneralRouteImport } from './routes/_app/settings/general.tsx'
 import { Route as AppSettingsAdaptersIndexRouteImport } from './routes/_app/settings/adapters/index.tsx'
 import { Route as AppSettingsAdaptersAdapterRouteImport } from './routes/_app/settings/adapters/$adapter.tsx'
 
-const DevRouteRoute = DevRouteRouteImport.update({
-  id: '/dev',
-  path: '/dev',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AppRouteRoute = AppRouteRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DevIndexRoute = DevIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DevRouteRoute,
+const DevRouteRoute = DevRouteRouteImport.update({
+  id: '/dev',
+  path: '/dev',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const DevTypographyRoute = DevTypographyRouteImport.update({
-  id: '/typography',
-  path: '/typography',
-  getParentRoute: () => DevRouteRoute,
+const AppSettingsRouteRoute = AppSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRouteRoute,
 } as any)
-const DevPrimitivesRoute = DevPrimitivesRouteImport.update({
-  id: '/primitives',
-  path: '/primitives',
+const DevIndexRoute = DevIndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => DevRouteRoute,
 } as any)
 const DevComponentsRoute = DevComponentsRouteImport.update({
@@ -56,10 +51,15 @@ const DevComponentsRoute = DevComponentsRouteImport.update({
   path: '/components',
   getParentRoute: () => DevRouteRoute,
 } as any)
-const AppSettingsRouteRoute = AppSettingsRouteRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AppRouteRoute,
+const DevPrimitivesRoute = DevPrimitivesRouteImport.update({
+  id: '/primitives',
+  path: '/primitives',
+  getParentRoute: () => DevRouteRoute,
+} as any)
+const DevTypographyRoute = DevTypographyRouteImport.update({
+  id: '/typography',
+  path: '/typography',
+  getParentRoute: () => DevRouteRoute,
 } as any)
 const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
   id: '/',
@@ -171,13 +171,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/dev': {
-      id: '/dev'
-      path: '/dev'
-      fullPath: '/dev'
-      preLoaderRoute: typeof DevRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_app': {
       id: '/_app'
       path: ''
@@ -185,12 +178,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dev/': {
-      id: '/dev/'
-      path: '/'
-      fullPath: '/dev/'
-      preLoaderRoute: typeof DevIndexRouteImport
-      parentRoute: typeof DevRouteRoute
+    '/dev': {
+      id: '/dev'
+      path: '/dev'
+      fullPath: '/dev'
+      preLoaderRoute: typeof DevRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_app/': {
       id: '/_app/'
@@ -199,18 +192,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/dev/typography': {
-      id: '/dev/typography'
-      path: '/typography'
-      fullPath: '/dev/typography'
-      preLoaderRoute: typeof DevTypographyRouteImport
-      parentRoute: typeof DevRouteRoute
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteRouteImport
+      parentRoute: typeof AppRouteRoute
     }
-    '/dev/primitives': {
-      id: '/dev/primitives'
-      path: '/primitives'
-      fullPath: '/dev/primitives'
-      preLoaderRoute: typeof DevPrimitivesRouteImport
+    '/dev/': {
+      id: '/dev/'
+      path: '/'
+      fullPath: '/dev/'
+      preLoaderRoute: typeof DevIndexRouteImport
       parentRoute: typeof DevRouteRoute
     }
     '/dev/components': {
@@ -220,12 +213,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DevComponentsRouteImport
       parentRoute: typeof DevRouteRoute
     }
-    '/_app/settings': {
-      id: '/_app/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AppSettingsRouteRouteImport
-      parentRoute: typeof AppRouteRoute
+    '/dev/primitives': {
+      id: '/dev/primitives'
+      path: '/primitives'
+      fullPath: '/dev/primitives'
+      preLoaderRoute: typeof DevPrimitivesRouteImport
+      parentRoute: typeof DevRouteRoute
+    }
+    '/dev/typography': {
+      id: '/dev/typography'
+      path: '/typography'
+      fullPath: '/dev/typography'
+      preLoaderRoute: typeof DevTypographyRouteImport
+      parentRoute: typeof DevRouteRoute
     }
     '/_app/settings/': {
       id: '/_app/settings/'
