@@ -1,3 +1,5 @@
+
+
 /* Black Atom — MNML ∷ 47 Light */
 .theme-light.black-atom-mnml-47-light {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #373d2f;
   --color-base-70: #20231b;
   --color-base-100: #151712;
+
 
   /* Extended Colors */
   --color-red: #98a485;
@@ -43,12 +46,12 @@
   --background-modifier-border: #fff6e3;
   --background-modifier-border-hover: #e6dcd0;
   --background-modifier-border-focus: #00936b;
-  --background-modifier-error-rgb: 249, 214, 169;
-  --background-modifier-error: #f9d6a9;
-  --background-modifier-error-hover: #f9d6a9;
-  --background-modifier-success-rgb: 219, 218, 179;
-  --background-modifier-success: #dbdab3;
-  --background-modifier-message: #ffceb8;
+  --background-modifier-error-rgb: 252, 208, 204;
+  --background-modifier-error: #fcd0cc;
+  --background-modifier-error-hover: #fcd0cc;
+  --background-modifier-success-rgb: 216, 225, 196;
+  --background-modifier-success: #d8e1c4;
+  --background-modifier-message: #c8e3f5;
   --background-modifier-form-field: #f3eadd;
 
   /* Text */
@@ -59,9 +62,9 @@
   --text-accent-hover: #00936b;
   --text-on-accent: #e6dcd0;
   --text-on-accent-inverted: #20231b;
-  --text-error: #f0532b;
-  --text-warning: #dd6d00;
-  --text-success: #00936b;
+  --text-error: #f14d4c;
+  --text-warning: #cd7b00;
+  --text-success: #819e00;
   --text-selection: #dfd6c9;
   --text-highlight-bg: #dfd6c9;
 
@@ -89,7 +92,7 @@
   --link-external-color-hover: #ec5a00;
 
   /* Code / Syntax Highlighting */
-  --code-normal: #434b36;
+  --code-normal: #373d2f;
   --code-comment: #6b765a;
   --code-function: #00936b;
   --code-important: #ec5a00;

@@ -15,7 +15,7 @@ import { generateAllRepositories, generateSingleAdapter } from "./generate.ts";
  */
 export async function watch() {
     const coreThemesDir = config.dir.themes;
-    const orgDir = config.dir.org || join(dirname(config.dir.core), config.orgName);
+    const orgDir = config.dir.org;
 
     // Collect all directories to watch
     const watchDirs: {
@@ -89,7 +89,7 @@ export async function watch() {
     // Run initial generation
     log.hr_thick("🚀 Running initial generation...");
     try {
-        await generateAllRepositories({ commit: false, logErrors: true });
+        await generateAllRepositories({ logErrors: true });
         log.success("Initial generation completed successfully");
     } catch (error) {
         log.error(
@@ -158,8 +158,7 @@ export async function watch() {
             );
 
             try {
-                const results = await generateAllRepositories({ commit: false });
-                const changedAdapters = results.filter((r) => r.hasChanges).length;
+                const results = await generateAllRepositories();
                 const errorAdapters = results.filter((r) => r.error);
 
                 if (errorAdapters.length > 0) {
@@ -169,9 +168,11 @@ export async function watch() {
                         : "Template error occurred";
 
                     log.error(`⚠️ Encountered error: ${cleanError}`);
-                    log.warn(`⚠️ ${changedAdapters} adapters updated partially`);
+                    log.warn(
+                        `⚠️ ${results.length - errorAdapters.length} adapters updated partially`,
+                    );
                 } else {
-                    log.success(`✅ ${changedAdapters} adapters updated successfully`);
+                    log.success(`✅ ${results.length} adapters updated successfully`);
                 }
             } catch (error) {
                 log.error(
@@ -210,17 +211,11 @@ export async function watch() {
                                 colors.magenta(adapterInfo.adapterName.toUpperCase())
                             } not updated - Waiting for fix...`,
                         );
-                    } else if (result.hasChanges) {
+                    } else {
                         log.success(
                             `✅ ${
                                 colors.magenta(adapterInfo.adapterName.toUpperCase())
                             } updated successfully`,
-                        );
-                    } else {
-                        log.info(
-                            `ℹ️ ${
-                                colors.magenta(adapterInfo.adapterName.toUpperCase())
-                            } - no changes needed`,
                         );
                     }
                 } catch (error) {

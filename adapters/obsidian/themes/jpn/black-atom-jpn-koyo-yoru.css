@@ -1,3 +1,5 @@
+
+
 /* Black Atom — JPN ∷ Koyo Yoru */
 .theme-dark.black-atom-jpn-koyo-yoru {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #e1caaa;
   --color-base-70: #ead2b2;
   --color-base-100: #fae2c2;
+
 
   /* Extended Colors */
   --color-red: #fe838f;
@@ -43,12 +46,12 @@
   --background-modifier-border: #3a2d3f;
   --background-modifier-border-hover: #3a2d3f;
   --background-modifier-border-focus: #e49e22;
-  --background-modifier-error-rgb: 83, 50, 78;
-  --background-modifier-error: #53324e;
-  --background-modifier-error-hover: #53324e;
-  --background-modifier-success-rgb: 55, 61, 90;
-  --background-modifier-success: #373d5a;
-  --background-modifier-message: #473850;
+  --background-modifier-error-rgb: 113, 70, 73;
+  --background-modifier-error: #714649;
+  --background-modifier-error-hover: #714649;
+  --background-modifier-success-rgb: 68, 90, 72;
+  --background-modifier-success: #445a48;
+  --background-modifier-message: #565062;
   --background-modifier-form-field: #261a2a;
 
   /* Text */

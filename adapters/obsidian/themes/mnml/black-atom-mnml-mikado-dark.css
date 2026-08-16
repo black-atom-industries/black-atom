@@ -1,3 +1,5 @@
+
+
 /* Black Atom — MNML ∷ Mikado Dark */
 .theme-dark.black-atom-mnml-mikado-dark {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #d2dae3;
   --color-base-70: #e2ebf3;
   --color-base-100: #f8fafd;
+
 
   /* Extended Colors */
   --color-red: #8ab2dc;
@@ -43,12 +46,12 @@
   --background-modifier-border: #233c56;
   --background-modifier-border-hover: #233c56;
   --background-modifier-border-focus: #f8ac3d;
-  --background-modifier-error-rgb: 67, 64, 115;
-  --background-modifier-error: #434073;
-  --background-modifier-error-hover: #434073;
-  --background-modifier-success-rgb: 0, 80, 104;
-  --background-modifier-success: #005068;
-  --background-modifier-message: #2b4d71;
+  --background-modifier-error-rgb: 112, 74, 73;
+  --background-modifier-error: #704a49;
+  --background-modifier-error-hover: #704a49;
+  --background-modifier-success-rgb: 91, 98, 75;
+  --background-modifier-success: #5b624b;
+  --background-modifier-message: #4b6068;
   --background-modifier-form-field: #1d364f;
 
   /* Text */
@@ -59,9 +62,9 @@
   --text-accent-hover: #f8ac3d;
   --text-on-accent: #1d364f;
   --text-on-accent-inverted: #e2ebf3;
-  --text-error: #f86c59;
-  --text-warning: #f8ac3d;
-  --text-success: #4EBA65;
+  --text-error: #dd7577;
+  --text-warning: #d6b174;
+  --text-success: #a9ba78;
   --text-selection: #2a435d;
   --text-highlight-bg: #2a435d;
 

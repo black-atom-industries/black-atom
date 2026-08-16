@@ -49,39 +49,3 @@ export async function runCommand(
         throw new Error(`Failed to run command ${command.join(" ")}: ${errorMessage}`);
     }
 }
-
-/**
- * Prompt the user for confirmation
- */
-export async function getUserConfirmation(message: string): Promise<boolean> {
-    const buf = new Uint8Array(64);
-    await Deno.stdout.write(new TextEncoder().encode(message));
-    const n = await Deno.stdin.read(buf);
-    const response = n ? new TextDecoder().decode(buf.subarray(0, n)).trim().toLowerCase() : "";
-    return response === "y";
-}
-
-/** Known task-level flags that should not be passed through to git */
-const TASK_FLAGS = new Set(["-y", "--yes", "--auto-stash"]);
-
-/**
- * Separate task-specific flags from git passthrough args.
- * Known task flags are extracted; everything else passes through to git unchanged.
- */
-export function parseTaskArgs(args: string[]): {
-    taskFlags: Set<string>;
-    gitArgs: string[];
-} {
-    const taskFlags = new Set<string>();
-    const gitArgs: string[] = [];
-
-    for (const arg of args) {
-        if (TASK_FLAGS.has(arg)) {
-            taskFlags.add(arg);
-        } else {
-            gitArgs.push(arg);
-        }
-    }
-
-    return { taskFlags, gitArgs };
-}

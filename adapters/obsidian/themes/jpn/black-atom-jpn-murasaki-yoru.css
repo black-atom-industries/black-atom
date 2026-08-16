@@ -1,3 +1,5 @@
+
+
 /* Black Atom — JPN ∷ Murasaki Yoru */
 .theme-dark.black-atom-jpn-murasaki-yoru {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #c9b1cb;
   --color-base-70: #d4bfd6;
   --color-base-100: #e8dbe9;
+
 
   /* Extended Colors */
   --color-red: #ff857b;
@@ -43,12 +46,12 @@
   --background-modifier-border: #452a32;
   --background-modifier-border-hover: #452a32;
   --background-modifier-border-focus: #dca23a;
-  --background-modifier-error-rgb: 98, 50, 61;
-  --background-modifier-error: #62323d;
-  --background-modifier-error-hover: #62323d;
-  --background-modifier-success-rgb: 90, 58, 46;
-  --background-modifier-success: #5a3a2e;
-  --background-modifier-message: #503b50;
+  --background-modifier-error-rgb: 117, 74, 69;
+  --background-modifier-error: #754a45;
+  --background-modifier-error-hover: #754a45;
+  --background-modifier-success-rgb: 72, 92, 83;
+  --background-modifier-success: #485c53;
+  --background-modifier-message: #4b5a5f;
   --background-modifier-form-field: #351b23;
 
   /* Text */

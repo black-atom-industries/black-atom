@@ -1,3 +1,5 @@
+
+
 /* Black Atom — MNML ∷ Clay Light */
 .theme-light.black-atom-mnml-clay-light {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #3e3a2f;
   --color-base-70: #322e22;
   --color-base-100: #252117;
+
 
   /* Extended Colors */
   --color-red: #888069;
@@ -43,12 +46,12 @@
   --background-modifier-border: #fff9e2;
   --background-modifier-border-hover: #ebe5cf;
   --background-modifier-border-focus: #e76b3e;
-  --background-modifier-error-rgb: 245, 219, 175;
-  --background-modifier-error: #f5dbaf;
-  --background-modifier-error-hover: #f5dbaf;
-  --background-modifier-success-rgb: 230, 228, 191;
-  --background-modifier-success: #e6e4bf;
-  --background-modifier-message: #d7e8c7;
+  --background-modifier-error-rgb: 254, 210, 205;
+  --background-modifier-error: #fed2cd;
+  --background-modifier-error-hover: #fed2cd;
+  --background-modifier-success-rgb: 217, 227, 198;
+  --background-modifier-success: #d9e3c6;
+  --background-modifier-message: #cae4f7;
   --background-modifier-form-field: #f8f2dc;
 
   /* Text */
@@ -59,9 +62,9 @@
   --text-accent-hover: #e76b3e;
   --text-on-accent: #ebe5cf;
   --text-on-accent-inverted: #322e22;
-  --text-error: #e76b3e;
-  --text-warning: #c39553;
-  --text-success: #8aab67;
+  --text-error: #f14d4c;
+  --text-warning: #cd7b00;
+  --text-success: #819e00;
   --text-selection: #ddd8c2;
   --text-highlight-bg: #ddd8c2;
 
@@ -89,7 +92,7 @@
   --link-external-color-hover: #7b7250;
 
   /* Code / Syntax Highlighting */
-  --code-normal: #4c473c;
+  --code-normal: #3e3a2f;
   --code-comment: #6b634d;
   --code-function: #e76b3e;
   --code-important: #7b7250;

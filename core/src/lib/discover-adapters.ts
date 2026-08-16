@@ -7,11 +7,6 @@ import { themeKeys } from "../types/theme.ts";
 import { createAdapterConfigSchema } from "./validate-adapter.ts";
 
 /**
- * Organization name for Black Atom Industries
- */
-const ORG_NAME = "black-atom-industries";
-
-/**
  * Discovers all enabled adapter repositories in the organization directory
  * An adapter is any directory that contains a black-atom-adapter.json file with enabled: true (or enabled not specified)
  */
@@ -61,7 +56,6 @@ export async function discoverAdapters(orgDir: string): Promise<string[]> {
  * Resolves the organization directory relative to core and discovers adapters
  */
 export async function getAdapters(): Promise<string[]> {
-    const coreDir = Deno.cwd();
-    const orgDir = join(dirname(dirname(coreDir)), ORG_NAME);
+    const orgDir = join(dirname(Deno.cwd()), "adapters");
     return await discoverAdapters(orgDir);
 }

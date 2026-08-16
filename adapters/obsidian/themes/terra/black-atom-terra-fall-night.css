@@ -1,3 +1,5 @@
+
+
 /* Black Atom — TERRA ∷ Fall Night */
 .theme-dark.black-atom-terra-fall-night {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #d9b5a2;
   --color-base-70: #eac5b1;
   --color-base-100: #f7d6c5;
+
 
   /* Extended Colors */
   --color-red: #e87a69;
@@ -43,12 +46,12 @@
   --background-modifier-border: #2e2119;
   --background-modifier-border-hover: #2e2119;
   --background-modifier-border-focus: #d68c00;
-  --background-modifier-error-rgb: 71, 39, 26;
-  --background-modifier-error: #47271a;
-  --background-modifier-error-hover: #47271a;
-  --background-modifier-success-rgb: 59, 45, 31;
-  --background-modifier-success: #3b2d1f;
-  --background-modifier-message: #43291c;
+  --background-modifier-error-rgb: 95, 57, 51;
+  --background-modifier-error: #5f3933;
+  --background-modifier-error-hover: #5f3933;
+  --background-modifier-success-rgb: 66, 71, 59;
+  --background-modifier-success: #42473b;
+  --background-modifier-message: #563f31;
   --background-modifier-form-field: #241710;
 
   /* Text */

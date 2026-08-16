@@ -2,13 +2,12 @@ import { dirname, join } from "@std/path";
 import type { ThemeCollectionKey } from "./types/theme.ts";
 
 export const config = {
-    orgName: "black-atom-industries",
     adapterFileName: "black-atom-adapter.json",
     get dir() {
         return {
             core: Deno.cwd(),
             themes: join(Deno.cwd(), "src", "themes"),
-            org: join(dirname(dirname(Deno.cwd())), this.orgName),
+            org: join(dirname(Deno.cwd()), "adapters"),
         };
     },
 } as const;

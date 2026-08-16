@@ -1,3 +1,5 @@
+
+
 /* Black Atom — Stations ∷ Medical */
 .theme-light.black-atom-stations-medical {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #384b42;
   --color-base-70: #2b3b33;
   --color-base-100: #22272f;
+
 
   /* Extended Colors */
   --color-red: #f472a0;
@@ -43,12 +46,12 @@
   --background-modifier-border: #c6d1cc;
   --background-modifier-border-hover: #c6d1cc;
   --background-modifier-border-focus: #66bd10;
-  --background-modifier-error-rgb: 206, 218, 185;
-  --background-modifier-error: #cedab9;
-  --background-modifier-error-hover: #cedab9;
-  --background-modifier-success-rgb: 179, 210, 192;
-  --background-modifier-success: #b3d2c0;
-  --background-modifier-message: #b9c6c0;
+  --background-modifier-error-rgb: 237, 202, 211;
+  --background-modifier-error: #edcad3;
+  --background-modifier-error-hover: #edcad3;
+  --background-modifier-success-rgb: 188, 208, 187;
+  --background-modifier-success: #bcd0bb;
+  --background-modifier-message: #bcc5c2;
   --background-modifier-form-field: #e1e7e4;
 
   /* Text */

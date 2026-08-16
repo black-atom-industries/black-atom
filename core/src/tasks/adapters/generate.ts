@@ -24,96 +24,37 @@ async function runPostGenerate(adapterDir: string, adapter: string): Promise<voi
     }
 }
 
-/**
- * Options for generating themes in repositories
- */
-export interface AdaptRepositoriesOptions {
-    /** Whether to commit changes (default: true) */
-    commit?: boolean;
-    /** Git commit args to pass through (e.g. ["-m", "message", "--amend"]) */
-    gitCommitArgs?: string[];
-    /** Whether to log errors immediately (useful for initial generation) */
-    logErrors?: boolean;
+async function runGenerate(adapterDir: string): Promise<void> {
+    const coreDir = config.dir.core;
+    await runCommand([
+        "deno",
+        "run",
+        "-A",
+        `${coreDir}/src/cli/index.ts`,
+        "generate",
+    ], { cwd: adapterDir });
 }
 
 /**
- * Generate themes for all repositories and optionally commit changes
+ * Generate themes for all repositories
  */
 export async function generateAllRepositories({
-    commit = true,
-    gitCommitArgs = [],
     logErrors = false,
-}: AdaptRepositoriesOptions = {}) {
-    const results: { adapter: string; hasChanges: boolean; error?: string }[] = [];
+}: { logErrors?: boolean } = {}) {
+    const results: { adapter: string; error?: string }[] = [];
     const adapters = await getAdapters();
 
     await forEachAdapter({
         adapters,
         cb: async ({ adapter, adapterDir }) => {
             try {
-                // Use Deno directly with import map for proper module resolution
-                const coreDir = config.dir.core;
-                await runCommand([
-                    "deno",
-                    "run",
-                    "-A",
-                    "--config",
-                    `${coreDir}/deno.json`,
-                    `${coreDir}/src/cli/index.ts`,
-                    "generate",
-                ], { cwd: adapterDir });
-
+                await runGenerate(adapterDir);
                 await runPostGenerate(adapterDir, adapter);
 
-                // Check for changes
-                const gitStatus = await runCommand(["git", "status", "--porcelain"], {
-                    cwd: adapterDir,
-                });
-                const hasChanges = gitStatus.trim() !== "";
-
-                if (hasChanges) {
-                    // Stage all changes to check diff
-                    await runCommand(["git", "add", "-A"], { cwd: adapterDir });
-
-                    // Get a summary of changes
-                    const diffSummary = await runCommand(["git", "diff", "--staged", "--stat"], {
-                        cwd: adapterDir,
-                    });
-
-                    if (commit) {
-                        log.info(`Changes detected in ${adapter}, committing...`);
-                        log.info(`Changes summary: \n${diffSummary.trim()}`);
-
-                        // Build git commit args with sensible defaults
-                        const args = [...gitCommitArgs];
-                        const hasMessage = args.includes("-m");
-                        const hasAmend = args.includes("--amend");
-
-                        if (!hasMessage) {
-                            if (hasAmend) {
-                                if (!args.includes("--no-edit")) {
-                                    args.push("--no-edit");
-                                }
-                            } else {
-                                args.push(
-                                    "-m",
-                                    `chore: generate ${adapter} themes with latest core definitions`,
-                                );
-                            }
-                        }
-
-                        await runCommand(["git", "commit", ...args], { cwd: adapterDir });
-                        log.success(`Successfully committed changes to ${adapter}`);
-                    } else {
-                        // Reset staging since we're not committing
-                        await runCommand(["git", "reset"], { cwd: adapterDir });
-                    }
-                }
-
-                results.push({ adapter, hasChanges });
+                results.push({ adapter });
             } catch (error) {
                 const errorMsg = error instanceof Error ? error.message : String(error);
-                results.push({ adapter, hasChanges: false, error: errorMsg });
+                results.push({ adapter, error: errorMsg });
 
                 // Log error immediately if requested (useful for initial generation)
                 if (logErrors) {
@@ -131,36 +72,16 @@ export async function generateAllRepositories({
  */
 export async function generateSingleAdapter(
     adapterName: string,
-): Promise<{ adapter: string; hasChanges: boolean; error?: string }> {
+): Promise<{ adapter: string; error?: string }> {
     const adapterDir = join(config.dir.org, adapterName);
 
     try {
-        // Use Deno directly with import map for proper module resolution
-        const coreDir = config.dir.core;
-        await runCommand([
-            "deno",
-            "run",
-            "-A",
-            "--config",
-            `${coreDir}/deno.json`,
-            `${coreDir}/src/cli/index.ts`,
-            "generate",
-        ], { cwd: adapterDir });
-
+        await runGenerate(adapterDir);
         await runPostGenerate(adapterDir, adapterName);
 
-        // Check for changes
-        const gitStatus = await runCommand(["git", "status", "--porcelain"], { cwd: adapterDir });
-        const hasChanges = gitStatus.trim() !== "";
-
-        if (hasChanges) {
-            // Reset staging since we're not committing
-            await runCommand(["git", "reset"], { cwd: adapterDir });
-        }
-
-        return { adapter: adapterName, hasChanges };
+        return { adapter: adapterName };
     } catch (error) {
         const errorMsg = error instanceof Error ? error.message : String(error);
-        return { adapter: adapterName, hasChanges: false, error: errorMsg };
+        return { adapter: adapterName, error: errorMsg };
     }
 }

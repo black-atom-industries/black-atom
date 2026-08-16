@@ -1,3 +1,5 @@
+
+
 /* Black Atom — MNML ∷ E-Ink Dark */
 .theme-dark.black-atom-mnml-eink-dark {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #d1d1d1;
   --color-base-70: #dedede;
   --color-base-100: #ebebeb;
+
 
   /* Extended Colors */
   --color-red: #a4a4a4;
@@ -43,12 +46,12 @@
   --background-modifier-border: #242424;
   --background-modifier-border-hover: #242424;
   --background-modifier-border-focus: #d2b5bd;
-  --background-modifier-error-rgb: 54, 33, 33;
-  --background-modifier-error: #362121;
-  --background-modifier-error-hover: #362121;
-  --background-modifier-success-rgb: 43, 46, 34;
-  --background-modifier-success: #2b2e22;
-  --background-modifier-message: #222d32;
+  --background-modifier-error-rgb: 84, 49, 49;
+  --background-modifier-error: #543131;
+  --background-modifier-error-hover: #543131;
+  --background-modifier-success-rgb: 66, 72, 50;
+  --background-modifier-success: #424832;
+  --background-modifier-message: #32464e;
   --background-modifier-form-field: #161616;
 
   /* Text */

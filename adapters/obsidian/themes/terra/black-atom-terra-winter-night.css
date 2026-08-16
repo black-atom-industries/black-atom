@@ -1,3 +1,5 @@
+
+
 /* Black Atom — TERRA ∷ Winter Night */
 .theme-dark.black-atom-terra-winter-night {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #d3dbe8;
   --color-base-70: #e2e8f2;
   --color-base-100: #eef2f9;
+
 
   /* Extended Colors */
   --color-red: #a8a6e5;
@@ -43,12 +46,12 @@
   --background-modifier-border: #1a222e;
   --background-modifier-border-hover: #1a222e;
   --background-modifier-border-focus: #fba952;
-  --background-modifier-error-rgb: 42, 47, 63;
-  --background-modifier-error: #2a2f3f;
-  --background-modifier-error-hover: #2a2f3f;
-  --background-modifier-success-rgb: 41, 50, 62;
-  --background-modifier-success: #29323e;
-  --background-modifier-message: #273041;
+  --background-modifier-error-rgb: 68, 68, 89;
+  --background-modifier-error: #444459;
+  --background-modifier-error-hover: #444459;
+  --background-modifier-success-rgb: 56, 78, 83;
+  --background-modifier-success: #384e53;
+  --background-modifier-message: #37495c;
   --background-modifier-form-field: #12161d;
 
   /* Text */

@@ -1,3 +1,5 @@
+
+
 /* Black Atom — Stations ∷ Engineering */
 .theme-dark.black-atom-stations-engineering {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #c3eed9;
   --color-base-70: #d5f4e3;
   --color-base-100: #e8fbf0;
+
 
   /* Extended Colors */
   --color-red: #f08cb4;
@@ -43,12 +46,12 @@
   --background-modifier-border: #1c2626;
   --background-modifier-border-hover: #1c2626;
   --background-modifier-border-focus: #c6de68;
-  --background-modifier-error-rgb: 31, 59, 75;
-  --background-modifier-error: #1f3b4b;
-  --background-modifier-error-hover: #1f3b4b;
-  --background-modifier-success-rgb: 26, 64, 59;
-  --background-modifier-success: #1a403b;
-  --background-modifier-message: #324644;
+  --background-modifier-error-rgb: 101, 66, 79;
+  --background-modifier-error: #65424f;
+  --background-modifier-error-hover: #65424f;
+  --background-modifier-success-rgb: 62, 88, 62;
+  --background-modifier-success: #3e583e;
+  --background-modifier-message: #55635c;
   --background-modifier-form-field: #0d1818;
 
   /* Text */

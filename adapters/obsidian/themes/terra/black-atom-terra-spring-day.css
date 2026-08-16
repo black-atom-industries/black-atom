@@ -1,3 +1,5 @@
+
+
 /* Black Atom — TERRA ∷ Spring Day */
 .theme-light.black-atom-terra-spring-day {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #416353;
   --color-base-70: #385547;
   --color-base-100: #304a3f;
+
 
   /* Extended Colors */
   --color-red: #dd7e5d;
@@ -43,12 +46,12 @@
   --background-modifier-border: #b9c6bf;
   --background-modifier-border-hover: #b9c6bf;
   --background-modifier-border-focus: #e49f1a;
-  --background-modifier-error-rgb: 202, 218, 192;
-  --background-modifier-error: #cadac0;
-  --background-modifier-error-hover: #cadac0;
-  --background-modifier-success-rgb: 183, 221, 201;
-  --background-modifier-success: #b7ddc9;
-  --background-modifier-message: #b9d6d2;
+  --background-modifier-error-rgb: 232, 206, 197;
+  --background-modifier-error: #e8cec5;
+  --background-modifier-error-hover: #e8cec5;
+  --background-modifier-success-rgb: 191, 219, 199;
+  --background-modifier-success: #bfdbc7;
+  --background-modifier-message: #c4d1df;
   --background-modifier-form-field: #d4dcd8;
 
   /* Text */

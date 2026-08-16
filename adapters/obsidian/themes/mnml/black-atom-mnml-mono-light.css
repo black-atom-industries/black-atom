@@ -1,3 +1,5 @@
+
+
 /* Black Atom — MNML ∷ Mono Light */
 .theme-light.black-atom-mnml-mono-light {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #2b2826;
   --color-base-70: #181614;
   --color-base-100: #0a0907;
+
 
   /* Extended Colors */
   --color-red: #c6c3c1;
@@ -43,12 +46,12 @@
   --background-modifier-border: #fffffc;
   --background-modifier-border-hover: #f1eeeb;
   --background-modifier-border-focus: #2e2e2e;
-  --background-modifier-error-rgb: 242, 224, 186;
-  --background-modifier-error: #f2e0ba;
-  --background-modifier-error-hover: #f2e0ba;
-  --background-modifier-success-rgb: 227, 229, 197;
-  --background-modifier-success: #e3e5c5;
-  --background-modifier-message: #d7ebd2;
+  --background-modifier-error-rgb: 255, 214, 209;
+  --background-modifier-error: #ffd6d1;
+  --background-modifier-error-hover: #ffd6d1;
+  --background-modifier-success-rgb: 222, 231, 202;
+  --background-modifier-success: #dee7ca;
+  --background-modifier-message: #cee9fb;
   --background-modifier-form-field: #fefbf8;
 
   /* Text */
@@ -89,7 +92,7 @@
   --link-external-color-hover: #4d4d4d;
 
   /* Code / Syntax Highlighting */
-  --code-normal: #3f3d3a;
+  --code-normal: #2b2826;
   --code-comment: #a09e9b;
   --code-function: #2e2e2e;
   --code-important: #4d4d4d;

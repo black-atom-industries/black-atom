@@ -1,3 +1,5 @@
+
+
 /* Black Atom — Stations ∷ Research */
 .theme-light.black-atom-stations-research {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #384b42;
   --color-base-70: #2b3b33;
   --color-base-100: #1e2229;
+
 
   /* Extended Colors */
   --color-red: #f472a0;
@@ -43,12 +46,12 @@
   --background-modifier-border: #e3e8e6;
   --background-modifier-border-hover: #e3e8e6;
   --background-modifier-border-focus: #66bd10;
-  --background-modifier-error-rgb: 202, 232, 252;
-  --background-modifier-error: #cae8fc;
-  --background-modifier-error-hover: #cae8fc;
-  --background-modifier-success-rgb: 196, 231, 225;
-  --background-modifier-success: #c4e7e1;
-  --background-modifier-message: #ccd8d7;
+  --background-modifier-error-rgb: 252, 216, 226;
+  --background-modifier-error: #fcd8e2;
+  --background-modifier-error-hover: #fcd8e2;
+  --background-modifier-success-rgb: 209, 230, 207;
+  --background-modifier-success: #d1e6cf;
+  --background-modifier-message: #cdd8d4;
   --background-modifier-form-field: #f8f9f9;
 
   /* Text */

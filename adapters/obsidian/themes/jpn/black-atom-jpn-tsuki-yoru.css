@@ -1,3 +1,5 @@
+
+
 /* Black Atom — JPN ∷ Tsuki Yoru */
 .theme-dark.black-atom-jpn-tsuki-yoru {
   /* Foundation: Base Colors */
@@ -14,6 +16,7 @@
   --color-base-60: #cbcbcb;
   --color-base-70: #e6e6e6;
   --color-base-100: #ffffff;
+
 
   /* Extended Colors */
   --color-red: #f591b2;
@@ -43,12 +46,12 @@
   --background-modifier-border: #282828;
   --background-modifier-border-hover: #282828;
   --background-modifier-border-focus: #eab899;
-  --background-modifier-error-rgb: 76, 55, 61;
-  --background-modifier-error: #4c373d;
-  --background-modifier-error-hover: #4c373d;
-  --background-modifier-success-rgb: 54, 63, 57;
-  --background-modifier-success: #363f39;
-  --background-modifier-message: #3a3d43;
+  --background-modifier-error-rgb: 107, 72, 83;
+  --background-modifier-error: #6b4853;
+  --background-modifier-error-hover: #6b4853;
+  --background-modifier-success-rgb: 71, 85, 76;
+  --background-modifier-success: #47554c;
+  --background-modifier-message: #4d525d;
   --background-modifier-form-field: #1c1c1c;
 
   /* Text */
