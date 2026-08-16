@@ -17,7 +17,16 @@
     ],
     "nodeModulesDir": "auto",
     "unstable": ["sloppy-imports"],
-    "tasks": {},
+    "tasks": {
+        "dev": "deno run -A scripts/dev.ts",
+        "dev:adapters": "cd core && deno task dev",
+        "dev:monitor": "cd core && deno task monitor",
+        "dev:livery": "cd livery && deno task dev",
+        "generate": "cd core && deno task adapters:gen",
+        "check": "deno check && deno lint && deno fmt --check",
+        "test": "deno test -P && cargo test",
+        "install-hooks": "git config core.hooksPath .githooks"
+    },
     "exclude": [
         "adapters/nvim/syntax_examples/",
         "livery/docs/design-system/reference/"
