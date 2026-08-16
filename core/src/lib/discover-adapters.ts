@@ -1,5 +1,5 @@
 /**
- * Discovers adapter repositories by looking for black-atom-adapter.json files
+ * Discovers adapters by looking for black-atom-adapter.json files
  */
 
 import { dirname, join } from "@std/path";
@@ -7,16 +7,16 @@ import { themeKeys } from "../types/theme.ts";
 import { createAdapterConfigSchema } from "./validate-adapter.ts";
 
 /**
- * Discovers all enabled adapter repositories in the organization directory
+ * Discovers all enabled adapters in the adapters directory
  * An adapter is any directory that contains a black-atom-adapter.json file with enabled: true (or enabled not specified)
  */
-export async function discoverAdapters(orgDir: string): Promise<string[]> {
+export async function discoverAdapters(adaptersDir: string): Promise<string[]> {
     const adapters: string[] = [];
     const adapterConfigSchema = createAdapterConfigSchema(themeKeys);
 
     try {
-        // Read all entries in the organization directory
-        for await (const entry of Deno.readDir(orgDir)) {
+        // Read all entries in the adapters directory
+        for await (const entry of Deno.readDir(adaptersDir)) {
             // Skip if not a directory
             if (!entry.isDirectory) continue;
 
@@ -27,7 +27,7 @@ export async function discoverAdapters(orgDir: string): Promise<string[]> {
             if (entry.name.startsWith(".")) continue;
 
             // Check if black-atom-adapter.json exists
-            const adapterFilePath = join(orgDir, entry.name, "black-atom-adapter.json");
+            const adapterFilePath = join(adaptersDir, entry.name, "black-atom-adapter.json");
             try {
                 await Deno.stat(adapterFilePath);
 
@@ -53,9 +53,9 @@ export async function discoverAdapters(orgDir: string): Promise<string[]> {
 
 /**
  * Convenience function to get adapters using the current working directory
- * Resolves the organization directory relative to core and discovers adapters
+ * Resolves the adapters directory as a sibling of core and discovers adapters
  */
 export async function getAdapters(): Promise<string[]> {
-    const orgDir = join(dirname(Deno.cwd()), "adapters");
-    return await discoverAdapters(orgDir);
+    const adaptersDir = join(dirname(Deno.cwd()), "adapters");
+    return await discoverAdapters(adaptersDir);
 }

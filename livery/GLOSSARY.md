@@ -2,7 +2,7 @@
 
 > **Shared terms** — Theme, Theme Key, Theme Definition, Appearance, Collection, Collection Key,
 > Theme Meta, and all color groups (Primaries, Palette, UI Colors, Syntax Colors) are defined in
-> [`@black-atom/core` UBIQUITOUS_LANGUAGE.md](https://github.com/black-atom-industries/core/blob/main/UBIQUITOUS_LANGUAGE.md).
+> [`core/UBIQUITOUS_LANGUAGE.md`](../core/UBIQUITOUS_LANGUAGE.md).
 > This glossary covers only livery-specific domain language.
 
 ## Theme Display

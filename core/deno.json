@@ -13,7 +13,6 @@
         ]
     },
     "tasks": {
-        "lock": "deno cache --lock=deno.lock --reload .",
         "test": "deno test --allow-all",
         "schema": "deno run --allow-read --allow-write src/lib/generate-schema.ts && deno fmt .",
         "cli:compile": "deno compile --allow-read --allow-write --allow-env -o black-atom-core src/cli/index.ts",
