@@ -1,8 +1,8 @@
 # Migration state
 
-Phase: 3
-Last completed task: 2.4 Phase 2 gate green (colour edit propagates to 8 generated files, reverts clean)
-Next: 3.1 per-collection output dir in core; waybar and herdr layouts
+Phase: 4
+Last completed task: 4.1 livery_core split out of the tauri crate (Phase 3 gate green before it: nine adapters emit themes/<collection>/, nvim emits colors/, headless checks pass)
+Next: 4.2 binary names (livery-gui) and 4.3 embed themes + XDG paths
 Blocked on Nik: `gh repo create black-atom-industries/black-atom --public --source . --push` is refused by the Claude Code permission classifier. Run it from `black-atom/` (or `! gh repo create ...` in the session), then CI on the first push is checked at the next gate. Phase 2 continues locally meanwhile.
 Decisions made in-run:
 
@@ -15,5 +15,10 @@ Decisions made in-run:
 
 - 2026-08-16 15:55 core adapter config gains an optional per-collection `output` directory (default: the template's directory) so shared templates can emit `themes/<collection>/` and nvim can emit `colors/`; herdr's postGenerate mover goes.
 - 2026-08-16 15:55 nvim colorschemes carry the full theme table and call a small runtime under `lua/black-atom/` on the same rtp entry (highlight logic in one place). Consequence for Phase 4: nvim's embed covers `colors/` and `lua/`, and the Linked placement is a pack dir on the runtimepath. The registry reclassification to Linked lands in Phase 4 together with the embedding, where the files exist.
+- 2026-08-16 16:10 XDG paths: `dirs::config_dir()`/`data_dir()` resolve to `~/Library/Application Support` on macOS, so livery uses `$XDG_CONFIG_HOME` / `$XDG_DATA_HOME` with `~/.config` / `~/.local/share` fallbacks on every platform (`livery_core::paths`).
+- 2026-08-16 16:10 Embedded set is ten adapters (nine `themes/` dirs, nvim `colors/` + `lua/`, obsidian's root `theme.css` + `manifest.json`); unpack writes `black-atom-*` files, obsidian's two root files and nvim's `lua/` tree, nothing else.
+- 2026-08-16 16:27 Nik: unpack is keyed on a hash of the embedded payload rather than the crate version, so debug builds pick up adapter edits.
+- 2026-08-16 16:10 `get_themes_status` is replaced by `get_app_status` (per-app provisioning + linked flag) because the adapter pages still need that state; the download surface itself is deleted as the issue lists.
+- 2026-08-16 16:10 Neovim settings are stored in livery config as `apps.nvim.settings` and written into a managed Lua block in `apps.nvim.settings_path` (default `~/.config/nvim/init.lua`); the colorscheme-line patch stays.
 
 Follow-up issues filed: (none)
