@@ -3,61 +3,61 @@ author = "Black Atom Industries"
 name = "Black Atom — PAPER ∷ Blue Dark"
 
 [colors]
-foreground = "#eef2f5"
-background = "#002b51"
-cursor_bg = "#f2f6f9"
-cursor_border = "#f2f6f9"
-cursor_fg = "#002b51"
-selection_bg = "#224c6a"
-selection_fg = "#eef2f5"
-split = "#f2f6f9"
+foreground = "#ebf2ff"
+background = "#152650"
+cursor_bg = "#fa8f19"
+cursor_border = "#fa8f19"
+cursor_fg = "#152650"
+selection_bg = "#283b67"
+selection_fg = "#ebf2ff"
+split = "#fa8f19"
 compose_cursor = "#dd7577"
-scrollbar_thumb = "#839caf"
+scrollbar_thumb = "#8098ca"
 
 ansi = [
-  "#224c6a", # black
-  "#a7bac9", # dark_red
-  "#839caf", # dark_green
-  "#839caf", # dark_yellow
-  "#a7bac9", # dark_blue
-  "#839caf", # dark_magenta
-  "#a7bac9", # dark_cyan
-  "#a7bac9" # light_gray
+  "#283b67", # black
+  "#9eb7eb", # dark_red
+  "#8098ca", # dark_green
+  "#8098ca", # dark_yellow
+  "#9eb7eb", # dark_blue
+  "#8098ca", # dark_magenta
+  "#9eb7eb", # dark_cyan
+  "#9eb7eb" # light_gray
 ]
 
 brights = [
-  "#446883", # gray
-  "#a7bac9", # red
-  "#839caf", # green
-  "#839caf", # yellow
-  "#a7bac9", # blue
-  "#839caf", # magenta
-  "#a7bac9", # cyan
-  "#a7bac9" # white
+  "#4d6291", # gray
+  "#9eb7eb", # red
+  "#8098ca", # green
+  "#8098ca", # yellow
+  "#9eb7eb", # blue
+  "#8098ca", # magenta
+  "#9eb7eb", # cyan
+  "#9eb7eb" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#001a41"
-background = "#002b51"
+inactive_tab_edge = "#08173f"
+background = "#152650"
 
 [colors.tab_bar.active_tab]
-fg_color = "#002b51"
-bg_color = "#f2f6f9"
+fg_color = "#152650"
+bg_color = "#fa8f19"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#002b51"
-bg_color = "#224c6a"
+fg_color = "#152650"
+bg_color = "#283b67"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#002b51"
-bg_color = "#053b5e"
+fg_color = "#152650"
+bg_color = "#1e305b"
 
 [colors.tab_bar.new_tab]
-fg_color = "#002b51"
+fg_color = "#152650"
 bg_color = "#a9ba78"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#002b51"
-bg_color = "#053b5e"
+fg_color = "#152650"
+bg_color = "#1e305b"
 intensity = "Bold"
