@@ -1502,6 +1502,19 @@
       "npm:react@19",
       "npm:vite@^6.1.0",
       "npm:zod@^3.24.0"
-    ]
+    ],
+    "links": {
+      "jsr:@black-atom/core@0.4.0": {
+        "dependencies": [
+          "jsr:@eta-dev/eta@3.5.0",
+          "jsr:@std/assert@1",
+          "jsr:@std/fmt@1.0.5",
+          "jsr:@std/fs@1",
+          "jsr:@std/path@^1.0.8",
+          "npm:culori@4",
+          "npm:zod@^3.24.2"
+        ]
+      }
+    }
   }
 }
