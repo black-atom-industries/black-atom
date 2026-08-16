@@ -11,6 +11,7 @@ This document outlines a comprehensive performance optimization strategy for the
 Based on the provided screenshots, the Black Atom theme loading shows the following performance characteristics:
 
 #### Initial Load Metrics
+
 - **treesitter.setup()**: ~3.73ms
 - **vim.notify_once("treesitter: module not found")**: ~0.23ms
 - **black-atom.highlights.apply**: ~3.62ms
@@ -23,6 +24,7 @@ Based on the provided screenshots, the Black Atom theme loading shows the follow
 - **require("black-atom.commands").register()**: ~0.07ms
 
 #### Aggregate Performance Impact
+
 - **Total Black Atom initialization**: ~7-8ms aggregate
 - **Highlight building process**: ~6-7ms (majority of time)
 - **File system operations**: ~2-3ms
@@ -85,12 +87,14 @@ vim.g.black_atom_cache = {
 **Objective**: Establish ShaDa-based caching foundation
 
 **Tasks**:
+
 1. Implement cache management module (`lua/black-atom/lib/cache.lua`)
 2. Add cache versioning and invalidation logic
 3. Create config hashing function for cache keys
 4. Add cache read/write operations with error handling
 
 **Deliverables**:
+
 - Cache module with get/set/clear operations
 - Config hash generation for cache invalidation
 - Error recovery for corrupted cache data
@@ -102,6 +106,7 @@ vim.g.black_atom_cache = {
 **Objective**: Cache computed highlight maps
 
 **Implementation**:
+
 ```lua
 -- Modified highlights.lua
 function M.apply(colors, config)
@@ -129,6 +134,7 @@ end
 **Objective**: Cache file system scanning results
 
 **Implementation**:
+
 ```lua
 -- Modified files.lua
 function M.get_highlight_modules(path, ignore_pattern)
@@ -154,6 +160,7 @@ end
 **Objective**: Only load highlights for installed plugins
 
 **Implementation**:
+
 ```lua
 -- New plugin_detector.lua
 function M.detect_installed_plugins()
@@ -180,12 +187,14 @@ end
 **Objective**: Implement cache lifecycle management
 
 **Features**:
+
 1. Auto-invalidation on Black Atom updates
 2. `:BlackAtomClearCache` command
 3. Cache statistics and debugging
 4. Periodic cache cleanup
 
 **Implementation**:
+
 ```lua
 -- commands.lua additions
 vim.api.nvim_create_user_command("BlackAtomClearCache", function()
@@ -203,13 +212,13 @@ end, {})
 
 ### Expected Improvements
 
-| Operation | Current Time | Target Time | Improvement |
-|-----------|-------------|-------------|-------------|
-| Initial theme load | 7-8ms | 7-8ms | 0% (first load) |
-| Subsequent loads (same session) | 7-8ms | <0.5ms | 93%+ |
-| Theme switching | 7-8ms | <0.5ms | 93%+ |
-| Config changes | 7-8ms | 2-3ms | 60%+ |
-| Plugin highlight loading | 3-4ms | 1-2ms | 50%+ |
+| Operation                       | Current Time | Target Time | Improvement     |
+| ------------------------------- | ------------ | ----------- | --------------- |
+| Initial theme load              | 7-8ms        | 7-8ms       | 0% (first load) |
+| Subsequent loads (same session) | 7-8ms        | <0.5ms      | 93%+            |
+| Theme switching                 | 7-8ms        | <0.5ms      | 93%+            |
+| Config changes                  | 7-8ms        | 2-3ms       | 60%+            |
+| Plugin highlight loading        | 3-4ms        | 1-2ms       | 50%+            |
 
 ### Memory Impact
 
@@ -257,14 +266,14 @@ end)
 
 ## Implementation Timeline
 
-| Week | Phase | Deliverables | Success Criteria |
-|------|-------|--------------|------------------|
-| 1 | Core Caching | Cache module, ShaDa integration | Cache read/write working |
-| 2 | Highlight Caching | Cached highlight maps | 90%+ reduction in highlight building |
-| 3 | Module Caching | Cached module discovery | Eliminate file scanning overhead |
-| 4 | Plugin Detection | Lazy loading implementation | 50%+ reduction in module loads |
-| 5 | Management | Commands, stats, cleanup | Full cache lifecycle working |
-| 6 | Testing & Optimization | Performance validation | Meet all performance targets |
+| Week | Phase                  | Deliverables                    | Success Criteria                     |
+| ---- | ---------------------- | ------------------------------- | ------------------------------------ |
+| 1    | Core Caching           | Cache module, ShaDa integration | Cache read/write working             |
+| 2    | Highlight Caching      | Cached highlight maps           | 90%+ reduction in highlight building |
+| 3    | Module Caching         | Cached module discovery         | Eliminate file scanning overhead     |
+| 4    | Plugin Detection       | Lazy loading implementation     | 50%+ reduction in module loads       |
+| 5    | Management             | Commands, stats, cleanup        | Full cache lifecycle working         |
+| 6    | Testing & Optimization | Performance validation          | Meet all performance targets         |
 
 ## Risk Assessment
 
@@ -295,11 +304,13 @@ end)
 ## Success Metrics
 
 ### Primary Metrics
+
 - **Theme load time**: <1ms for cached themes
 - **Cache hit rate**: >95% for unchanged configurations
 - **User satisfaction**: Positive feedback on performance
 
 ### Secondary Metrics
+
 - **Memory usage**: <1MB additional memory
 - **Cache size**: <500KB in ShaDa
 - **Bug reports**: No increase in issues

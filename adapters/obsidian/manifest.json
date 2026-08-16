@@ -1,8 +1,8 @@
 {
-  "manifest_version": 2,
-  "name": "Black Atom",
-  "version": "0.1.0",
-  "minAppVersion": "1.0.0",
-  "author": "Black Atom Industries",
-  "authorUrl": "https://github.com/black-atom-industries"
+    "manifest_version": 2,
+    "name": "Black Atom",
+    "version": "0.1.0",
+    "minAppVersion": "1.0.0",
+    "author": "Black Atom Industries",
+    "authorUrl": "https://github.com/black-atom-industries"
 }

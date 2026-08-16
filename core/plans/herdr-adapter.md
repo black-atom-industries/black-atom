@@ -32,20 +32,20 @@ name = "catppuccin" # or catppuccin-latte for light themes
 
 Use only semantic Black Atom inputs:
 
-| Herdr | Black Atom source |
-| --- | --- |
-| `accent` | `theme.ui.fg.accent` |
-| `panel_bg` | `theme.ui.bg.panel` |
-| `surface0` | `theme.ui.bg.active` |
-| `surface1`, `surface_dim` | one derived surface: 90% `theme.ui.bg.active` + 10% `theme.ui.fg.disabled` via a template-local sRGB hex blend, keeping it distinct from `surface0` without accessing primaries |
-| `overlay0` | `theme.ui.bg.disabled` |
-| `overlay1` | `theme.ui.fg.disabled` |
-| `text` | `theme.ui.fg.default` |
-| `subtext0` | `theme.ui.fg.subtle` |
-| `red`, `green`, `yellow`, `blue` | matching `theme.palette.*` colors |
-| `teal` | `theme.palette.cyan` |
-| `mauve` | `theme.palette.magenta` |
-| `peach` | `theme.palette.darkYellow` |
+| Herdr                            | Black Atom source                                                                                                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `accent`                         | `theme.ui.fg.accent`                                                                                                                                                            |
+| `panel_bg`                       | `theme.ui.bg.panel`                                                                                                                                                             |
+| `surface0`                       | `theme.ui.bg.active`                                                                                                                                                            |
+| `surface1`, `surface_dim`        | one derived surface: 90% `theme.ui.bg.active` + 10% `theme.ui.fg.disabled` via a template-local sRGB hex blend, keeping it distinct from `surface0` without accessing primaries |
+| `overlay0`                       | `theme.ui.bg.disabled`                                                                                                                                                          |
+| `overlay1`                       | `theme.ui.fg.disabled`                                                                                                                                                          |
+| `text`                           | `theme.ui.fg.default`                                                                                                                                                           |
+| `subtext0`                       | `theme.ui.fg.subtle`                                                                                                                                                            |
+| `red`, `green`, `yellow`, `blue` | matching `theme.palette.*` colors                                                                                                                                               |
+| `teal`                           | `theme.palette.cyan`                                                                                                                                                            |
+| `mauve`                          | `theme.palette.magenta`                                                                                                                                                         |
+| `peach`                          | `theme.palette.darkYellow`                                                                                                                                                      |
 
 The derived surface preserves the validated Herdr contrast relationship (`surface0` → derived separator/track → `overlay0`) while obeying the adapter rule against direct `theme.primaries`/`theme.accents` access. Keep collection templates identical except for their location, following existing adapter repos.
 

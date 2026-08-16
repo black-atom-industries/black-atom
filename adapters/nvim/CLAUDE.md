@@ -8,22 +8,22 @@ This is the Neovim adapter for Black Atom themes. It implements the Black Atom t
 
 - **colors/**: Adapted Lua files that define each colorscheme for Neovim use
 - **lua/black-atom/**: Main plugin code
-    - **api.lua**: Public API for the plugin
-    - **commands.lua**: Command definitions
-    - **config.lua**: Configuration handling
-    - **constants.lua**: Shared constants
-    - **highlights.lua**: Highlight group definitions
-    - **highlights/**: Highlight group modules
-        - **lsp.lua**: LSP highlights
-        - **plugins/**: Plugin-specific highlights
-        - **syntax.lua**: Syntax highlighting
-        - **ui.lua**: UI component highlights
-    - **init.lua**: Main entry point
-    - **lib/**: Utility modules
-    - **themes/**: Theme definition files
-        - **{collection}/**: Theme collection directories
-            - **black-atom-{collection}-{variant}.template.lua**: Template files for adaptation
-            - **black-atom-{collection}-{variant}.lua**: Adapted theme files
+  - **api.lua**: Public API for the plugin
+  - **commands.lua**: Command definitions
+  - **config.lua**: Configuration handling
+  - **constants.lua**: Shared constants
+  - **highlights.lua**: Highlight group definitions
+  - **highlights/**: Highlight group modules
+    - **lsp.lua**: LSP highlights
+    - **plugins/**: Plugin-specific highlights
+    - **syntax.lua**: Syntax highlighting
+    - **ui.lua**: UI component highlights
+  - **init.lua**: Main entry point
+  - **lib/**: Utility modules
+  - **themes/**: Theme definition files
+    - **{collection}/**: Theme collection directories
+      - **black-atom-{collection}-{variant}.template.lua**: Template files for adaptation
+      - **black-atom-{collection}-{variant}.lua**: Adapted theme files
 
 ## Adapter Pattern
 

@@ -39,12 +39,14 @@ source-file ~/path/to/black-atom-industries/tmux/themes/mnml/black-atom-mnml-cla
 ## Available Themes
 
 ### JPN Collection (Japanese-inspired)
+
 - `black-atom-jpn-koyo-yoru` - Autumn evening theme (dark)
 - `black-atom-jpn-koyo-hiru` - Autumn daytime theme (light)
 - `black-atom-jpn-tsuki-yoru` - Moonlit night theme (dark)
 - `black-atom-jpn-murasaki-yoru` - Purple night theme (dark)
 
 ### MNML Collection (Minimal)
+
 - `black-atom-mnml-clay-dark` - Clay dark
 - `black-atom-mnml-clay-light` - Clay light
 - `black-atom-mnml-orange-dark` - Orange accent dark
@@ -55,12 +57,14 @@ source-file ~/path/to/black-atom-industries/tmux/themes/mnml/black-atom-mnml-cla
 - `black-atom-mnml-47-light` - Special variant light
 
 ### Stations Collection (Space station-inspired)
+
 - `black-atom-stations-engineering` - Engineering station (dark)
 - `black-atom-stations-operations` - Operations station (dark)
 - `black-atom-stations-medical` - Medical station (light)
 - `black-atom-stations-research` - Research station (light)
 
 ### Terra Collection (Earth seasons-inspired)
+
 - `black-atom-terra-spring-day` - Spring daytime (light)
 - `black-atom-terra-spring-night` - Spring evening (dark)
 - `black-atom-terra-summer-day` - Summer daytime (light)
@@ -71,6 +75,7 @@ source-file ~/path/to/black-atom-industries/tmux/themes/mnml/black-atom-mnml-cla
 - `black-atom-terra-winter-night` - Winter evening (dark)
 
 ### North Collection (Nordic-inspired)
+
 - `black-atom-north-night` - Nordic night (dark)
 - `black-atom-north-dark-night` - Deep Nordic night (dark)
 - `black-atom-north-day` - Nordic day (light)

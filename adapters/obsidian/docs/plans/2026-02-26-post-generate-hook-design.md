@@ -23,10 +23,10 @@ Add a standardized `postGenerate` hook to the adapter system.
 
 ```json
 {
-  "postGenerate": {
-    "type": "string",
-    "description": "Shell command to run after generation completes (e.g. assembly step)"
-  }
+    "postGenerate": {
+        "type": "string",
+        "description": "Shell command to run after generation completes (e.g. assembly step)"
+    }
 }
 ```
 
@@ -40,7 +40,7 @@ both `generateAllRepositories` and `generateSingleAdapter`.
 
 ```json
 {
-  "postGenerate": "deno task postGenerate"
+    "postGenerate": "deno task postGenerate"
 }
 ```
 
@@ -54,16 +54,16 @@ both `generateAllRepositories` and `generateSingleAdapter`.
 
 ```json
 {
-  "tasks": {
-    "generate": "deno run -A jsr:@black-atom/core/cli generate",
-    "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
-    "build": "deno task generate && deno task postGenerate && deno fmt .",
-    "dev": "deno run -A jsr:@black-atom/core/cli generate --watch",
-    "update": "deno cache --reload jsr:@black-atom/core/cli",
-    "fmt": "deno fmt .",
-    "fmt:check": "deno fmt --check .",
-    "lint": "deno lint ."
-  }
+    "tasks": {
+        "generate": "deno run -A jsr:@black-atom/core/cli generate",
+        "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
+        "build": "deno task generate && deno task postGenerate && deno fmt .",
+        "dev": "deno run -A jsr:@black-atom/core/cli generate --watch",
+        "update": "deno cache --reload jsr:@black-atom/core/cli",
+        "fmt": "deno fmt .",
+        "fmt:check": "deno fmt --check .",
+        "lint": "deno lint ."
+    }
 }
 ```
 

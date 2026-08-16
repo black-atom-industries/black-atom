@@ -1,0 +1,61 @@
+{
+    "$schema": "https://raw.githubusercontent.com/denoland/deno/main/cli/schemas/config-file.v1.json",
+    "workspace": [
+        "./core",
+        "./core/monitor",
+        "./livery",
+        "./adapters/ghostty",
+        "./adapters/herdr",
+        "./adapters/lazygit",
+        "./adapters/niri",
+        "./adapters/nvim",
+        "./adapters/obsidian",
+        "./adapters/tmux",
+        "./adapters/waybar",
+        "./adapters/wezterm",
+        "./adapters/zed"
+    ],
+    "nodeModulesDir": "auto",
+    "unstable": ["sloppy-imports"],
+    "tasks": {},
+    "exclude": [
+        "adapters/nvim/syntax_examples/",
+        "livery/docs/design-system/reference/"
+    ],
+    "lint": {
+        "rules": { "exclude": ["no-slow-types", "no-sloppy-imports", "jsx-no-children-prop"] },
+        "exclude": [
+            "core/monitor/src/routeTree.gen.ts",
+            "livery/src/routeTree.gen.ts",
+            "livery/src/bindings.ts",
+            "adapters/*/themes/",
+            "adapters/nvim/lua/black-atom/themes/",
+            "adapters/nvim/colors/",
+            "**/.claude/",
+            "**/.agents/",
+            "**/.impeccable/"
+        ]
+    },
+    "fmt": {
+        "useTabs": false,
+        "lineWidth": 100,
+        "indentWidth": 4,
+        "semiColons": true,
+        "singleQuote": false,
+        "proseWrap": "preserve",
+        "exclude": [
+            "**/CHANGELOG.md",
+            "core/monitor/src/routeTree.gen.ts",
+            "livery/src/routeTree.gen.ts",
+            "livery/src/bindings.ts",
+            "livery/src-tauri/",
+            "adapters/*/themes/",
+            "adapters/nvim/lua/black-atom/themes/",
+            "adapters/nvim/colors/",
+            "adapters/obsidian/theme.css",
+            "**/.claude/",
+            "**/.agents/",
+            "**/.impeccable/"
+        ]
+    }
+}

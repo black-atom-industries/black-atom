@@ -11,7 +11,7 @@ type Props = {
     optional?: boolean;
     note?: string;
     onCommit: (value: string) => void;
-    inputRef?: React.RefObject<HTMLInputElement>;
+    inputRef?: React.RefObject<HTMLInputElement | null>;
     pathKind?: PathKind;
     onPickPath?: (kind: PathKind) => Promise<string | null>;
 };

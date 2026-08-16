@@ -18,28 +18,25 @@ This adapter generates CSS files containing GTK color definitions using `@define
 
 ```css
 /* Background colors */
-@ba-bg-default    /* Main background */
-@ba-bg-panel      /* Panel/secondary background */
-@ba-bg-hover      /* Hover state */
-@ba-bg-active     /* Active/pressed state */
-@ba-bg-selection  /* Selection background */
-@ba-bg-contrast   /* High contrast background */
-
-/* Foreground colors */
-@ba-fg-default    /* Main text */
-@ba-fg-subtle     /* Subtle/secondary text */
-@ba-fg-accent     /* Accent color */
-@ba-fg-disabled   /* Disabled text */
-@ba-fg-contrast   /* High contrast text */
-
-/* Feedback colors */
-@ba-fg-negative   /* Error/negative */
-@ba-fg-positive   /* Success/positive */
-@ba-fg-warn       /* Warning */
-@ba-fg-info       /* Info */
-
-/* Palette colors */
-@ba-red, @ba-green, @ba-yellow, @ba-blue, @ba-magenta, @ba-cyan
+@ba-bg-default /* Main background */
+    @ba-bg-panel /* Panel/secondary background */
+    @ba-bg-hover /* Hover state */
+    @ba-bg-active /* Active/pressed state */
+    @ba-bg-selection /* Selection background */
+    @ba-bg-contrast /* High contrast background */
+    /* Foreground colors */
+    @ba-fg-default /* Main text */
+    @ba-fg-subtle /* Subtle/secondary text */
+    @ba-fg-accent /* Accent color */
+    @ba-fg-disabled /* Disabled text */
+    @ba-fg-contrast /* High contrast text */
+    /* Feedback colors */
+    @ba-fg-negative /* Error/negative */
+    @ba-fg-positive /* Success/positive */
+    @ba-fg-warn /* Warning */
+    @ba-fg-info /* Info */
+    /* Palette colors */
+    @ba-red, @ba-green, @ba-yellow, @ba-blue, @ba-magenta, @ba-cyan
 ```
 
 ## Installation
@@ -90,13 +87,13 @@ window#waybar {
 
 ## Available Themes
 
-| Collection   | Description                  | Themes    |
-| ------------ | ---------------------------- | --------- |
-| **Default**  | Core Black Atom themes       | 4 themes  |
-| **JPN**      | Japanese-inspired themes     | 4 themes  |
-| **MNML**     | Minimal themes               | 11 themes |
-| **Stations** | Space station-inspired       | 4 themes  |
-| **Terra**    | Earth seasons-inspired       | 8 themes  |
+| Collection   | Description              | Themes    |
+| ------------ | ------------------------ | --------- |
+| **Default**  | Core Black Atom themes   | 4 themes  |
+| **JPN**      | Japanese-inspired themes | 4 themes  |
+| **MNML**     | Minimal themes           | 11 themes |
+| **Stations** | Space station-inspired   | 4 themes  |
+| **Terra**    | Earth seasons-inspired   | 8 themes  |
 
 ## Development
 

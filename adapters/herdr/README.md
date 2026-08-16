@@ -15,14 +15,14 @@ to download, apply, and switch these fragments safely.
 
 ## Collections
 
-| Collection | Themes |
-| --- | --- |
-| Default | dark, dark dimmed, light, light dimmed |
-| JPN | koyo hiru/yoru, tsuki yoru, murasaki yoru |
-| Stations | engineering, operations, medical, research |
-| Terra | spring, summer, fall, winter — day and night |
-| MNML | clay, orange, osman, mikado, 47, eink, mono, ita variants |
-| Paper | brown and blue — light and dark |
+| Collection | Themes                                                    |
+| ---------- | --------------------------------------------------------- |
+| Default    | dark, dark dimmed, light, light dimmed                    |
+| JPN        | koyo hiru/yoru, tsuki yoru, murasaki yoru                 |
+| Stations   | engineering, operations, medical, research                |
+| Terra      | spring, summer, fall, winter — day and night              |
+| MNML       | clay, orange, osman, mikado, 47, eink, mono, ita variants |
+| Paper      | brown and blue — light and dark                           |
 
 Generated files live at `themes/<collection>/<theme-key>.toml`.
 

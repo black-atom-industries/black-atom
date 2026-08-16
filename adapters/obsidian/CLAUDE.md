@@ -52,17 +52,17 @@ themes:
 
 ```json
 {
-  "collections": {
-    "default": {
-      "template": "themes/collection.template.css",
-      "themes": [
-        "black-atom-default-dark",
-        "black-atom-default-dark-dimmed",
-        "black-atom-default-light",
-        "black-atom-default-light-dimmed"
-      ]
+    "collections": {
+        "default": {
+            "template": "themes/collection.template.css",
+            "themes": [
+                "black-atom-default-dark",
+                "black-atom-default-dark-dimmed",
+                "black-atom-default-light",
+                "black-atom-default-light-dimmed"
+            ]
+        }
     }
-  }
 }
 ```
 

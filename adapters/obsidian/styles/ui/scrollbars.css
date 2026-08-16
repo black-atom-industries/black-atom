@@ -4,5 +4,5 @@
 
 /* --- Scrollbar: Hidden (desktop only) --- */
 body:not(.is-mobile).hide-scrollbars ::-webkit-scrollbar {
-  display: none;
+    display: none;
 }

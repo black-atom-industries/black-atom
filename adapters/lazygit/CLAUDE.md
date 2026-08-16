@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is the **Lazygit adapter** for the Black Atom theme ecosystem. Theme files are generated from the [core repository](https://github.com/black-atom-industries/core) using the Eta template engine.
 
 **Key principle**: This repository contains generated output files. To modify themes, either:
+
 1. Edit the template files in this repository, then regenerate
 2. Modify theme definitions in the core repository (for color changes)
 
@@ -49,10 +50,10 @@ Templates use Eta syntax to inject theme values:
 
 ```yaml
 activeBorderColor:
-  - "<%= theme.ui.fg.accent %>"
-  - bold
+    - "<%= theme.ui.fg.accent %>"
+    - bold
 defaultFgColor:
-  - "<%= theme.ui.fg.default %>"
+    - "<%= theme.ui.fg.default %>"
 ```
 
 ### Available Token Paths
@@ -67,14 +68,14 @@ Use these in templates (never use `theme.primaries.*` directly):
 
 Key theme properties mapped from Black Atom tokens:
 
-| Lazygit Property | Black Atom Token | Purpose |
-|-----------------|------------------|---------|
-| `activeBorderColor` | `ui.fg.accent` | Focused panel border |
-| `inactiveBorderColor` | `ui.fg.subtle` | Unfocused panel border |
-| `selectedLineBgColor` | `ui.bg.selection` | Selected item background |
-| `defaultFgColor` | `ui.fg.default` | Default text color |
-| `unstagedChangesColor` | `ui.fg.negative` | Unstaged file indicator |
-| `searchingActiveBorderColor` | `palette.yellow` | Search mode border |
+| Lazygit Property             | Black Atom Token  | Purpose                  |
+| ---------------------------- | ----------------- | ------------------------ |
+| `activeBorderColor`          | `ui.fg.accent`    | Focused panel border     |
+| `inactiveBorderColor`        | `ui.fg.subtle`    | Unfocused panel border   |
+| `selectedLineBgColor`        | `ui.bg.selection` | Selected item background |
+| `defaultFgColor`             | `ui.fg.default`   | Default text color       |
+| `unstagedChangesColor`       | `ui.fg.negative`  | Unstaged file indicator  |
+| `searchingActiveBorderColor` | `palette.yellow`  | Search mode border       |
 
 ## Testing Changes
 

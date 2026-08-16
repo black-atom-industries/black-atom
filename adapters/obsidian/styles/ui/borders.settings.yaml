@@ -10,12 +10,12 @@
   allowEmpty: true
   default: ba-radius-none
   options:
-    - label: "None (0px)"
-      value: ba-radius-none
-    - label: "Small (4px)"
-      value: ba-radius-small
-    - label: "Medium (8px)"
-      value: ba-radius-medium
+      - label: "None (0px)"
+        value: ba-radius-none
+      - label: "Small (4px)"
+        value: ba-radius-small
+      - label: "Medium (8px)"
+        value: ba-radius-medium
 - id: ba-border-width
   title: Border Width
   description: Base border width for UI elements

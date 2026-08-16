@@ -16,13 +16,13 @@ This modular approach ensures consistent colors and styling across all supported
 
 Black Atom includes multiple theme collections, each with dark and light variants:
 
-| Collection    | Description                   |
-| ------------- | ----------------------------- |
-| **Default**   | Core Black Atom themes        |
-| **JPN**       | Japanese-inspired themes      |
-| **MNML**      | Minimalist accent themes      |
-| **Stations**  | Space station-inspired themes |
-| **Terra**     | Earth season-inspired themes  |
+| Collection   | Description                   |
+| ------------ | ----------------------------- |
+| **Default**  | Core Black Atom themes        |
+| **JPN**      | Japanese-inspired themes      |
+| **MNML**     | Minimalist accent themes      |
+| **Stations** | Space station-inspired themes |
+| **Terra**    | Earth season-inspired themes  |
 
 ## Installation
 
@@ -196,6 +196,7 @@ This theme supports the following plugins:
   - 1 Highlight(s)
   - Last updated: 2026-06-05
   - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+
 </details>
 
 ## Development
@@ -203,7 +204,7 @@ This theme supports the following plugins:
 ### Roadmap
 
 - [ ] Minimize default highlight assignments
-    - The default assignment and links should be used as far as possible
+  - The default assignment and links should be used as far as possible
 - [ ] Make API stable
 - [ ] Dediated Black Atom Colorscheme Picker
 
@@ -260,13 +261,13 @@ Theme files are generated from templates using [Black Atom Core](https://jsr.io/
 
 1. Edit the template files in `lua/black-atom/themes/{collection}/`
 2. Generate theme files:
-    ```bash
-    deno task generate
-    ```
+   ```bash
+   deno task generate
+   ```
 3. Or use watch mode for live regeneration:
-    ```bash
-    deno task dev
-    ```
+   ```bash
+   deno task dev
+   ```
 
 ## License
 

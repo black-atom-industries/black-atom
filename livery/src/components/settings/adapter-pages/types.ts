@@ -18,7 +18,7 @@ export type AdapterPageProps = {
     detected: boolean;
     onToggleEnabled: () => void;
     onFieldCommit: (field: AdapterField, value: string) => void;
-    firstFieldRef?: React.RefObject<HTMLInputElement>;
+    firstFieldRef?: React.RefObject<HTMLInputElement | null>;
     onPickPath: (kind: PathKind) => Promise<string | null>;
     onOpenUrl?: (url: string) => void;
 

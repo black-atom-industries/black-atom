@@ -55,7 +55,7 @@ async function watchAdapter(adapterConfig: AdapterConfig) {
     const watcher = Deno.watchFs(cwd);
 
     // Debounce mechanism
-    let debounceTimer: number | null = null;
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
     let isProcessing = false;
     const pendingChanges = new Set<string>();
 

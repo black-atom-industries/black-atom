@@ -112,18 +112,18 @@ So template path `templates/default/collection.template.css` generates:
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/black-atom-industries/core/refs/heads/main/adapter.schema.json",
-  "collections": {
-    "default": {
-      "template": "templates/default/collection.template.css",
-      "themes": [
-        "black-atom-default-dark",
-        "black-atom-default-dark-dimmed",
-        "black-atom-default-light",
-        "black-atom-default-light-dimmed"
-      ]
+    "$schema": "https://raw.githubusercontent.com/black-atom-industries/core/refs/heads/main/adapter.schema.json",
+    "collections": {
+        "default": {
+            "template": "templates/default/collection.template.css",
+            "themes": [
+                "black-atom-default-dark",
+                "black-atom-default-dark-dimmed",
+                "black-atom-default-light",
+                "black-atom-default-light-dimmed"
+            ]
+        }
     }
-  }
 }
 ```
 

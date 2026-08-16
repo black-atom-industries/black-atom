@@ -7,9 +7,9 @@ This is the Zed adapter for Black Atom themes. It implements the Black Atom them
 ## Repository Structure
 
 - **themes/**: Theme files organized by collection
-    - **jpn/**: Japanese-inspired themes **stations/**: Space station-inspired themes
-    - **terra/**: Earth seasons-inspired themes
-    - **crbn/**: Carbon-inspired minimal themes
+  - **jpn/**: Japanese-inspired themes **stations/**: Space station-inspired themes
+  - **terra/**: Earth seasons-inspired themes
+  - **crbn/**: Carbon-inspired minimal themes
 - **black-atom-adapter.json**: Configuration file mapping themes to templates
 
 ## Adapter Pattern

@@ -64,39 +64,39 @@ settings:
 
 /* --- Black Atom — Dark --- */
 .theme-dark.black-atom-default-dark {
-  /* Foundation colors */
-  --color-base-00: #...;
-  --color-base-05: #...;
-  /* ... */
+    /* Foundation colors */
+    --color-base-00: #...;
+    --color-base-05: #...;
+    /* ... */
 
-  /* Semantic backgrounds */
-  --background-primary: #...;
-  --background-secondary: #...;
-  /* ... */
+    /* Semantic backgrounds */
+    --background-primary: #...;
+    --background-secondary: #...;
+    /* ... */
 
-  /* Text */
-  --text-normal: #...;
-  --text-muted: #...;
-  /* ... */
+    /* Text */
+    --text-normal: #...;
+    --text-muted: #...;
+    /* ... */
 
-  /* Extended colors + RGB variants */
-  --color-red: #...;
-  --color-red-rgb: R, G, B;
-  /* ... */
+    /* Extended colors + RGB variants */
+    --color-red: #...;
+    --color-red-rgb: R, G, B;
+    /* ... */
 
-  /* Headings */
-  --h1-color: #...;
-  /* ... */
+    /* Headings */
+    --h1-color: #...;
+    /* ... */
 
-  /* Code / Syntax */
-  --code-comment: #...;
-  --code-function: #...;
-  /* ... */
+    /* Code / Syntax */
+    --code-comment: #...;
+    --code-function: #...;
+    /* ... */
 }
 
 /* --- Black Atom — Light --- */
 .theme-light.black-atom-default-light {
-  /* same variable set, light values */
+    /* same variable set, light values */
 }
 
 /* ... more variants ... */

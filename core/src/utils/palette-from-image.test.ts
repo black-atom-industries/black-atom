@@ -1,13 +1,23 @@
 import { assertEquals, assertExists, assertRejects } from "@std/assert";
+import { join } from "@std/path";
 import {
     adjustPaletteSuggestion,
     extractPaletteFromImage,
     generatePrimariesFromSuggestion,
 } from "./palette-from-image.ts";
 
+const testImagePath = join(
+    import.meta.dirname ?? ".",
+    "..",
+    "..",
+    "test",
+    "fixtures",
+    "test_image.jpg",
+);
+
 Deno.test("extractPaletteFromImage - valid image", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
         numColors: 10,
         appearance: "auto",
     });
@@ -47,7 +57,7 @@ Deno.test("extractPaletteFromImage - image not found", async () => {
 
 Deno.test("generatePrimariesFromSuggestion - dark theme", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
     });
 
     const suggestion = result.suggestions[0];
@@ -71,7 +81,7 @@ Deno.test("generatePrimariesFromSuggestion - dark theme", async () => {
 
 Deno.test("generatePrimariesFromSuggestion - light theme", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
     });
 
     const suggestion = result.suggestions[0];
@@ -86,7 +96,7 @@ Deno.test("generatePrimariesFromSuggestion - light theme", async () => {
 
 Deno.test("adjustPaletteSuggestion - hue shift", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
     });
 
     const original = result.suggestions[0];
@@ -100,7 +110,7 @@ Deno.test("adjustPaletteSuggestion - hue shift", async () => {
 
 Deno.test("adjustPaletteSuggestion - chroma multiplier", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
     });
 
     const original = result.suggestions[0];
@@ -113,7 +123,7 @@ Deno.test("adjustPaletteSuggestion - chroma multiplier", async () => {
 
 Deno.test("adjustPaletteSuggestion - lightness shift", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
     });
 
     const original = result.suggestions[0];
@@ -127,7 +137,7 @@ Deno.test("adjustPaletteSuggestion - lightness shift", async () => {
 
 Deno.test("palette suggestions have correct structure", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
     });
 
     result.suggestions.forEach((suggestion) => {
@@ -151,7 +161,7 @@ Deno.test("palette suggestions have correct structure", async () => {
 
 Deno.test("palette suggestions - vibrant accent has low chroma range", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
     });
 
     const vibrantSuggestion = result.suggestions.find((s) => s.name === "Vibrant Accent");
@@ -164,7 +174,7 @@ Deno.test("palette suggestions - vibrant accent has low chroma range", async () 
 
 Deno.test("palette suggestions - analogous harmony has medium chroma range", async () => {
     const result = await extractPaletteFromImage({
-        imagePath: "./test/fixtures/test_image.jpg",
+        imagePath: testImagePath,
     });
 
     const analogousSuggestion = result.suggestions.find((s) => s.name === "Analogous Harmony");

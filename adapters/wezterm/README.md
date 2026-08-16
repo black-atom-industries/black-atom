@@ -16,13 +16,13 @@ This modular approach ensures consistent colors and styling across all supported
 
 Black Atom includes multiple theme collections, each with dark and light variants:
 
-| Collection    | Description                   |
-| ------------- | ----------------------------- |
-| **Default**   | Core Black Atom themes        |
-| **JPN**       | Japanese-inspired themes      |
-| **MNML**      | Minimalist accent themes      |
-| **Stations**  | Space station-inspired themes |
-| **Terra**     | Earth season-inspired themes  |
+| Collection   | Description                   |
+| ------------ | ----------------------------- |
+| **Default**  | Core Black Atom themes        |
+| **JPN**      | Japanese-inspired themes      |
+| **MNML**     | Minimalist accent themes      |
+| **Stations** | Space station-inspired themes |
+| **Terra**    | Earth season-inspired themes  |
 
 ## Installation
 
@@ -272,4 +272,3 @@ MIT - See [LICENSE](./LICENSE) for details
 - [Black Atom for Zed](https://github.com/black-atom-industries/zed) - Zed editor adapter
 - [Black Atom for Ghostty](https://github.com/black-atom-industries/ghostty) - Ghostty terminal adapter
 - [Black Atom for Obsidian](https://github.com/black-atom-industries/obsidian) - Obsidian adapter
-

@@ -64,14 +64,14 @@ layout {
 
 ## Theme Properties Used
 
-| Property | Usage | Description |
-|----------|-------|-------------|
-| `theme.meta.label` | Comment header | Human-readable theme name |
-| `theme.ui.bg.panel` | `backdrop-color` | Overview backdrop |
-| `theme.ui.bg.default` | Shadow colors | Base for shadow with alpha |
-| `theme.ui.fg.accent` | `active-color` | Focus ring & border active |
-| `theme.ui.fg.subtle` | `inactive-color` | Focus ring & border inactive |
-| `theme.palette.red` | `urgent-color` | Border urgent state |
+| Property              | Usage            | Description                  |
+| --------------------- | ---------------- | ---------------------------- |
+| `theme.meta.label`    | Comment header   | Human-readable theme name    |
+| `theme.ui.bg.panel`   | `backdrop-color` | Overview backdrop            |
+| `theme.ui.bg.default` | Shadow colors    | Base for shadow with alpha   |
+| `theme.ui.fg.accent`  | `active-color`   | Focus ring & border active   |
+| `theme.ui.fg.subtle`  | `inactive-color` | Focus ring & border inactive |
+| `theme.palette.red`   | `urgent-color`   | Border urgent state          |
 
 ## Niri Integration
 
@@ -106,6 +106,7 @@ include "theme.kdl"
 ### What Stays in Main Config
 
 These settings should remain in your main `config.kdl`:
+
 - `overview { zoom }`, `workspace-shadow { softness, spread, offset }`
 - `focus-ring { width }`, `border { width, off }`
 - `shadow { softness, spread, offset, draw-behind-window }`
@@ -115,6 +116,7 @@ These settings should remain in your main `config.kdl`:
 ### Editing Templates
 
 All 5 collection templates are identical - edit all of them when making changes:
+
 - `themes/default/collection.template.kdl`
 - `themes/jpn/collection.template.kdl`
 - `themes/stations/collection.template.kdl`

@@ -162,6 +162,7 @@ deno task generate
 ## Roadmap
 
 See [beads issues](.beads/) for tracked work:
+
 - `niri-f1q` - Experiment with gradient support
 - `niri-3ng` - Differentiate active/focus vs inactive border colors
 

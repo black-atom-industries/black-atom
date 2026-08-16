@@ -4,41 +4,41 @@
 
 /* --- Border Radius: None (sharp corners) --- */
 body.ba-radius-none {
-  --radius-s: 0px;
-  --radius-m: 0px;
-  --radius-l: 0px;
-  --radius-xl: 0px;
-  --tab-radius: 0px;
-  --tab-radius-active: 0px;
-  --tab-curve: 0px;
-  --input-radius: 0px;
-  --modal-radius: 0px;
-  --callout-radius: 0px;
-  --tag-radius: 0px;
-  --toggle-radius: 0px;
-  --toggle-thumb-radius: 0px;
-  --checkbox-radius: 0px;
-  --prompt-radius: 0px;
+    --radius-s: 0px;
+    --radius-m: 0px;
+    --radius-l: 0px;
+    --radius-xl: 0px;
+    --tab-radius: 0px;
+    --tab-radius-active: 0px;
+    --tab-curve: 0px;
+    --input-radius: 0px;
+    --modal-radius: 0px;
+    --callout-radius: 0px;
+    --tag-radius: 0px;
+    --toggle-radius: 0px;
+    --toggle-thumb-radius: 0px;
+    --checkbox-radius: 0px;
+    --prompt-radius: 0px;
 }
 
 /* --- Border Radius: Small (Obsidian defaults) --- */
 body.ba-radius-small {
-  --radius-s: 4px;
-  --radius-m: 8px;
-  --radius-l: 12px;
+    --radius-s: 4px;
+    --radius-m: 8px;
+    --radius-l: 12px;
 }
 
 /* --- Border Radius: Medium (softer) --- */
 body.ba-radius-medium {
-  --radius-s: 8px;
-  --radius-m: 12px;
-  --radius-l: 16px;
+    --radius-s: 8px;
+    --radius-m: 12px;
+    --radius-l: 16px;
 }
 
 /* --- Border Width (targeted structural borders only) --- */
 body {
-  --divider-width: var(--ba-border-width, 6px);
-  --tab-outline-width: var(--ba-border-width, 6px);
-  --modal-border-width: var(--ba-border-width, 6px);
-  --callout-border-width: var(--ba-border-width, 6px);
+    --divider-width: var(--ba-border-width, 6px);
+    --tab-outline-width: var(--ba-border-width, 6px);
+    --modal-border-width: var(--ba-border-width, 6px);
+    --callout-border-width: var(--ba-border-width, 6px);
 }

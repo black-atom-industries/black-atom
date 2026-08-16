@@ -68,11 +68,13 @@ We follow a strict commit message format to ensure consistency and enable automa
 - For Pull Request titles, append the issue number in parentheses at the end: `(DEV-XXXX)`
 
 Examples for commit messages:
+
 - `feat: add new color scheme for dark mode`
 - `fix(highlights): correct syntax highlighting for JavaScript`
 - `docs: update installation instructions`
 
 Examples for PR titles:
+
 - `feat(highlights): add new color scheme for dark mode`
 - `fix(highlights): correct syntax highlighting for JavaScript (DEV-1234)`
 - `docs: update installation instructions (DEV-1234)`

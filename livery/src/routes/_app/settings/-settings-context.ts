@@ -43,7 +43,7 @@ export type SettingsContextValue = {
     onPickPath: (kind: PathKind) => Promise<string | null>;
     onOpenUrl: (url: string) => void;
 
-    firstFieldRef: RefObject<HTMLInputElement>;
+    firstFieldRef: RefObject<HTMLInputElement | null>;
 };
 
 export const SettingsContext = createContext<SettingsContextValue | null>(null);

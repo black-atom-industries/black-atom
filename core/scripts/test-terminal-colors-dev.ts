@@ -95,7 +95,7 @@ console.log(`\nPress Ctrl+C to stop.\n`);
 await run();
 
 const watcher = Deno.watchFs(ghosttyThemesDir, { recursive: true });
-let debounce: number | undefined;
+let debounce: ReturnType<typeof setTimeout> | undefined;
 
 for await (const event of watcher) {
     if (event.kind === "modify" || event.kind === "create") {

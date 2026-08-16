@@ -25,7 +25,7 @@ export default defineConfig({
         // Rollup unresolved. Alias it to the installed package explicitly.
         alias: {
             culori: fileURLToPath(
-                new URL("./node_modules/culori/src/index.js", import.meta.url),
+                new URL("../node_modules/culori/src/index.js", import.meta.url),
             ),
         },
     },

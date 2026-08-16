@@ -1,6 +1,4 @@
 {
-    "nodeModulesDir": "auto",
-    "unstable": ["sloppy-imports"],
     "tasks": {
         "test": "deno test --allow-all",
         "checks": "deno check && deno lint && deno fmt && deno task test && deno task build",
@@ -32,20 +30,5 @@
         "@vitejs/plugin-react-swc": "npm:@vitejs/plugin-react-swc@^3.8.0",
         "@core/": "../src/",
         "@std/assert": "jsr:@std/assert@^1.0.0"
-    },
-    "lint": {
-        "rules": {
-            "exclude": ["no-slow-types", "no-sloppy-imports", "jsx-no-children-prop"]
-        },
-        "exclude": [".vite/", "dist/", "src/routeTree.gen.ts"]
-    },
-    "fmt": {
-        "exclude": ["src/routeTree.gen.ts"],
-        "useTabs": false,
-        "lineWidth": 100,
-        "indentWidth": 4,
-        "semiColons": true,
-        "singleQuote": false,
-        "proseWrap": "preserve"
     }
 }

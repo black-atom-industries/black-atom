@@ -87,4 +87,3 @@ When making changes to multiple themes:
 1. Update the templates rather than the adapted files
 2. Use the core CLI to re-adapt all themes
 3. Test changes with multiple color variants
-

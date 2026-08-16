@@ -101,10 +101,12 @@ bg_color = "<%= theme.ui.fg.positive %>"
 ## Black Atom Theme Components
 
 ### Meta
+
 - `theme.meta.label` - The display name of the theme
 - `theme.meta.appearance` - Either "light" or "dark"
 
 ### UI
+
 - `theme.ui.fg.default` - Default foreground color
 - `theme.ui.fg.subtle` - Subtle foreground color
 - `theme.ui.fg.accent` - Accent foreground color
@@ -126,6 +128,7 @@ bg_color = "<%= theme.ui.fg.positive %>"
 - `theme.ui.bg.contrast` - Contrast background color
 
 ### Palette (ANSI Colors)
+
 - `theme.palette.black` - ANSI Black (0)
 - `theme.palette.darkRed` - ANSI DarkRed (1)
 - `theme.palette.darkGreen` - ANSI DarkGreen (2)

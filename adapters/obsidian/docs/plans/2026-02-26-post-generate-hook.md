@@ -43,10 +43,10 @@ add `postGenerate` to the return schema object at line 28:
 
 ```typescript
 return z.object({
-  $schema: z.string(),
-  enabled: z.boolean().optional().default(true),
-  postGenerate: z.string().optional(),
-  collections: collectionsSchema,
+    $schema: z.string(),
+    enabled: z.boolean().optional().default(true),
+    postGenerate: z.string().optional(),
+    collections: collectionsSchema,
 });
 ```
 
@@ -82,22 +82,22 @@ import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
 import { themeKeys } from "../../types/theme.ts";
 
 async function runPostGenerate(
-  adapterDir: string,
-  adapter: string,
+    adapterDir: string,
+    adapter: string,
 ): Promise<void> {
-  const configPath = join(adapterDir, config.adapterFileName);
-  if (!existsSync(configPath)) return;
+    const configPath = join(adapterDir, config.adapterFileName);
+    if (!existsSync(configPath)) return;
 
-  const adapterConfigSchema = createAdapterConfigSchema(themeKeys);
-  const adapterConfig = adapterConfigSchema.parse(
-    JSON.parse(await Deno.readTextFile(configPath)),
-  );
+    const adapterConfigSchema = createAdapterConfigSchema(themeKeys);
+    const adapterConfig = adapterConfigSchema.parse(
+        JSON.parse(await Deno.readTextFile(configPath)),
+    );
 
-  if (adapterConfig.postGenerate) {
-    log.info(`Running postGenerate for ${adapter}...`);
-    const parts = adapterConfig.postGenerate.split(" ");
-    await runCommand(parts, { cwd: adapterDir });
-  }
+    if (adapterConfig.postGenerate) {
+        log.info(`Running postGenerate for ${adapter}...`);
+        const parts = adapterConfig.postGenerate.split(" ");
+        await runCommand(parts, { cwd: adapterDir });
+    }
 }
 ```
 
@@ -165,73 +165,73 @@ generate call and formatting):
 import { config } from "./config.ts";
 
 async function collectFiles(
-  dir: string,
-  ext: string,
+    dir: string,
+    ext: string,
 ): Promise<string[]> {
-  const files: string[] = [];
-  for await (const entry of Deno.readDir(dir)) {
-    if (entry.isFile && entry.name.endsWith(ext)) {
-      files.push(`${dir}/${entry.name}`);
+    const files: string[] = [];
+    for await (const entry of Deno.readDir(dir)) {
+        if (entry.isFile && entry.name.endsWith(ext)) {
+            files.push(`${dir}/${entry.name}`);
+        }
     }
-  }
-  return files.sort();
+    return files.sort();
 }
 
 function buildVariantsSettingsBlock(yaml: string): string {
-  return `/* @settings\n${yaml}*/\n`;
+    return `/* @settings\n${yaml}*/\n`;
 }
 
 function buildUiSettingsBlock(fragments: string[]): string {
-  const { name, id } = config.styleSettingsSections.ui;
-  const header = `/* @settings\nname: "${name}"\nid: ${id}\nsettings:\n`;
-  const body = fragments.join("\n");
-  return `${header}${body}\n*/\n`;
+    const { name, id } = config.styleSettingsSections.ui;
+    const header = `/* @settings\nname: "${name}"\nid: ${id}\nsettings:\n`;
+    const body = fragments.join("\n");
+    return `${header}${body}\n*/\n`;
 }
 
 async function postGenerate(): Promise<void> {
-  console.log("Assembling theme.css...");
+    console.log("Assembling theme.css...");
 
-  const parts: string[] = [];
+    const parts: string[] = [];
 
-  // Variants settings block
-  const variantsYaml = await Deno.readTextFile(
-    `${config.paths.styles}/variants.settings.yaml`,
-  );
-  parts.push(buildVariantsSettingsBlock(variantsYaml));
+    // Variants settings block
+    const variantsYaml = await Deno.readTextFile(
+        `${config.paths.styles}/variants.settings.yaml`,
+    );
+    parts.push(buildVariantsSettingsBlock(variantsYaml));
 
-  // UI settings block (assembled from sidecars)
-  const settingsFiles = await collectFiles(
-    config.paths.ui,
-    ".settings.yaml",
-  );
-  const fragments: string[] = [];
-  for (const file of settingsFiles) {
-    const content = await Deno.readTextFile(file);
-    fragments.push(content.trimEnd());
-  }
-  if (fragments.length > 0) {
-    parts.push(buildUiSettingsBlock(fragments));
-  }
+    // UI settings block (assembled from sidecars)
+    const settingsFiles = await collectFiles(
+        config.paths.ui,
+        ".settings.yaml",
+    );
+    const fragments: string[] = [];
+    for (const file of settingsFiles) {
+        const content = await Deno.readTextFile(file);
+        fragments.push(content.trimEnd());
+    }
+    if (fragments.length > 0) {
+        parts.push(buildUiSettingsBlock(fragments));
+    }
 
-  // Generated theme CSS
-  const themeFiles = (await collectFiles(config.paths.themes, ".css"))
-    .filter((f) => !f.includes(".template."));
-  for (const file of themeFiles) {
-    const content = await Deno.readTextFile(file);
-    parts.push(content.trimEnd());
-  }
+    // Generated theme CSS
+    const themeFiles = (await collectFiles(config.paths.themes, ".css"))
+        .filter((f) => !f.includes(".template."));
+    for (const file of themeFiles) {
+        const content = await Deno.readTextFile(file);
+        parts.push(content.trimEnd());
+    }
 
-  // UI CSS
-  const uiCssFiles = (await collectFiles(config.paths.ui, ".css"))
-    .filter((f) => !f.endsWith(".settings.yaml"));
-  for (const file of uiCssFiles) {
-    const content = await Deno.readTextFile(file);
-    parts.push(content.trimEnd());
-  }
+    // UI CSS
+    const uiCssFiles = (await collectFiles(config.paths.ui, ".css"))
+        .filter((f) => !f.endsWith(".settings.yaml"));
+    for (const file of uiCssFiles) {
+        const content = await Deno.readTextFile(file);
+        parts.push(content.trimEnd());
+    }
 
-  // Write output
-  await Deno.writeTextFile(config.paths.output, parts.join("\n\n") + "\n");
-  console.log(`Assembly complete: ${config.paths.output}`);
+    // Write output
+    await Deno.writeTextFile(config.paths.output, parts.join("\n\n") + "\n");
+    console.log(`Assembly complete: ${config.paths.output}`);
 }
 
 postGenerate();
@@ -275,30 +275,30 @@ Replace the entire contents of
  */
 
 async function run(cmd: string[]): Promise<void> {
-  const command = new Deno.Command(cmd[0], {
-    args: cmd.slice(1),
-    stdout: "inherit",
-    stderr: "inherit",
-  });
-  const { code } = await command.output();
-  if (code !== 0) {
-    throw new Error(`Command failed: ${cmd.join(" ")}`);
-  }
+    const command = new Deno.Command(cmd[0], {
+        args: cmd.slice(1),
+        stdout: "inherit",
+        stderr: "inherit",
+    });
+    const { code } = await command.output();
+    if (code !== 0) {
+        throw new Error(`Command failed: ${cmd.join(" ")}`);
+    }
 }
 
 async function build(): Promise<void> {
-  console.log("Building Black Atom Obsidian theme...");
+    console.log("Building Black Atom Obsidian theme...");
 
-  console.log("Step 1: Generating theme tokens...");
-  await run(["deno", "task", "generate"]);
+    console.log("Step 1: Generating theme tokens...");
+    await run(["deno", "task", "generate"]);
 
-  console.log("Step 2: Assembling theme.css...");
-  await run(["deno", "task", "postGenerate"]);
+    console.log("Step 2: Assembling theme.css...");
+    await run(["deno", "task", "postGenerate"]);
 
-  console.log("Step 3: Formatting...");
-  await run(["deno", "fmt", "."]);
+    console.log("Step 3: Formatting...");
+    await run(["deno", "fmt", "."]);
 
-  console.log("Build complete.");
+    console.log("Build complete.");
 }
 
 build();
@@ -311,25 +311,25 @@ Replace the entire contents of
 
 ```json
 {
-  "tasks": {
-    "generate": "deno run -A jsr:@black-atom/core/cli generate",
-    "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
-    "build": "deno run --allow-read --allow-write --allow-run scripts/build.ts",
-    "dev": "deno run -A jsr:@black-atom/core/cli generate --watch",
-    "update": "deno cache --reload jsr:@black-atom/core/cli",
-    "fmt": "deno fmt .",
-    "fmt:check": "deno fmt --check .",
-    "lint": "deno lint ."
-  },
-  "fmt": {
-    "indentWidth": 2,
-    "exclude": ["themes/collection.template.css"]
-  },
-  "lint": {
-    "rules": {
-      "tags": ["recommended"]
+    "tasks": {
+        "generate": "deno run -A jsr:@black-atom/core/cli generate",
+        "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
+        "build": "deno run --allow-read --allow-write --allow-run scripts/build.ts",
+        "dev": "deno run -A jsr:@black-atom/core/cli generate --watch",
+        "update": "deno cache --reload jsr:@black-atom/core/cli",
+        "fmt": "deno fmt .",
+        "fmt:check": "deno fmt --check .",
+        "lint": "deno lint ."
+    },
+    "fmt": {
+        "indentWidth": 2,
+        "exclude": ["themes/collection.template.css"]
+    },
+    "lint": {
+        "rules": {
+            "tags": ["recommended"]
+        }
     }
-  }
 }
 ```
 

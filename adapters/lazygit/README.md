@@ -16,13 +16,13 @@ This modular approach ensures consistent colors and styling across all supported
 
 Black Atom includes multiple theme collections, each with its own distinct style:
 
-| Collection    | Themes                                                     | Description                   |
-| ------------- | ---------------------------------------------------------- | ----------------------------- |
-| **Default**   | dark, dark-dimmed, light, light-dimmed                     | Core Black Atom themes        |
-| **JPN**       | koyo-hiru, koyo-yoru, tsuki-yoru, murasaki-yoru            | Japanese-inspired themes      |
-| **Stations**  | engineering, operations, medical, research                 | Space station-inspired themes |
-| **Terra**     | seasons (spring, summer, fall, winter) × time (day, night) | Earth season-inspired themes  |
-| **MNML**      | clay, orange, osman, mikado, 47, eink (dark/light)         | Minimalist themes             |
+| Collection   | Themes                                                     | Description                   |
+| ------------ | ---------------------------------------------------------- | ----------------------------- |
+| **Default**  | dark, dark-dimmed, light, light-dimmed                     | Core Black Atom themes        |
+| **JPN**      | koyo-hiru, koyo-yoru, tsuki-yoru, murasaki-yoru            | Japanese-inspired themes      |
+| **Stations** | engineering, operations, medical, research                 | Space station-inspired themes |
+| **Terra**    | seasons (spring, summer, fall, winter) × time (day, night) | Earth season-inspired themes  |
+| **MNML**     | clay, orange, osman, mikado, 47, eink (dark/light)         | Minimalist themes             |
 
 ## Installation
 
@@ -78,29 +78,29 @@ Or manually copy the theme block into your config:
 
 ```yaml
 gui:
-  theme:
-    activeBorderColor:
-      - "#edaa4b"
-      - bold
-    inactiveBorderColor:
-      - "#9c98b3"
-    optionsTextColor:
-      - "#a298b9"
-    selectedLineBgColor:
-      - "#4d4053"
-    cherryPickedCommitBgColor:
-      - "#413446"
-    cherryPickedCommitFgColor:
-      - "#edaa4b"
-    unstagedChangesColor:
-      - "#e47889"
-    defaultFgColor:
-      - "#fbcaa4"
-    searchingActiveBorderColor:
-      - "#edaa4b"
+    theme:
+        activeBorderColor:
+            - "#edaa4b"
+            - bold
+        inactiveBorderColor:
+            - "#9c98b3"
+        optionsTextColor:
+            - "#a298b9"
+        selectedLineBgColor:
+            - "#4d4053"
+        cherryPickedCommitBgColor:
+            - "#413446"
+        cherryPickedCommitFgColor:
+            - "#edaa4b"
+        unstagedChangesColor:
+            - "#e47889"
+        defaultFgColor:
+            - "#fbcaa4"
+        searchingActiveBorderColor:
+            - "#edaa4b"
 
-  authorColors:
-    "*": "#eda77d"
+    authorColors:
+        "*": "#eda77d"
 ```
 
 </details>
@@ -165,13 +165,13 @@ Templates use the Eta template engine syntax to inject theme values:
 
 ```yaml
 gui:
-  theme:
-    activeBorderColor:
-      - "<%= theme.ui.fg.accent %>"
-      - bold
-    inactiveBorderColor:
-      - "<%= theme.ui.fg.subtle %>"
-    # ...and so on
+    theme:
+        activeBorderColor:
+            - "<%= theme.ui.fg.accent %>"
+            - bold
+        inactiveBorderColor:
+            - "<%= theme.ui.fg.subtle %>"
+        # ...and so on
 ```
 
 ### Regenerating Themes

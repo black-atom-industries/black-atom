@@ -1,9 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/denoland/deno/main/cli/schemas/config-file.v1.json",
     "version": "0.2.0",
-    "links": [
-        "../core"
-    ],
     "compilerOptions": {
         "jsx": "react-jsx",
         "jsxImportSource": "react",
@@ -32,34 +28,6 @@
         "install:macos": "deno run -A npm:@tauri-apps/cli build && rm -rf /Applications/livery.app && cp -R src-tauri/target/release/bundle/macos/livery.app /Applications/livery.app",
         "dev:ui": "deno run -A npm:vite --port 1430 --open '/dev'"
     },
-    "nodeModulesDir": "auto",
-    "lint": {
-        "exclude": [
-            "src/routeTree.gen.ts",
-            "src/bindings.ts",
-            ".agents/",
-            ".claude/",
-            ".impeccable/",
-            "docs/design-system/reference/"
-        ]
-    },
-    "fmt": {
-        "useTabs": false,
-        "lineWidth": 100,
-        "indentWidth": 4,
-        "semiColons": true,
-        "singleQuote": false,
-        "exclude": [
-            "CHANGELOG.md",
-            "src-tauri/",
-            "src/routeTree.gen.ts",
-            "src/bindings.ts",
-            ".agents/",
-            ".claude/",
-            ".impeccable/",
-            "docs/design-system/reference/"
-        ]
-    },
     "test": {
         "permissions": {
             "env": true,
@@ -70,7 +38,6 @@
     "imports": {
         "@/": "./src/",
         "@base-ui/react": "npm:@base-ui/react@^1",
-        "@black-atom/core": "jsr:@black-atom/core@^0.4.0",
         "cva": "npm:cva@^1.0.0-beta.4",
         "clsx": "npm:clsx@^2.1.1",
         "culori": "npm:culori@4",
@@ -89,10 +56,10 @@
         "@tanstack/react-query-devtools": "npm:@tanstack/react-query-devtools@^5",
         "@tanstack/react-router-devtools": "npm:@tanstack/react-router-devtools@^1",
         "@tanstack/react-hotkeys": "npm:@tanstack/react-hotkeys@^0.3.0",
-        "react": "npm:react@^18.3.1",
-        "@types/react": "npm:@types/react@^18.3.0",
-        "react-dom": "npm:react-dom@^18.3.1",
-        "@types/react-dom": "npm:@types/react-dom@^18.3.0",
+        "react": "npm:react@^19",
+        "@types/react": "npm:@types/react@^19",
+        "react-dom": "npm:react-dom@^19",
+        "@types/react-dom": "npm:@types/react-dom@^19",
         "vite": "npm:vite@^6",
         "@vitejs/plugin-react": "npm:@vitejs/plugin-react@^4",
         "@tauri-apps/api": "npm:@tauri-apps/api@~2.11.0",

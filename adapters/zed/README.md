@@ -16,13 +16,13 @@ This modular approach ensures consistent colors and styling across all supported
 
 Black Atom includes multiple theme collections, each with dark and light variants:
 
-| Collection    | Description                   |
-| ------------- | ----------------------------- |
-| **Default**   | Core Black Atom themes        |
-| **JPN**       | Japanese-inspired themes      |
-| **MNML**      | Minimalist accent themes      |
-| **Stations**  | Space station-inspired themes |
-| **Terra**     | Earth season-inspired themes  |
+| Collection   | Description                   |
+| ------------ | ----------------------------- |
+| **Default**  | Core Black Atom themes        |
+| **JPN**      | Japanese-inspired themes      |
+| **MNML**     | Minimalist accent themes      |
+| **Stations** | Space station-inspired themes |
+| **Terra**    | Earth season-inspired themes  |
 
 ## Installation
 

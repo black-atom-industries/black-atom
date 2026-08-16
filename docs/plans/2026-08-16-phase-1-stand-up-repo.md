@@ -30,6 +30,7 @@
 ### Task 1: Copy the trees, root `.gitignore`, `MIGRATION.md`, first commit
 
 **Files:**
+
 - Create: `black-atom/core/`, `black-atom/livery/`, `black-atom/adapters/{ghostty,herdr,lazygit,niri,nvim,obsidian,tmux,waybar,wezterm,zed}/`
 - Create: `black-atom/website/README.md`, `black-atom/ui/README.md`
 - Create: `black-atom/.gitignore`, `black-atom/MIGRATION.md`, `black-atom/README.md`
@@ -99,9 +100,10 @@ Last completed task: 1.1 trees copied
 Next: 1.2 deno workspace
 Blocked on Nik: (none)
 Decisions made in-run:
+
 - 2026-08-16 core's org-dir resolution and per-adapter git calls are re-pointed/removed in Phase 1 (task 1.4) so no dev task can write into the old checkouts.
 - 2026-08-16 baseline counts are 100 Rust tests (brief says 101) and 70 TS tests.
-Follow-up issues filed: (none)
+  Follow-up issues filed: (none)
 ```
 
 - [ ] **Step 6: Root `README.md`** (short; Phase 5 rewrites it)
@@ -123,6 +125,7 @@ One repo for the Black Atom design system: `core/` defines the themes, `adapters
 ### Task 2: Deno workspace
 
 **Files:**
+
 - Create: `black-atom/deno.json`, `black-atom/deno.lock`
 - Modify: `black-atom/core/deno.json`, `black-atom/core/monitor/deno.json`, `black-atom/livery/deno.json`, every `black-atom/adapters/*/deno.json`
 
@@ -218,6 +221,7 @@ If `deno test -P` from root fails on core because core's tests need `--allow-all
 ### Task 3: Cargo workspace and livery path re-rooting
 
 **Files:**
+
 - Create: `black-atom/Cargo.toml`
 - Modify: `black-atom/livery/src-tauri/tauri.conf.json`, `black-atom/livery/deno.json`, `black-atom/livery/vite.config.ts` (only if the culori alias breaks)
 
@@ -253,6 +257,7 @@ Expected: `100 passed; 0 failed` (plus empty suites); vite build produces `liver
 ### Task 4: Core generation reads and writes only inside this repo
 
 **Files:**
+
 - Modify: `black-atom/core/src/config.ts`, `black-atom/core/src/lib/discover-adapters.ts`, `black-atom/core/src/tasks/adapters/generate.ts`, `black-atom/core/src/tasks/adapters/watch.ts` (only if it references the org dir)
 
 - [ ] **Step 1: Point the org dir at `adapters/`**
@@ -265,7 +270,7 @@ Expected: `100 passed; 0 failed` (plus empty suites); vite build produces `liver
 
 `core/src/tasks/adapters/generate.ts` `generateAllRepositories`: remove the `git status --porcelain`, `git add -A`, `git diff --staged --stat`, `git commit`, `git reset` calls and the `commit`/`gitCommitArgs` options; the callback runs core's CLI in the adapter dir, runs `postGenerate`, and records `{ adapter, error? }`. Update `generateSingleAdapter` the same way. Update callers (`watch.ts`, `core/src/tasks/index.ts` `adapters:gen`, `theme:commit`) to the new signature; if `theme:commit`/`adapters:commit|push|reset|status` cannot compile without the git helpers, delete those task entries and their files now (they exist only to coordinate the old repos; Phase 2 would delete them anyway). Keep `adapters:gen`, `dev`, `adapters:each` working.
 
-Also `runCommand(["deno","run","-A","--config", `${coreDir}/deno.json`, `${coreDir}/src/cli/index.ts`, "generate"], { cwd: adapterDir })`: verify this works inside the workspace (Deno may reject `--config` pointing at a member). If it fails, invoke as `deno run -A ${coreDir}/src/cli/index.ts generate` with cwd = adapter dir and let the workspace resolve imports. Record what worked in the report; the same invocation is what Phase 2 puts into every adapter's `generate` task.
+Also `runCommand(["deno","run","-A","--config",` ${coreDir}/deno.json`, `${coreDir}/src/cli/index.ts`, "generate"], { cwd: adapterDir })`: verify this works inside the workspace (Deno may reject `--config` pointing at a member). If it fails, invoke as `deno run -A ${coreDir}/src/cli/index.ts generate` with cwd = adapter dir and let the workspace resolve imports. Record what worked in the report; the same invocation is what Phase 2 puts into every adapter's `generate` task.
 
 - [ ] **Step 3: Verify**
 
@@ -285,6 +290,7 @@ Expected: checks pass; `adapters:gen` regenerates the ten adapters in `black-ato
 ### Task 5: Root dev tasks
 
 **Files:**
+
 - Modify: `black-atom/deno.json` (`tasks`)
 - Create: `black-atom/scripts/dev.ts`
 - Modify: `black-atom/core/deno.json` (split `dev` into watcher-only; monitor tasks)
@@ -328,6 +334,7 @@ Each prints its startup lines and no error before the timeout. Ports: livery vit
 ### Task 6: Tooling — `.githooks/`, `.claude/settings.json`, hooks re-rooted
 
 **Files:**
+
 - Create: `black-atom/.githooks/pre-commit`
 - Create: `black-atom/.claude/settings.json`, `black-atom/.claude/hooks/no-fs-plugin.sh`, `black-atom/.claude/hooks/check-bindings.sh`
 - Delete: `black-atom/livery/.claude/settings.json`, `black-atom/livery/.claude/hooks/`, `black-atom/livery/.githooks/`, `black-atom/core/.claude/settings.json`, `black-atom/core/scripts/hooks/`, `black-atom/adapters/*/.claude/settings.json`, `core/.agents` symlink targets if they only pointed at skills (check `core/.claude/skills` symlink → `../.agents/skills`; skills are rewritten in Task 8, so delete both), `livery/.githooks/checks-*.ts` after folding their content into the root hook, `livery/deno.json` `checks` and `install-hooks` tasks, `core/deno.json` `install-hooks` task.
@@ -345,14 +352,28 @@ Re-root livery's PostToolUse hooks:
 ```json
 {
     "permissions": {
-        "allow": ["Bash(deno:*)", "Bash(cargo:*)", "Bash(gh pr:*)", "Bash(gh issue:*)", "Bash(gh api:*)", "Bash(git pull:*)", "Bash(git checkout:*)", "Bash(ls:*)", "Bash(head:*)", "Bash(cd:*)"]
+        "allow": [
+            "Bash(deno:*)",
+            "Bash(cargo:*)",
+            "Bash(gh pr:*)",
+            "Bash(gh issue:*)",
+            "Bash(gh api:*)",
+            "Bash(git pull:*)",
+            "Bash(git checkout:*)",
+            "Bash(ls:*)",
+            "Bash(head:*)",
+            "Bash(cd:*)"
+        ]
     },
     "hooks": {
         "PostToolUse": [
             {
                 "matcher": "Write|Edit|MultiEdit",
                 "hooks": [
-                    { "type": "command", "command": "deno fmt \"$FILEPATH\" 2>/dev/null; case \"$FILEPATH\" in *livery/src-tauri/*) (cd livery/src-tauri && cargo fmt 2>/dev/null);; esac; true" },
+                    {
+                        "type": "command",
+                        "command": "deno fmt \"$FILEPATH\" 2>/dev/null; case \"$FILEPATH\" in *livery/src-tauri/*) (cd livery/src-tauri && cargo fmt 2>/dev/null);; esac; true"
+                    },
                     { "type": "command", "command": ".claude/hooks/no-fs-plugin.sh" },
                     { "type": "command", "command": ".claude/hooks/check-bindings.sh" }
                 ]
@@ -375,6 +396,7 @@ Re-root livery's PostToolUse hooks:
 ### Task 7: Root `CLAUDE.md` and scoped `AGENTS.md`
 
 **Files:**
+
 - Create: `black-atom/CLAUDE.md`, `black-atom/livery/src/AGENTS.md`, `black-atom/livery/src-tauri/AGENTS.md`
 - Delete: every other `CLAUDE.md`, `AGENTS.md`, `CLAUDE.local.md` under `black-atom/` (core, core/monitor, livery, adapters/*, and symlinks), `livery/.claude/skills/about-pick-theme-original/`, `livery/.claude/skills/commit/`; move `livery/.claude/skills/backend-testing/` to `black-atom/.claude/skills/backend-testing/` with its paths re-rooted to `livery/src-tauri/...`.
 
@@ -393,6 +415,7 @@ Load `dev-setup-llm` and `my-voice` first. Reference material (read, do not copy
 ### Task 8: Six skills (six parallel subagents)
 
 **Files:**
+
 - Create: `black-atom/.claude/skills/<name>/SKILL.md` for `new-theme`, `new-adapter`, `rename-theme`, `rename-token`, `add-capability`, `release`
 - Delete: `black-atom/core/.agents/`, `black-atom/core/.claude/skills`, `black-atom/adapters/*/.claude/skills`, `black-atom/livery/.claude/` (after Task 7 moved `backend-testing`), `black-atom/livery/.agents/` if present.
 
@@ -405,7 +428,7 @@ Each subagent loads `dev-setup-skill` and `my-voice`, reads the old skills under
 - `add-capability`: core logic in `livery/src-tauri` (Phase 4 moves it to `livery/core`, write the skill for the current layout and mark the future path in one line), CLI command (Phase 4; say "when `livery/cli` exists"), GUI surface, `#[tauri::command]` wrapper + `collect_commands!`, bindings regeneration by `cargo test`, tests, in that order.
 - `release`: regenerate, run the full check set, verify `cd livery && deno task build` bundle, release-please flow (config lands in Phase 5; describe the manifest-driven flow generically and name `release-please-config.json` at the root), tag, artifacts.
 
-- [ ] **Verify:** six `SKILL.md` files exist; `deno fmt --check` clean; each skill's backticked paths exist (`grep -oE '`[^`]+`'` filtered to path-like strings, `test -e`), except paths the skill explicitly creates or names as Phase 4/5. Root `CLAUDE.md` lists all six.
+- [ ] **Verify:** six `SKILL.md` files exist; `deno fmt --check` clean; each skill's backticked paths exist (`grep -oE '`[^`]+`'`filtered to path-like strings,`test -e`), except paths the skill explicitly creates or names as Phase 4/5. Root`CLAUDE.md` lists all six.
 
 - [ ] **Commit** (orchestrator, one commit): `docs: six workflow skills for the monorepo black-atom-industries/livery#68`
 
@@ -414,6 +437,7 @@ Each subagent loads `dev-setup-skill` and `my-voice`, reads the old skills under
 ### Task 9: CI workflow
 
 **Files:**
+
 - Create: `black-atom/.github/workflows/ci.yml`
 
 - [ ] **Step 1: Workflow**
@@ -421,32 +445,32 @@ Each subagent loads `dev-setup-skill` and `my-voice`, reads the old skills under
 ```yaml
 name: ci
 on:
-  push:
-    branches: [main]
-  pull_request:
+    push:
+        branches: [main]
+    pull_request:
 jobs:
-  deno:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-      - run: deno install
-      - run: deno fmt --check
-      - run: deno lint
-      - run: deno check
-      - run: deno test -P
-  rust:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libxdo-dev libssl-dev patchelf
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-      - run: cargo fmt --all --check
-      - run: cargo clippy --workspace -- -D warnings
-      - run: cargo test --workspace
+    deno:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: denoland/setup-deno@v2
+              with:
+                  deno-version: v2.x
+            - run: deno install
+            - run: deno fmt --check
+            - run: deno lint
+            - run: deno check
+            - run: deno test -P
+    rust:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev librsvg2-dev libxdo-dev libssl-dev patchelf
+            - uses: dtolnay/rust-toolchain@stable
+            - uses: Swatinem/rust-cache@v2
+            - run: cargo fmt --all --check
+            - run: cargo clippy --workspace -- -D warnings
+            - run: cargo test --workspace
 ```
 
 If `cargo clippy -- -D warnings` fails locally on livery today, keep the step but drop `-D warnings` and note it in the report; do not fix clippy warnings in this task.

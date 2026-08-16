@@ -1,5 +1,4 @@
 {
-    "$schema": "https://raw.githubusercontent.com/denoland/deno/main/cli/schemas/config-file.v1.json",
     "name": "@black-atom/core",
     "version": "0.4.0",
     "exports": {
@@ -40,31 +39,11 @@
     "exclude": [
         "monitor/"
     ],
-    "lint": {
-        "rules": {
-            "exclude": [
-                "no-slow-types"
-            ]
-        },
-        "exclude": [
-            "deno.lock",
-            "deno.json",
-            "import_map.json",
-            "CHANGELOG.md",
-            "monitor/"
-        ]
-    },
-    "fmt": {
-        "useTabs": false,
-        "lineWidth": 100,
-        "indentWidth": 4,
-        "semiColons": true,
-        "singleQuote": false,
-        "proseWrap": "preserve",
-        "exclude": [
-            "CHANGELOG.md",
-            "monitor/src/routeTree.gen.ts"
-        ]
+    "test": {
+        "permissions": {
+            "read": true,
+            "run": true
+        }
     },
     "imports": {
         "@std/assert": "jsr:@std/assert@^1.0.0",

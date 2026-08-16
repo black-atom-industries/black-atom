@@ -139,7 +139,7 @@ export async function watch() {
     };
 
     // Debouncing
-    const pendingChanges = new Map<string, number>();
+    const pendingChanges = new Map<string, ReturnType<typeof setTimeout>>();
     const debounceMs = 300;
 
     const processFileChange = async (changedPath: string) => {

@@ -1,25 +1,15 @@
 {
-  "imports": {
-    "@std/dotenv": "jsr:@std/dotenv@0.225.6"
-  },
-  "tasks": {
-    "generate": "deno run -A jsr:@black-atom/core/cli generate",
-    "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
-    "build": "deno run --allow-read --allow-write --allow-run scripts/build.ts",
-    "dev": "deno run --allow-read --allow-write --allow-env --allow-run scripts/dev.ts",
-    "update": "deno cache --reload jsr:@black-atom/core/cli",
-    "fmt": "deno fmt .",
-    "fmt:check": "deno fmt --check .",
-    "lint": "deno lint ."
-  },
-  "fmt": {
-    "indentWidth": 2,
-    "useTabs": false,
-    "exclude": ["themes/*/collection.template.css"]
-  },
-  "lint": {
-    "rules": {
-      "tags": ["recommended"]
+    "imports": {
+        "@std/dotenv": "jsr:@std/dotenv@0.225.6"
+    },
+    "tasks": {
+        "generate": "deno run -A jsr:@black-atom/core/cli generate",
+        "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
+        "build": "deno run --allow-read --allow-write --allow-run scripts/build.ts",
+        "dev": "deno run --allow-read --allow-write --allow-env --allow-run scripts/dev.ts",
+        "update": "deno cache --reload jsr:@black-atom/core/cli",
+        "fmt": "deno fmt .",
+        "fmt:check": "deno fmt --check .",
+        "lint": "deno lint ."
     }
-  }
 }

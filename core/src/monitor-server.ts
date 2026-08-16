@@ -51,7 +51,7 @@ export function startPreviewServer() {
     async function watchThemes() {
         await ready;
         const watcher = Deno.watchFs(config.dir.themes, { recursive: true });
-        let debounce: number | undefined;
+        let debounce: ReturnType<typeof setTimeout> | undefined;
 
         for await (const event of watcher) {
             if (event.kind !== "modify" && event.kind !== "create") continue;
@@ -87,7 +87,7 @@ export function startPreviewServer() {
         switch (path) {
             // SSE endpoint — pushes "reload" events when theme files change
             case "/api/events": {
-                let intervalId: number | undefined;
+                let intervalId: ReturnType<typeof setInterval> | undefined;
                 let ctl: ReadableStreamDefaultController | undefined;
 
                 const body = new ReadableStream({
