@@ -1,9 +1,11 @@
 use serde::{Deserialize, Serialize};
 use specta::Type;
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 /// Supported app names. TypeScript bindings are auto-generated via tauri-specta.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize, Type)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize, Type,
+)]
 #[serde(rename_all = "lowercase")]
 pub enum AppName {
     Nvim,
@@ -190,7 +192,7 @@ pub struct Config {
     pub system_appearance: bool,
     #[serde(default)]
     pub keymappings: Keymappings,
-    pub apps: HashMap<AppName, AppConfig>,
+    pub apps: BTreeMap<AppName, AppConfig>,
 }
 
 #[cfg(test)]
@@ -207,5 +209,19 @@ mod tests {
             serde_json::from_str::<AppName>("\"helm-tmux\"").unwrap(),
             AppName::HelmTmux
         );
+    }
+
+    #[test]
+    fn apps_serialize_in_declaration_order() {
+        let mut apps = BTreeMap::new();
+        for app in AppName::all().iter().rev() {
+            apps.insert(*app, app.as_str());
+        }
+        let json = serde_json::to_string(&apps).unwrap();
+        let positions: Vec<usize> = AppName::all()
+            .iter()
+            .map(|app| json.find(&format!("\"{}\"", app.as_str())).unwrap())
+            .collect();
+        assert!(positions.windows(2).all(|w| w[0] < w[1]), "{json}");
     }
 }

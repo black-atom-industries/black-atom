@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use super::types::{AppConfig, AppName, Config, Keymappings, NvimSettings, NVIM_SETTINGS_PATH};
 
@@ -14,7 +14,7 @@ fn themes_path(adapter: &str) -> String {
 
 impl Default for Config {
     fn default() -> Self {
-        let mut apps = HashMap::new();
+        let mut apps = BTreeMap::new();
         apps.insert(
             AppName::Ghostty,
             AppConfig {
