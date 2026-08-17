@@ -29,6 +29,7 @@
         "install-hooks": "git config core.hooksPath .githooks"
     },
     "exclude": [
+        ".pi/",
         "target/",
         "adapters/nvim/syntax_examples/",
         "livery/docs/design-system/reference/"

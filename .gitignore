@@ -21,6 +21,7 @@ HANDOFF-*.md
 
 /livery/livery
 .worktrees/
+/.pi/subagents/
 .impeccable/
 
 /adapters/nvim/debug/
