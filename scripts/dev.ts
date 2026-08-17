@@ -16,14 +16,15 @@ const children = taskNames.map((name) =>
     }).spawn()
 );
 
+let cleaningUp = false;
+
 function cleanup() {
-    for (const child of children) {
-        try {
-            child.kill("SIGTERM");
-        } catch {
-            // already exited
-        }
-    }
+    if (cleaningUp) return;
+    cleaningUp = true;
+    // Each task nests further `deno task` wrappers; signalling only the direct
+    // children would leave the grandchildren (the actual servers) running.
+    // pid 0 addresses our whole process group, which includes them.
+    Deno.kill(0, "SIGTERM");
     Deno.exit(0);
 }
 
