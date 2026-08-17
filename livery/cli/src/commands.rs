@@ -41,8 +41,9 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
 
     unpacked()?;
 
-    let enabled = enabled_apps(&livery_core::config::commands::get_config());
-    if enabled.is_empty() {
+    let config = livery_core::config::commands::get_config();
+    let enabled = enabled_apps(&config);
+    if enabled.is_empty() && !config.system_appearance {
         println!("No apps are enabled — run `livery setup`.");
         return Ok(());
     }
@@ -74,8 +75,24 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
         );
     }
 
+    if config.system_appearance {
+        let result = updaters::update_system_appearance(theme.appearance.clone());
+        if result.status == UpdateStatus::Error {
+            failed += 1;
+        }
+        println!(
+            "  {:<10} {}{}",
+            "appearance",
+            result.status.as_str(),
+            result
+                .message
+                .map(|message| format!(" — {message}"))
+                .unwrap_or_default()
+        );
+    }
+
     if failed > 0 {
-        return Err(format!("{failed} app(s) failed"));
+        return Err(format!("{failed} update(s) failed"));
     }
     Ok(())
 }

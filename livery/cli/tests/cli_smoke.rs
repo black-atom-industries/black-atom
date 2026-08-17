@@ -7,6 +7,9 @@
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output};
 
+#[cfg(any(target_os = "linux", target_os = "macos"))]
+use std::os::unix::fs::PermissionsExt;
+
 use livery_core::config::types::{AppName, Config};
 
 const BINARY: &str = env!("CARGO_BIN_EXE_livery");
@@ -35,14 +38,43 @@ impl Sandbox {
         self.path().join(".local/share")
     }
 
+    fn appearance_log(&self) -> PathBuf {
+        self.path().join("appearance.log")
+    }
+
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    fn install_system_appearance_stub(&self, exit_code: u8) {
+        let bin_dir = self.path().join("bin");
+        std::fs::create_dir_all(&bin_dir).unwrap();
+        for command in ["gsettings", "osascript"] {
+            let path = bin_dir.join(command);
+            write(
+                &path,
+                &format!(
+                    "#!/bin/sh\nprintf '%s\\n' \"$*\" > \"$LIVERY_APPEARANCE_LOG\"\nexit {exit_code}\n"
+                ),
+            );
+            let mut permissions = std::fs::metadata(&path).unwrap().permissions();
+            permissions.set_mode(0o755);
+            std::fs::set_permissions(path, permissions).unwrap();
+        }
+    }
+
     /// The updaters shell out to `ps` and `tmux`, so the environment is
     /// extended rather than cleared.
     fn run(&self, args: &[&str]) -> Output {
+        let mut paths = vec![self.path().join("bin")];
+        paths.extend(std::env::split_paths(
+            &std::env::var_os("PATH").unwrap_or_default(),
+        ));
+
         Command::new(BINARY)
             .args(args)
             .env("HOME", self.path())
             .env("XDG_CONFIG_HOME", self.config_home())
             .env("XDG_DATA_HOME", self.data_home())
+            .env("LIVERY_APPEARANCE_LOG", self.appearance_log())
+            .env("PATH", std::env::join_paths(paths).unwrap())
             .output()
             .unwrap()
     }
@@ -76,6 +108,8 @@ fn write(path: &Path, content: &str) {
 fn cli_end_to_end() {
     let sandbox = Sandbox::new();
     sandbox.adopt_env();
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    sandbox.install_system_appearance_stub(0);
 
     let tmux_config = sandbox.config_home().join("tmux/tmux.conf");
     let tmux_themes = sandbox.config_home().join("tmux/themes");
@@ -119,6 +153,30 @@ fn cli_end_to_end() {
 
     let apply = sandbox.run(&["apply", THEME]);
     assert!(apply.status.success(), "apply failed: {apply:?}");
+    assert!(
+        stdout(&apply).contains("appearance"),
+        "appearance result missing:\n{}",
+        stdout(&apply)
+    );
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    {
+        assert!(
+            std::fs::read_to_string(sandbox.appearance_log())
+                .is_ok_and(|arguments| !arguments.trim().is_empty()),
+            "system appearance command was not called"
+        );
+
+        sandbox.install_system_appearance_stub(1);
+        let failed_apply = sandbox.run(&["apply", THEME]);
+        assert!(
+            !failed_apply.status.success(),
+            "appearance failure must fail apply: {failed_apply:?}"
+        );
+        assert!(
+            String::from_utf8_lossy(&failed_apply.stderr).contains("1 update(s) failed"),
+            "appearance failure missing from stderr: {failed_apply:?}"
+        );
+    }
     let patched_tmux = std::fs::read_to_string(&tmux_config).unwrap();
     let patched_ghostty = std::fs::read_to_string(&ghostty_config).unwrap();
     assert!(

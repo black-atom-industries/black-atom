@@ -18,7 +18,7 @@ Each supported app falls into one provisioning class: Linked, Merged, or Externa
 
 ```sh
 livery                       # interactive theme picker (so does `livery apply` alone)
-livery apply <theme>         # apply a theme to every enabled app
+livery apply <theme>         # apply a theme to every enabled app and the system appearance
 livery list                  # list every available theme, grouped by collection
 livery status                # show each app's enabled, provisioning, linked and config state
 livery setup [--yes]         # enable detected apps, link their themes, verify config paths
