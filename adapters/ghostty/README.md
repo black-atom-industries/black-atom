@@ -132,8 +132,8 @@ cursor-color = <%= theme.ui.fg.accent %>
 # ...and so on
 ```
 
-Templates live at `themes/<collection>/collection.template.conf`. Add a new template to
-`black-atom-adapter.json` before generating.
+The shared template lives at `themes/collection.template.conf`. Add a new collection and its theme
+keys to `black-atom-adapter.json` before generating.
 
 ## License
 
