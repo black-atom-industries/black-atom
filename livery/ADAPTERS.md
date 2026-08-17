@@ -65,7 +65,7 @@ verify — always ending with verification, so the row reflects the true state.
   data.
 - **Reload:** `obsidian://` URI.
 - **Precondition:** point CONFIG_PATH at your vault's `.obsidian/appearance.json` — livery cannot
-  guess which vault. Multi-vault support is tracked in issue #47.
+  guess which vault. Multi-vault support is tracked in #8.
 
 ### lazygit — Merged
 

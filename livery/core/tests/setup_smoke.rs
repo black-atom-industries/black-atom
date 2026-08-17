@@ -55,10 +55,19 @@ fn walk_names(root: &Path) -> Vec<String> {
 }
 
 fn assert_managed_symlink(link: &Path, managed_root: &Path) {
-    let target = std::fs::read_link(link)
+    let raw = std::fs::read_link(link)
         .unwrap_or_else(|e| panic!("expected symlink at {}: {e}", link.display()));
     assert!(
-        target.starts_with(managed_root),
+        raw.is_relative(),
+        "{} is not relative: {}",
+        link.display(),
+        raw.display()
+    );
+    let target = link
+        .canonicalize()
+        .unwrap_or_else(|e| panic!("dangling link {}: {e}", link.display()));
+    assert!(
+        target.starts_with(managed_root.canonicalize().unwrap()),
         "{} points outside the managed root: {}",
         link.display(),
         target.display()
@@ -236,9 +245,10 @@ fn setup_chain_end_to_end() {
     // nvim gets one directory symlink into the runtimepath instead of
     // per-file links: neovim adds `pack/*/start/*` itself.
     let pack_link = xdg_data.join("nvim/site/pack/black-atom/start/black-atom");
+    assert!(std::fs::read_link(&pack_link).unwrap().is_relative());
     assert_eq!(
-        std::fs::read_link(&pack_link).unwrap(),
-        managed_root.join("nvim"),
+        pack_link.canonicalize().unwrap(),
+        managed_root.join("nvim").canonicalize().unwrap(),
         "nvim pack dir must point at the unpacked themes"
     );
     assert!(pack_link

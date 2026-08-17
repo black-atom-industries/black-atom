@@ -53,10 +53,10 @@ pub fn sync_flat_symlinks(
         if !meta.file_type().is_symlink() {
             continue;
         }
-        let Ok(target) = std::fs::read_link(&path) else {
+        let Some(target) = link_destination(&path) else {
             continue;
         };
-        if target.starts_with(managed_dir) {
+        if resolve_lexically(managed_dir).is_ok_and(|managed| target.starts_with(managed)) {
             std::fs::remove_file(&path)
                 .map_err(|e| format!("Failed to prune {}: {e}", path.display()))?;
             stats.pruned += 1;
@@ -120,9 +120,10 @@ pub fn sync_pack_dir_link(managed_dir: &Path) -> Result<SymlinkSyncStats, String
     Ok(stats)
 }
 
-/// Create or heal one symlink: re-aim symlinks that don't point at the
-/// fresh target (heals dangling and clone-farm links), never touch a real
-/// file already sitting there.
+/// Create or heal one symlink: re-aim symlinks that don't resolve to the
+/// fresh target (heals dangling, absolute, and clone-farm links), never
+/// touch a real file already sitting there. Links are written relative so
+/// a dotfiles repo tracking them stays portable across machines and homes.
 #[cfg(unix)]
 fn place_link(
     link: &Path,
@@ -130,12 +131,13 @@ fn place_link(
     name: &str,
     stats: &mut SymlinkSyncStats,
 ) -> Result<(), String> {
+    let relative = relative_link_target(link, target)?;
     match std::fs::symlink_metadata(link) {
         Ok(meta) if meta.file_type().is_symlink() => {
-            if std::fs::read_link(link).ok().as_deref() != Some(target) {
+            if std::fs::read_link(link).ok().as_deref() != Some(relative.as_path()) {
                 std::fs::remove_file(link)
                     .map_err(|e| format!("Failed to replace {}: {e}", link.display()))?;
-                std::os::unix::fs::symlink(target, link)
+                std::os::unix::fs::symlink(&relative, link)
                     .map_err(|e| format!("Failed to link {}: {e}", link.display()))?;
             }
             stats.linked += 1;
@@ -144,12 +146,65 @@ fn place_link(
             stats.skipped.push(name.to_string());
         }
         Err(_) => {
-            std::os::unix::fs::symlink(target, link)
+            std::os::unix::fs::symlink(&relative, link)
                 .map_err(|e| format!("Failed to link {}: {e}", link.display()))?;
             stats.linked += 1;
         }
     }
     Ok(())
+}
+
+/// `target` expressed relative to the directory `link` really lives in. The
+/// link's parent is resolved through any symlinked prefix first (a
+/// `~/.config/<app>` that points into a dotfiles repo), because the kernel
+/// resolves a relative link against the real directory, not the spelled path.
+fn relative_link_target(link: &Path, target: &Path) -> Result<PathBuf, String> {
+    let link_dir = link
+        .parent()
+        .ok_or_else(|| format!("{} has no parent", link.display()))?;
+    let link_dir = resolve_lexically(link_dir)?;
+    let target = resolve_lexically(target)?;
+
+    let mut base = link_dir.components().peekable();
+    let mut rest = target.components().peekable();
+    while let (Some(a), Some(b)) = (base.peek(), rest.peek()) {
+        if a != b {
+            break;
+        }
+        base.next();
+        rest.next();
+    }
+    let mut relative = PathBuf::new();
+    for _ in base {
+        relative.push("..");
+    }
+    for component in rest {
+        relative.push(component);
+    }
+    Ok(relative)
+}
+
+/// Where `link` points, as an absolute `.`/`..`-free path: a relative link
+/// is joined onto the directory it really lives in. `None` for anything that
+/// is not a readable symlink. The destination itself may be dangling.
+fn link_destination(link: &Path) -> Option<PathBuf> {
+    let raw = std::fs::read_link(link).ok()?;
+    let joined = if raw.is_absolute() {
+        raw
+    } else {
+        resolve_lexically(link.parent()?).ok()?.join(raw)
+    };
+    let mut normalized = PathBuf::new();
+    for component in joined.components() {
+        match component {
+            std::path::Component::CurDir => {}
+            std::path::Component::ParentDir => {
+                normalized.pop();
+            }
+            other => normalized.push(other),
+        }
+    }
+    Some(normalized)
 }
 
 /// Filename → absolute managed path for every theme file one collection
@@ -183,7 +238,10 @@ fn fresh_theme_files(
 /// `place_link` — no directories are created, nothing is healed.
 #[cfg(unix)]
 fn link_points_at(link: &Path, target: &Path) -> bool {
-    std::fs::read_link(link).ok().as_deref() == Some(target)
+    match (link_destination(link), resolve_lexically(target)) {
+        (Some(found), Ok(wanted)) => found == wanted,
+        _ => false,
+    }
 }
 
 /// Does the app's flat themes dir hold at least one managed link? Anything
@@ -430,8 +488,20 @@ mod tests {
 
         assert_eq!(stats.linked, 1);
         let link = s.app_dir.join("black-atom-jpn-koyo-yoru.json");
-        let target = std::fs::read_link(&link).unwrap();
-        assert!(target.starts_with(&s.managed));
+        let raw = std::fs::read_link(&link).unwrap();
+        assert!(
+            raw.is_relative(),
+            "link must be relative, got {}",
+            raw.display()
+        );
+        assert_eq!(
+            link.canonicalize().unwrap(),
+            s.managed
+                .join("jpn")
+                .join("black-atom-jpn-koyo-yoru.json")
+                .canonicalize()
+                .unwrap()
+        );
     }
 
     #[test]
@@ -461,7 +531,10 @@ mod tests {
         let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
 
         assert_eq!(stats.linked, 1);
-        assert!(std::fs::read_link(&link).unwrap().starts_with(&s.managed));
+        assert!(link
+            .canonicalize()
+            .unwrap()
+            .starts_with(s.managed.canonicalize().unwrap()));
     }
 
     #[test]
@@ -514,6 +587,62 @@ mod tests {
         assert!(stats.skipped.is_empty());
     }
 
+    #[test]
+    fn test_links_stay_valid_through_a_symlinked_app_dir() {
+        // ~/.config/<app> is often a symlink into a dotfiles repo; the relative
+        // target must be computed from where the link really lives.
+        let s = setup(".conf");
+        let real_dir = s._root.path().join("dots").join("themes");
+        std::fs::create_dir_all(&real_dir).unwrap();
+        std::fs::create_dir_all(s.app_dir.parent().unwrap()).unwrap();
+        std::os::unix::fs::symlink(&real_dir, &s.app_dir).unwrap();
+
+        sync_flat_symlinks(&s.managed, &s.app_dir, ".conf").unwrap();
+
+        let link = s.app_dir.join("black-atom-jpn-koyo-yoru.conf");
+        assert!(std::fs::read_link(&link).unwrap().is_relative());
+        assert_eq!(std::fs::read_to_string(&link).unwrap(), "content");
+        assert!(has_managed_links(&s.app_dir, &s.managed, ".conf"));
+    }
+
+    #[test]
+    fn test_heals_an_absolute_link_to_relative() {
+        let s = setup(".json");
+        std::fs::create_dir_all(&s.app_dir).unwrap();
+        let link = s.app_dir.join("black-atom-jpn-koyo-yoru.json");
+        let target = s.managed.join("jpn").join("black-atom-jpn-koyo-yoru.json");
+        std::os::unix::fs::symlink(&target, &link).unwrap();
+
+        sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+
+        assert!(std::fs::read_link(&link).unwrap().is_relative());
+        assert!(has_managed_links(&s.app_dir, &s.managed, ".json"));
+    }
+
+    #[test]
+    fn test_prunes_a_relative_managed_leftover() {
+        let s = setup(".json");
+        std::fs::create_dir_all(&s.app_dir).unwrap();
+        std::os::unix::fs::symlink(
+            "../../managed/app/jpn/black-atom-gone.json",
+            s.app_dir.join("black-atom-gone.json"),
+        )
+        .unwrap();
+
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+
+        assert_eq!(stats.pruned, 1);
+        assert!(!s.app_dir.join("black-atom-gone.json").exists());
+    }
+
+    #[test]
+    fn test_vault_pair_is_wired_after_linking() {
+        let s = vault_setup();
+        assert!(!vault_pair_is_wired(&s.app_dir, &s.managed));
+        sync_vault_theme_links(&s.managed, &s.app_dir).unwrap();
+        assert!(vault_pair_is_wired(&s.app_dir, &s.managed));
+    }
+
     fn vault_setup() -> Setup {
         let s = setup(".css");
         std::fs::write(s.managed.join("theme.css"), "merged css").unwrap();
@@ -529,8 +658,16 @@ mod tests {
         assert_eq!(stats.linked, 2);
         let theme_dir = s.app_dir.join(OBSIDIAN_THEME_DIR);
         for name in ["theme.css", "manifest.json"] {
-            let target = std::fs::read_link(theme_dir.join(name)).unwrap();
-            assert!(target.starts_with(&s.managed));
+            let raw = std::fs::read_link(theme_dir.join(name)).unwrap();
+            assert!(
+                raw.is_relative(),
+                "link must be relative, got {}",
+                raw.display()
+            );
+            assert_eq!(
+                theme_dir.join(name).canonicalize().unwrap(),
+                s.managed.join(name).canonicalize().unwrap()
+            );
         }
     }
 
