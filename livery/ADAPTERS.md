@@ -81,9 +81,9 @@ verify — always ending with verification, so the row reflects the true state.
 - **Files:** consumed by livery itself — on every switch it reads
   `<managed>/herdr/<collection>/<themeKey>.toml` and replaces the block between the Black Atom
   Livery markers in `~/.config/herdr/config.toml`. Herdr never reads the managed dir.
-- **Switch pointer:** the complete managed `[theme]` + `[theme.custom]` block. If no markers or
-  theme table exist, livery can append it; ambiguous markers or an unmanaged theme table fail safely
-  without writing.
+- **Switch pointer:** the complete managed block: `[theme.custom]` plus the `[ui.sidebar.*]` row
+  layouts. If no markers or theme table exist, livery can append it; ambiguous markers or an
+  unmanaged theme table fail safely without writing.
 - **Reload:** `herdr server reload-config` over every running Herdr session socket. With no running
   session, the valid config applies on next launch; partial reload failures produce a degraded
   apply.
