@@ -8,7 +8,7 @@
 
 ## Style Guidelines
 
-Commit messages follow the root [`CLAUDE.md`](../../CLAUDE.md) convention:
+Commit messages follow the root [`AGENTS.md`](../../AGENTS.md) convention:
 `<type>(<scope>): <description> <issue-reference>`. Use `nvim` as the scope for changes scoped
 to this adapter.
 

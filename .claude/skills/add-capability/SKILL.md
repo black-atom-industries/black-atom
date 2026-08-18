@@ -86,4 +86,4 @@ All three clean before committing.
 
 ## 8. Commit
 
-Commit format and scope rules are in the root `CLAUDE.md`.
+Commit format and scope rules are in the root `AGENTS.md`.

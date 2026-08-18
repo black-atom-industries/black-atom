@@ -108,5 +108,5 @@ deno task test
 ```
 
 Commit with `feat(livery): add <name> adapter black-atom-industries/livery#68` (adjust scope/issue
-per the root `CLAUDE.md` commit conventions). Do not stage automatically; leave the diff for
+per the root `AGENTS.md` commit conventions). Do not stage automatically; leave the diff for
 review.

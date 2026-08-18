@@ -3,42 +3,18 @@
 The Rust backend is the executor. Every OS operation lives here: file I/O, process signals,
 socket communication.
 
+Repo-wide instructions live in [`AGENTS.md`](../../AGENTS.md); every term is defined in
+[`GLOSSARY.md`](../../GLOSSARY.md). Name things with those words.
+
 It is three crates. `livery/core` (`livery_core`) holds the domain logic and depends on no Tauri
 crate — `cargo tree -p livery_core -e normal | grep -c tauri` must stay `0`. `livery/src-tauri`
 (`livery_lib`) is the Tauri shell: command wrappers, plugins, window setup. `livery/cli`
 (`livery-cli`, binary `livery`) is the terminal client, calling `livery_core` directly with no
 Tauri wrapper in between.
 
-## Modules
-
-`livery/core/src/`:
-
-- `config/` — `types.rs` (`AppName`, `AppConfig`, `Config`), `defaults.rs`, `commands.rs`,
-  `io.rs` (disk I/O, tilde expansion, default merging)
-- `themes/` — theme registry, the embedded adapter payload and its unpack, symlinks, app
-  detection
-- `updaters/` — `mod.rs` holds `update_app`, `update_system_appearance`, and the dispatcher;
-  one module per app next to it
-- `updaters/file_ops/` — `text.rs`, `yaml.rs`, `jsonc.rs`, `managed_block.rs`, plus `secure.rs`
-  for the path guard and `verify.rs`
-
-`livery/src-tauri/src/`:
-
-- `commands.rs` — every `#[tauri::command]`, each one a thin wrapper over a `livery_core` function
-  with the same name and signature
-- `lib.rs` — the tauri-specta builder, plugins, and the window setup closure
-- `dev_bridge.rs` — loopback HTTP IPC for browser dev mode, dispatching to `commands::*`
-- `bin/perf_benchmark.rs` — benchmark binary, calls `livery_core` directly
-
-`livery/cli/src/`:
-
-- `main.rs` — the clap `Command` enum; a bare invocation opens the theme picker
-- `commands.rs` — one handler per subcommand (`apply`, `list`, `status`, `setup`, `appearance`,
-  `nvim-settings`)
-
-The frontend calls `update_app(app, theme_key, appearance, collection_key)`. The dispatcher reads
-that app's config, builds the template variables, and routes to the per-app function. No per-app
-branching exists on the frontend.
+Every `#[tauri::command]` in `commands.rs` is a thin wrapper over a `livery_core` function of the
+same name and signature. The dispatcher in `updaters/mod.rs` reads the app's config and routes to
+the per-app function, so no per-app branching exists on the frontend.
 
 ## Conventions
 

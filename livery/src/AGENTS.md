@@ -3,15 +3,13 @@
 The frontend is the orchestrator. It owns UI, state, and calling order, then delegates every OS
 operation to Rust through `invoke()`.
 
+Repo-wide instructions live in [`AGENTS.md`](../../AGENTS.md); every term is defined in
+[`GLOSSARY.md`](../../GLOSSARY.md). Name things with those words. Component architecture and
+folder conventions come from the `dev-style-react` and `dev-style-tanstack` skills.
+
 No filesystem access from TypeScript. `@tauri-apps/plugin-fs` is off limits: file reads and writes
 go through Rust commands so the home-directory check and the atomic write path always apply. No
 shell commands either.
-
-## Stack
-
-React 19 on Vite via `@deno/vite-plugin`. TanStack Query for server state, TanStack Store for client
-state, TanStack Router for routing. CSS Modules with CVA, design tokens as `--ba-*` custom
-properties in `styles/`.
 
 ## Generated files
 
@@ -21,14 +19,12 @@ properties in `styles/`.
 ## Structure
 
 - `routes/` — route components own state, fetch data, and orchestrate. The route is the container.
-- `components/` — props in, UI out, no data fetching. One component per folder:
-  `components/<name>/<name>.tsx`, `<name>.module.css`, `index.ts`.
-- `components/layouts/` — page-level shells.
+- `components/` — props in, UI out, no data fetching.
 - `queries/` — TanStack Query hooks and keys.
-- `store/` — TanStack Store slices.
+- `store/` — TanStack Store slices, client state only. Anything the backend owns is a query.
 - `lib/` — pure logic.
 
-One component per file, file name matches the export. `kebab-case` for files and directories. `.ts`
-for logic, `.tsx` for JSX.
+Design tokens are `--ba-*` custom properties in `styles/`; chrome expresses color, type, spacing,
+borders and motion through them and nothing else.
 
 Tests sit next to the code they cover: `foo.ts` gets `foo_test.ts`. Assertions from `@std/assert`.

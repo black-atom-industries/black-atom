@@ -47,7 +47,7 @@ cd livery && deno task build
 ```
 
 Never run `livery apply`, `livery setup`, or `deno task dev:livery` against your real `$HOME`. See
-the Sandbox section in the root `CLAUDE.md`.
+the Sandbox section in the root `AGENTS.md`.
 
 ## Architecture
 

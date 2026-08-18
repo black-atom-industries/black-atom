@@ -10,7 +10,7 @@ A color token is a key under `theme.ui`, `theme.syntax`, `theme.palette`, `theme
 `theme.feedback` in `ThemeDefinition`. Renaming one touches the type, every collection's color
 creators, every adapter template that reads it, and the monitor app if it displays the raw path.
 
-`theme.primaries.*` is meant to stay core-only per `core/UBIQUITOUS_LANGUAGE.md`, but
+`theme.primaries.*` is meant to stay core-only per `GLOSSARY.md`, but
 `adapters/nvim/lua/black-atom/themes/*/collection.template.lua` and
 `adapters/obsidian/themes/*/collection.template.css` read it today for every collection. Grep for
 primaries renames too; don't skip adapters on the assumption the rule is enforced.
@@ -51,7 +51,7 @@ primaries renames too; don't skip adapters on the assumption the rule is enforce
    custom properties, so a CSS file consuming the old var name breaks silently, no type error.
    `core/monitor/src/hooks/use-ui-preview.ts` and `core/monitor/src/routes/preview/ui.tsx` also
    reference `theme.primaries.*` directly.
-5. Update `core/UBIQUITOUS_LANGUAGE.md` if the renamed token is named in a table or the example
+5. Update `GLOSSARY.md` if the renamed token is named in a table or the example
    dialogue.
 6. From the repo root: `deno task generate`, then `deno task check`, then `deno task test`.
 7. Review the generated diff: `git diff --stat adapters/`. It can be empty even for a correct

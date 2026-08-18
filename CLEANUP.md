@@ -15,7 +15,7 @@ independent. Everything here is reversible except deletes, which are marked.
 - [ ] Decide per remaining repo: transfer to `nikbrunner` (helm.tmux, helm.herdr, iter.nvim,
       radar.nvim, atlas, shiplog) or delete (ai, claude are the old multi-repo agent tooling;
       `.github`, `.github-private` are org profile and labels). Deletion is not reversible; the
-      old agent context is already folded into this repo's `CLAUDE.md` and skills.
+      old agent context is already folded into this repo's `AGENTS.md` and skills.
 - [ ] Update anything that clones the old repos: `dots/install/mac/README.md` and
       `dots/install/arch/README.md` clone `black-atom-industries/helm.tmux`; the nvim pack lock
       and `plugin/50_specs/black_atom/radar.lua` point at `black-atom-industries/{nvim,radar.nvim}`.
@@ -62,8 +62,8 @@ Carried over on purpose ("copy everything, prune later"). Delete what you do not
       from now on; keep the old ones as history or fold them into a `docs/history/`.
 - [ ] `adapters/nvim/syntax_examples/` (fixture files, excluded from checks) and
       `adapters/nvim/update_supported_plugins.sh`: keep if the plugin-support table stays.
-- [ ] `livery/PRODUCT.md`, `livery/DESIGN.md`, `livery/GLOSSARY.md`, `livery/ADAPTERS.md`,
-      `core/UBIQUITOUS_LANGUAGE.md`: still true, decide whether they move under `docs/`.
+- [ ] `livery/PRODUCT.md`, `livery/DESIGN.md`, `livery/ADAPTERS.md`: still true, decide whether
+      they move under `docs/`.
 - [ ] `docs/plans/2026-08-16-phase-*.md`, `MIGRATION.md`, `HOW_TO_TEST.md`, this file: history
       of the move; archive under `docs/history/` or delete once the org is closed.
 - [ ] Issue #7 (post-migration polish) lists the code-level minors.
