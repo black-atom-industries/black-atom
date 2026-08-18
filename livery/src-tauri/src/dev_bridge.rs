@@ -120,6 +120,7 @@ fn dispatch(command: &str, args: Value) -> Result<Value, String> {
             crate::commands::save_config(argument(&args, "config")?)?;
             Ok(Value::Null)
         }
+        "get_active_theme" => to_value(crate::commands::get_active_theme()),
         "get_app_status" => to_value(tauri::async_runtime::block_on(
             crate::commands::get_app_status(),
         )?),
