@@ -102,6 +102,9 @@ Every commit is green: `deno task check` and `deno task test` pass.
 - `release` — cut a release
 - `backend-testing` — fixture-based tests for livery's Rust file operations
 
+`.claude/hooks/` runs on every agent session: `no-fs-plugin` and `check-bindings` after a write,
+`install-cli` at the end of a turn to keep `~/.cargo/bin/livery` in step with the working tree.
+
 Scoped context: `livery/src/AGENTS.md` (frontend), `livery/src-tauri/AGENTS.md` (backend).
 Livery's product and config decisions live in `livery/DESIGN.md`, `livery/ADAPTERS.md`, and
 `livery/GLOSSARY.md`.
