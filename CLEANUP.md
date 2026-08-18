@@ -1,7 +1,9 @@
 # Cleanup after the test pass
 
-Run this once `HOW_TO_TEST.md` is signed off. Order matters in the GitHub section; the rest is
-independent. Everything here is reversible except deletes, which are marked.
+Run this once `HOW_TO_TEST.md` is signed off. Local machine must run before the GitHub section's
+archive/transfer steps — dots still depends on the old repos. Order matters within the GitHub
+section too; JSR and Repo leftovers are independent of both. Everything here is reversible except
+deletes, which are marked.
 
 ## GitHub
 
@@ -16,9 +18,9 @@ independent. Everything here is reversible except deletes, which are marked.
       radar.nvim, atlas, shiplog) or delete (ai, claude are the old multi-repo agent tooling;
       `.github`, `.github-private` are org profile and labels). Deletion is not reversible; the
       old agent context is already folded into this repo's `AGENTS.md` and skills.
-- [ ] Update anything that clones the old repos: `dots/install/mac/README.md` and
-      `dots/install/arch/README.md` clone `black-atom-industries/helm.tmux`; the nvim pack lock
-      and `plugin/50_specs/black_atom/radar.lua` point at `black-atom-industries/{nvim,radar.nvim}`.
+- [ ] Update anything in dots that clones or installs from the old org — see the dots checklist
+      under "Local machine" below. Do this before transferring helm.tmux/shiplog or archiving
+      nvim; a transfer only leaves a redirect until something else claims the old name.
 - [ ] Close the organization once it is empty (Settings → Danger zone). Keep the name if you
       want it back later; an org can be recreated, but the handle is not reserved.
 - [ ] Merge release PR #1 (0.6.0) when the first release is due (issue #6).
@@ -31,18 +33,57 @@ independent. Everything here is reversible except deletes, which are marked.
 
 ## Local machine
 
-- [ ] Switch dots to the bundle: `scripts/dots/theme-link.sh` (`BLACK_ATOM_DIR` → this repo's
-      `adapters/`, or drop the script if livery's symlinks cover it now),
-      `common/.config/nvim/plugin/50_specs/black_atom/nvim.lua` (rtp →
-      `~/repos/nikbrunner/black-atom/adapters/nvim`), the `nvim-pack-lock.json` entry for
-      `black-atom-industries/nvim`, `common/.gitconfig.delta` header comment, the stale
-      `sessions/repos_black-atom-industries_*` files.
+Do this section before archiving/transferring the repos above — 115 symlinks in dots still
+resolve into `~/repos/black-atom-industries/{niri,waybar,lazygit}/`, and several scripts/configs
+have the old org hardcoded. Archiving keeps the clone URL alive (quiet drift, not a break), but
+a transfer (helm.tmux, shiplog, radar.nvim) only leaves a redirect until something else claims the
+old name, and deleting `~/repos/black-atom-industries/` breaks the symlinks outright. Commit or
+stash dots' in-flight changes first so this diff stays separable.
+
+Dots repo (`~/repos/nikbrunner/dots`), needs updating before the switch is safe:
+
+- [ ] `scripts/dots/theme-link.sh` — `BLACK_ATOM_DIR` (lines 9, 100, 157–159) → this repo's
+      `adapters/`, or drop the script if livery's symlinks cover it now.
+- [ ] `common/.config/nvim/plugin/50_specs/black_atom/nvim.lua` — rtp prepend (lines 4, 9) →
+      `~/repos/nikbrunner/black-atom/adapters/nvim`.
+- [ ] `common/.config/nvim/nvim-pack-lock.json` — `nvim` src (line 21) → the monorepo path or
+      drop the pack entry entirely if the bundle's runtime symlink replaces it; `radar.nvim` src
+      (line 106) → `nikbrunner/radar.nvim` once that transfer happens.
+- [ ] `common/.config/nvim/plugin/50_specs/black_atom/radar.lua` — clone URL and comment
+      (lines 1, 6) → new owner.
+- [ ] `common/.gitconfig.delta` — header comment (line 1) → this repo, not
+      `black-atom-industries/livery`.
+- [ ] `common/.config/herdr/install-plugins.sh` (line 7) and
+      `common/.config/black-atom/helm-tmux/config.yml` (lines 33, 35, 41) — install/allowlist
+      entries for `helm.tmux` and `shiplog` → `nikbrunner/{helm.tmux,shiplog}`.
+- [ ] `install/mac/README.md` (lines 143–145) and `install/arch/README.md` (lines 109–111) —
+      clone URL for `helm.tmux` → `nikbrunner/helm.tmux`.
+- [ ] `common/.local/bin/bai-reality-check` (line 7) and `pick-theme` (lines 101, 103, 105, 162)
+      — hardcoded `~/repos/black-atom-industries/...` paths → the monorepo.
+- [ ] `common/.config/black-atom/helm-tmux/bookmarks.yml` (lines 5, 7) — bookmark paths.
+- [ ] 115 symlinks under dots resolving into
+      `~/repos/black-atom-industries/{niri,waybar,lazygit}/themes/...` (38 each, plus
+      `niri/theme.kdl`) — re-point at this repo's `adapters/` or livery's unpacked
+      `~/.local/share/black-atom/themes/`, whichever the app in question expects. tmux and
+      ghostty are already migrated; use those as the pattern.
+- [ ] `README.md` (lines 115, 124, 134) and `AGENTS.md` (lines 65, 84) in dots — prose describing
+      the symlink architecture into `black-atom-industries`, update once the above is done.
+- [ ] Stale, harmless, skip unless doing a general tidy: `common/.config/nvim/sessions/
+      repos_black-atom-industries_{herdr_main,obsidian_master}` (session filenames),
+      `.config/black-atom/shiplog/config.toml` schema URL (still resolves post-transfer),
+      terminal-scrollback session state, `bm/bookmarks.json`, skills docs that mention the org
+      name for context only.
+- [ ] Verify after: restart Neovim, confirm `:colorscheme black-atom-` completes and resolves
+      out of the monorepo (not the old checkout) — a clean grep isn't proof the runtime followed.
+
+Then, once dots is switched and verified:
+
 - [ ] `~/.config/black-atom/themes/` is the old managed dir (1.6 MB); livery reads
       `~/.local/share/black-atom/themes/` now. Delete after the switch. Note
       `~/.config/black-atom/livery` is a symlink into dots, so livery's config is tracked there.
-- [ ] `~/repos/black-atom-industries/` (7 GB, mostly `target/` and `node_modules/`): once the
-      repos are archived and dots no longer link into it, delete the whole directory. Until then
-      it is the fallback.
+- [ ] `~/repos/black-atom-industries/` (7 GB, mostly `target/` and `node_modules/`): once dots no
+      longer links into it, delete the whole directory. Until then it is the fallback the 115
+      symlinks above still depend on.
 - [ ] `~/.claude/projects/-Users-brunner-repos-black-atom-industries/` holds the migration
       session's memory and `.claude/settings.local.json` in this repo holds a write guard from
       the run; both can go.
