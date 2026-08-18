@@ -64,8 +64,8 @@ Carried over on purpose ("copy everything, prune later"). Delete what you do not
       `adapters/nvim/update_supported_plugins.sh`: keep if the plugin-support table stays.
 - [ ] `livery/PRODUCT.md`, `livery/DESIGN.md`, `livery/ADAPTERS.md`: still true, decide whether
       they move under `docs/`.
-- [ ] `docs/plans/2026-08-16-phase-*.md`, `MIGRATION.md`, `HOW_TO_TEST.md`, this file: history
-      of the move; archive under `docs/history/` or delete once the org is closed.
+- [ ] `docs/plans/2026-08-16-phase-*.md`, `MIGRATION.md`, this file: history of the move;
+      archive under `docs/history/` or delete once the org is closed.
 - [ ] Issue #7 (post-migration polish) lists the code-level minors.
 
 ## Caches

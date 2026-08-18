@@ -2,7 +2,7 @@
 
 Phase: complete
 Last completed task: Close (HOW_TO_TEST.md, handoff in handoffs/2026-08-16-monorepo-migration.md, comment on livery#68, cron heartbeat deleted)
-Next: nothing; Nik tests from HOW_TO_TEST.md, then decides the first version (#6) and the old-repo cleanup (#3)
+Next: nothing; testing is done, Nik decides the first version (#6) and when to run CLEANUP.md (#3)
 Blocked on Nik: (none)
 Decisions made in-run:
 
