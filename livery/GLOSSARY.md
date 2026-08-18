@@ -17,7 +17,7 @@
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
 | **Config**           | The user's livery configuration file (`$XDG_CONFIG_HOME/black-atom/livery/config.json`) containing a SystemAppearance toggle and per-app settings | Settings, preferences        |
 | **AppConfig**        | The per-app configuration block — enabled flag, config_path, themes_path, match_pattern, and replace_template                                     | App settings, app entry      |
-| **AppName**          | An enum of supported applications that livery can update (nvim, tmux, ghostty, zed, delta, lazygit, obsidian, helm-tmux)                          | App, tool, target            |
+| **AppName**          | An enum of supported applications that livery can update; `AppName::all()` in `core/src/config/types.rs` is the list                              | App, tool, target            |
 | **ConfigPath**       | The filesystem path to an app's configuration file that livery will patch                                                                         | Target file, output path     |
 | **ThemesPath**       | An optional directory path where an app stores its theme files — used as a template variable, not expanded by Rust                                | Theme directory              |
 | **MatchPattern**     | A regex pattern that locates the theme-setting line in an app's config file                                                                       | Search pattern, find pattern |
@@ -37,6 +37,7 @@
 | **Managed Themes Dir** | `$XDG_DATA_HOME/black-atom/themes/<adapter>/` — where the themes bundled in the binary unpack; the single source Linked placements point at and Merged reads from       | Theme cache, staging dir       |
 | **Setup Precondition** | A one-time manual prerequisite livery cannot automate — obsidian's vault path                                                                                           | Requirement, dependency        |
 | **Switch Pointer**     | The line or property in an app's config that selects the active theme — the thing MatchPattern finds and ReplaceTemplate rewrites                                       | Theme line, theme setting      |
+| **Active Theme**       | The theme livery last applied, recorded in `state.json` under the data home. Seeded by setup, rewritten by each apply that wrote something                              | Current theme, applied theme   |
 
 ## Updater Pipeline
 

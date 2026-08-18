@@ -1,4 +1,5 @@
 import { formatCollectionTitle, type ThemeGroup } from "../../lib/themes.ts";
+import { Badge } from "../primitives/badge/badge.tsx";
 import { ListRow } from "../primitives/list-row/list-row.tsx";
 import { SectionHeader } from "../primitives/section-header/section-header.tsx";
 import styles from "./theme-list.module.css";
@@ -6,10 +7,12 @@ import styles from "./theme-list.module.css";
 interface ThemeListProps {
     groups: ThemeGroup[];
     selectedIndex: number;
+    /** Key of the theme livery last applied, or null for no marker. */
+    activeThemeKey?: string | null;
     onSelect: (index: number) => void;
 }
 
-export function ThemeList({ groups, selectedIndex, onSelect }: ThemeListProps) {
+export function ThemeList({ groups, selectedIndex, activeThemeKey, onSelect }: ThemeListProps) {
     let flatIndex = 0;
 
     return (
@@ -19,6 +22,7 @@ export function ThemeList({ groups, selectedIndex, onSelect }: ThemeListProps) {
                     const index = flatIndex++;
 
                     const isSelected = index === selectedIndex;
+                    const isActive = theme.meta.key === activeThemeKey;
 
                     return (
                         <ListRow
@@ -27,6 +31,7 @@ export function ThemeList({ groups, selectedIndex, onSelect }: ThemeListProps) {
                             name={theme.meta.name}
                             pips={paletteAccentPips(theme.palette)}
                             appearance={theme.meta.appearance === "dark" ? "D" : "L"}
+                            leading={isActive ? <Badge size="mini">ACTIVE</Badge> : null}
                             onClick={() => onSelect(index)}
                             rootRef={isSelected
                                 ? (el) => el?.scrollIntoView({ block: "nearest" })

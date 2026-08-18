@@ -13,6 +13,9 @@ use std::os::unix::fs::PermissionsExt;
 use livery_core::config::types::{AppName, Config};
 
 const BINARY: &str = env!("CARGO_BIN_EXE_livery");
+/// The theme `setup` applies when it is not asked interactively.
+const DEFAULT_THEME: &str = "black-atom-default-dark";
+
 const THEME: &str = "black-atom-jpn-koyo-yoru";
 
 struct Sandbox {
@@ -176,6 +179,10 @@ fn cli_end_to_end() {
             String::from_utf8_lossy(&failed_apply.stderr).contains("1 update(s) failed"),
             "appearance failure missing from stderr: {failed_apply:?}"
         );
+
+        // The failing stub belongs to the assertion above. Later steps apply
+        // a theme too, and would inherit the failure.
+        sandbox.install_system_appearance_stub(0);
     }
     let patched_tmux = std::fs::read_to_string(&tmux_config).unwrap();
     let patched_ghostty = std::fs::read_to_string(&ghostty_config).unwrap();
@@ -196,6 +203,13 @@ fn cli_end_to_end() {
     let status = sandbox.run(&["status"]);
     assert!(status.status.success(), "status failed: {status:?}");
     let reported = stdout(&status);
+    assert!(
+        reported
+            .lines()
+            .next()
+            .is_some_and(|line| line.starts_with("theme") && line.contains(DEFAULT_THEME)),
+        "setup must apply and record the default theme:\n{reported}"
+    );
     for app in ["tmux", "ghostty"] {
         let line = reported
             .lines()
@@ -209,6 +223,30 @@ fn cli_end_to_end() {
     assert!(
         !unknown.status.success(),
         "an unknown theme must exit non-zero: {unknown:?}"
+    );
+
+    // The record follows what was written, not what was attempted: a pass
+    // where nothing succeeds must leave the previous theme standing. System
+    // appearance has to fail too — flipping the OS is itself a real change.
+    std::fs::write(&tmux_config, "# no switch pointer here\n").unwrap();
+    std::fs::write(&ghostty_config, "# no switch pointer here\n").unwrap();
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    sandbox.install_system_appearance_stub(1);
+
+    let broken = sandbox.run(&["apply", THEME]);
+    assert!(
+        !broken.status.success(),
+        "an apply where every updater fails must exit non-zero: {broken:?}"
+    );
+
+    let after = sandbox.run(&["status"]);
+    let reported = stdout(&after);
+    assert!(
+        reported
+            .lines()
+            .next()
+            .is_some_and(|line| line.starts_with("theme") && line.contains(DEFAULT_THEME)),
+        "a failed apply must not overwrite the recorded theme:\n{reported}"
     );
 }
 

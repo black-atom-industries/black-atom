@@ -20,8 +20,10 @@ Each supported app falls into one provisioning class: Linked, Merged, or Externa
 livery                       # interactive theme picker (so does `livery apply` alone)
 livery apply <theme>         # apply a theme to every enabled app and the system appearance
 livery list                  # list every available theme, grouped by collection
-livery status                # show each app's enabled, provisioning, linked and config state
-livery setup [--yes]         # enable detected apps, link their themes, verify config paths
+livery status                # show the active theme, then each app's enabled, provisioning,
+                             #   linked and config state
+livery setup [--yes]         # enable detected apps, link their themes, verify config paths,
+                             #   then apply a theme (picker, or default-dark under --yes)
 livery appearance <dark|light>  # switch the system between dark and light mode
 livery nvim-settings         # write stored Neovim plugin settings into nvim's managed Lua block
 ```

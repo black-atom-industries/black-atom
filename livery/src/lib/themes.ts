@@ -3,7 +3,15 @@ import {
     type ThemeCollectionKey,
     type ThemeDefinition,
     type ThemeKeyDefinitionMap,
+    themeMap,
 } from "@black-atom/core";
+
+/**
+ * What livery wears before anything is recorded, and what `livery setup`
+ * applies when it is not asked interactively. Kept in step with
+ * DEFAULT_THEME_KEY in livery/cli/src/commands.rs.
+ */
+export const defaultTheme: ThemeDefinition = themeMap["black-atom-default-dark"];
 
 export interface ThemeGroup {
     collectionKey: ThemeCollectionKey;

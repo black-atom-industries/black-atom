@@ -58,6 +58,8 @@ fn cli_surface(cap: Capability) -> &'static str {
         Capability::VerifyAppPath => "status",
         Capability::UpdateSystemAppearance => "appearance",
         Capability::WriteNvimSettings => "nvim-settings",
+        Capability::GetActiveTheme => "status",
+        Capability::SetActiveTheme => "apply",
     }
 }
 

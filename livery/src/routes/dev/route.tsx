@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link, Outlet, useMatches } from "@tanstack/react-router";
 import { themeMap } from "@black-atom/core";
+import { defaultTheme } from "../../lib/themes.ts";
 import type { ThemeDefinition } from "@black-atom/core";
 import { ThemeProvider } from "../../components/theme-provider/theme-provider.tsx";
 import { DevLayout } from "../../components/dev-layout/dev-layout.tsx";
@@ -20,7 +21,7 @@ const themes = Object.values(themeMap);
 
 function Component() {
     const [theme, setTheme] = useState<ThemeDefinition>(
-        themeMap["black-atom-default-dark"],
+        defaultTheme,
     );
 
     const matches = useMatches();

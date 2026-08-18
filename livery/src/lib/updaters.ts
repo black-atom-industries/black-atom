@@ -52,11 +52,15 @@ export function createUpdaters(
     }));
 }
 
-/** Run updaters sequentially, calling onUpdate after each status change. */
+/**
+ * Run updaters sequentially, calling onUpdate after each status change.
+ * Returns the settled results so callers judge the run off the return value
+ * rather than off the last callback they happened to see.
+ */
 export async function applyTheme(
     updaters: UpdaterEntry[],
     onUpdate: (results: UpdateResult[]) => void,
-): Promise<void> {
+): Promise<UpdateResult[]> {
     const results: UpdateResult[] = updaters.map<UpdateResult>((u) => ({
         app: u.app,
         status: "pending",
@@ -72,4 +76,6 @@ export async function applyTheme(
         results[i] = await updaters[i].run();
         onUpdate([...results]);
     }
+
+    return results;
 }

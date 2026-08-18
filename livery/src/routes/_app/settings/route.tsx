@@ -1,12 +1,12 @@
 import { useRef, useState } from "react";
 import { createFileRoute, Outlet, useMatches, useNavigate } from "@tanstack/react-router";
 import { useHotkey } from "@tanstack/react-hotkeys";
-import { useStore } from "@tanstack/react-store";
 import { themeMap } from "@black-atom/core";
 import { Typo } from "../../../components/typo/index.ts";
 import { useConfig } from "../../../queries/use-config.ts";
 import { useAppStatus } from "../../../queries/use-app-status.ts";
-import { pickRandomOtherTheme } from "../../../lib/themes.ts";
+import { useActiveTheme } from "../../../queries/use-active-theme.ts";
+import { defaultTheme, pickRandomOtherTheme } from "../../../lib/themes.ts";
 import { App } from "../../../components/layouts/app.ts";
 import { SettingsSidebar } from "../../../components/settings/settings-sidebar/index.ts";
 import type { AdapterField } from "../../../components/settings/adapter-pages/index.ts";
@@ -30,7 +30,6 @@ import { homeDir, sep } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { setUpAdapter, type SetUpOutcome } from "../../../lib/adapter-setup.ts";
-import { appStore } from "../../../store/app.ts";
 import { SettingsContext, type SettingsContextValue } from "./-settings-context.ts";
 import styles from "./route.module.css";
 
@@ -72,7 +71,7 @@ function SettingsRoute() {
     const [linkThemesResults, setLinkThemesResults] = useState<
         Partial<Record<AppName, LinkThemesRowResult>>
     >({});
-    const currentTheme = useStore(appStore, (s) => s.currentTheme);
+    const activeTheme = useActiveTheme();
     // Session-local SAVE SETTINGS outcome for the nvim page.
     const [nvimSettingsResult, setNvimSettingsResult] = useState<UpdateResult | undefined>(
         undefined,
@@ -217,7 +216,10 @@ function SettingsRoute() {
      * test is "back to normal", not "still showing a stale test result".
      */
     async function testApplyAdapter(appName: AppName) {
-        const before = currentTheme;
+        // Reverting has to land on what is genuinely applied. Before setup
+        // has recorded anything there is nothing to revert to, so the probe
+        // falls back to the same default setup would have seeded.
+        const before = activeTheme.theme ?? defaultTheme;
         const probe = pickRandomOtherTheme(themeMap, before.meta.key);
         if (!probe) return;
 

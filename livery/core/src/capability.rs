@@ -35,6 +35,8 @@ capabilities! {
     VerifyAppPath => "verify_app_path",
     UpdateSystemAppearance => "update_system_appearance",
     WriteNvimSettings => "write_nvim_settings",
+    GetActiveTheme => "get_active_theme",
+    SetActiveTheme => "set_active_theme",
 }
 
 #[cfg(test)]

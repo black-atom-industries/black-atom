@@ -12,6 +12,9 @@ fn block_on<F: std::future::Future>(future: F) -> F::Output {
         .block_on(future)
 }
 
+/// The theme `setup` applies when it is not asked interactively.
+const DEFAULT_THEME_KEY: &str = "black-atom-default-dark";
+
 /// Themes are read from the binary, but a first run still owes the disk its
 /// unpacked tree — Linked apps read the files, not the embedded payload.
 fn unpacked() -> Result<(), String> {
@@ -51,6 +54,7 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
     println!("{}", theme.label);
 
     let mut failed = 0;
+    let mut applied = 0;
     for app in enabled {
         let result = block_on(updaters::update_app(
             app,
@@ -63,6 +67,8 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
         ));
         if result.status == UpdateStatus::Error {
             failed += 1;
+        } else if result.status == UpdateStatus::Done {
+            applied += 1;
         }
         println!(
             "  {:<10} {}{}",
@@ -79,6 +85,8 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
         let result = updaters::update_system_appearance(theme.appearance.clone());
         if result.status == UpdateStatus::Error {
             failed += 1;
+        } else if result.status == UpdateStatus::Done {
+            applied += 1;
         }
         println!(
             "  {:<10} {}{}",
@@ -89,6 +97,15 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
                 .map(|message| format!(" — {message}"))
                 .unwrap_or_default()
         );
+    }
+
+    // One updater landing is enough to change what the user is looking at,
+    // so the record follows the machine rather than the exit code. A run that
+    // only skipped or errored wrote nothing, and leaves the record standing.
+    if applied > 0 {
+        if let Err(message) = livery_core::state::set_active_theme(&theme.key) {
+            eprintln!("warning: could not record the active theme — {message}");
+        }
     }
 
     if failed > 0 {
@@ -102,6 +119,9 @@ pub fn status() -> Result<(), String> {
 
     let config = livery_core::config::commands::get_config();
     let statuses = block_on(themes::get_app_status())?;
+
+    println!("theme      {}", active_theme_label());
+    println!();
 
     for app_status in statuses {
         let app = app_status.app;
@@ -201,7 +221,22 @@ pub fn setup(yes: bool) -> Result<(), String> {
     if !failures.is_empty() {
         return Err(failures.join("; "));
     }
-    Ok(())
+
+    // Enabling and linking leaves the tools configured but still wearing
+    // whatever they wore before, so setup finishes by actually putting a
+    // theme on the machine. That also makes the Active Theme record a
+    // reading of something livery did, rather than an assumption.
+    println!();
+    apply(&choose_setup_theme(yes)?)
+}
+
+/// The theme setup applies as its last step. `--yes` has to stay
+/// non-interactive, so it takes the default rather than opening the picker.
+fn choose_setup_theme(yes: bool) -> Result<String, String> {
+    if yes {
+        return Ok(DEFAULT_THEME_KEY.to_string());
+    }
+    pick_theme("Pick a theme to apply")
 }
 
 pub fn appearance(mode: &str) -> Result<(), String> {
@@ -238,19 +273,64 @@ fn report(label: &str, result: &updaters::UpdateResult) -> Result<(), String> {
 
 pub fn pick_and_apply() -> Result<(), String> {
     unpacked()?;
+    apply(&pick_theme("Theme")?)
+}
 
+/// Open the theme picker and return the chosen key. The cursor opens on the
+/// Active Theme, falling back to the default when nothing is recorded yet, so
+/// a first run lands on the theme setup would otherwise have applied.
+fn pick_theme(prompt: &str) -> Result<String, String> {
     let themes = catalog::themes();
+    let active = livery_core::state::get_active_theme();
+    let width = themes
+        .iter()
+        .map(|theme| theme.key.len())
+        .max()
+        .unwrap_or(0);
+
     let options: Vec<String> = themes
         .iter()
-        .map(|theme| format!("{}  [{}]", theme.key, theme.appearance))
+        .map(|theme| {
+            let marker = if Some(&theme.key) == active.as_ref() {
+                "  ■"
+            } else {
+                ""
+            };
+            format!(
+                "{:<width$}  [{}]{marker}",
+                theme.key,
+                theme.appearance,
+                width = width
+            )
+        })
         .collect();
 
-    let choice = inquire::Select::new("Theme", options)
+    // A key that no longer names a theme leaves the cursor at the top.
+    let cursor_key = active.unwrap_or_else(|| DEFAULT_THEME_KEY.to_string());
+    let starting_cursor = themes
+        .iter()
+        .position(|theme| theme.key == cursor_key)
+        .unwrap_or(0);
+
+    let choice = inquire::Select::new(prompt, options)
         .with_page_size(15)
+        .with_starting_cursor(starting_cursor)
         .raw_prompt()
         .map_err(|e| format!("no theme picked: {e}"))?;
 
-    apply(&themes[choice.index].key)
+    Ok(themes[choice.index].key.clone())
+}
+
+/// The Active Theme as `status` prints it. A record whose key no longer
+/// resolves is shown rather than swallowed — a stale key is worth seeing.
+fn active_theme_label() -> String {
+    let Some(key) = livery_core::state::get_active_theme() else {
+        return "none (run `livery setup`)".to_string();
+    };
+    match catalog::find(&key) {
+        Some(theme) => format!("{key}  ({})", theme.appearance),
+        None => format!("{key}  (unknown theme)"),
+    }
 }
 
 fn enabled_apps(config: &Config) -> Vec<AppName> {

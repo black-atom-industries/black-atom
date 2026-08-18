@@ -48,6 +48,16 @@
     flex: 1;
 }
 
+/* Reserved whether or not the row fills it, so a marked row does not shift
+   the pip and appearance columns out of line with its neighbours. Sized for
+   the ACTIVE badge: 6 mono chars at the mini size plus its padding and border. */
+.leading {
+    display: flex;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    width: calc(6ch + 10px);
+}
+
 .nameSelected {
     font-weight: var(--ba-font-weight-bold);
 }

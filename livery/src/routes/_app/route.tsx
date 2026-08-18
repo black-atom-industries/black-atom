@@ -12,6 +12,7 @@ import { KeyHint } from "../../components/primitives/key-hint/key-hint.tsx";
 import { StatusPip } from "../../components/primitives/status-pip/status-pip.tsx";
 import { themeToStyleSheet } from "../../lib/tokens.ts";
 import { getFailedUpdaters, mergeUpdateResults, summarizeApply } from "../../lib/progress.ts";
+import { defaultTheme } from "../../lib/themes.ts";
 import {
     applyTheme,
     createUpdaters,
@@ -19,6 +20,7 @@ import {
     type UpdateResult,
 } from "../../lib/updaters.ts";
 import { useConfig } from "../../queries/use-config.ts";
+import { useActiveTheme } from "../../queries/use-active-theme.ts";
 import { appStore } from "../../store/app.ts";
 import styles from "./route.module.css";
 
@@ -30,7 +32,15 @@ function AppLayout() {
     const config = useConfig();
     const phase = useStore(appStore, (s) => s.phase);
     const updaterResults = useStore(appStore, (s) => s.updaterResults);
-    const currentTheme = useStore(appStore, (s) => s.currentTheme);
+    const applyingTheme = useStore(appStore, (s) => s.applyingTheme);
+    const activeTheme = useActiveTheme();
+
+    // livery wears the theme it applied, following the run while one is on
+    // screen and the record once the rail is dismissed — a pass that wrote
+    // nothing must not leave the app tinted as a theme the machine never got.
+    // Falling back to default-dark covers a launch before setup ran.
+    const displayedTheme = (phase === "picking" ? null : applyingTheme) ??
+        activeTheme.theme ?? defaultTheme;
 
     const matches = useMatches();
     const isSettings = matches.some((m) => m.routeId === "/_app/settings");
@@ -51,7 +61,7 @@ function AppLayout() {
 
     const themeCount = useMemo(() => Object.keys(themeMap).length, []);
     const collectionCount = collectionOrder.length;
-    const env = currentTheme.meta.appearance.toUpperCase();
+    const env = displayedTheme.meta.appearance.toUpperCase();
 
     const summary = summarizeApply(updaterResults);
     const railKeysActive = phase !== "picking" && !isSettings;
@@ -126,9 +136,11 @@ function AppLayout() {
         const failedApps = getFailedUpdaters(updaterResults);
         if (failedApps.length === 0) return;
 
+        if (!applyingTheme) return;
+
         const enabledApps = getEnabledApps(config.query.data.apps)
             .filter(([name]) => failedApps.includes(name));
-        const retryUpdaters = createUpdaters(enabledApps, currentTheme.meta);
+        const retryUpdaters = createUpdaters(enabledApps, applyingTheme.meta);
 
         appStore.setState((s) => ({
             ...s,
@@ -140,12 +152,22 @@ function AppLayout() {
         }));
 
         try {
-            await applyTheme(retryUpdaters, (partial) => {
+            const results = await applyTheme(retryUpdaters, (partial) => {
                 appStore.setState((s) => ({
                     ...s,
                     updaterResults: mergeUpdateResults(s.updaterResults, partial),
                 }));
             });
+
+            // A retry is where the record is most likely to be stale: it only
+            // runs after a failed pass, which left the previous theme recorded.
+            if (results.some((result) => result.status === "done")) {
+                try {
+                    await activeTheme.set.mutateAsync(applyingTheme.meta.key);
+                } catch (error) {
+                    console.warn("[active theme]", error);
+                }
+            }
         } finally {
             appStore.setState((s) => ({ ...s, phase: "done" }));
         }
@@ -157,11 +179,11 @@ function AppLayout() {
     useHotkey("Enter", () => railKeysActive && toggleCursoredRow());
     useHotkey("Escape", () => railKeysActive && phase !== "applying" && settleRail());
 
-    const themeName = currentTheme.meta.name.toUpperCase();
+    const themeName = displayedTheme.meta.name.toUpperCase();
 
     return (
         <>
-            <style id="black-atom-theme-tokens">{themeToStyleSheet(currentTheme)}</style>
+            <style id="black-atom-theme-tokens">{themeToStyleSheet(displayedTheme)}</style>
             <div className={styles.root}>
                 <header className={styles.header}>
                     <AppHeader

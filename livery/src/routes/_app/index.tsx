@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useHotkey, useHotkeySequence } from "@tanstack/react-hotkeys";
 import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -9,6 +9,7 @@ import { commands } from "../../bindings.ts";
 import { applyTheme, createUpdaters, getEnabledApps } from "../../lib/updaters.ts";
 import { getGroupedThemes } from "../../lib/themes.ts";
 import { useConfig } from "../../queries/use-config.ts";
+import { useActiveTheme } from "../../queries/use-active-theme.ts";
 import { ThemeList } from "../../components/theme-list/index.ts";
 import { ThemeDetail } from "../../components/theme-detail/index.ts";
 import { App } from "../../components/layouts/app.ts";
@@ -28,7 +29,7 @@ function Component() {
     const allGroups = useMemo(() => getGroupedThemes(themeMap), []);
     const allThemes = useMemo(() => allGroups.flatMap((g) => g.themes), [allGroups]);
 
-    const currentTheme = useStore(appStore, (s) => s.currentTheme);
+    const activeTheme = useActiveTheme();
     const phase = useStore(appStore, (s) => s.phase);
 
     const [query, setQuery] = useState("");
@@ -72,6 +73,22 @@ function Component() {
     const [pickedIndex, setPickedIndex] = useState(0);
     const clampedIndex = Math.min(pickedIndex, Math.max(0, themes.length - 1));
     const pickedEntry = themes[clampedIndex];
+
+    // The cursor opens on the active theme. The record arrives asynchronously,
+    // so this lands once the query resolves and then never moves the cursor
+    // again — a later refetch must not yank it out from under the user.
+    const seededCursor = useRef(false);
+    useEffect(() => {
+        if (seededCursor.current) return;
+        if (activeTheme.query.isPending) return;
+
+        seededCursor.current = true;
+
+        const key = activeTheme.theme?.meta.key;
+        if (!key) return;
+        const index = themes.findIndex((theme) => theme.meta.key === key);
+        if (index >= 0) setPickedIndex(index);
+    }, [activeTheme.query.isPending, activeTheme.theme, themes]);
 
     // Filter mode: a state-driven cursor over the chips (rendered via the
     // Chip `focused` prop) — deliberately not DOM focus, which WebKit's
@@ -197,18 +214,33 @@ function Component() {
 
         if (updaters.length === 0 && !config.query.data.system_appearance) return;
 
-        appStore.setState((s) => ({ ...s, currentTheme: pickedEntry, phase: "applying" }));
+        appStore.setState((s) => ({ ...s, applyingTheme: pickedEntry, phase: "applying" }));
 
         try {
-            await applyTheme(updaters, (results) => {
-                appStore.setState((s) => ({ ...s, updaterResults: results }));
+            const results = await applyTheme(updaters, (partial) => {
+                appStore.setState((s) => ({ ...s, updaterResults: partial }));
             });
+            let applied = results.filter((result) => result.status === "done").length;
 
             if (config.query.data.system_appearance) {
                 try {
-                    await commands.updateSystemAppearance(pickedEntry.meta.appearance);
+                    const result = await commands.updateSystemAppearance(
+                        pickedEntry.meta.appearance,
+                    );
+                    if (result.status === "done") applied += 1;
                 } catch (error) {
                     console.warn("[system appearance]", error);
+                }
+            }
+
+            // One updater landing is enough to change what the user is looking
+            // at, so the record follows the machine. A run that only skipped or
+            // errored wrote nothing, and leaves the record standing.
+            if (applied > 0) {
+                try {
+                    await activeTheme.set.mutateAsync(pickedEntry.meta.key);
+                } catch (error) {
+                    console.warn("[active theme]", error);
                 }
             }
         } finally {
@@ -305,6 +337,7 @@ function Component() {
                         <ThemeList
                             groups={groups}
                             selectedIndex={clampedIndex}
+                            activeThemeKey={activeTheme.theme?.meta.key ?? null}
                             onSelect={setPickedIndex}
                         />
                     </div>
@@ -313,7 +346,7 @@ function Component() {
             right={
                 <ThemeDetail
                     theme={pickedEntry}
-                    isActive={pickedEntry?.meta.key === currentTheme.meta.key}
+                    isActive={pickedEntry?.meta.key === activeTheme.theme?.meta.key}
                 />
             }
         />

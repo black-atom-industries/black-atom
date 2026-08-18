@@ -16,6 +16,8 @@ fn specta_builder() -> Builder<tauri::Wry> {
         commands::update_system_appearance,
         commands::verify_app_path,
         commands::write_nvim_settings,
+        commands::get_active_theme,
+        commands::set_active_theme,
     ])
 }
 

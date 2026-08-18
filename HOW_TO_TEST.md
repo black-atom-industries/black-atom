@@ -82,8 +82,10 @@ Livery writes into files your dots repo tracks. Copy these before step one, or c
 - [ ] `livery list` prints all 38 themes grouped by collection.
   - Agent check: PASS — sandbox.
 - [ ] `livery setup` (interactive) or `livery setup --yes`: detects your installed apps, enables
-      them, links themes for Linked apps, verifies config paths; `livery status` shows
-      `enabled … linked=true config=ok` for ghostty, tmux, zed, obsidian, nvim.
+      them, links themes for Linked apps, verifies config paths, then finishes by applying a
+      theme — interactively through a picker, or `black-atom-default-dark` under `--yes`;
+      `livery status` shows `enabled … linked=true config=ok` for ghostty, tmux, zed, obsidian,
+      nvim.
   - Agent check: PASS — sandbox `setup --yes` enabled and verified ghostty, tmux, nvim, zed,
     delta, lazygit, herdr and obsidian (all seeded from fixtures); status showed linked=true
     for the five Linked apps.
@@ -94,12 +96,28 @@ Livery writes into files your dots repo tracks. Copy these before step one, or c
     delta, lazygit, herdr, obsidian); a second theme changed six files, a repeat apply changed
     nothing. Live reload of real apps NOT RUN. Caution: the nvim updater reloads every Neovim
     socket on the machine, sandbox or not.
-- [ ] Bare `livery` or `livery apply` without a theme: a fuzzy picker opens; pick a theme, it
-      applies.
-  - Agent check: NOT RUN (interactive).
+- [ ] Bare `livery` or `livery apply` without a theme: a picker opens with the cursor already on
+      the Active Theme and a `◉` marking that row; pick a theme, it applies.
+  - Agent check: PASS — a PTY-driven `setup` run opened the picker on the fallback, two
+    arrow-downs selected another theme and the record followed the choice.
 - [ ] `livery apply not-a-theme` exits 1 with a clear message; `livery status | head -1` prints one
       line, no panic.
   - Agent check: PASS — both in sandbox.
+
+### 3b. Active Theme
+
+- [ ] `livery status` leads with a `theme <key> (<appearance>)` line naming what livery last
+      applied; after `livery apply <other>` the line names the new theme.
+  - Agent check: PASS — sandbox.
+- [ ] With no record yet (delete `~/.local/share/black-atom/state.json`), `livery status` reads
+      `theme none (run \`livery setup\`)` and the picker opens at the top of the list.
+  - Agent check: PASS — sandbox.
+- [ ] An apply where every updater fails leaves the record on the previous theme; an apply where
+      at least one app is written moves it.
+  - Agent check: PASS — asserted by `cli_smoke.rs`.
+- [ ] Hand-edit `state.json` to a key that names no theme: `livery status` prints it followed by
+      `(unknown theme)` rather than swallowing it, and the picker opens at the top.
+  - Agent check: PASS — sandbox.
 
 ### 4. GUI
 
@@ -107,6 +125,15 @@ Livery writes into files your dots repo tracks. Copy these before step one, or c
       prompt appears.
   - Agent check: PASS — the GUI was driven in Chrome through livery's dev bridge: 38 themes,
     six collections, no greeting; the real Tauri window NOT RUN.
+- [ ] The theme list opens with the cursor on the Active Theme, that row carries an `ACTIVE`
+      badge left of its palette pips, and the pip columns stay aligned down the whole list.
+  - Agent check: NOT RUN — type-checked and built, never seen rendered.
+- [ ] Apply a theme from the GUI, then quit and relaunch: the cursor and the `ACTIVE` badge are
+      on the theme you applied.
+  - Agent check: NOT RUN.
+- [ ] Run `livery apply <other>` in a terminal while the GUI window is open, then focus the
+      window: the badge and cursor move to that theme.
+  - Agent check: NOT RUN.
 - [ ] Apply a theme from the GUI: same effect on the apps as the CLI.
   - Agent check: PASS — apply from the GUI reported 6/6 OK in 73 ms and the six sandbox
     files carried the theme.

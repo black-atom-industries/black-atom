@@ -166,3 +166,45 @@ Deno.test("applyTheme propagates error status from failed updater", async () => 
     assertEquals(updates[2][0].status, "error");
     assertEquals(updates[2][0].message, "file not found");
 });
+
+Deno.test("applyTheme returns the settled results", async () => {
+    const updaters: UpdaterEntry[] = [
+        {
+            app: "ghostty",
+            run: () => Promise.resolve({ app: "ghostty", status: "done", duration_ms: 3 }),
+        },
+        {
+            app: "nvim",
+            run: () => Promise.resolve({ app: "nvim", status: "skipped", duration_ms: null }),
+        },
+    ];
+
+    const results = await applyTheme(updaters, () => {});
+
+    assertEquals(results.map((result) => result.status), ["done", "skipped"]);
+});
+
+// The Active Theme record follows what actually got written, so a run that
+// only skipped or errored must leave the previous record standing.
+Deno.test("applyTheme returns no done results when nothing was written", async () => {
+    const updaters: UpdaterEntry[] = [
+        {
+            app: "ghostty",
+            run: () => Promise.resolve({ app: "ghostty", status: "skipped", duration_ms: null }),
+        },
+        {
+            app: "nvim",
+            run: () =>
+                Promise.resolve({
+                    app: "nvim",
+                    status: "error",
+                    message: "boom",
+                    duration_ms: null,
+                }),
+        },
+    ];
+
+    const results = await applyTheme(updaters, () => {});
+
+    assertEquals(results.filter((result) => result.status === "done").length, 0);
+});

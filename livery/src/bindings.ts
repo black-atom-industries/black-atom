@@ -77,6 +77,26 @@ async verifyAppPath(app: AppName) : Promise<AppPathVerification> {
  */
 async writeNvimSettings(settings: NvimSettings) : Promise<UpdateResult> {
     return await TAURI_INVOKE("write_nvim_settings", { settings });
+},
+/**
+ * The theme livery last applied, as a theme key. `None` on a machine that
+ * has never run setup. The key is stored rather than resolved, so a caller
+ * resolves it against the catalogue and treats a miss like an absence.
+ */
+async getActiveTheme() : Promise<string | null> {
+    return await TAURI_INVOKE("get_active_theme");
+},
+/**
+ * Record the theme livery just applied. Called once per apply, after the
+ * updater loop, never per app.
+ */
+async setActiveTheme(key: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("set_active_theme", { key }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 

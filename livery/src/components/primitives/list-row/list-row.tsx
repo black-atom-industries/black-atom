@@ -32,6 +32,10 @@ type Props = VariantProps<typeof listRowVariants> & {
     pips?: string[];
     /** Appearance letter: "D" | "L". */
     appearance?: string;
+    /** Content between the name and the pips — e.g. an ACTIVE marker. Sits in
+        a fixed-width slot, so pass it on every row of a list that uses it
+        (empty where absent) and the pip column stays aligned down the list. */
+    leading?: React.ReactNode;
     /** Extra content after the name/pips/appearance — e.g. a status badge. */
     trailing?: React.ReactNode;
     onClick?: () => void;
@@ -51,8 +55,19 @@ type Props = VariantProps<typeof listRowVariants> & {
  * Spec: docs/design-system/reference/components/display/ListRow.jsx
  */
 export function ListRow(
-    { selected, dimmed, indented, name, pips, appearance, trailing, onClick, rootRef, className }:
-        Props,
+    {
+        selected,
+        dimmed,
+        indented,
+        name,
+        pips,
+        appearance,
+        leading,
+        trailing,
+        onClick,
+        rootRef,
+        className,
+    }: Props,
 ) {
     return (
         <div
@@ -68,6 +83,7 @@ export function ListRow(
             <span className={selected ? `${styles.name} ${styles.nameSelected}` : styles.name}>
                 {name}
             </span>
+            {leading !== undefined ? <span className={styles.leading}>{leading}</span> : null}
             {pips && !dimmed ? <Swatch variant="pips" colors={pips} /> : null}
             {appearance ? <Badge size="mini">{appearance}</Badge> : null}
             {trailing}

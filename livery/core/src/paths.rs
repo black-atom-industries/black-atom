@@ -26,6 +26,11 @@ pub fn themes_root() -> PathBuf {
     data_home().join("black-atom").join("themes")
 }
 
+/// `<data_home>/black-atom/state.json` — livery's record of what it last did.
+pub fn state_path() -> PathBuf {
+    data_home().join("black-atom").join("state.json")
+}
+
 fn resolve(var: Option<std::ffi::OsString>, fallback: &str) -> PathBuf {
     resolve_with(var, dirs::home_dir().as_deref(), fallback)
 }
