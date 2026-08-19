@@ -82,6 +82,34 @@ impl Sandbox {
         }
     }
 
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    fn install_concurrency_barrier_stubs(&self) {
+        let bin_dir = self.path().join("bin");
+        std::fs::create_dir_all(&bin_dir).unwrap();
+        for (command, own_marker, peer_marker) in [
+            ("ps", "ps-started", "tmux-started"),
+            ("tmux", "tmux-started", "ps-started"),
+        ] {
+            let path = bin_dir.join(command);
+            write(
+                &path,
+                &format!(
+                    "#!/bin/sh\ntouch \"$HOME/{own_marker}\"\nfor _ in $(seq 1 100); do\n  test -f \"$HOME/{peer_marker}\" && exit 0\n  sleep 0.01\ndone\nexit 1\n"
+                ),
+            );
+            let mut permissions = std::fs::metadata(&path).unwrap().permissions();
+            permissions.set_mode(0o755);
+            std::fs::set_permissions(path, permissions).unwrap();
+        }
+    }
+
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    fn remove_concurrency_barrier_stubs(&self) {
+        for command in ["ps", "tmux"] {
+            std::fs::remove_file(self.path().join("bin").join(command)).unwrap();
+        }
+    }
+
     /// The updaters shell out to `ps` and `tmux`, so the environment is
     /// extended rather than cleared.
     fn run(&self, args: &[&str]) -> Output {
@@ -189,6 +217,8 @@ fn cli_end_to_end() {
     );
     assert!(listed.contains(THEME), "{THEME} is missing:\n{listed}");
 
+    #[cfg(any(target_os = "linux", target_os = "macos"))]
+    sandbox.install_concurrency_barrier_stubs();
     let apply = sandbox.run(&["apply", THEME]);
     assert!(apply.status.success(), "apply failed: {apply:?}");
     assert!(
@@ -198,6 +228,14 @@ fn cli_end_to_end() {
     );
     #[cfg(any(target_os = "linux", target_os = "macos"))]
     {
+        sandbox.remove_concurrency_barrier_stubs();
+        assert!(
+            stdout(&apply)
+                .lines()
+                .any(|line| line.starts_with("  ghostty") && line.contains("done")),
+            "ghostty and tmux updaters did not overlap:\n{}",
+            stdout(&apply)
+        );
         assert!(
             std::fs::read_to_string(sandbox.appearance_log())
                 .is_ok_and(|arguments| !arguments.trim().is_empty()),

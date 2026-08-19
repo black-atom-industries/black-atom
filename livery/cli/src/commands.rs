@@ -4,7 +4,7 @@ use livery_core::themes::{catalog, commands as themes, detect, unpack};
 use livery_core::updaters::{self, ThemeContext, UpdateStatus};
 
 /// Every core entry point the CLI reaches for is `async` while awaiting
-/// nothing, so a current-thread runtime carries the whole process.
+/// nothing, so a current-thread runtime is sufficient at every call site.
 fn block_on<F: std::future::Future>(future: F) -> F::Output {
     tokio::runtime::Builder::new_current_thread()
         .build()
@@ -53,51 +53,64 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
 
     println!("{}", theme.label);
 
+    enum CompletedUpdate {
+        App(AppName, livery_core::updaters::UpdateResult),
+        Appearance(livery_core::updaters::UpdateResult),
+    }
+
     let mut failed = 0;
     let mut applied = 0;
-    for app in enabled {
-        let result = block_on(updaters::update_app(
-            app,
-            ThemeContext {
+    std::thread::scope(|scope| {
+        let (sender, receiver) = std::sync::mpsc::channel();
+
+        for app in enabled.iter().copied() {
+            let sender = sender.clone();
+            let context = ThemeContext {
                 theme_key: theme.key.clone(),
                 appearance: theme.appearance.clone(),
                 collection_key: theme.collection_key.clone(),
                 theme_label: Some(theme.label.clone()),
-            },
-        ));
-        if result.status == UpdateStatus::Error {
-            failed += 1;
-        } else if result.status == UpdateStatus::Done {
-            applied += 1;
+            };
+            scope.spawn(move || {
+                let result = block_on(updaters::update_app(app, context));
+                sender
+                    .send(CompletedUpdate::App(app, result))
+                    .expect("apply receiver dropped");
+            });
         }
-        println!(
-            "  {:<10} {}{}",
-            app.as_str(),
-            result.status.as_str(),
-            result
-                .message
-                .map(|message| format!(" — {message}"))
-                .unwrap_or_default()
-        );
-    }
 
-    if config.system_appearance {
-        let result = updaters::update_system_appearance(theme.appearance.clone());
-        if result.status == UpdateStatus::Error {
-            failed += 1;
-        } else if result.status == UpdateStatus::Done {
-            applied += 1;
+        if config.system_appearance {
+            let sender = sender.clone();
+            let appearance = theme.appearance.clone();
+            scope.spawn(move || {
+                let result = updaters::update_system_appearance(appearance);
+                sender
+                    .send(CompletedUpdate::Appearance(result))
+                    .expect("apply receiver dropped");
+            });
         }
-        println!(
-            "  {:<10} {}{}",
-            "appearance",
-            result.status.as_str(),
-            result
-                .message
-                .map(|message| format!(" — {message}"))
-                .unwrap_or_default()
-        );
-    }
+        drop(sender);
+
+        for completed in receiver {
+            let (label, result) = match completed {
+                CompletedUpdate::App(app, result) => (app.as_str(), result),
+                CompletedUpdate::Appearance(result) => ("appearance", result),
+            };
+            if result.status == UpdateStatus::Error {
+                failed += 1;
+            } else if result.status == UpdateStatus::Done {
+                applied += 1;
+            }
+            println!(
+                "  {label:<10} {}{}",
+                result.status.as_str(),
+                result
+                    .message
+                    .map(|message| format!(" — {message}"))
+                    .unwrap_or_default()
+            );
+        }
+    });
 
     // One updater landing is enough to change what the user is looking at,
     // so the record follows the machine rather than the exit code. A run that
