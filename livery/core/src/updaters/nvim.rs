@@ -1,4 +1,8 @@
+use std::io::Read;
 use std::path::{Path, PathBuf};
+use std::process::{Command, Output, Stdio};
+use std::thread;
+use std::time::{Duration, Instant};
 
 use crate::config::types::{AppConfig, NvimSettings, NvimStyle};
 
@@ -182,6 +186,66 @@ pub fn update(
     }
 }
 
+fn run_with_timeout(mut command: Command, timeout: Duration) -> Result<Output, String> {
+    command.stdout(Stdio::piped()).stderr(Stdio::piped());
+    let mut child = command
+        .spawn()
+        .map_err(|error| format!("could not spawn nvim: {error}"))?;
+    let mut stdout = child.stdout.take().expect("nvim stdout was piped");
+    let mut stderr = child.stderr.take().expect("nvim stderr was piped");
+    let stdout_reader = thread::spawn(move || {
+        let mut output = Vec::new();
+        stdout.read_to_end(&mut output).map(|_| output)
+    });
+    let stderr_reader = thread::spawn(move || {
+        let mut output = Vec::new();
+        stderr.read_to_end(&mut output).map(|_| output)
+    });
+
+    let deadline = Instant::now() + timeout;
+    let mut timed_out = false;
+    let status = loop {
+        match child.try_wait() {
+            Ok(Some(status)) => break status,
+            Ok(None) if Instant::now() >= deadline => {
+                timed_out = true;
+                child.kill().ok();
+                break child
+                    .wait()
+                    .map_err(|error| format!("could not stop timed-out nvim: {error}"))?;
+            }
+            Ok(None) => thread::sleep(Duration::from_millis(10)),
+            Err(error) => {
+                child.kill().ok();
+                let _ = child.wait();
+                return Err(format!("could not check nvim: {error}"));
+            }
+        }
+    };
+
+    let stdout = stdout_reader
+        .join()
+        .map_err(|_| "nvim stdout reader panicked".to_string())?
+        .map_err(|error| format!("could not read nvim stdout: {error}"))?;
+    let stderr = stderr_reader
+        .join()
+        .map_err(|_| "nvim stderr reader panicked".to_string())?
+        .map_err(|error| format!("could not read nvim stderr: {error}"))?;
+
+    if timed_out {
+        return Err(format!(
+            "nvim reload timed out after {}s",
+            timeout.as_secs()
+        ));
+    }
+
+    Ok(Output {
+        status,
+        stdout,
+        stderr,
+    })
+}
+
 /// Per-socket reload outcome. `stale` sockets (dead leftovers, connection
 /// refused) stay quiet; `failures` are live instances that answered but
 /// could not apply the colorscheme — those must surface as degraded.
@@ -300,6 +364,8 @@ fn find_nvim_sockets(tmpdir: &Path) -> Vec<PathBuf> {
     sockets
 }
 
+const RELOAD_TIMEOUT: Duration = Duration::from_secs(5);
+
 /// Reload all running Neovim instances via `--remote-expr execute("colorscheme …")`.
 /// remote-expr (unlike remote-send) never types into an insert-mode buffer,
 /// leaves the user's mode untouched, and reports whether the colorscheme
@@ -342,18 +408,18 @@ fn reload(theme_key: &str, max_sockets: Option<usize>) -> Result<ReloadSummary, 
                         .map(|n| n.to_string_lossy().to_string())
                         .unwrap_or_else(|| socket_path.display().to_string());
 
-                    let result = std::process::Command::new("nvim")
-                        .args([
-                            "--server",
-                            &socket_path.to_string_lossy(),
-                            "--remote-expr",
-                            expr,
-                        ])
-                        .output();
+                    let mut command = Command::new("nvim");
+                    command.args([
+                        "--server",
+                        &socket_path.to_string_lossy(),
+                        "--remote-expr",
+                        expr,
+                    ]);
+                    let result = run_with_timeout(command, RELOAD_TIMEOUT);
 
                     let outcome = match result {
                         Ok(output) => classify_send(&output),
-                        Err(e) => SendOutcome::Failed(format!("could not spawn nvim: {e}")),
+                        Err(e) => SendOutcome::Failed(e),
                     };
                     (socket_name, outcome)
                 })
@@ -687,6 +753,19 @@ vim.g.black_atom_core_config = {
             }
             _ => panic!("expected Failed"),
         }
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn test_run_with_timeout_stops_a_hung_command() {
+        let mut command = Command::new("sh");
+        command.args(["-c", "sleep 10"]);
+        let started = Instant::now();
+
+        let error = run_with_timeout(command, Duration::from_millis(50)).unwrap_err();
+
+        assert!(started.elapsed() < Duration::from_secs(2));
+        assert!(error.contains("timed out"), "unexpected error: {error}");
     }
 
     #[test]
