@@ -4,6 +4,9 @@
 [theme.custom]
 accent = "#e76b3e"
 panel_bg = "#ebe5cf"
+sidebar_bg = "#ebe5cf"
+active_row_bg = "#fff9e2"
+selection_bg = "#ddd8c2"
 surface_dim = "#ebe5cf"
 surface0 = "#fff9e2"
 surface1 = "#fff9e2"

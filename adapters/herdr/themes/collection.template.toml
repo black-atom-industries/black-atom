@@ -4,6 +4,9 @@
 [theme.custom]
 accent = "<%= theme.ui.fg.accent %>"
 panel_bg = "<%= theme.ui.bg.panel %>"
+sidebar_bg = "<%= theme.ui.bg.panel %>"
+active_row_bg = "<%= theme.ui.bg.active %>"
+selection_bg = "<%= theme.ui.bg.selection %>"
 surface_dim = "<%= theme.ui.bg.panel %>"
 surface0 = "<%= theme.ui.bg.active %>"
 surface1 = "<%= theme.ui.bg.active %>"
