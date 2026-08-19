@@ -158,7 +158,16 @@ pub fn setup(yes: bool) -> Result<(), String> {
 
     println!("Found {} app(s):", found.len());
     for detection in detections.iter().filter(|detection| detection.found) {
-        println!("  {:<10} {}", detection.app.as_str(), detection.config_path);
+        let path = if detection.app == AppName::Obsidian {
+            detection
+                .config_folders
+                .as_deref()
+                .unwrap_or_default()
+                .join(", ")
+        } else {
+            detection.config_path.clone()
+        };
+        println!("  {:<10} {}", detection.app.as_str(), path);
     }
 
     if !confirm("Enable these apps?", yes)? {
@@ -172,6 +181,20 @@ pub fn setup(yes: bool) -> Result<(), String> {
     for app in &found {
         if let Some(app_config) = config.apps.get_mut(app) {
             app_config.enabled = true;
+            if *app == AppName::Obsidian {
+                let discovered = detections
+                    .iter()
+                    .find(|detection| detection.app == *app)
+                    .and_then(|detection| detection.config_folders.as_ref())
+                    .into_iter()
+                    .flatten();
+                let folders = app_config.config_folders.get_or_insert_with(Vec::new);
+                for folder in discovered {
+                    if !folders.contains(folder) {
+                        folders.push(folder.clone());
+                    }
+                }
+            }
         }
     }
     livery_core::config::commands::save_config(config)?;
@@ -188,20 +211,12 @@ pub fn setup(yes: bool) -> Result<(), String> {
     // Every row is printed before the first failure decides the exit code,
     // so the user sees the whole run and the shell still sees the failure.
     let mut failures: Vec<String> = Vec::new();
+    let link_themes = !linked.is_empty() && confirm("Link their theme files?", yes)?;
 
-    if !linked.is_empty() && confirm("Link their theme files?", yes)? {
+    if link_themes {
         for app in &linked {
             let result = block_on(themes::link_app_themes(*app));
-            println!(
-                "  {:<10} {}{}",
-                app.as_str(),
-                result.status.as_str(),
-                result
-                    .message
-                    .as_ref()
-                    .map(|message| format!(" — {message}"))
-                    .unwrap_or_default()
-            );
+            print_link_result(&result);
             if result.status == UpdateStatus::Error {
                 failures.push(format!("{} link failed", app.as_str()));
             }
@@ -212,6 +227,7 @@ pub fn setup(yes: bool) -> Result<(), String> {
         for app in &found {
             let verification = block_on(updaters::verify_app_path(*app));
             println!("  {:<10} {}", app.as_str(), config_label(&verification));
+            print_verification_folders(&verification);
             if let Some(message) = &verification.message {
                 failures.push(format!("{} verification failed: {message}", app.as_str()));
             }
@@ -220,6 +236,12 @@ pub fn setup(yes: bool) -> Result<(), String> {
 
     if !failures.is_empty() {
         return Err(failures.join("; "));
+    }
+
+    if !linked.is_empty() && !link_themes {
+        println!();
+        println!("Skipped applying a theme because linked theme files were not installed.");
+        return Ok(());
     }
 
     // Enabling and linking leaves the tools configured but still wearing
@@ -356,6 +378,48 @@ fn provisioning_label(provisioning: ThemeProvisioning) -> &'static str {
         ThemeProvisioning::External => "external",
         ThemeProvisioning::Linked => "linked",
         ThemeProvisioning::Merged => "merged",
+    }
+}
+
+fn print_link_result(result: &themes::LinkThemesResult) {
+    println!(
+        "  {:<10} {}{}",
+        result.app,
+        result.status.as_str(),
+        result
+            .message
+            .as_ref()
+            .map(|message| format!(" — {message}"))
+            .unwrap_or_default()
+    );
+    if let Some(folders) = &result.config_folders {
+        for folder in folders {
+            println!(
+                "    {:<30} link={} linked={} pruned={}{}",
+                folder.config_folder,
+                folder.status.as_str(),
+                folder.linked,
+                folder.pruned,
+                folder
+                    .message
+                    .as_ref()
+                    .map(|message| format!(" — {message}"))
+                    .unwrap_or_default()
+            );
+        }
+    }
+}
+
+fn print_verification_folders(verification: &updaters::AppPathVerification) {
+    if let Some(folders) = &verification.config_folders {
+        for folder in folders {
+            println!(
+                "    {:<30} verify={} ({})",
+                folder.config_folder,
+                if folder.exists { "ok" } else { "missing" },
+                folder.path,
+            );
+        }
     }
 }
 

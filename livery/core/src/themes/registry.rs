@@ -35,9 +35,9 @@ pub enum LinkedPlacement {
     /// `source-file` target). Theme keys are globally unique, so flattening
     /// the collection nesting loses nothing.
     FlatByExtension(&'static str),
-    /// The vault's `themes/Black Atom/` dir gets the merged `theme.css` +
+    /// Each configuration folder's `themes/Black Atom/` dir gets the merged `theme.css` +
     /// `manifest.json` pair — Obsidian scans per-theme subdirectories.
-    VaultThemeDir,
+    ConfigFolderThemeDir,
     /// One directory symlink into neovim's packpath at
     /// `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/black-atom` — neovim
     /// puts `pack/*/start/*` on the runtimepath itself, so the colorschemes
@@ -50,7 +50,7 @@ pub fn linked_placement(app: AppName) -> Option<LinkedPlacement> {
     match app {
         AppName::Ghostty | AppName::Tmux => Some(LinkedPlacement::FlatByExtension(".conf")),
         AppName::Zed => Some(LinkedPlacement::FlatByExtension(".json")),
-        AppName::Obsidian => Some(LinkedPlacement::VaultThemeDir),
+        AppName::Obsidian => Some(LinkedPlacement::ConfigFolderThemeDir),
         AppName::Nvim => Some(LinkedPlacement::PackDir),
         AppName::HelmTmux | AppName::Delta | AppName::Lazygit | AppName::Herdr => None,
     }
@@ -76,8 +76,9 @@ pub enum AdapterEditableField {
 ///
 /// nvim/ghostty/tmux have dedicated updaters; delta and helm route through
 /// the shared `patch_text_updater`, so all five read pattern+template. zed
-/// and obsidian patch structurally (JSONC) off `config_path` alone. tmux,
-/// lazygit, and herdr additionally point `themes_path` at the managed themes dir.
+/// patches structurally (JSONC) from `config_path`; obsidian patches each
+/// configured Obsidian config folder. tmux, lazygit, and herdr additionally point
+/// `themes_path` at the managed themes dir.
 /// nvim additionally writes its managed Lua settings block into `settings_path`.
 pub fn editable_fields(app: AppName) -> Vec<AdapterEditableField> {
     use AdapterEditableField::*;
@@ -87,7 +88,8 @@ pub fn editable_fields(app: AppName) -> Vec<AdapterEditableField> {
             vec![ConfigPath, MatchPattern, ReplaceTemplate]
         }
         AppName::Tmux => vec![ConfigPath, ThemesPath, MatchPattern, ReplaceTemplate],
-        AppName::Zed | AppName::Obsidian => vec![ConfigPath],
+        AppName::Zed => vec![ConfigPath],
+        AppName::Obsidian => vec![],
         AppName::Lazygit | AppName::Herdr => vec![ConfigPath, ThemesPath],
     }
 }
@@ -123,7 +125,10 @@ mod tests {
             vec![ConfigPath, ThemesPath, MatchPattern, ReplaceTemplate]
         );
         assert_eq!(editable_fields(AppName::Zed), vec![ConfigPath]);
-        assert_eq!(editable_fields(AppName::Obsidian), vec![ConfigPath]);
+        assert_eq!(
+            editable_fields(AppName::Obsidian),
+            Vec::<AdapterEditableField>::new()
+        );
         assert_eq!(
             editable_fields(AppName::Lazygit),
             vec![ConfigPath, ThemesPath]

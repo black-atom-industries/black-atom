@@ -6,10 +6,21 @@ import {
     commands,
     type Config,
     type NvimSettings,
+    type Result,
 } from "../bindings.ts";
 
 const TOPIC = "config" as const;
 const queryKey = (keys: string[] = []) => [TOPIC, ...keys] as const;
+
+type ConfigChange = (config: Config) => Config;
+
+let configWriteQueue = Promise.resolve();
+
+function enqueueConfigWrite<T>(write: () => Promise<T>): Promise<T> {
+    const next = configWriteQueue.then(write);
+    configWriteQueue = next.then(() => undefined, () => undefined);
+    return next;
+}
 
 export const useConfig = () => {
     const query = useQuery({
@@ -27,11 +38,15 @@ export const useConfig = () => {
         [query.data],
     );
 
-    // mutationKey ["config", "save"] — MutationCache auto-invalidates all ["config", ...] queries
-    const save = useMutation({
-        mutationKey: queryKey(["save"]),
-        mutationFn: (config: Config) => commands.saveConfig(config),
-    });
+    /** Apply a change to a freshly read config, serialized with every config write. */
+    const saveLatest = (change: ConfigChange): Promise<Result<null, string>> =>
+        enqueueConfigWrite(async () => {
+            const latest = await commands.getConfig();
+            const result = await commands.saveConfig(change(latest));
+            if (result.status === "error") throw new Error(result.error);
+            await query.refetch();
+            return result;
+        });
 
     // Neovim's plugin options are stored in config AND projected into a
     // managed Lua block, so the backend owns both halves — the frontend must
@@ -39,13 +54,14 @@ export const useConfig = () => {
     // MutationCache refetches the config query on success.
     const writeNvimSettings = useMutation({
         mutationKey: queryKey(["nvim-settings"]),
-        mutationFn: (settings: NvimSettings) => commands.writeNvimSettings(settings),
+        mutationFn: (settings: NvimSettings) =>
+            enqueueConfigWrite(() => commands.writeNvimSettings(settings)),
     });
 
     return {
         query,
         enabledApps,
-        save,
+        saveLatest,
         writeNvimSettings,
     };
 };

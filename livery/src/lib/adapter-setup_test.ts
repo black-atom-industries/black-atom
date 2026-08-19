@@ -64,7 +64,7 @@ Deno.test("empty config_path blocks the chain before any call", async () => {
 
     assertEquals(calls, []);
     assertEquals(outcome.steps, []);
-    assert(outcome.blocked?.includes("CONFIG_PATH"));
+    assert(outcome.blocked?.includes("config folder"));
 });
 
 Deno.test("failed link surfaces its reason but still verifies", async () => {

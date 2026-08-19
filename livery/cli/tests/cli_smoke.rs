@@ -41,6 +41,25 @@ impl Sandbox {
         self.path().join(".local/share")
     }
 
+    fn obsidian_registry(&self) -> PathBuf {
+        #[cfg(target_os = "macos")]
+        {
+            return self
+                .path()
+                .join("Library/Application Support/obsidian/obsidian.json");
+        }
+        #[cfg(target_os = "linux")]
+        {
+            return self.config_home().join("obsidian/obsidian.json");
+        }
+        #[cfg(target_os = "windows")]
+        {
+            return self.config_home().join("Obsidian/obsidian.json");
+        }
+        #[allow(unreachable_code)]
+        self.config_home().join("obsidian/obsidian.json")
+    }
+
     fn appearance_log(&self) -> PathBuf {
         self.path().join("appearance.log")
     }
@@ -119,21 +138,37 @@ fn cli_end_to_end() {
     let ghostty_config = sandbox.config_home().join("ghostty/config");
     write(&tmux_config, &fixture("tmux.conf"));
     write(&ghostty_config, &fixture("ghostty-config.txt"));
+    let vault_a = sandbox.path().join("notes");
+    let vault_b = sandbox.path().join("work-notes");
+    for vault in [&vault_a, &vault_b] {
+        write(&vault.join(".obsidian/appearance.json"), "{}\n");
+    }
+    write(
+        &sandbox.obsidian_registry(),
+        &serde_json::to_string(&serde_json::json!({
+            "vaults": {
+                "notes": { "path": vault_a },
+                "work": { "path": vault_b }
+            }
+        }))
+        .unwrap(),
+    );
 
-    // Only tmux and ghostty are enabled; every other app stays off so the
+    // Only tmux and ghostty are enabled initially; setup discovers Obsidian
+    // from the registry and enables it with both vault config folders.
     // scenario never reaches an updater it has not seeded a config for.
     let mut config = Config::default();
     for (app, app_config) in config.apps.iter_mut() {
         app_config.enabled = matches!(app, AppName::Tmux | AppName::Ghostty);
         match app {
             AppName::Tmux => {
-                app_config.config_path = tmux_config.to_string_lossy().into_owned();
+                app_config.config_path = Some(tmux_config.to_string_lossy().into_owned());
                 // {themesPath} renders verbatim into tmux.conf, so it is not
                 // tilde-collapsed and has to be the absolute sandbox path.
                 app_config.themes_path = Some(tmux_themes.to_string_lossy().into_owned());
             }
             AppName::Ghostty => {
-                app_config.config_path = ghostty_config.to_string_lossy().into_owned();
+                app_config.config_path = Some(ghostty_config.to_string_lossy().into_owned());
             }
             _ => {}
         }
@@ -199,6 +234,29 @@ fn cli_end_to_end() {
     // placement.
     let setup = sandbox.run(&["setup", "--yes"]);
     assert!(setup.status.success(), "setup failed: {setup:?}");
+    let setup_output = stdout(&setup);
+    assert!(
+        setup_output.lines().any(|line| {
+            line.starts_with("  obsidian")
+                && line.contains("notes/.obsidian")
+                && line.contains("work-notes/.obsidian")
+        }),
+        "setup must print discovered Obsidian config folders:\n{setup_output}"
+    );
+    for folder in ["notes/.obsidian", "work-notes/.obsidian"] {
+        assert!(
+            setup_output
+                .lines()
+                .any(|line| line.contains(folder) && line.contains("link=done")),
+            "setup must report link outcome for {folder}:\n{setup_output}"
+        );
+        assert!(
+            setup_output
+                .lines()
+                .any(|line| line.contains(folder) && line.contains("verify=ok")),
+            "setup must report verification outcome for {folder}:\n{setup_output}"
+        );
+    }
 
     let status = sandbox.run(&["status"]);
     assert!(status.status.success(), "status failed: {status:?}");
@@ -210,7 +268,7 @@ fn cli_end_to_end() {
             .is_some_and(|line| line.starts_with("theme") && line.contains(DEFAULT_THEME)),
         "setup must apply and record the default theme:\n{reported}"
     );
-    for app in ["tmux", "ghostty"] {
+    for app in ["tmux", "ghostty", "obsidian"] {
         let line = reported
             .lines()
             .find(|line| line.starts_with(app))
@@ -218,6 +276,24 @@ fn cli_end_to_end() {
         assert!(line.contains("enabled"), "{app} not enabled: {line}");
         assert!(line.contains("linked=true"), "{app} not linked: {line}");
     }
+    for vault in [&vault_a, &vault_b] {
+        assert!(
+            vault
+                .join(".obsidian/themes/Black Atom/theme.css")
+                .is_symlink(),
+            "Obsidian theme was not linked for {}",
+            vault.display()
+        );
+    }
+    // Keep the later all-updaters-fail assertion focused on the original two
+    // switch-pointer adapters; discovery and linking were already asserted.
+    let mut after_setup = livery_core::config::commands::get_config();
+    after_setup
+        .apps
+        .get_mut(&AppName::Obsidian)
+        .unwrap()
+        .enabled = false;
+    livery_core::config::commands::save_config(after_setup).unwrap();
 
     let unknown = sandbox.run(&["apply", "not-a-theme"]);
     assert!(

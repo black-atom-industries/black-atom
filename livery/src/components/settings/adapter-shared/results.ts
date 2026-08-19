@@ -1,3 +1,8 @@
+import type {
+    ConfigFolderLinkOutcome,
+    ConfigFolderOutcome,
+    ConfigFolderPathVerification,
+} from "../../../bindings.ts";
 import type { SetUpOutcome } from "../../../lib/adapter-setup.ts";
 
 /**
@@ -8,21 +13,48 @@ import type { SetUpOutcome } from "../../../lib/adapter-setup.ts";
  */
 export type TestApplyResult =
     | { status: "running" }
-    | { status: "ok"; durationMs: number | null; testedThemeLabel: string }
+    | {
+        status: "ok";
+        durationMs: number | null;
+        testedThemeLabel: string;
+        message?: string | null;
+        config_folders?: ConfigFolderOutcome[] | null;
+    }
     | { status: "reverting" }
-    | { status: "error"; message: string };
+    | { status: "error"; message: string; config_folders?: ConfigFolderOutcome[] | null };
 
 /** Session-local result of a "VERIFY PATH" run — never persisted. */
 export type VerifyPathResult =
     | { status: "running" }
-    | { status: "verified"; exists: boolean; patternMatches: boolean | null }
+    | {
+        status: "verified";
+        exists: boolean;
+        patternMatches: boolean | null;
+        config_folders?: ConfigFolderPathVerification[] | null;
+    }
     | { status: "unverifiable"; message: string };
+
+export function findConfigFolderVerification(
+    result: VerifyPathResult | undefined,
+    configuredConfigFolder: string,
+): ConfigFolderPathVerification | undefined {
+    if (result?.status !== "verified") return undefined;
+    return result.config_folders?.find(({ config_folder }) =>
+        config_folder === configuredConfigFolder
+    );
+}
 
 /** Session-local result of a "LINK THEMES" run — never persisted. */
 export type LinkThemesRowResult =
     | { status: "running" }
-    | { status: "ok"; linked: number; pruned: number; message: string | null }
-    | { status: "error"; message: string };
+    | {
+        status: "ok";
+        linked: number;
+        pruned: number;
+        message?: string | null;
+        config_folders?: ConfigFolderLinkOutcome[] | null;
+    }
+    | { status: "error"; message: string; config_folders?: ConfigFolderLinkOutcome[] | null };
 
 /** The qualifier a verify fault puts on the row, or null when all clear. */
 export function verifyFaultLabel(result?: VerifyPathResult): string | null {

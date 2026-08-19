@@ -36,7 +36,10 @@ const SETTINGS_ADAPTERS_FIXTURE: Config = {
             match_pattern: "^theme = .*$",
             replace_template: "theme = {theme_key}",
         },
-        obsidian: { enabled: false, config_path: "~/.config/obsidian/themes/black-atom.css" },
+        obsidian: {
+            enabled: false,
+            config_folders: ["~/notes/.obsidian", "~/work-notes/.obsidian-mobile"],
+        },
         tmux: { enabled: true, config_path: "~/.tmux.conf" },
         zed: { enabled: true, config_path: "~/.config/zed/settings.json" },
         delta: { enabled: true, config_path: "~/.gitconfig" },
@@ -58,7 +61,7 @@ const SETTINGS_EDITABLE_FIELDS: Record<AppName, AdapterEditableField[]> = {
     tmux: ["config_path", "themes_path", "match_pattern", "replace_template"],
     zed: ["config_path"],
     lazygit: ["config_path", "themes_path"],
-    obsidian: ["config_path"],
+    obsidian: [],
     herdr: ["config_path", "themes_path"],
 };
 
@@ -114,7 +117,7 @@ const APPLY_RAIL_FIXTURES: Record<string, UpdateResult[]> = {
             app: "obsidian",
             status: "error",
             message:
-                "config not found at ~/.config/obsidian/themes/black-atom.css — check THEMES_PATH in settings",
+                "Obsidian config folder not found at ~/work-notes/.obsidian-mobile — check configured config folders",
             duration_ms: 3,
         },
         { app: "helm-tmux", status: "done", duration_ms: 115 },
@@ -160,7 +163,25 @@ function Page() {
     >({ ghostty: { status: "ok", durationMs: 412, testedThemeLabel: "Koyo Yoru" } });
     const [settingsVerifyPathResults, setSettingsVerifyPathResults] = useState<
         Partial<Record<AppName, VerifyPathResult>>
-    >({ obsidian: { status: "verified", exists: false, patternMatches: null } });
+    >({
+        obsidian: {
+            status: "verified",
+            exists: true,
+            patternMatches: null,
+            config_folders: [
+                {
+                    config_folder: "~/notes/.obsidian",
+                    path: "/Users/nik/notes/.obsidian/appearance.json",
+                    exists: true,
+                },
+                {
+                    config_folder: "~/work-notes/.obsidian-mobile",
+                    path: "/Users/nik/work-notes/.obsidian-mobile/appearance.json",
+                    exists: true,
+                },
+            ],
+        },
+    });
     const [errorRowExpanded, setErrorRowExpanded] = useState(true);
 
     return (
@@ -343,6 +364,40 @@ function Page() {
                                     }));
                                 }}
                                 onPickPath={() => Promise.resolve(null)}
+                                onAddConfigFolder={() => {
+                                    if (settingsSelectedApp !== "obsidian") return;
+                                    setSettingsFixture((prev) => ({
+                                        ...prev,
+                                        apps: {
+                                            ...prev.apps,
+                                            obsidian: {
+                                                ...prev.apps.obsidian,
+                                                config_folders: [
+                                                    ...(prev.apps.obsidian.config_folders ?? []),
+                                                    "~/new-notes/.obsidian",
+                                                ],
+                                            },
+                                        },
+                                    }));
+                                }}
+                                onRemoveConfigFolder={(config_folder) => {
+                                    if (settingsSelectedApp !== "obsidian") return;
+                                    setSettingsFixture((prev) => ({
+                                        ...prev,
+                                        apps: {
+                                            ...prev.apps,
+                                            obsidian: {
+                                                ...prev.apps.obsidian,
+                                                config_folders:
+                                                    (prev.apps.obsidian.config_folders ?? [])
+                                                        .filter((folder) =>
+                                                            folder !== config_folder
+                                                        ),
+                                            },
+                                        },
+                                    }));
+                                }}
+                                configFoldersSaving={false}
                                 linkable={["zed", "ghostty", "tmux", "obsidian"].includes(
                                     settingsSelectedApp,
                                 )}
@@ -382,8 +437,23 @@ function Page() {
                                             [appName]: appName === "obsidian"
                                                 ? {
                                                     status: "verified",
-                                                    exists: false,
+                                                    exists: true,
                                                     patternMatches: null,
+                                                    config_folders: [
+                                                        {
+                                                            config_folder: "~/notes/.obsidian",
+                                                            path:
+                                                                "/Users/nik/notes/.obsidian/appearance.json",
+                                                            exists: true,
+                                                        },
+                                                        {
+                                                            config_folder:
+                                                                "~/work-notes/.obsidian-mobile",
+                                                            path:
+                                                                "/Users/nik/work-notes/.obsidian-mobile/appearance.json",
+                                                            exists: true,
+                                                        },
+                                                    ],
                                                 }
                                                 : {
                                                     status: "verified",
@@ -459,8 +529,8 @@ function Page() {
                     status="error"
                     cursored
                     expanded={errorRowExpanded}
-                    message="ENOENT: themes directory not found. Point THEMES_PATH at the vault or disable the adapter."
-                    path="~/.config/obsidian/themes/black-atom.css"
+                    message="ENOENT: Obsidian config folder not found. Check the configured config folders."
+                    path="~/notes/.obsidian/appearance.json"
                     code="LVR-102"
                     onToggle={() => setErrorRowExpanded((e) => !e)}
                     onRetry={() => {}}

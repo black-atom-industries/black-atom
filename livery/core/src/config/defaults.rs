@@ -19,7 +19,8 @@ impl Default for Config {
             AppName::Ghostty,
             AppConfig {
                 enabled: false,
-                config_path: "~/.config/ghostty/config".to_string(),
+                config_folders: None,
+                config_path: Some("~/.config/ghostty/config".to_string()),
                 // Name-based lookup: ghostty rejects `~` theme paths, so
                 // each unpacked theme file is symlinked into
                 // ~/.config/ghostty/themes instead (themes::symlinks).
@@ -34,7 +35,8 @@ impl Default for Config {
             AppName::Nvim,
             AppConfig {
                 enabled: false,
-                config_path: "~/.config/nvim/lua/config.lua".to_string(),
+                config_folders: None,
+                config_path: Some("~/.config/nvim/lua/config.lua".to_string()),
                 themes_path: None,
                 match_pattern: Some(r#"colorscheme\s*=\s*"[^"]*""#.to_string()),
                 replace_template: Some(r#"colorscheme = "{themeKey}""#.to_string()),
@@ -46,7 +48,8 @@ impl Default for Config {
             AppName::Tmux,
             AppConfig {
                 enabled: false,
-                config_path: "~/.config/tmux/tmux.conf".to_string(),
+                config_folders: None,
+                config_path: Some("~/.config/tmux/tmux.conf".to_string()),
                 // Linked placement: LINK THEMES flat-symlinks the managed
                 // files into the app-local themes dir, so the source-file
                 // pointer never references livery internals. Theme keys are
@@ -62,7 +65,8 @@ impl Default for Config {
             AppName::Delta,
             AppConfig {
                 enabled: false,
-                config_path: "~/.gitconfig.delta".to_string(),
+                config_folders: None,
+                config_path: Some("~/.gitconfig.delta".to_string()),
                 themes_path: None,
                 match_pattern: Some(r"features\s*=\s*black-atom-(dark|light)".to_string()),
                 replace_template: Some("features = black-atom-{appearance}".to_string()),
@@ -74,7 +78,8 @@ impl Default for Config {
             AppName::Zed,
             AppConfig {
                 enabled: false,
-                config_path: "~/.config/zed/settings.json".to_string(),
+                config_folders: None,
+                config_path: Some("~/.config/zed/settings.json".to_string()),
                 themes_path: None,
                 match_pattern: None, // not used — JSONC editing is structural
                 replace_template: None,
@@ -86,7 +91,8 @@ impl Default for Config {
             AppName::Lazygit,
             AppConfig {
                 enabled: false,
-                config_path: "~/.config/lazygit/config.yml".to_string(),
+                config_folders: None,
+                config_path: Some("~/.config/lazygit/config.yml".to_string()),
                 themes_path: Some(themes_path("lazygit")),
                 match_pattern: None,
                 replace_template: None,
@@ -98,7 +104,8 @@ impl Default for Config {
             AppName::Herdr,
             AppConfig {
                 enabled: false,
-                config_path: "~/.config/herdr/config.toml".to_string(),
+                config_folders: None,
+                config_path: Some("~/.config/herdr/config.toml".to_string()),
                 themes_path: Some(themes_path("herdr")),
                 match_pattern: None,
                 replace_template: None,
@@ -110,7 +117,8 @@ impl Default for Config {
             AppName::Obsidian,
             AppConfig {
                 enabled: false,
-                config_path: String::new(),
+                config_folders: Some(Vec::new()),
+                config_path: None,
                 themes_path: None,
                 match_pattern: None,
                 replace_template: None,
@@ -122,7 +130,8 @@ impl Default for Config {
             AppName::HelmTmux,
             AppConfig {
                 enabled: false,
-                config_path: "~/.config/black-atom/helm-tmux/config.yml".to_string(),
+                config_folders: None,
+                config_path: Some("~/.config/black-atom/helm-tmux/config.yml".to_string()),
                 themes_path: None,
                 match_pattern: Some(r"^theme:\s*\S*$".to_string()),
                 replace_template: Some("theme: {themeKey}".to_string()),
@@ -131,6 +140,7 @@ impl Default for Config {
             },
         );
         Config {
+            version: 2,
             system_appearance: true,
             keymappings: Keymappings::default(),
             apps,

@@ -19,6 +19,9 @@ export type AdapterPageProps = {
     detected: boolean;
     onToggleEnabled: () => void;
     onFieldCommit: (field: AdapterField, value: string) => void;
+    onAddConfigFolder?: () => void;
+    onRemoveConfigFolder?: (config_folder: string) => void;
+    configFoldersSaving?: boolean;
     firstFieldRef?: React.RefObject<HTMLInputElement | null>;
     onPickPath: (kind: PathKind) => Promise<string | null>;
     onOpenUrl?: (url: string) => void;

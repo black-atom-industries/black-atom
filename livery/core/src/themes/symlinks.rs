@@ -1,6 +1,6 @@
 //! Symlink placement for Linked adapters — apps that read theme files from
 //! an app-defined location (zed/ghostty/tmux: flat `themes/` dir next to
-//! the config; obsidian: the vault's per-theme subdirectory). Each managed
+//! the config; obsidian: the configuration folder's per-theme subdirectory). Each managed
 //! file gets a symlink there pointing into the managed dir. Re-running
 //! heals dangling links and prunes managed-owned leftovers; real files a
 //! user placed themselves are never touched.
@@ -66,20 +66,20 @@ pub fn sync_flat_symlinks(
     Ok(stats)
 }
 
-/// The vault theme folder Obsidian discovers — must match the adapter
+/// The configuration folder theme folder Obsidian discovers — must match the adapter
 /// manifest's `name` field.
 pub const OBSIDIAN_THEME_DIR: &str = "Black Atom";
 
 /// Link the managed obsidian `theme.css` + `manifest.json` pair into
-/// `<vault_themes_dir>/Black Atom/` — Obsidian discovers themes as
-/// per-name subdirectories of the vault's themes dir. Same heal/skip
+/// `<configuration-folder>/themes/Black Atom/` — Obsidian discovers themes as
+/// per-name subdirectories of the configuration folder's themes dir. Same heal/skip
 /// semantics as the flat sync; nothing to prune (fixed two-file set).
 #[cfg(unix)]
-pub fn sync_vault_theme_links(
+pub fn sync_config_folder_theme_links(
     managed_dir: &Path,
-    vault_themes_dir: &Path,
+    config_folder_themes_dir: &Path,
 ) -> Result<SymlinkSyncStats, String> {
-    let theme_dir = vault_themes_dir.join(OBSIDIAN_THEME_DIR);
+    let theme_dir = config_folder_themes_dir.join(OBSIDIAN_THEME_DIR);
     ensure_under_home(&theme_dir)?;
     ensure_under_home(managed_dir)?;
     std::fs::create_dir_all(&theme_dir)
@@ -256,10 +256,10 @@ pub fn has_managed_links(app_themes_dir: &Path, managed_dir: &Path, extension: &
         .any(|(name, target)| link_points_at(&app_themes_dir.join(name), target))
 }
 
-/// Is the vault's `Black Atom` theme dir wired to the managed pair?
+/// Is the configuration folder's `Black Atom` theme dir wired to the managed pair?
 #[cfg(unix)]
-pub fn vault_pair_is_wired(vault_themes_dir: &Path, managed_dir: &Path) -> bool {
-    let theme_dir = vault_themes_dir.join(OBSIDIAN_THEME_DIR);
+pub fn config_folder_pair_is_wired(config_folder_themes_dir: &Path, managed_dir: &Path) -> bool {
+    let theme_dir = config_folder_themes_dir.join(OBSIDIAN_THEME_DIR);
     ["theme.css", "manifest.json"]
         .iter()
         .all(|name| link_points_at(&theme_dir.join(name), &managed_dir.join(name)))
@@ -277,7 +277,15 @@ pub fn has_managed_links(_app_themes_dir: &Path, _managed_dir: &Path, _extension
 }
 
 #[cfg(not(unix))]
-pub fn vault_pair_is_wired(_vault_themes_dir: &Path, _managed_dir: &Path) -> bool {
+pub fn sync_config_folder_theme_links(
+    _managed_dir: &Path,
+    _config_folder_themes_dir: &Path,
+) -> Result<SymlinkSyncStats, String> {
+    Err("Linked theme placement requires a unix filesystem".to_string())
+}
+
+#[cfg(not(unix))]
+pub fn config_folder_pair_is_wired(_config_folder_themes_dir: &Path, _managed_dir: &Path) -> bool {
     false
 }
 
@@ -636,14 +644,14 @@ mod tests {
     }
 
     #[test]
-    fn test_vault_pair_is_wired_after_linking() {
-        let s = vault_setup();
-        assert!(!vault_pair_is_wired(&s.app_dir, &s.managed));
-        sync_vault_theme_links(&s.managed, &s.app_dir).unwrap();
-        assert!(vault_pair_is_wired(&s.app_dir, &s.managed));
+    fn test_config_folder_pair_is_wired_after_linking() {
+        let s = config_folder_setup();
+        assert!(!config_folder_pair_is_wired(&s.app_dir, &s.managed));
+        sync_config_folder_theme_links(&s.managed, &s.app_dir).unwrap();
+        assert!(config_folder_pair_is_wired(&s.app_dir, &s.managed));
     }
 
-    fn vault_setup() -> Setup {
+    fn config_folder_setup() -> Setup {
         let s = setup(".css");
         std::fs::write(s.managed.join("theme.css"), "merged css").unwrap();
         std::fs::write(s.managed.join("manifest.json"), "{\"name\":\"Black Atom\"}").unwrap();
@@ -651,9 +659,9 @@ mod tests {
     }
 
     #[test]
-    fn test_vault_links_theme_pair_into_named_dir() {
-        let s = vault_setup();
-        let stats = sync_vault_theme_links(&s.managed, &s.app_dir).unwrap();
+    fn test_config_folder_links_theme_pair_into_named_dir() {
+        let s = config_folder_setup();
+        let stats = sync_config_folder_theme_links(&s.managed, &s.app_dir).unwrap();
 
         assert_eq!(stats.linked, 2);
         let theme_dir = s.app_dir.join(OBSIDIAN_THEME_DIR);
@@ -672,8 +680,8 @@ mod tests {
     }
 
     #[test]
-    fn test_vault_links_only_the_pair_never_collection_themes() {
-        let s = vault_setup();
+    fn test_config_folder_links_only_the_pair_never_collection_themes() {
+        let s = config_folder_setup();
         std::fs::create_dir_all(s.managed.join("default")).unwrap();
         std::fs::write(
             s.managed
@@ -683,7 +691,7 @@ mod tests {
         )
         .unwrap();
 
-        let stats = sync_vault_theme_links(&s.managed, &s.app_dir).unwrap();
+        let stats = sync_config_folder_theme_links(&s.managed, &s.app_dir).unwrap();
 
         assert_eq!(stats.linked, 2);
         let theme_dir = s.app_dir.join(OBSIDIAN_THEME_DIR);
@@ -697,20 +705,20 @@ mod tests {
     }
 
     #[test]
-    fn test_vault_missing_managed_pair_is_an_error() {
+    fn test_config_folder_missing_managed_pair_is_an_error() {
         let s = setup(".css"); // no theme.css/manifest.json written
-        let err = sync_vault_theme_links(&s.managed, &s.app_dir).unwrap_err();
+        let err = sync_config_folder_theme_links(&s.managed, &s.app_dir).unwrap_err();
         assert!(err.contains("SYNC THEMES"), "unexpected error: {err}");
     }
 
     #[test]
-    fn test_vault_never_touches_real_files_and_rerun_is_stable() {
-        let s = vault_setup();
+    fn test_config_folder_never_touches_real_files_and_rerun_is_stable() {
+        let s = config_folder_setup();
         let theme_dir = s.app_dir.join(OBSIDIAN_THEME_DIR);
         std::fs::create_dir_all(&theme_dir).unwrap();
         std::fs::write(theme_dir.join("theme.css"), "hand-installed").unwrap();
 
-        let stats = sync_vault_theme_links(&s.managed, &s.app_dir).unwrap();
+        let stats = sync_config_folder_theme_links(&s.managed, &s.app_dir).unwrap();
         assert_eq!(stats.skipped, vec!["theme.css"]);
         assert_eq!(stats.linked, 1);
         assert_eq!(
@@ -718,7 +726,7 @@ mod tests {
             "hand-installed"
         );
 
-        let rerun = sync_vault_theme_links(&s.managed, &s.app_dir).unwrap();
+        let rerun = sync_config_folder_theme_links(&s.managed, &s.app_dir).unwrap();
         assert_eq!(rerun.linked, 1);
         assert_eq!(rerun.skipped, vec!["theme.css"]);
     }

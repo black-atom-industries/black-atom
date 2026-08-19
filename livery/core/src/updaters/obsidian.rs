@@ -1,114 +1,196 @@
+use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 use crate::config::types::AppConfig;
 
 use super::file_ops;
-use super::{UpdateContext, UpdateResult};
+use super::{ConfigFolderOutcome, UpdateContext, UpdateResult, UpdateStatus};
 
-/// Update Obsidian by patching two JSON files in the vault's `.obsidian/` directory:
-///
-/// 1. `appearance.json` — sets `theme` to "obsidian" (dark) or "moonstone" (light)
-/// 2. `plugins/obsidian-style-settings/data.json` — sets the Black Atom variant key
-///
-/// `config_path` must point to the vault's `.obsidian/appearance.json`.
-/// The style settings path is derived from the same parent directory.
+/// Update every configured Obsidian configuration folder. File writes remain
+/// authoritative when a running instance cannot be reloaded or targeted by its CLI.
 pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> UpdateResult {
-    let appearance_path = &app_config.config_path;
-
-    // Patch appearance.json: set base theme mode
     let obsidian_theme = match ctx.appearance {
         "dark" => "obsidian",
         "light" => "moonstone",
         other => return UpdateResult::error(app_str, format!("Unknown appearance: {other}")),
     };
-
-    if let Err(e) =
-        file_ops::jsonc::patch_jsonc_file(appearance_path.clone(), "theme", obsidian_theme)
-    {
-        return UpdateResult::error(app_str, e);
+    let folders = crate::config::io::configured_config_folders(app_config);
+    if folders.is_empty() {
+        return UpdateResult::error(app_str, "No Obsidian config folders configured");
     }
 
-    // Patch style settings: set the variant key for the current appearance
-    let style_settings_path = derive_style_settings_path(appearance_path);
-    if let Some(ss_path) = style_settings_path {
-        if ss_path.exists() {
-            // Flat JSONC keys — "@@" is the Style Settings plugin separator,
-            // not a path delimiter (patch_jsonc_file only splits on ".").
-            let variant_key = match ctx.appearance {
-                "dark" => "black-atom-variants@@dark-theme-variant",
-                "light" => "black-atom-variants@@light-theme-variant",
-                // Unreachable: first match already errors on unknown appearance
-                _ => "black-atom-variants@@light-theme-variant",
-            };
-
-            if let Err(e) = file_ops::jsonc::patch_jsonc_file(
-                ss_path.to_string_lossy().to_string(),
-                variant_key,
-                ctx.theme_key,
-            ) {
-                log::warn!("Style settings patch failed (non-fatal): {e}");
-            }
+    let mut basenames = HashMap::new();
+    for folder in &folders {
+        if let Some(name) = Path::new(folder)
+            .parent()
+            .and_then(Path::file_name)
+            .and_then(|name| name.to_str())
+        {
+            *basenames.entry(name.to_string()).or_insert(0usize) += 1;
         }
     }
 
-    // Reload only if Obsidian is already running — the `obsidian` CLI can
-    // launch the app and block indefinitely when it isn't.
-    // Config files are already patched, so the next Obsidian start picks them up.
-    if !is_running() {
-        log::info!("Obsidian not running, skipping reload (config patched)");
-        return UpdateResult::done(app_str);
+    let mut outcomes = Vec::with_capacity(folders.len());
+    for folder in &folders {
+        let duplicate_basename = Path::new(folder)
+            .parent()
+            .and_then(Path::file_name)
+            .and_then(|name| name.to_str())
+            .and_then(|name| basenames.get(name))
+            .is_some_and(|count| *count > 1);
+        outcomes.push(update_config_folder(
+            folder,
+            obsidian_theme,
+            ctx,
+            duplicate_basename,
+        ));
     }
 
-    if let Err(msg) = reload() {
-        log::warn!("{msg}");
-        return UpdateResult::skipped(
-            app_str,
-            format!("Config patched; live reload failed: {msg}"),
+    let failed = outcomes
+        .iter()
+        .filter(|outcome| outcome.status == UpdateStatus::Error)
+        .count();
+    let warnings: Vec<&str> = outcomes
+        .iter()
+        .flat_map(|outcome| {
+            [
+                outcome.message.as_deref(),
+                outcome.reload_warning.as_deref(),
+            ]
+        })
+        .flatten()
+        .collect();
+    let message = if failed > 0 {
+        let summary = format!(
+            "{failed} of {} Obsidian config folder(s) failed",
+            outcomes.len()
         );
+        if warnings.is_empty() {
+            Some(summary)
+        } else {
+            Some(format!("{summary}; warnings: {}", warnings.join("; ")))
+        }
+    } else if !warnings.is_empty() {
+        Some(format!(
+            "{} Obsidian config folder(s) updated; warnings reported: {}",
+            outcomes.len(),
+            warnings.join("; ")
+        ))
+    } else {
+        None
+    };
+
+    UpdateResult {
+        app: app_str.to_string(),
+        status: if failed > 0 {
+            UpdateStatus::Error
+        } else {
+            UpdateStatus::Done
+        },
+        message,
+        config_folders: Some(outcomes),
+        duration_ms: None,
+    }
+}
+
+fn update_config_folder(
+    folder: &str,
+    obsidian_theme: &str,
+    ctx: &UpdateContext,
+    duplicate_basename: bool,
+) -> ConfigFolderOutcome {
+    let config_folder = PathBuf::from(shellexpand::tilde(folder).to_string());
+    let appearance_path = config_folder.join("appearance.json");
+    let appearance = appearance_path.to_string_lossy().into_owned();
+    if let Err(error) =
+        file_ops::jsonc::patch_jsonc_file(appearance.clone(), "theme", obsidian_theme)
+    {
+        return ConfigFolderOutcome {
+            config_folder: folder.to_string(),
+            status: UpdateStatus::Error,
+            message: Some(error),
+            reload_warning: None,
+        };
+    }
+    if let Err(error) = file_ops::jsonc::patch_jsonc_file(appearance, "cssTheme", "Black Atom") {
+        return ConfigFolderOutcome {
+            config_folder: folder.to_string(),
+            status: UpdateStatus::Error,
+            message: Some(error),
+            reload_warning: None,
+        };
     }
 
-    log::info!("Updated obsidian config: {}", appearance_path);
-    UpdateResult::done(app_str)
+    let mut message = None;
+    let style_settings_path = config_folder
+        .join("plugins")
+        .join("obsidian-style-settings")
+        .join("data.json");
+    if style_settings_path.is_file() {
+        let variant_key = match ctx.appearance {
+            "dark" => "black-atom-variants@@dark-theme-variant",
+            _ => "black-atom-variants@@light-theme-variant",
+        };
+        if let Err(error) = file_ops::jsonc::patch_jsonc_file(
+            style_settings_path.to_string_lossy().into_owned(),
+            variant_key,
+            ctx.theme_key,
+        ) {
+            log::warn!("Style settings patch failed for {folder} (non-fatal): {error}");
+            message = Some(format!("Style Settings patch failed: {error}"));
+        }
+    }
+
+    let reload_warning = if duplicate_basename {
+        Some(
+            "Vault basename is shared; reload skipped because the CLI selector is ambiguous"
+                .to_string(),
+        )
+    } else if is_running() {
+        config_folder
+            .parent()
+            .ok_or_else(|| "Config folder has no vault root".to_string())
+            .and_then(reload)
+            .err()
+    } else {
+        Some("Obsidian is not running; reload deferred until next launch".to_string())
+    };
+    ConfigFolderOutcome {
+        config_folder: folder.to_string(),
+        status: UpdateStatus::Done,
+        message,
+        reload_warning,
+    }
 }
 
-/// Derive the style settings data.json path from the appearance.json path.
-/// `appearance.json` lives at `<vault>/.obsidian/appearance.json`, so the
-/// style settings file is at `<vault>/.obsidian/plugins/obsidian-style-settings/data.json`.
-fn derive_style_settings_path(appearance_path: &str) -> Option<PathBuf> {
-    let expanded = shellexpand::tilde(appearance_path).to_string();
-    let path = Path::new(&expanded);
-    path.parent().map(|obsidian_dir| {
-        obsidian_dir
-            .join("plugins")
-            .join("obsidian-style-settings")
-            .join("data.json")
-    })
-}
-
-/// Check whether Obsidian is currently running.
 fn is_running() -> bool {
     std::process::Command::new("pgrep")
         .args(["-x", "Obsidian"])
         .output()
-        .map(|o| o.status.success())
+        .map(|output| output.status.success())
         .unwrap_or(false)
 }
 
-/// Reload the Obsidian vault via the `obsidian` CLI.
-/// Only called when Obsidian is already running — the command can launch
-/// the app and block indefinitely if it isn't.
-fn reload() -> Result<(), String> {
-    match std::process::Command::new("obsidian")
-        .arg("reload")
+/// The Obsidian CLI accepts a vault selector before the command. The vault root
+/// is derived from the configuration folder, and the selector is its basename.
+fn reload(vault_root: &Path) -> Result<(), String> {
+    let name = vault_root
+        .file_name()
+        .and_then(|name| name.to_str())
+        .ok_or_else(|| {
+            format!(
+                "Cannot determine Obsidian vault name for {}",
+                vault_root.display()
+            )
+        })?;
+    let output = std::process::Command::new("obsidian")
+        .args([&format!("vault={name}"), "reload"])
         .output()
-    {
-        Ok(output) => {
-            if !output.status.success() {
-                log::info!("obsidian reload returned non-zero");
-            }
-            Ok(())
-        }
-        Err(e) => Err(format!("Failed to run obsidian reload: {e}")),
+        .map_err(|error| format!("Failed to run obsidian reload: {error}"))?;
+    if output.status.success() {
+        Ok(())
+    } else {
+        Err(format!("obsidian vault={name} reload returned non-zero"))
     }
 }
 
@@ -117,18 +199,175 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_derive_style_settings_path() {
-        let result = derive_style_settings_path("~/notes/.obsidian/appearance.json");
-        let expected = dirs::home_dir()
-            .unwrap()
-            .join("notes/.obsidian/plugins/obsidian-style-settings/data.json");
-        assert_eq!(result, Some(expected));
+    fn test_reload_name_uses_derived_config_folder_root_basename() {
+        assert_eq!(Path::new("/notes").file_name().unwrap(), "notes");
     }
 
     #[test]
-    fn test_derive_style_settings_path_no_parent() {
-        let result = derive_style_settings_path("appearance.json");
-        // Parent of "appearance.json" is "" which is still Some
-        assert!(result.is_some());
+    fn test_updates_config_folders_independently_and_reports_missing_folder() {
+        let first = tempfile::TempDir::new_in(dirs::home_dir().unwrap()).unwrap();
+        let second = tempfile::TempDir::new_in(dirs::home_dir().unwrap()).unwrap();
+        for config_folder in [first.path(), second.path()] {
+            std::fs::create_dir_all(config_folder.join(".obsidian")).unwrap();
+            std::fs::write(config_folder.join(".obsidian/appearance.json"), "{}\n").unwrap();
+        }
+        let missing = first.path().join("missing");
+        let config = AppConfig {
+            enabled: true,
+            config_path: None,
+            config_folders: Some(vec![
+                first
+                    .path()
+                    .join(".obsidian")
+                    .to_string_lossy()
+                    .into_owned(),
+                missing.join(".obsidian").to_string_lossy().into_owned(),
+                second
+                    .path()
+                    .join(".obsidian")
+                    .to_string_lossy()
+                    .into_owned(),
+            ]),
+            themes_path: None,
+            match_pattern: None,
+            replace_template: None,
+            settings_path: None,
+            settings: None,
+        };
+        let context = UpdateContext {
+            theme_key: "black-atom-test",
+            appearance: "dark",
+            collection_key: "test",
+            theme_label: None,
+            themes_path: None,
+        };
+        let result = update("obsidian", &config, &context);
+        assert_eq!(result.status, UpdateStatus::Error);
+        let outcomes = result.config_folders.unwrap();
+        assert_eq!(outcomes.len(), 3);
+        assert_eq!(outcomes[0].status, UpdateStatus::Done);
+        assert_eq!(outcomes[1].status, UpdateStatus::Error);
+        assert_eq!(outcomes[2].status, UpdateStatus::Done);
+        let first_appearance =
+            std::fs::read_to_string(first.path().join(".obsidian/appearance.json")).unwrap();
+        assert!(first_appearance.contains("obsidian"));
+        assert!(first_appearance.contains(r#""cssTheme": "Black Atom""#));
+        assert!(
+            std::fs::read_to_string(second.path().join(".obsidian/appearance.json"))
+                .unwrap()
+                .contains("obsidian")
+        );
+    }
+
+    #[test]
+    fn test_style_settings_failure_is_non_fatal_but_reported() {
+        let config_folder = tempfile::TempDir::new_in(dirs::home_dir().unwrap()).unwrap();
+        std::fs::create_dir_all(
+            config_folder
+                .path()
+                .join(".obsidian/plugins/obsidian-style-settings"),
+        )
+        .unwrap();
+        std::fs::write(
+            config_folder.path().join(".obsidian/appearance.json"),
+            "{}\n",
+        )
+        .unwrap();
+        std::fs::write(
+            config_folder
+                .path()
+                .join(".obsidian/plugins/obsidian-style-settings/data.json"),
+            "not json\n",
+        )
+        .unwrap();
+        let config = AppConfig {
+            enabled: true,
+            config_path: None,
+            config_folders: Some(vec![config_folder
+                .path()
+                .join(".obsidian")
+                .to_string_lossy()
+                .into_owned()]),
+            themes_path: None,
+            match_pattern: None,
+            replace_template: None,
+            settings_path: None,
+            settings: None,
+        };
+        let context = UpdateContext {
+            theme_key: "black-atom-test",
+            appearance: "dark",
+            collection_key: "test",
+            theme_label: None,
+            themes_path: None,
+        };
+
+        let result = update("obsidian", &config, &context);
+        assert_eq!(result.status, UpdateStatus::Done);
+        assert!(result
+            .message
+            .as_deref()
+            .unwrap()
+            .contains("Style Settings"));
+        assert!(result.config_folders.unwrap()[0]
+            .message
+            .as_deref()
+            .unwrap()
+            .contains("Style Settings"));
+    }
+
+    #[test]
+    fn test_update_outcome_keeps_the_portable_config_folder_identity() {
+        let home = dirs::home_dir().unwrap();
+        let folder = tempfile::TempDir::new_in(&home).unwrap();
+        std::fs::write(folder.path().join("appearance.json"), "{}\n").unwrap();
+        let relative = folder.path().strip_prefix(home).unwrap();
+        let portable = format!("~/{}", relative.to_string_lossy());
+        let config = AppConfig {
+            enabled: true,
+            config_path: None,
+            config_folders: Some(vec![portable.clone()]),
+            themes_path: None,
+            match_pattern: None,
+            replace_template: None,
+            settings_path: None,
+            settings: None,
+        };
+        let context = UpdateContext {
+            theme_key: "black-atom-test",
+            appearance: "dark",
+            collection_key: "test",
+            theme_label: None,
+            themes_path: None,
+        };
+
+        let result = update("obsidian", &config, &context);
+
+        assert_eq!(result.config_folders.unwrap()[0].config_folder, portable);
+    }
+
+    #[test]
+    fn test_empty_config_folders_are_reported() {
+        let config = AppConfig {
+            enabled: true,
+            config_path: None,
+            config_folders: Some(Vec::new()),
+            themes_path: None,
+            match_pattern: None,
+            replace_template: None,
+            settings_path: None,
+            settings: None,
+        };
+        let context = UpdateContext {
+            theme_key: "x",
+            appearance: "dark",
+            collection_key: "x",
+            theme_label: None,
+            themes_path: None,
+        };
+        assert_eq!(
+            update("obsidian", &config, &context).status,
+            UpdateStatus::Error
+        );
     }
 }

@@ -148,13 +148,16 @@ pub fn update(
     ctx: &UpdateContext,
     max_sockets: Option<usize>,
 ) -> UpdateResult {
+    let Some(config_path) = app_config.config_path.as_deref() else {
+        return UpdateResult::error(app_str, "Missing config_path");
+    };
     let (pattern, template) = match (&app_config.match_pattern, &app_config.replace_template) {
         (Some(p), Some(t)) => (p, t),
         _ => return UpdateResult::error(app_str, "Missing match_pattern or replace_template"),
     };
 
     if let Err(e) = file_ops::text::patch_text_file(
-        app_config.config_path.clone(),
+        config_path.to_string(),
         pattern.clone(),
         template.clone(),
         ctx.build_variables(),

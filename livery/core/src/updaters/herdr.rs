@@ -10,8 +10,11 @@ const END_MARKER: &str = "# END BLACK ATOM LIVERY THEME";
 const CONFLICTING_THEME_TABLES: &str = r"^\s*\[(?:theme|theme\.custom)\]\s*(?:#.*)?$";
 
 pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> UpdateResult {
+    let Some(config_path) = app_config.config_path.as_deref() else {
+        return UpdateResult::error(app_str, "Missing config_path");
+    };
     update_with_reload(app_str, app_config, ctx, || {
-        reload_all_sessions(&app_config.config_path)
+        reload_all_sessions(config_path)
     })
 }
 
@@ -24,6 +27,9 @@ fn update_with_reload<F>(
 where
     F: FnOnce() -> Result<ReloadReport, String>,
 {
+    let Some(config_path) = app_config.config_path.as_deref() else {
+        return UpdateResult::error(app_str, "Missing config_path");
+    };
     let Some(themes_path) = &app_config.themes_path else {
         return UpdateResult::error(app_str, "Missing themes_path");
     };
@@ -43,7 +49,7 @@ where
     };
 
     let patch = file_ops::managed_block::patch_toml_managed_block_file(
-        app_config.config_path.clone(),
+        config_path.to_string(),
         &fragment,
         BEGIN_MARKER,
         END_MARKER,
@@ -56,7 +62,7 @@ where
 
     log::info!(
         "Updated Herdr config: {} (changed={}, appended={})",
-        app_config.config_path,
+        config_path,
         patch.changed,
         patch.appended
     );
@@ -435,7 +441,8 @@ mod tests {
         );
         let config = AppConfig {
             enabled: true,
-            config_path: target.path().to_string_lossy().to_string(),
+            config_folders: None,
+            config_path: Some(target.path().to_string_lossy().to_string()),
             themes_path: Some(portable_themes_path),
             match_pattern: None,
             replace_template: None,
@@ -479,7 +486,8 @@ mod tests {
         std::fs::write(target.path(), fixture("text/herdr-config.toml")).unwrap();
         let config = AppConfig {
             enabled: true,
-            config_path: target.path().to_string_lossy().to_string(),
+            config_folders: None,
+            config_path: Some(target.path().to_string_lossy().to_string()),
             themes_path: Some(themes.path().to_string_lossy().to_string()),
             match_pattern: None,
             replace_template: None,
@@ -513,7 +521,8 @@ mod tests {
         let target = tempfile::NamedTempFile::new_in(&home).unwrap();
         let config = AppConfig {
             enabled: true,
-            config_path: target.path().to_string_lossy().to_string(),
+            config_folders: None,
+            config_path: Some(target.path().to_string_lossy().to_string()),
             themes_path: Some(themes.path().to_string_lossy().to_string()),
             match_pattern: None,
             replace_template: None,

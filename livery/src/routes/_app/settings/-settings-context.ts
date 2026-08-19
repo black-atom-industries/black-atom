@@ -46,6 +46,9 @@ export type SettingsContextValue = {
 
     onToggleEnabled: (appName: AppName) => void;
     onFieldCommit: (appName: AppName, field: AdapterField, value: string) => void;
+    onAddConfigFolder: (appName: AppName) => void;
+    onRemoveConfigFolder: (appName: AppName, config_folder: string) => void;
+    configFoldersSaving: boolean;
     onPickPath: (kind: PathKind) => Promise<string | null>;
     onOpenUrl: (url: string) => void;
 

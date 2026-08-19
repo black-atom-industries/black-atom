@@ -7,7 +7,7 @@ One adapter's row in the **ApplyRail** — the right-docked vertical successor t
 <AdapterStatusRow name="ghostty" status="warn"
   message="config patched · live reload failed — restart ghostty" />
 <AdapterStatusRow name="obsidian" status="error" cursored expanded
-  message="ENOENT: themes directory not found. Point THEMES_PATH at the vault or disable the adapter."
+  message="ENOENT: Obsidian config folder not found. Check the configured config folders or disable the adapter."
   path="~/.config/obsidian/themes/black-atom.css" code="LVR-102"
   onRetry={retryObsidian} />
 ```

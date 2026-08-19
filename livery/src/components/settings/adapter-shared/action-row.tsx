@@ -149,6 +149,7 @@ function SetUpResult({ result }: { result?: SetUpOutcome }) {
     if (ran.length === 0) return null;
 
     const linkedCount = result.link?.linked;
+    const linkDetails = formatConfigFolderDetails(result.link?.config_folders);
     const stepLabel = (step: (typeof ran)[number]) => {
         if (step === "link" && typeof linkedCount === "number") {
             return `LINKED ${linkedCount}`;
@@ -156,21 +157,41 @@ function SetUpResult({ result }: { result?: SetUpOutcome }) {
         return step.toUpperCase();
     };
 
-    return <ResultLine intent="ok">{ran.map(stepLabel).join(" · ")}</ResultLine>;
+    return (
+        <ResultLine
+            intent={linkDetails && configFolderDetailsNeedWarning(result.link?.config_folders)
+                ? "warn"
+                : "ok"}
+        >
+            {ran.map(stepLabel).join(" · ")}
+            {linkDetails ? ` · ${linkDetails}` : ""}
+        </ResultLine>
+    );
 }
 
 /** Link verdict: counts on success, reason on failure. */
 function LinkThemesResultLine({ result }: { result?: LinkThemesRowResult }) {
     if (!result || result.status === "running") return null;
 
+    const details = formatConfigFolderDetails(result.config_folders);
     if (result.status === "error") {
-        return <ResultLine intent="error">{result.message}</ResultLine>;
+        return (
+            <ResultLine intent="error">
+                {result.message}
+                {details ? ` · ${details}` : ""}
+            </ResultLine>
+        );
     }
 
     return (
-        <ResultLine intent="ok">
+        <ResultLine
+            intent={result.message || configFolderDetailsNeedWarning(result.config_folders)
+                ? "warn"
+                : "ok"}
+        >
             {result.linked} linked{result.pruned > 0 ? ` · ${result.pruned} pruned` : ""}
             {result.message ? ` · ${result.message}` : ""}
+            {details ? ` · ${details}` : ""}
         </ResultLine>
     );
 }
@@ -187,11 +208,22 @@ function VerifyPathResultLine({ result }: { result?: VerifyPathResult }) {
     }
 
     const fault = verifyFaultLabel(result);
-    if (fault) return <ResultLine intent="warn">{fault}</ResultLine>;
+    const details = result.config_folders?.map((config_folder) =>
+        `${config_folder.config_folder}: ${config_folder.exists ? "exists" : "not found"}`
+    ).join(" · ");
+    if (fault) {
+        return (
+            <ResultLine intent="warn">
+                {fault}
+                {details ? ` · ${details}` : ""}
+            </ResultLine>
+        );
+    }
 
     return (
         <ResultLine intent="ok">
             Path exists{result.patternMatches === true ? " · pattern matches" : ""}
+            {details ? ` · ${details}` : ""}
         </ResultLine>
     );
 }
@@ -200,7 +232,13 @@ function TestApplyResultLine({ result }: { result?: TestApplyResult }) {
     if (!result || result.status === "running") return null;
 
     if (result.status === "error") {
-        return <ResultLine intent="error">{result.message}</ResultLine>;
+        const details = formatConfigFolderDetails(result.config_folders);
+        return (
+            <ResultLine intent="error">
+                {result.message}
+                {details ? ` · ${details}` : ""}
+            </ResultLine>
+        );
     }
 
     if (result.status === "reverting") {
@@ -208,12 +246,56 @@ function TestApplyResultLine({ result }: { result?: TestApplyResult }) {
     }
 
     const duration = result.durationMs === null ? null : `in ${result.durationMs}ms`;
+    const details = formatConfigFolderDetails(result.config_folders);
     return (
-        <ResultLine intent="ok">
+        <ResultLine
+            intent={result.message || configFolderDetailsNeedWarning(result.config_folders)
+                ? "warn"
+                : "ok"}
+        >
             Applied {result.testedThemeLabel}
             {duration ? ` ${duration}` : ""}, reverting shortly
+            {result.message ? ` · ${result.message}` : ""}
+            {details ? ` · ${details}` : ""}
         </ResultLine>
     );
+}
+
+function configFolderDetailsNeedWarning(
+    config_folders:
+        | {
+            config_folder: string;
+            status: string;
+            message?: string | null;
+            reload_warning?: string | null;
+        }[]
+        | null
+        | undefined,
+): boolean {
+    return config_folders?.some((config_folder) =>
+        config_folder.status !== "done" || Boolean(config_folder.message) ||
+        Boolean(config_folder.reload_warning)
+    ) ?? false;
+}
+
+function formatConfigFolderDetails(
+    config_folders:
+        | {
+            config_folder: string;
+            status: string;
+            message?: string | null;
+            reload_warning?: string | null;
+        }[]
+        | null
+        | undefined,
+): string | null {
+    if (!config_folders?.length) return null;
+    return config_folders.map((config_folder) => {
+        const note = [config_folder.message, config_folder.reload_warning].filter(Boolean).join(
+            ": ",
+        );
+        return `${config_folder.config_folder}: ${config_folder.status}${note ? ` (${note})` : ""}`;
+    }).join(" · ");
 }
 
 type ResultLineProps = {

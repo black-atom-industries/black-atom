@@ -44,7 +44,7 @@ export function HelmSettings(
                     <DraftField
                         label="CONFIG_PATH"
                         note="THE FILE LIVERY PATCHES"
-                        value={appConfig.config_path}
+                        value={appConfig.config_path ?? ""}
                         onCommit={(value) => onFieldCommit("config_path", value)}
                         inputRef={firstFieldRef}
                         pathKind="file"

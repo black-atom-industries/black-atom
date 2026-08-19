@@ -4,13 +4,16 @@ use super::file_ops;
 use super::{UpdateContext, UpdateResult};
 
 pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> UpdateResult {
+    let Some(config_path) = app_config.config_path.as_deref() else {
+        return UpdateResult::error(app_str, "Missing config_path");
+    };
     let (pattern, template) = match (&app_config.match_pattern, &app_config.replace_template) {
         (Some(p), Some(t)) => (p, t),
         _ => return UpdateResult::error(app_str, "Missing match_pattern or replace_template"),
     };
 
     if let Err(e) = file_ops::text::patch_text_file(
-        app_config.config_path.clone(),
+        config_path.to_string(),
         pattern.clone(),
         template.clone(),
         ctx.build_variables(),
@@ -18,7 +21,7 @@ pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> Upd
         return UpdateResult::error(app_str, e);
     }
 
-    if let Err(msg) = reload(&app_config.config_path) {
+    if let Err(msg) = reload(config_path) {
         log::warn!("{msg}");
         return UpdateResult::skipped(
             app_str,

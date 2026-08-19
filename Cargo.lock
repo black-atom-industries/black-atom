@@ -2402,6 +2402,7 @@ dependencies = [
  "inquire",
  "libc",
  "livery_core",
+ "serde_json",
  "tempfile",
  "tokio",
 ]

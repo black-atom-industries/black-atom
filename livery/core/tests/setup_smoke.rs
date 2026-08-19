@@ -102,7 +102,7 @@ fn setup_chain_end_to_end() {
         "livery config dir must follow XDG_CONFIG_HOME"
     );
 
-    // Plant app configs: ghostty/zed/tmux exist, plus an obsidian vault.
+    // Plant app configs: ghostty/zed/tmux exist, plus an obsidian config_folder.
     write_file(
         &home.join(".config/ghostty/config"),
         "theme = black-atom-default-dark.conf\n",
@@ -116,8 +116,9 @@ fn setup_chain_end_to_end() {
         &home.join(".config/herdr/config.toml"),
         "# BEGIN BLACK ATOM LIVERY THEME\n[theme]\nname = \"terminal\"\n# END BLACK ATOM LIVERY THEME\n",
     );
-    let vault_appearance = home.join("vault/.obsidian/appearance.json");
-    write_file(&vault_appearance, "{\"cssTheme\":\"Black Atom\"}\n");
+    let config_folder = home.join("config_folder/.obsidian");
+    let appearance = config_folder.join("appearance.json");
+    write_file(&appearance, "{\"cssTheme\":\"Black Atom\"}\n");
 
     // 0. Startup unpack: the embedded adapter output lands under the themes
     // root before anything else runs.
@@ -182,7 +183,7 @@ fn setup_chain_end_to_end() {
     let mut config = livery_core::config::commands::get_config();
     assert!(config.apps.values().all(|app| !app.enabled));
 
-    // 2. Conservative detection: planted configs found, everything else not.
+    // 2. Conservative detection: planted configured locations are found, everything else not.
     let detections = block_on(detect::detect_apps());
     let mut found: Vec<&str> = detections
         .iter()
@@ -197,10 +198,10 @@ fn setup_chain_end_to_end() {
         .unwrap();
     assert!(
         !obsidian.found && obsidian.config_path.is_empty(),
-        "obsidian must never auto-detect without a vault path"
+        "obsidian must not auto-detect without a configured config folder"
     );
 
-    // 3. Enable the detected apps + lazygit, supply obsidian's vault path.
+    // 3. Enable the detected apps + lazygit, supply Obsidian's config folder.
     for (app, app_config) in config.apps.iter_mut() {
         match app {
             AppName::Ghostty | AppName::Zed | AppName::Tmux | AppName::Lazygit | AppName::Herdr => {
@@ -208,7 +209,8 @@ fn setup_chain_end_to_end() {
             }
             AppName::Obsidian => {
                 app_config.enabled = true;
-                app_config.config_path = vault_appearance.to_string_lossy().to_string();
+                app_config.config_path = None;
+                app_config.config_folders = Some(vec![config_folder.to_string_lossy().to_string()]);
             }
             _ => {}
         }
@@ -237,8 +239,8 @@ fn setup_chain_end_to_end() {
         home.join(".config/ghostty/themes/black-atom-default-dark.conf"),
         home.join(".config/tmux/themes/black-atom-jpn-koyo-yoru.conf"),
         home.join(".config/zed/themes/black-atom-jpn-koyo-yoru.json"),
-        home.join("vault/.obsidian/themes/Black Atom/theme.css"),
-        home.join("vault/.obsidian/themes/Black Atom/manifest.json"),
+        home.join("config_folder/.obsidian/themes/Black Atom/theme.css"),
+        home.join("config_folder/.obsidian/themes/Black Atom/manifest.json"),
     ] {
         assert_managed_symlink(&link, &managed_root);
     }

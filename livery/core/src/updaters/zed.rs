@@ -21,7 +21,10 @@ pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> Upd
     };
 
     // Detect theme format by reading the file and checking the "theme" value type
-    let path = shellexpand::tilde(&app_config.config_path).to_string();
+    let Some(config_path) = app_config.config_path.as_deref() else {
+        return UpdateResult::error(app_str, "Missing config_path");
+    };
+    let path = shellexpand::tilde(config_path).to_string();
     let content = match std::fs::read_to_string(&path) {
         Ok(c) => c,
         Err(e) => return UpdateResult::error(app_str, format!("Failed to read {path}: {e}")),
@@ -42,15 +45,11 @@ pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> Upd
     };
 
     if let Err(e) =
-        file_ops::jsonc::patch_jsonc_file(app_config.config_path.clone(), key_path, theme_label)
+        file_ops::jsonc::patch_jsonc_file(config_path.to_string(), key_path, theme_label)
     {
         return UpdateResult::error(app_str, e);
     }
-    log::info!(
-        "Updated zed settings: {} (key: {})",
-        app_config.config_path,
-        key_path
-    );
+    log::info!("Updated zed settings: {} (key: {})", config_path, key_path);
 
     // Zed silently keeps the previous theme when the display name matches no
     // installed theme (broken adapter symlink, missing extension) — surface

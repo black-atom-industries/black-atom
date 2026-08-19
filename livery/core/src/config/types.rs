@@ -159,7 +159,13 @@ impl Default for NvimSettings {
 pub struct AppConfig {
     #[serde(default = "default_true")]
     pub enabled: bool,
-    pub config_path: String,
+    /// Generic adapter config file. Obsidian leaves this empty and stores
+    /// configuration folders instead.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub config_path: Option<String>,
+    /// Obsidian configuration folders, such as `~/Notes/.obsidian`.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub config_folders: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub themes_path: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -189,10 +195,17 @@ impl Default for Keymappings {
 
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
 pub struct Config {
+    /// Versioned configuration schema. Missing on disk means legacy v1.
+    #[serde(default = "legacy_version")]
+    pub version: u32,
     pub system_appearance: bool,
     #[serde(default)]
     pub keymappings: Keymappings,
     pub apps: BTreeMap<AppName, AppConfig>,
+}
+
+fn legacy_version() -> u32 {
+    1
 }
 
 #[cfg(test)]

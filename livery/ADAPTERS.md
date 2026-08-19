@@ -17,8 +17,7 @@ every adapter falls into exactly one class:
 
 Two per-adapter properties are deliberately **not** classes:
 
-- **Setup precondition** — a one-time manual step livery cannot automate (tell livery which obsidian
-  vault). Orthogonal to who consumes the files.
+- **Setup precondition** — a one-time manual step livery cannot automate (tell livery which config folders to manage). Orthogonal to who consumes the files.
 - **Switch pointer** — the config line or property that selects the active theme. Every adapter has
   one; livery's apply step rewrites it.
 
@@ -58,14 +57,14 @@ verify — always ending with verification, so the row reflects the true state.
 
 - **Files:** the managed dir carries the per-theme CSS under
   `<managed>/obsidian/<collection>/black-atom-*.css` alongside the merged `theme.css` +
-  `manifest.json` pair. Only that pair is symlinked into `<vault>/.obsidian/themes/Black Atom/` —
-  Obsidian discovers themes as per-name subdirectories of the vault's themes dir. Black Atom ships
+  `manifest.json` pair. Only that pair is symlinked into `<config-folder>/themes/Black Atom/` —
+  Obsidian discovers themes as per-name subdirectories of the config folder's themes dir. Black Atom ships
   as ONE theme; collections/variants switch via the Style Settings plugin values.
 - **Switch pointer:** `cssTheme` in `appearance.json` + the variant key in the Style Settings plugin
   data.
 - **Reload:** `obsidian://` URI.
-- **Precondition:** point CONFIG_PATH at your vault's `.obsidian/appearance.json` — livery cannot
-  guess which vault. Multi-vault support is tracked in #8.
+- **Precondition:** add the Obsidian configuration folders livery should manage, such as
+  `<vault>/.obsidian` or a renamed override folder. Livery applies the theme to every configured folder.
 
 ### lazygit — Merged
 

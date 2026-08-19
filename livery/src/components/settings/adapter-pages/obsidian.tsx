@@ -2,23 +2,22 @@ import {
     ActionRow,
     AdapterHeader,
     ClassDefinition,
-    DraftField,
+    findConfigFolderVerification,
     PrerequisiteNote,
 } from "../adapter-shared/index.ts";
+import { Button } from "../../primitives/button/button.tsx";
 import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
-/** obsidian — linked provisioning, points at the vault's
-    appearance.json; no regex fields to offer. */
+/** Obsidian uses linked provisioning for each configured config folder. */
 export function ObsidianSettings(
     {
         appConfig,
-        editableFields,
         detected,
         onToggleEnabled,
-        onFieldCommit,
-        firstFieldRef,
-        onPickPath,
+        onAddConfigFolder,
+        onRemoveConfigFolder,
+        configFoldersSaving,
         onSetUp,
         setUpResult,
         onVerifyPath,
@@ -40,17 +39,43 @@ export function ObsidianSettings(
                 verifyPathResult={verifyPathResult}
             />
             <div className={styles.fieldGrid}>
-                {editableFields.has("config_path") && (
-                    <DraftField
-                        label="CONFIG_PATH"
-                        note="THE FILE LIVERY PATCHES"
-                        value={appConfig.config_path}
-                        onCommit={(value) => onFieldCommit("config_path", value)}
-                        inputRef={firstFieldRef}
-                        pathKind="file"
-                        onPickPath={onPickPath}
-                    />
-                )}
+                <div className={styles.fieldGridNote}>
+                    CONFIG FOLDERS · {appConfig.config_folders?.length ?? 0} CONFIGURED
+                </div>
+                {(appConfig.config_folders ?? []).map((config_folder) => {
+                    const verification = findConfigFolderVerification(
+                        verifyPathResult,
+                        config_folder,
+                    );
+                    return (
+                        <div className={styles.configFolderRow} key={config_folder}>
+                            <span className={styles.configFolderPath}>
+                                {config_folder}
+                                {verification && (
+                                    <small>
+                                        · {verification.exists ? "VERIFIED" : "NOT FOUND"}
+                                    </small>
+                                )}
+                            </span>
+                            <Button
+                                className={styles.configFolderRemove}
+                                intent="ghost"
+                                onClick={() => onRemoveConfigFolder?.(config_folder)}
+                                disabled={configFoldersSaving}
+                            >
+                                REMOVE
+                            </Button>
+                        </div>
+                    );
+                })}
+                <Button
+                    className={styles.configFolderAdd}
+                    intent="secondary"
+                    onClick={onAddConfigFolder}
+                    disabled={configFoldersSaving}
+                >
+                    {configFoldersSaving ? "SAVING…" : "+ ADD CONFIG FOLDER"}
+                </Button>
             </div>
             <ActionRow
                 onSetUp={onSetUp}
@@ -65,7 +90,8 @@ export function ObsidianSettings(
             />
             <ClassDefinition provisioning="linked" />
             <PrerequisiteNote>
-                Point CONFIG_PATH at your vault's .obsidian/appearance.json, then run SET UP.
+                Add config folders, then run SET UP. Livery applies the theme to each configured
+                folder.
             </PrerequisiteNote>
         </div>
     );

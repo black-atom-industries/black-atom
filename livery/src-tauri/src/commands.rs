@@ -45,9 +45,9 @@ pub async fn get_app_status() -> Result<Vec<AppStatus>, String> {
 
 /// Wire an adapter's own themes location to the unpacked theme files via
 /// symlinks (create, heal, prune). Explicit adapter-setup action. The
-/// target dir is derived from the adapter's CONFIGURED config_path (its
-/// sibling `themes/`; for obsidian that is `<vault>/.obsidian/themes/`),
-/// so custom setups link into the right place.
+/// target dir is derived from each adapter's configured location (its
+/// sibling `themes/`; for Obsidian, each configured config_folder gets
+/// `<config_folder>/.obsidian/themes/`), so custom setups link into the right place.
 #[tauri::command]
 #[specta::specta]
 pub async fn link_app_themes(app: AppName) -> LinkThemesResult {
@@ -55,8 +55,9 @@ pub async fn link_app_themes(app: AppName) -> LinkThemesResult {
 }
 
 /// Conservative app detection: an app counts as found iff its configured
-/// config file exists on disk. No binary lookups, no alternative-path
-/// guessing (wizard territory, #35) — better to miss than misconfigure.
+/// location exists on disk. Obsidian checks its configured config folders; other
+/// adapters check their configured config file. No binary lookups or
+/// alternative-path guessing.
 #[tauri::command]
 #[specta::specta]
 pub async fn detect_apps() -> Vec<AppDetection> {
@@ -91,8 +92,8 @@ pub async fn write_nvim_settings(settings: NvimSettings) -> UpdateResult {
     livery_core::updaters::write_nvim_settings(settings).await
 }
 
-/// Check one adapter's config_path: does it exist, and does its
-/// match_pattern hit? Read-only — never writes.
+/// Check one adapter's configured location: does it exist, and does its
+/// match_pattern hit? Read-only, never writes.
 #[tauri::command]
 #[specta::specta]
 pub async fn verify_app_path(app: AppName) -> AppPathVerification {

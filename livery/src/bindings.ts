@@ -31,17 +31,18 @@ async getAppStatus() : Promise<Result<AppStatus[], string>> {
 /**
  * Wire an adapter's own themes location to the unpacked theme files via
  * symlinks (create, heal, prune). Explicit adapter-setup action. The
- * target dir is derived from the adapter's CONFIGURED config_path (its
- * sibling `themes/`; for obsidian that is `<vault>/.obsidian/themes/`),
- * so custom setups link into the right place.
+ * target dir is derived from each adapter's configured location (its
+ * sibling `themes/`; for Obsidian, each configured config_folder gets
+ * `<config_folder>/.obsidian/themes/`), so custom setups link into the right place.
  */
 async linkAppThemes(app: AppName) : Promise<LinkThemesResult> {
     return await TAURI_INVOKE("link_app_themes", { app });
 },
 /**
  * Conservative app detection: an app counts as found iff its configured
- * config file exists on disk. No binary lookups, no alternative-path
- * guessing (wizard territory, #35) — better to miss than misconfigure.
+ * location exists on disk. Obsidian checks its configured config folders; other
+ * adapters check their configured config file. No binary lookups or
+ * alternative-path guessing.
  */
 async detectApps() : Promise<AppDetection[]> {
     return await TAURI_INVOKE("detect_apps");
@@ -64,8 +65,8 @@ async updateSystemAppearance(appearance: string) : Promise<UpdateResult> {
     return await TAURI_INVOKE("update_system_appearance", { appearance });
 },
 /**
- * Check one adapter's config_path: does it exist, and does its
- * match_pattern hit? Read-only — never writes.
+ * Check one adapter's configured location: does it exist, and does its
+ * match_pattern hit? Read-only, never writes.
  */
 async verifyAppPath(app: AppName) : Promise<AppPathVerification> {
     return await TAURI_INVOKE("verify_app_path", { app });
@@ -120,7 +121,16 @@ export type AdapterEditableField = "config_path" | "themes_path" | "match_patter
  * nvim only: the file the managed Lua settings block is written into.
  */
 "settings_path"
-export type AppConfig = { enabled?: boolean; config_path: string; themes_path?: string | null; match_pattern?: string | null; replace_template?: string | null; 
+export type AppConfig = { enabled?: boolean; 
+/**
+ * Generic adapter config file. Obsidian leaves this empty and stores
+ * configuration folders instead.
+ */
+config_path?: string | null; 
+/**
+ * Obsidian configuration folders, such as `~/Notes/.obsidian`.
+ */
+config_folders?: string[] | null; themes_path?: string | null; match_pattern?: string | null; replace_template?: string | null; 
 /**
  * nvim only: the file the managed Lua block is written into.
  */
@@ -136,7 +146,11 @@ export type AppDetection = { app: AppName;
 /**
  * The expanded path that was checked (empty = nothing to check).
  */
-config_path: string; found: boolean }
+config_path: string; 
+/**
+ * Obsidian configuration folders discovered from its global registry.
+ */
+config_folders?: string[] | null; found: boolean }
 /**
  * Supported app names. TypeScript bindings are auto-generated via tauri-specta.
  */
@@ -144,7 +158,7 @@ export type AppName = "nvim" | "tmux" | "ghostty" | "zed" | "delta" | "lazygit" 
 /**
  * Result of `verify_app_path` — backs the settings screen's [ VERIFY PATH ].
  */
-export type AppPathVerification = { app: string; exists: boolean; 
+export type AppPathVerification = { app: string; exists: boolean; config_folders?: ConfigFolderPathVerification[] | null; 
 /**
  * `Some(hit)` when the adapter has a match_pattern to check; `None` for
  * structural patchers (YAML/JSONC merge) where existence is the whole check.
@@ -175,12 +189,27 @@ editable_fields: AdapterEditableField[];
  * placement to wire.
  */
 linked: boolean }
-export type Config = { system_appearance: boolean; keymappings?: Keymappings; apps: { [key in AppName]: AppConfig } }
+export type Config = { 
+/**
+ * Versioned configuration schema. Missing on disk means legacy v1.
+ */
+version?: number; system_appearance: boolean; keymappings?: Keymappings; apps: { [key in AppName]: AppConfig } }
+export type ConfigFolderLinkOutcome = { config_folder: string; status: UpdateStatus; message?: string | null; linked: number; pruned: number }
+export type ConfigFolderOutcome = { config_folder: string; status: UpdateStatus; message?: string | null; reload_warning?: string | null }
+export type ConfigFolderPathVerification = { 
+/**
+ * The configured identity used by the settings UI to associate the result.
+ */
+config_folder: string; 
+/**
+ * The expanded filesystem path that was checked.
+ */
+path: string; exists: boolean }
 export type Keymappings = { toggle_window: string }
 /**
  * Outcome of wiring one adapter's themes dir via managed symlinks.
  */
-export type LinkThemesResult = { app: string; status: UpdateStatus; message?: string | null; linked: number | null; pruned: number | null }
+export type LinkThemesResult = { app: string; status: UpdateStatus; config_folders?: ConfigFolderLinkOutcome[] | null; message?: string | null; linked: number | null; pruned: number | null }
 export type NvimDiagnostics = { undercurl: boolean; background: boolean }
 /**
  * The plugin's `vim.g.black_atom_core_config` table, one field per option
@@ -223,6 +252,10 @@ export type ThemeContext = { theme_key: string; appearance: string; collection_k
  */
 export type ThemeProvisioning = "external" | "linked" | "merged"
 export type UpdateResult = { app: string; status: UpdateStatus; message?: string | null; 
+/**
+ * Per-configuration-folder outcomes for Obsidian's batch update.
+ */
+config_folders?: ConfigFolderOutcome[] | null; 
 /**
  * Time taken by the updater in milliseconds.
  * Set by the dispatcher, not by individual updaters.

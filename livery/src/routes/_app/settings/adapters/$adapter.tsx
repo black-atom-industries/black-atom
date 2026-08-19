@@ -37,6 +37,10 @@ function AdapterDetailRoute() {
             detected={detected}
             onToggleEnabled={() => ctx.onToggleEnabled(adapter)}
             onFieldCommit={(field, value) => ctx.onFieldCommit(adapter, field, value)}
+            onAddConfigFolder={() => ctx.onAddConfigFolder(adapter)}
+            onRemoveConfigFolder={(config_folder) =>
+                ctx.onRemoveConfigFolder(adapter, config_folder)}
+            configFoldersSaving={ctx.configFoldersSaving}
             firstFieldRef={ctx.firstFieldRef}
             onPickPath={ctx.onPickPath}
             onOpenUrl={ctx.onOpenUrl}

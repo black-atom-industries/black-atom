@@ -17,6 +17,27 @@
     gap: var(--ba-size-4);
 }
 
+.configFolderRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ba-size-3);
+    padding: var(--ba-size-2) 0;
+    border-bottom: 1px solid var(--ba-color-border);
+}
+
+.configFolderPath {
+    overflow-wrap: anywhere;
+}
+
+.configFolderRemove {
+    margin-right: calc(-1 * var(--ba-size-2));
+}
+
+.configFolderAdd {
+    align-self: flex-start;
+}
+
 .fieldGridNote {
     margin: calc(-1 * var(--ba-size-2)) 0 0;
     font-size: var(--ba-font-size-1);

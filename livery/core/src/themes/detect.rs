@@ -9,27 +9,51 @@ pub struct AppDetection {
     pub app: AppName,
     /// The expanded path that was checked (empty = nothing to check).
     pub config_path: String,
+    /// Obsidian configuration folders discovered from its global registry.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub config_folders: Option<Vec<String>>,
     pub found: bool,
 }
 
 pub async fn detect_apps() -> Vec<AppDetection> {
     let mut config = crate::config::io::read_config_from_disk();
     crate::config::io::expand_app_paths(&mut config);
-    detect_apps_inner(&config)
+    let discovered = crate::config::io::discovered_obsidian_config_folders();
+    detect_apps_inner(&config, &discovered)
 }
 
-/// An empty config_path (obsidian until a vault is supplied) is never
-/// checked against the filesystem — it reads as not found.
-fn detect_apps_inner(config: &Config) -> Vec<AppDetection> {
+/// Obsidian is configured by configuration folders rather than a single config file.
+fn detect_apps_inner(config: &Config, discovered_obsidian_folders: &[String]) -> Vec<AppDetection> {
     AppName::all()
         .iter()
         .filter_map(|app| {
             let app_config = config.apps.get(app)?;
-            let config_path = app_config.config_path.clone();
-            let found = !config_path.is_empty() && std::path::Path::new(&config_path).is_file();
+            let config_path = app_config.config_path.clone().unwrap_or_default();
+            let (config_folders, found) = if *app == AppName::Obsidian {
+                let mut folders = crate::config::io::configured_config_folders(app_config);
+                folders.extend(discovered_obsidian_folders.iter().cloned());
+                let folders = crate::config::io::configured_config_folders(
+                    &crate::config::types::AppConfig {
+                        config_folders: Some(folders),
+                        ..app_config.clone()
+                    },
+                );
+                let found = folders.iter().any(|folder| {
+                    std::path::PathBuf::from(shellexpand::tilde(folder).to_string())
+                        .join("appearance.json")
+                        .is_file()
+                });
+                (Some(folders), found)
+            } else {
+                (
+                    None,
+                    !config_path.is_empty() && std::path::Path::new(&config_path).is_file(),
+                )
+            };
             Some(AppDetection {
                 app: *app,
                 config_path,
+                config_folders,
                 found,
             })
         })
@@ -51,13 +75,13 @@ mod tests {
         let mut config = Config::default();
         for (app, app_config) in config.apps.iter_mut() {
             app_config.config_path = match app {
-                AppName::Ghostty => ghostty_config.to_string_lossy().to_string(),
-                AppName::Obsidian => String::new(),
-                _ => root.path().join(app.as_str()).to_string_lossy().to_string(),
+                AppName::Ghostty => Some(ghostty_config.to_string_lossy().to_string()),
+                AppName::Obsidian => None,
+                _ => Some(root.path().join(app.as_str()).to_string_lossy().to_string()),
             };
         }
 
-        let detections = detect_apps_inner(&config);
+        let detections = detect_apps_inner(&config, &[]);
         assert_eq!(detections.len(), AppName::all().len());
         for detection in detections {
             match detection.app {
@@ -72,15 +96,37 @@ mod tests {
     }
 
     #[test]
+    fn test_obsidian_detection_uses_configured_config_folders() {
+        let home = dirs::home_dir().expect("Cannot determine home directory");
+        let root = tempfile::TempDir::new_in(home).unwrap();
+        std::fs::write(root.path().join("appearance.json"), "{}\n").unwrap();
+        let mut config = Config::default();
+        let obsidian = config.apps.get_mut(&AppName::Obsidian).unwrap();
+        obsidian.config_path = None;
+        obsidian.config_folders = Some(vec![root.path().to_string_lossy().into_owned()]);
+
+        let detection = detect_apps_inner(&config, &[])
+            .into_iter()
+            .find(|detection| detection.app == AppName::Obsidian)
+            .unwrap();
+        assert!(detection.found);
+        assert!(detection.config_path.is_empty());
+        assert_eq!(
+            detection.config_folders,
+            Some(vec![root.path().to_string_lossy().into_owned()])
+        );
+    }
+
+    #[test]
     fn test_directory_at_config_path_is_not_found() {
         let home = dirs::home_dir().expect("Cannot determine home directory");
         let root = tempfile::TempDir::new_in(home).unwrap();
 
         let mut config = Config::default();
         for app_config in config.apps.values_mut() {
-            app_config.config_path = root.path().to_string_lossy().to_string();
+            app_config.config_path = Some(root.path().to_string_lossy().to_string());
         }
 
-        assert!(detect_apps_inner(&config).iter().all(|d| !d.found));
+        assert!(detect_apps_inner(&config, &[]).iter().all(|d| !d.found));
     }
 }

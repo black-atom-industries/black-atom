@@ -88,7 +88,7 @@ static ZED: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/zed/themes");
 static NVIM_COLORS: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/nvim/colors");
 static NVIM_LUA: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/nvim/lua");
 
-/// Obsidian installs a merged theme into a vault as this pair, which lives at
+/// Obsidian installs a merged theme into a configuration folder as this pair, which lives at
 /// the adapter root rather than under `themes/`.
 pub const OBSIDIAN_THEME_CSS: &str = include_str!("../../../../adapters/obsidian/theme.css");
 pub const OBSIDIAN_MANIFEST_JSON: &str =
@@ -151,7 +151,7 @@ mod tests {
     }
 
     #[test]
-    fn test_obsidian_vault_pair_is_embedded() {
+    fn test_obsidian_config_folder_pair_is_embedded() {
         assert!(OBSIDIAN_THEME_CSS.contains("black-atom"));
         assert!(OBSIDIAN_MANIFEST_JSON.contains("Black Atom"));
     }

@@ -21,7 +21,6 @@ import type {
     AdapterEditableField,
     AppConfig,
     AppName,
-    Config,
     NvimSettings,
     ThemeProvisioning,
     UpdateResult,
@@ -58,6 +57,8 @@ function SettingsRoute() {
     const navLevel: "root" | "detail" = selectedApp ? "detail" : "root";
 
     const firstFieldRef = useRef<HTMLInputElement>(null);
+    const configFolderSavePending = useRef(0);
+    const [configFoldersSaving, setConfigFoldersSaving] = useState(false);
     // Session-local TEST APPLY results — never persisted, starts empty.
     const [testApplyResults, setTestApplyResults] = useState<
         Partial<Record<AppName, TestApplyResult>>
@@ -92,6 +93,9 @@ function SettingsRoute() {
     // AUTO-DETECT scan — session-local, null until the first run.
     const [detecting, setDetecting] = useState(false);
     const [detections, setDetections] = useState<Partial<Record<AppName, boolean>> | null>(null);
+    const [detectedConfigFolders, setDetectedConfigFolders] = useState<
+        Partial<Record<AppName, string[]>>
+    >({});
     const [detectError, setDetectError] = useState<string | null>(null);
     const [setUpResults, setSetUpResults] = useState<Partial<Record<AppName, SetUpOutcome>>>({});
 
@@ -109,10 +113,18 @@ function SettingsRoute() {
         try {
             const results = await commands.detectApps();
             setDetections(Object.fromEntries(results.map((d) => [d.app, d.found])));
+            setDetectedConfigFolders(
+                Object.fromEntries(
+                    results
+                        .filter((d) => d.config_folders)
+                        .map((d) => [d.app, d.config_folders ?? []]),
+                ),
+            );
             setDetectError(null);
         } catch (error) {
             // A failed scan must never read as "scanned, found nothing".
             setDetections(null);
+            setDetectedConfigFolders({});
             setDetectError(error instanceof Error ? error.message : String(error));
         } finally {
             setDetecting(false);
@@ -125,23 +137,51 @@ function SettingsRoute() {
         const provisioningClass = provisioningByApp[appName];
         if (!current || !provisioningClass) return;
 
-        const outcome = await setUpAdapter(
-            appName,
-            provisioningClass,
-            current.apps[appName]?.config_path ?? "",
-            {
-                enable: async (app) => {
-                    const latest = config.query.data;
-                    if (!latest) throw new Error("Config not loaded");
-                    if (latest.apps[app]?.enabled) return;
-                    const next: Config = {
+        let configPath = appName === "obsidian"
+            ? current.apps[appName]?.config_folders?.[0] ?? ""
+            : current.apps[appName]?.config_path ?? "";
+        if (appName === "obsidian") {
+            const discovered = detectedConfigFolders.obsidian ?? [];
+            if (discovered.length > 0) {
+                const result = await config.saveLatest((latest) => {
+                    const currentFolders = latest.apps.obsidian.config_folders ?? [];
+                    const folders = [...currentFolders];
+                    for (const folder of discovered) {
+                        if (!folders.includes(folder)) folders.push(folder);
+                    }
+                    return {
                         ...latest,
                         apps: {
                             ...latest.apps,
-                            [app]: { ...latest.apps[app], enabled: true },
+                            obsidian: {
+                                ...latest.apps.obsidian,
+                                config_folders: folders,
+                                config_path: null,
+                            },
                         },
                     };
-                    const result = await config.save.mutateAsync(next);
+                });
+                if (result.status === "error") throw new Error(result.error);
+                configPath = discovered[0];
+            }
+        }
+
+        const outcome = await setUpAdapter(
+            appName,
+            provisioningClass,
+            configPath,
+            {
+                enable: async (app) => {
+                    const result = await config.saveLatest((latest) => {
+                        if (latest.apps[app]?.enabled) return latest;
+                        return {
+                            ...latest,
+                            apps: {
+                                ...latest.apps,
+                                [app]: { ...latest.apps[app], enabled: true },
+                            },
+                        };
+                    });
                     if (result.status === "error") throw new Error(result.error);
                 },
                 link: (app) => commands.linkAppThemes(app),
@@ -167,15 +207,20 @@ function SettingsRoute() {
                     linked: result.linked ?? 0,
                     pruned: result.pruned ?? 0,
                     message: result.message ?? null,
+                    config_folders: result.config_folders ?? null,
                 }
-                : { status: "error", message: result.message ?? "Unknown error" };
+                : {
+                    status: "error",
+                    message: result.message ?? "Unknown error",
+                    config_folders: result.config_folders ?? null,
+                };
             setLinkThemesResults((prev) => ({ ...prev, [appName]: next }));
             appStatus.query.refetch();
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             setLinkThemesResults((prev) => ({
                 ...prev,
-                [appName]: { status: "error", message },
+                [appName]: { status: "error", message, config_folders: null },
             }));
         }
     }
@@ -185,28 +230,73 @@ function SettingsRoute() {
 
     function toggleAppEnabled(appName: AppName) {
         if (!data) return;
-        const appConfig = data.apps[appName];
-        const next: Config = {
-            ...data,
+        void config.saveLatest((latest) => ({
+            ...latest,
             apps: {
-                ...data.apps,
-                [appName]: { ...appConfig, enabled: appConfig.enabled === false },
+                ...latest.apps,
+                [appName]: {
+                    ...latest.apps[appName],
+                    enabled: latest.apps[appName].enabled === false,
+                },
             },
-        };
-        config.save.mutate(next);
+        })).catch((error) => {
+            console.error("Could not save adapter enabled state", error);
+        });
     }
 
     function commitAdapterField(appName: AppName, field: AdapterField, value: string) {
         if (!data) return;
-        const appConfig = data.apps[appName];
-        const next: Config = {
-            ...data,
+        void config.saveLatest((latest) => ({
+            ...latest,
             apps: {
-                ...data.apps,
-                [appName]: { ...appConfig, [field]: value },
+                ...latest.apps,
+                [appName]: { ...latest.apps[appName], [field]: value },
             },
-        };
-        config.save.mutate(next);
+        })).catch((error) => {
+            console.error("Could not save adapter field", error);
+        });
+    }
+
+    function queueConfigFolderSave(change: (config_folders: string[]) => string[]) {
+        configFolderSavePending.current += 1;
+        setConfigFoldersSaving(true);
+        const save = config.saveLatest((latest) => {
+            const current = latest.apps.obsidian.config_folders ?? [];
+            const nextConfigFolders = change(current);
+            return {
+                ...latest,
+                apps: {
+                    ...latest.apps,
+                    obsidian: { ...latest.apps.obsidian, config_folders: nextConfigFolders },
+                },
+            };
+        });
+        save.catch((error) => {
+            console.error("Could not save Obsidian config_folders", error);
+        }).finally(() => {
+            configFolderSavePending.current -= 1;
+            if (configFolderSavePending.current === 0) setConfigFoldersSaving(false);
+        });
+    }
+
+    function addConfigFolder(appName: AppName) {
+        if (appName !== "obsidian") return;
+        pickPath("directory").then((selected) => {
+            if (!selected) return;
+            const separator = sep();
+            const name = selected.split(separator).at(-1) ?? "";
+            const configFolder = name.startsWith(".")
+                ? selected
+                : `${selected}${separator}.obsidian`;
+            queueConfigFolderSave((current) =>
+                current.includes(configFolder) ? current : [...current, configFolder]
+            );
+        });
+    }
+
+    function removeConfigFolder(appName: AppName, config_folder: string) {
+        if (appName !== "obsidian") return;
+        queueConfigFolderSave((current) => current.filter((item) => item !== config_folder));
     }
 
     /**
@@ -238,6 +328,7 @@ function SettingsRoute() {
                         status: "error",
                         message: result.message ??
                             (result.status === "skipped" ? "Adapter skipped" : "Unknown error"),
+                        config_folders: result.config_folders ?? null,
                     },
                 }));
                 return;
@@ -248,6 +339,8 @@ function SettingsRoute() {
                     status: "ok",
                     durationMs: result.duration_ms,
                     testedThemeLabel: probe.meta.label,
+                    message: result.message ?? null,
+                    config_folders: result.config_folders ?? null,
                 },
             }));
 
@@ -269,7 +362,10 @@ function SettingsRoute() {
             }, TEST_APPLY_REVERT_DELAY_MS);
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
-            setTestApplyResults((prev) => ({ ...prev, [appName]: { status: "error", message } }));
+            setTestApplyResults((prev) => ({
+                ...prev,
+                [appName]: { status: "error", message, config_folders: null },
+            }));
         }
     }
 
@@ -283,6 +379,7 @@ function SettingsRoute() {
                     status: "verified",
                     exists: result.exists,
                     patternMatches: result.pattern_matches,
+                    config_folders: result.config_folders,
                 };
             setVerifyPathResults((prev) => ({ ...prev, [appName]: next }));
         } catch (error) {
@@ -434,6 +531,9 @@ function SettingsRoute() {
         onTestApply: testApplyAdapter,
         onToggleEnabled: toggleAppEnabled,
         onFieldCommit: commitAdapterField,
+        onAddConfigFolder: addConfigFolder,
+        onRemoveConfigFolder: removeConfigFolder,
+        configFoldersSaving,
         onPickPath: pickPath,
         onWriteNvimSettings: writeNvimSettings,
         writingNvimSettings: config.writeNvimSettings.isPending,

@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useConfig } from "../../../queries/use-config.ts";
 import { GeneralPanel } from "../../../components/settings/general-panel/index.ts";
-import type { Config } from "../../../bindings.ts";
 import denoConfig from "../../../../deno.json" with { type: "json" };
 
 export const Route = createFileRoute("/_app/settings/general")({
@@ -15,8 +14,12 @@ function GeneralRoute() {
     function toggleSystemAppearance() {
         const data = config.query.data;
         if (!data) return;
-        const next: Config = { ...data, system_appearance: !data.system_appearance };
-        config.save.mutate(next);
+        void config.saveLatest((latest) => ({
+            ...latest,
+            system_appearance: !latest.system_appearance,
+        })).catch((error) => {
+            console.error("Could not save system appearance", error);
+        });
     }
 
     useHotkey("Space", toggleSystemAppearance);
