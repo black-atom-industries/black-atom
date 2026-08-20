@@ -1,6 +1,6 @@
 [package]
 name = "livery-cli"
-version = "0.5.0"
+version = "0.6.0"
 description = "Black Atom livery command line interface"
 authors = ["Black Atom Industries"]
 license = "MIT"
