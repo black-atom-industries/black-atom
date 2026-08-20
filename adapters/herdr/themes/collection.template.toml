@@ -5,13 +5,13 @@
 accent = "<%= theme.ui.fg.accent %>"
 panel_bg = "<%= theme.ui.bg.panel %>"
 sidebar_bg = "<%= theme.ui.bg.panel %>"
-active_row_bg = "<%= theme.ui.bg.active %>"
+active_row_bg = "<%= theme.ui.bg.default %>"
 selection_bg = "<%= theme.ui.bg.selection %>"
-surface_dim = "<%= theme.ui.bg.panel %>"
-surface0 = "<%= theme.ui.bg.active %>"
-surface1 = "<%= theme.ui.bg.active %>"
+surface_dim = "<%= theme.ui.bg.default %>"
+surface0 = "#<%= theme.ui.bg.active %>"
+surface1 = "#<%= theme.ui.bg.default %>"
 overlay0 = "<%= theme.ui.fg.subtle %>"
-overlay1 = "<%= theme.ui.fg.disabled %>"
+overlay1 = "<%= theme.ui.fg.accent %>"
 text = "<%= theme.ui.fg.default %>"
 subtext0 = "<%= theme.ui.fg.subtle %>"
 red = "<%= theme.ui.fg.negative %>"
@@ -21,7 +21,6 @@ blue = "<%= theme.ui.fg.info %>"
 teal = "<%= theme.palette.cyan %>"
 mauve = "<%= theme.palette.magenta %>"
 peach = "<%= theme.palette.darkYellow %>"
-
 
 [ui.sidebar.spaces]
 row_gap = 1

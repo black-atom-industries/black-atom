@@ -5,13 +5,13 @@
 accent = "#e49f1a"
 panel_bg = "#c7d1cc"
 sidebar_bg = "#c7d1cc"
-active_row_bg = "#b9c6bf"
+active_row_bg = "#d4dcd8"
 selection_bg = "#e2eae6"
-surface_dim = "#c7d1cc"
-surface0 = "#b9c6bf"
-surface1 = "#b9c6bf"
+surface_dim = "#d4dcd8"
+surface0 = "##b9c6bf"
+surface1 = "##d4dcd8"
 overlay0 = "#55816a"
-overlay1 = "#62937a"
+overlay1 = "#e49f1a"
 text = "#385547"
 subtext0 = "#55816a"
 red = "#dd7e5d"
@@ -21,7 +21,6 @@ blue = "#588dc1"
 teal = "#0fab6a"
 mauve = "#a586c6"
 peach = "#de7b1f"
-
 
 [ui.sidebar.spaces]
 row_gap = 1
