@@ -1,6 +1,6 @@
 [package]
 name = "livery-gui"
-version = "0.5.0"
+version = "0.6.0"
 description = "Paint your cockpit — Black Atom theme management"
 authors = ["Black Atom Industries"]
 license = "MIT"
