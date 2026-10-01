@@ -22,9 +22,6 @@ pre-commit:
           run: cargo fmt --check
 
 pre-push:
-    piped: true
     jobs:
-        - name: workspace-check
-          run: deno task check
-        - name: workspace-test
-          run: deno task test
+        - name: workspace-verify
+          run: deno task verify

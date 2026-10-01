@@ -151,6 +151,10 @@ export async function writeOutput(content: string, templatePath: string): Promis
     // Ensure the output directory exists
     await Deno.mkdir(dirname(outputPath), { recursive: true });
 
+    // Skip unchanged files: livery/core/build.rs reruns on any mtime change here
+    const existing = await Deno.readTextFile(outputPath).catch(() => null);
+    if (existing === content) return;
+
     // Write the processed content
     await Deno.writeTextFile(outputPath, content);
 }

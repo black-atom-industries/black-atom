@@ -155,13 +155,19 @@ mod tests {
 
     /// Regenerates ../src/bindings.ts on every test run, so command/type
     /// changes never ship stale bindings — no GUI launch required.
+    /// Deno type-checks livery/src in parallel with this test, so the file is
+    /// only replaced when it changed, and atomically through a rename.
     #[test]
     fn export_typescript_bindings() {
-        super::specta_builder()
-            .export(
-                specta_typescript::Typescript::default(),
-                "../src/bindings.ts",
-            )
+        let bindings = super::specta_builder()
+            .export_str(specta_typescript::Typescript::default())
             .expect("Failed to export typescript bindings");
+        let path = std::path::Path::new("../src/bindings.ts");
+        if std::fs::read_to_string(path).ok().as_deref() == Some(bindings.as_str()) {
+            return;
+        }
+        let tmp = path.with_extension("ts.tmp");
+        std::fs::write(&tmp, bindings).expect("Failed to write typescript bindings");
+        std::fs::rename(&tmp, path).expect("Failed to replace typescript bindings");
     }
 }

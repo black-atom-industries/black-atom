@@ -84,8 +84,10 @@ async function postGenerate(): Promise<void> {
         parts.push(content.trimEnd());
     }
 
-    // Write output
-    await Deno.writeTextFile(config.paths.output, parts.join("\n\n") + "\n");
+    // Write output, skipping an unchanged file: livery/core/build.rs reruns on its mtime
+    const output = parts.join("\n\n") + "\n";
+    const existing = await Deno.readTextFile(config.paths.output).catch(() => null);
+    if (existing !== output) await Deno.writeTextFile(config.paths.output, output);
     console.log(`Assembly complete: ${config.paths.output}`);
 }
 

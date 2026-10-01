@@ -62,8 +62,8 @@ Types: `feat`, `fix`, `refactor`, `chore`, `docs`, `perf`, `ci`.
 Scope is the package directory name (`core`, `livery`, `nvim`, `ghostty`, and so on). Omit it for
 root-level changes and for changes spanning several packages.
 
-Commits pass read-only formatting and lint checks. Pre-push runs `deno task check`, then
-`deno task test`, using Lefthook's push-file detection.
+Commits pass read-only formatting and lint checks. Pre-push runs `deno task verify`, which
+runs `check` and `test` with their shared steps once and independent steps in parallel.
 
 ## Further context
 

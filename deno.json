@@ -13,13 +13,36 @@
         "dev": "deno run -A scripts/dev.ts",
         "build": "deno run -A scripts/build.ts",
         "install:macos": "deno run -A scripts/install-macos.ts",
-        "check": "deno run -A core/src/tasks/generate.ts && deno check && deno lint && deno fmt --check && (cd livery && deno run -A npm:vite build) && cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
-        "test": "deno run -A core/src/tasks/generate.ts && deno test -P && (cd livery && deno run -A npm:vite build) && cargo test --workspace",
+        "generate": "deno run -A core/src/tasks/generate.ts",
+        "build:ui": {
+            "command": "cd livery && deno run -A npm:vite build",
+            "dependencies": ["generate"]
+        },
+        "check:deno": {
+            "command": "deno check && deno lint && deno fmt --check",
+            "dependencies": ["build:ui"]
+        },
+        "check:rust": {
+            "command": "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
+            "dependencies": ["build:ui"]
+        },
+        "test:deno": {
+            "command": "deno test -P",
+            "dependencies": ["generate"]
+        },
+        "test:rust": {
+            "command": "cargo test --workspace",
+            "dependencies": ["build:ui"]
+        },
+        "check": { "dependencies": ["check:deno", "check:rust"] },
+        "test": { "dependencies": ["test:deno", "test:rust"] },
+        "verify": { "dependencies": ["check", "test"] },
         "install:hooks": "lefthook install"
     },
     "exclude": [
         ".pi/",
         "target/",
+        "livery/vite.config.ts.timestamp-*",
         "adapters/nvim/syntax_examples/",
         "livery/docs/design-system/reference/"
     ],

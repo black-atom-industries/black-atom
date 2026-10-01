@@ -54,8 +54,9 @@ Pre-commit checks formatting and lint on staged Deno-supported files, respecting
 plus workspace Rust formatting when Rust files are staged. Checks are read-only;
 use `deno fmt` and `cargo fmt` to format explicitly.
 
-Pre-push runs `deno task check`, then `deno task test`. Lefthook skips these jobs when its
-push-file detection returns no files. These full tasks generate files and build the frontend.
+Pre-push runs `deno task verify`, which runs `check` and `test` with their shared steps once
+and independent steps in parallel. Lefthook skips this job when its
+push-file detection returns no files. These tasks generate files and build the frontend.
 Review generated changes. Hooks check the current checkout, not snapshots of other refs being pushed. Lefthook temporarily hides and restores unstaged portions of partially
 staged files during commit checks. This is not a full checkout snapshot: workspace Rust formatting
 also sees other unstaged files. CI runs the full check and test tasks independently.
