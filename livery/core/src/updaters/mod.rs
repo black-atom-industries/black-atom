@@ -212,6 +212,7 @@ pub fn dispatch_update(
         AppName::Tmux => tmux::update(app_str, app_config, ctx),
         AppName::Delta => patch_text_updater(app_str, app_config, ctx),
         AppName::HelmTmux => patch_text_updater(app_str, app_config, ctx),
+        AppName::Tuicr => patch_text_updater(app_str, app_config, ctx),
         AppName::Lazygit => lazygit::update(app_str, app_config, ctx),
         AppName::Herdr => herdr::update(app_str, app_config, ctx),
         AppName::Zed => zed::update(app_str, app_config, ctx),

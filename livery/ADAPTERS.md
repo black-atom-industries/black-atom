@@ -9,11 +9,11 @@ themes directory** (`$XDG_DATA_HOME/black-atom/themes/<adapter>/`, falling back 
 `~/.local/share`). What happens next depends on one question — **who consumes those files** — and
 every adapter falls into exactly one class:
 
-| Class        | Adapters                           | Definition                                                                                                                                                                |
-| ------------ | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **External** | helm-tmux, delta                   | The app's theme files are provided outside of livery — by a compiled binary or the user — so livery only performs switching.                                              |
-| **Linked**   | ghostty, zed, tmux, obsidian, nvim | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer setup may add once. |
-| **Merged**   | lazygit, herdr                     | The app cannot read external theme files, so on every switch livery reads the managed theme and writes its values directly into the app's config.                         |
+| Class        | Adapters                                  | Definition                                                                                                                                                                |
+| ------------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **External** | helm-tmux, delta                          | The app's theme files are provided outside of livery — by a compiled binary or the user — so livery only performs switching.                                              |
+| **Linked**   | ghostty, zed, tmux, obsidian, nvim, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer setup may add once. |
+| **Merged**   | lazygit, herdr                            | The app cannot read external theme files, so on every switch livery reads the managed theme and writes its values directly into the app's config.                         |
 
 Two per-adapter properties are deliberately **not** classes:
 
@@ -52,6 +52,15 @@ verify — always ending with verification, so the row reflects the true state.
   once; livery rewrites it per switch.
 - **Reload:** `tmux source-file`.
 - **Precondition:** the `source-file` line must exist (any theme path matching the pattern).
+
+### tuicr — Linked
+
+- **Files:** flat symlinks in `~/.config/tuicr/themes/` → managed dir. tuicr looks local themes up
+  by bare name in its own themes dir.
+- **Switch pointer:** `theme = "<themeKey>"` in `~/.config/tuicr/config.toml`. It takes precedence
+  over `theme_dark`, `theme_light`, and `appearance`.
+- **Reload:** none — tuicr reads its theme on start.
+- **Precondition:** the `theme = "..."` line must exist (any value, bundled names included).
 
 ### obsidian — Linked
 

@@ -10,6 +10,7 @@ import { ZedSettings } from "./zed.tsx";
 import { LazygitSettings } from "./lazygit.tsx";
 import { HerdrSettings } from "./herdr.tsx";
 import { ObsidianSettings } from "./obsidian.tsx";
+import { TuicrSettings } from "./tuicr.tsx";
 
 export type { AdapterField, AdapterPageProps } from "./types.ts";
 
@@ -25,4 +26,5 @@ export const adapterSettingsPages: Record<AppName, (props: AdapterPageProps) => 
     lazygit: LazygitSettings,
     herdr: HerdrSettings,
     obsidian: ObsidianSettings,
+    tuicr: TuicrSettings,
 };

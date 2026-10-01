@@ -49,6 +49,7 @@ const SETTINGS_ADAPTERS_FIXTURE: Config = {
             config_path: "~/.config/herdr/config.toml",
             themes_path: "~/.local/share/black-atom/themes/herdr",
         },
+        tuicr: { enabled: true, config_path: "~/.config/tuicr/config.toml" },
         "helm-tmux": { enabled: true, config_path: "~/.config/black-atom/helm-tmux/config.yml" },
     },
 };
@@ -63,6 +64,7 @@ const SETTINGS_EDITABLE_FIELDS: Record<AppName, AdapterEditableField[]> = {
     lazygit: ["config_path", "themes_path"],
     obsidian: [],
     herdr: ["config_path", "themes_path"],
+    tuicr: ["config_path", "match_pattern", "replace_template"],
 };
 
 const APPLY_RAIL_FIXTURES: Record<string, UpdateResult[]> = {

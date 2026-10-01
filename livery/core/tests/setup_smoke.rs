@@ -125,7 +125,7 @@ fn setup_chain_end_to_end() {
     let managed_root = paths::themes_root();
     let report = unpack::ensure_unpacked().unwrap();
     assert!(report.unpacked, "first run must write the embedded themes");
-    assert_eq!(report.adapters, 10);
+    assert_eq!(report.adapters, 11);
     assert!(report.files > 200, "unpacked only {} files", report.files);
 
     for (adapter, file) in [
@@ -141,6 +141,7 @@ fn setup_chain_end_to_end() {
         ("waybar", "default/black-atom-default-dark.css"),
         ("wezterm", "default/black-atom-default-dark.toml"),
         ("herdr", "default/black-atom-default-dark.toml"),
+        ("tuicr", "default/black-atom-default-dark.toml"),
         ("lazygit", "default/black-atom-default-dark.yml"),
     ] {
         let path = managed_root.join(adapter).join(file);
@@ -224,6 +225,7 @@ fn setup_chain_end_to_end() {
         AppName::Tmux,
         AppName::Obsidian,
         AppName::Nvim,
+        AppName::Tuicr,
     ] {
         let result = block_on(themes::link_app_themes(app));
         assert!(
@@ -239,6 +241,7 @@ fn setup_chain_end_to_end() {
         home.join(".config/ghostty/themes/black-atom-default-dark.conf"),
         home.join(".config/tmux/themes/black-atom-jpn-koyo-dark.conf"),
         home.join(".config/zed/themes/black-atom-jpn-koyo-dark.json"),
+        home.join(".config/tuicr/themes/black-atom-jpn-koyo-dark.toml"),
         home.join("config_folder/.obsidian/themes/Black Atom/theme.css"),
         home.join("config_folder/.obsidian/themes/Black Atom/manifest.json"),
     ] {
@@ -264,7 +267,7 @@ fn setup_chain_end_to_end() {
     }
 
     // 5. Status: every app carries its class and its editable fields, and
-    // the five Linked adapters now report their placement as wired.
+    // the six Linked adapters now report their placement as wired.
     let status = block_on(themes::get_app_status()).unwrap();
     assert_eq!(status.len(), AppName::all().len());
     for entry in &status {

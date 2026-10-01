@@ -8,6 +8,7 @@ fn main() {
         "obsidian/theme.css",
         "obsidian/manifest.json",
         "tmux/themes",
+        "tuicr/themes",
         "waybar/themes",
         "wezterm/themes",
         "zed/themes",

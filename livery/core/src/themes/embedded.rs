@@ -18,13 +18,14 @@ pub enum Adapter {
     Nvim,
     Obsidian,
     Tmux,
+    Tuicr,
     Waybar,
     Wezterm,
     Zed,
 }
 
 impl Adapter {
-    pub const ALL: [Adapter; 10] = [
+    pub const ALL: [Adapter; 11] = [
         Adapter::Ghostty,
         Adapter::Herdr,
         Adapter::Lazygit,
@@ -32,6 +33,7 @@ impl Adapter {
         Adapter::Nvim,
         Adapter::Obsidian,
         Adapter::Tmux,
+        Adapter::Tuicr,
         Adapter::Waybar,
         Adapter::Wezterm,
         Adapter::Zed,
@@ -48,6 +50,7 @@ impl Adapter {
             Adapter::Nvim => "nvim",
             Adapter::Obsidian => "obsidian",
             Adapter::Tmux => "tmux",
+            Adapter::Tuicr => "tuicr",
             Adapter::Waybar => "waybar",
             Adapter::Wezterm => "wezterm",
             Adapter::Zed => "zed",
@@ -67,6 +70,7 @@ impl crate::config::types::AppName {
             AppName::Nvim => Some(Adapter::Nvim),
             AppName::Obsidian => Some(Adapter::Obsidian),
             AppName::Tmux => Some(Adapter::Tmux),
+            AppName::Tuicr => Some(Adapter::Tuicr),
             AppName::Zed => Some(Adapter::Zed),
             AppName::Delta | AppName::HelmTmux => None,
         }
@@ -79,6 +83,7 @@ static LAZYGIT: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/lazygit/t
 static NIRI: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/niri/themes");
 static OBSIDIAN: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/obsidian/themes");
 static TMUX: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/tmux/themes");
+static TUICR: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/tuicr/themes");
 static WAYBAR: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/waybar/themes");
 static WEZTERM: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/wezterm/themes");
 static ZED: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/zed/themes");
@@ -104,6 +109,7 @@ pub fn embedded(adapter: Adapter) -> Vec<(&'static str, &'static Dir<'static>)> 
         Adapter::Niri => vec![("", &NIRI)],
         Adapter::Obsidian => vec![("", &OBSIDIAN)],
         Adapter::Tmux => vec![("", &TMUX)],
+        Adapter::Tuicr => vec![("", &TUICR)],
         Adapter::Waybar => vec![("", &WAYBAR)],
         Adapter::Wezterm => vec![("", &WEZTERM)],
         Adapter::Zed => vec![("", &ZED)],

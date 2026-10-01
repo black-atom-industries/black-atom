@@ -16,6 +16,7 @@ pub enum AppName {
     Lazygit,
     Herdr,
     Obsidian,
+    Tuicr,
     #[serde(rename = "helm-tmux")]
     HelmTmux,
 }
@@ -32,6 +33,7 @@ impl AppName {
             AppName::Lazygit,
             AppName::Herdr,
             AppName::Obsidian,
+            AppName::Tuicr,
             AppName::HelmTmux,
         ]
     }
@@ -46,6 +48,7 @@ impl AppName {
             AppName::Lazygit => "lazygit",
             AppName::Herdr => "herdr",
             AppName::Obsidian => "obsidian",
+            AppName::Tuicr => "tuicr",
             AppName::HelmTmux => "helm-tmux",
         }
     }

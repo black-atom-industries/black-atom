@@ -127,6 +127,19 @@ impl Default for Config {
             },
         );
         apps.insert(
+            AppName::Tuicr,
+            AppConfig {
+                enabled: false,
+                config_folders: None,
+                config_path: Some("~/.config/tuicr/config.toml".to_string()),
+                themes_path: None,
+                match_pattern: Some(r"^theme\s*=\s*.+$".to_string()),
+                replace_template: Some(r#"theme = "{themeKey}""#.to_string()),
+                settings_path: None,
+                settings: None,
+            },
+        );
+        apps.insert(
             AppName::HelmTmux,
             AppConfig {
                 enabled: false,
