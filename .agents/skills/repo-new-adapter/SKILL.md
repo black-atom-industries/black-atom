@@ -26,8 +26,8 @@ from a template. If the target format needs a value no token covers, ask before 
 
 Create `adapters/<name>/`:
 
-- `black-atom-adapter.json`: copy `adapters/ghostty/black-atom-adapter.json` verbatim (all seven
-  collections: `default`, `facility`, `terra`, `jpn`, `clay`, `minium`, `mono`, with 32 theme keys).
+- `black-atom-adapter.json`: copy `adapters/ghostty/black-atom-adapter.json` verbatim (every
+  collection with all its theme keys).
   Every collection points at one shared template, `./themes/collection.template.conf`; change the
   extension. When collections need different mappings, point each collection's `template` at
   `./themes/<collection>/collection.template.<ext>` instead (see zed). Keep each collection's
@@ -43,7 +43,7 @@ Keep the adapter outside the Deno workspace. Core discovers it from its
 ## 4. Generate and verify
 
 ```bash
-deno run -A core/src/tasks/generate.ts
+deno task generate
 grep -r "undefined" adapters/<name>/themes/ || echo clean
 ```
 
@@ -140,6 +140,5 @@ contract section (files, switch pointer, reload, precondition).
 deno task verify
 ```
 
-Commit per the root `AGENTS.md` commit conventions: `feat(<name>): add <name> adapter` for the
-adapter, and a separate `feat(livery): apply <name> themes` for the livery wiring. Leave the diff
-unstaged for review.
+Commit through `repo-commit`: `feat(<name>): add <name> adapter` for the adapter, and a separate
+`feat(livery): apply <name> themes` for the livery wiring.

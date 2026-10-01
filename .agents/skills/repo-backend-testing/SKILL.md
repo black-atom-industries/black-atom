@@ -1,6 +1,6 @@
 ---
 name: repo-backend-testing
-description: Fixture-based testing patterns for Rust file operations (file_ops)
+description: Fixture-based tests for livery's Rust file operations. Load when writing or changing a test for an updater or anything under `livery/core/src/updaters/file_ops/`.
 user-invocable: false
 ---
 

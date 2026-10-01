@@ -50,13 +50,13 @@ feedback tokens. The monitor app reads primaries directly.
    reference `theme.primaries.*` directly.
 5. Update `GLOSSARY.md` if the renamed token is named in a table or the example
    dialogue.
-6. From the repo root: `deno run -A core/src/tasks/generate.ts`, then `deno task check`, then `deno task test`.
+6. From the repo root: `deno task generate`, then `deno task check`, then `deno task test`.
 7. Review the generated diff: `git diff --stat adapters/`. It can be empty even for a correct
    rename — renaming `theme.palette.black` to something else changes the template expression, not
    the rendered value, since output keys (e.g. Lua's `black = "..."`) are independent of the source
    token name. An empty diff there is normal for most palette and UI renames, not a sign the rename
    missed something. Confirm by checking the template diff instead
    (`git diff adapters/**/collection.template.*`).
-8. One commit spanning core, adapters, and the monitor:
-   `refactor(core): rename <old> to <new> black-atom-industries/livery#68`. Omit `(core)` if the
-   change reads as spanning the whole repo rather than centered on core.
+8. One commit through `repo-commit`, spanning core, adapters, and the monitor:
+   `refactor(core): rename <old> to <new>`. Omit `(core)` if the change reads as spanning the
+   whole repo rather than centered on core.

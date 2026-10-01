@@ -1,8 +1,8 @@
 ---
 name: repo-release
 description:
-  "Prepare and ship a Black Atom release. Use this when cutting a version, preparing release notes, or merging the
-  release-please PR. Ask for approval before merging the release PR."
+    "Prepare and ship a Black Atom release. Use this when cutting a version, preparing release notes, or merging the
+    release-please PR. Ask for approval before merging the release PR."
 argument-hint: "[version, for example 0.7.0; defaults to the release PR's version]"
 allowed-tools: Bash Read Edit
 ---

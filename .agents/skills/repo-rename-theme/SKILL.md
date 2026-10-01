@@ -7,7 +7,7 @@ user-invocable: false
 # Rename Theme
 
 Renames `black-atom-<collection>-<old>` to `black-atom-<collection>-<new>` everywhere it appears,
-in one commit. Example below uses collection `minium`, old name `polymer`, new name `ochre`.
+in one commit.
 
 1. Confirm the old key exists and the new key is free:
    `grep -rn "black-atom-<collection>-<new>" core adapters` should return nothing.
@@ -18,10 +18,8 @@ in one commit. Example below uses collection `minium`, old name `polymer`, new n
    suffix the theme has, e.g. `-dark`, `-light`).
 
 3. Update `core/src/themes/<collection>/mod.ts`: change the imported filename and identifier,
-   then update the key and `meta.name` in `defineCollection()`'s `themes` map. Each entry pairs
-   `meta` with `colors` from a `defineThemeColors()` export. The helper derives the label and
-   collection metadata; the catalog's `collections` tuple drives key types, and `themeCatalog`
-   combines the collections' `.themes` maps.
+   then update the key and `meta.name` in `defineCollection()`'s `themes` map. Step 3 of
+   `repo-new-theme` explains how that map feeds the catalog.
 
 4. If the renamed key is `DEFAULT_THEME_KEY` (in `core/src/themes/catalog.ts`), also update that
    constant and `livery/src/lib/themes_test.ts`. Otherwise skip this
@@ -29,9 +27,7 @@ in one commit. Example below uses collection `minium`, old name `polymer`, new n
 
 5. Update every adapter config in one pass:
    `grep -rl "black-atom-<collection>-<old>" adapters/*/black-atom-adapter.json` then edit each
-   match, replacing the old key with the new one in the `themes` array. All eleven adapters
-   (ghostty, herdr, lazygit, niri, nvim, obsidian, tmux, tuicr, waybar, wezterm, zed) share one
-   `black-atom-adapter.json` schema; only the ones listing this theme need the edit.
+   match, replacing the old key with the new one in the `themes` array.
 
 6. Search the rest of livery for a hardcoded reference to this specific key (most renames find
    nothing here, since livery normally reads keys through `themeCatalog`):
@@ -42,7 +38,7 @@ in one commit. Example below uses collection `minium`, old name `polymer`, new n
    generated output, e.g. `adapters/*/themes/<collection>/black-atom-<collection>-<old>-dark.<ext>`
    and nvim's `adapters/nvim/colors/black-atom-<collection>-<old>-dark.lua`.
 
-8. Run `deno run -A core/src/tasks/generate.ts` from the repo root to regenerate every adapter's output for the new
+8. Run `deno task generate` from the repo root to regenerate every adapter's output for the new
    key. Confirm the new generated files exist and no `black-atom-<collection>-<old>` file remains
    under `adapters/`.
 
@@ -53,5 +49,5 @@ in one commit. Example below uses collection `minium`, old name `polymer`, new n
 10. Run `deno task verify` from the repo root (type check, lint, format, clippy, Deno and Rust
     tests). It must be clean.
 
-11. Commit everything as one commit: `refactor(<collection>): rename <old> theme to <new>
-    black-atom-industries/livery#68`.
+11. Commit everything as one commit through `repo-commit`:
+    `refactor(<collection>): rename <old> theme to <new>`.

@@ -1,9 +1,9 @@
 ---
 name: repo-changelog
 description:
-  "Write CHANGELOG.md for Black Atom: the mechanical entry every implementation adds, and the curated release section before
-  a release ships. Use it for every change; only formatting-only, generated-only, changelog-only, or merge/revert changes
-  that leave an existing entry accurate can skip the entry."
+    "Write CHANGELOG.md for Black Atom: the mechanical entry every implementation adds, and the curated release section before
+    a release ships. Use it for every change; only formatting-only, generated-only, changelog-only, or merge/revert changes
+    that leave an existing entry accurate can skip the entry."
 argument-hint: "[entry | release <version>]"
 allowed-tools: Read Edit Bash
 ---

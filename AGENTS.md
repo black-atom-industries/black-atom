@@ -43,7 +43,7 @@ one output file per theme next to the template. Generated files are never edited
 
 ## Conventions
 
-Language conventions come from the `dev-style-*` skills — TypeScript, React, CSS, state, TanStack.
+Language conventions come from the `nbr-conventions` skill — TypeScript, React, CSS, state, TanStack.
 Formatting comes from `deno.json` and `cargo fmt`; never restate either here.
 
 Rust file operations get fixture-based tests, see the `repo-backend-testing` skill.

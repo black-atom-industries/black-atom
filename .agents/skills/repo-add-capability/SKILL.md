@@ -86,4 +86,4 @@ Clean before committing.
 
 ## 8. Commit
 
-Commit format and scope rules are in the root `AGENTS.md`.
+Commit through `repo-commit`.

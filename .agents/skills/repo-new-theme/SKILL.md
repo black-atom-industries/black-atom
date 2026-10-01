@@ -5,8 +5,8 @@ description: Add a theme to an existing collection. Load when asked to create, d
 
 # New Theme
 
-1. Design the theme with the user before writing code: which collection (`default`, `facility`,
-   `terra`, `jpn`, `clay`, `minium`, `mono`), what name, dark and/or light appearance, and what makes
+1. Design the theme with the user before writing code: which collection (the `collections` tuple in
+   `core/src/themes/catalog.ts` lists them), what name, dark and/or light appearance, and what makes
    it fit the collection's concept. Read one or two existing files in
    `core/src/themes/<collection>/` for the collection's palette rules first, for example
    `core/src/themes/terra/black-atom-terra-winter-dark.ts` or
@@ -31,11 +31,10 @@ description: Add a theme to an existing collection. Load when asked to create, d
 
 5. Add the theme key to every adapter that declares this collection: open each
    `adapters/<name>/black-atom-adapter.json` and append the key to that collection's `themes`
-   array, keeping existing order. All eleven adapter dirs (`ghostty`, `herdr`, `lazygit`, `niri`,
-   `nvim`, `obsidian`, `tmux`, `tuicr`, `waybar`, `wezterm`, `zed`) declare the seven collections and
-   their 32 current themes.
+   array, keeping existing order. `grep -l '"<collection>"' adapters/*/black-atom-adapter.json` lists
+   them.
 
-6. Run `deno run -A core/src/tasks/generate.ts` from the repo root. It regenerates every adapter that has a
+6. Run `deno task generate` from the repo root. It regenerates every adapter that has a
    `black-atom-adapter.json` in the current tree.
 
 7. Verify one generated output file per adapter that declares the collection. Outputs live at
@@ -45,5 +44,5 @@ description: Add a theme to an existing collection. Load when asked to create, d
 
 8. Run `deno task check` and `deno task test` from the repo root, both must be green.
 
-9. Commit with `feat: add <collection> <name> theme black-atom-industries/livery#68` (no scope,
-   the change spans `core` and multiple adapters).
+9. Commit through `repo-commit` as `feat: add <collection> <name> theme` (no scope, the change
+   spans `core` and several adapters).

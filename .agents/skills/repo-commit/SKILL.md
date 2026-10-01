@@ -1,9 +1,9 @@
 ---
 name: repo-commit
 description:
-  "Prepare a commit in the Black Atom repository. Use this when the user asks to commit, stage, ship, or finish a change. Add
-  the changelog entry, stage selectively, run the CI-parity checks, show the exact Conventional Commit, and wait for explicit
-  approval."
+    "Prepare a commit in the Black Atom repository. Use this when the user asks to commit, stage, ship, or finish a change. Add
+    the changelog entry, stage selectively, run the CI-parity checks, show the exact Conventional Commit, and wait for explicit
+    approval."
 argument-hint: "[message-hint or scope-hint, optional]"
 allowed-tools: Bash Read
 ---
