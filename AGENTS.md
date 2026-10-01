@@ -15,10 +15,6 @@ second one.
 - `livery/` — Tauri v2 desktop app; frontend in `livery/src/`, domain logic in `livery/core/`
   (crate `livery_core`, no Tauri dependency), Tauri shell in `livery/src-tauri/`, terminal client
   in `livery/cli/` (binary `livery`)
-- `ui/`, `website/` — placeholders
-
-Deno workspace and Cargo workspace both at the root. Tasks live in `deno.json`; `cargo test`,
-`cargo fmt`, and `cargo clippy` run from the root. `deno task build` produces the release app and CLI; package-local `livery` build produces the app.
 
 ## Sandbox
 
@@ -46,8 +42,6 @@ one output file per theme next to the template. Generated files are never edited
 Language conventions come from the `nbr-conventions` skill — TypeScript, React, CSS, state, TanStack.
 Formatting comes from `deno.json` and `cargo fmt`; never restate either here.
 
-Rust file operations get fixture-based tests, see the `repo-backend-testing` skill.
-
 ## Commits
 
 ```
@@ -57,14 +51,7 @@ Rust file operations get fixture-based tests, see the `repo-backend-testing` ski
 The trailing reference is the open migration epic. Once it closes, commits reference their own
 issue: `<type>(<scope>): <description> #<issue>`.
 
-Types: `feat`, `fix`, `refactor`, `chore`, `docs`, `perf`, `ci`.
-
-Scope is the package directory name (`core`, `livery`, `nvim`, `ghostty`, and so on). Omit it for
-root-level changes and for changes spanning several packages.
-
-Commit through the `repo-commit` skill. Commits pass read-only formatting and lint checks.
-Pre-push runs `deno task verify`, which runs `check` and `test` with their shared steps once and
-independent steps in parallel.
+Commit through the `repo-commit` skill; it owns types, scopes, and the checks.
 
 ## Further context
 
@@ -73,19 +60,5 @@ Livery's product and config decisions live in `livery/DESIGN.md` and `livery/ADA
 
 ## Agent setup
 
-Project skills live in `.agents/skills/`; `.claude/skills` links there. Each is a task worth
-following exactly:
-
-- `repo-commit` — commit a change, with its changelog entry and the CI-parity run
-- `repo-changelog` — write the changelog entry for a change, or curate a release section
-- `repo-release` — cut a release
-- `repo-new-theme` — add a theme to an existing collection
-- `repo-new-adapter` — add a platform adapter
-- `repo-rename-theme` — rename a theme across core, adapters, and generated files
-- `repo-rename-token` — rename a color token across core and every template
-- `repo-add-capability` — add a livery capability end to end
-- `repo-backend-testing` — fixture-based tests for livery's Rust file operations
-
-`.claude/hooks/` runs `no-fs-plugin` and `check-bindings` after a write.
-
-CLI installation is explicit through the root `deno task install:macos` task.
+Project skills live in `.agents/skills/`, each a task worth following exactly; `.claude/skills`
+links there. `.claude/hooks/` runs `no-fs-plugin` and `check-bindings` after a write.
