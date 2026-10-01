@@ -11,20 +11,20 @@
 /* Foreground colors */
 @define-color ba-fg-default #d5f4e3;
 @define-color ba-fg-subtle #91bcad;
-@define-color ba-fg-accent #e2f776;
+@define-color ba-fg-accent #e7fc7c;
 @define-color ba-fg-disabled #75a490;
 @define-color ba-fg-contrast #0c1010;
 
 /* Feedback colors */
-@define-color ba-fg-negative #f08cb4;
-@define-color ba-fg-positive #7fcd81;
-@define-color ba-fg-warn #e2f776;
+@define-color ba-fg-negative #ffa9d2;
+@define-color ba-fg-positive #96e497;
+@define-color ba-fg-warn #e7fc7c;
 @define-color ba-fg-info #c3eed9;
 
 /* Palette colors */
-@define-color ba-red #f08cb4;
-@define-color ba-green #7fcd81;
-@define-color ba-yellow #e2f776;
+@define-color ba-red #ffa9d2;
+@define-color ba-green #96e497;
+@define-color ba-yellow #e7fc7c;
 @define-color ba-blue #c3eed9;
-@define-color ba-magenta #a5a9e5;
-@define-color ba-cyan #81d6a5;
+@define-color ba-magenta #c3c8ff;
+@define-color ba-cyan #8ee4b2;
