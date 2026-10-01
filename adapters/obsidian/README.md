@@ -1,19 +1,11 @@
 # Black Atom for Obsidian
 
 A theme for [Obsidian](https://obsidian.md/) by Black Atom Industries. Black Atom ships as one
-Obsidian theme; 32 themes across seven collections switch as variants within it.
+Obsidian theme, and every Black Atom theme switches as a variant within it.
 
 ## Available Themes
 
-| Collection   | Variants                                               |
-| ------------ | ------------------------------------------------------ |
-| **Default**  | dark, dimmed-dark, light, dimmed-light                 |
-| **Facility** | dark, dimmed-dark, light, dimmed-light                 |
-| **Terra**    | spring, summer, fall, winter (dark/light)              |
-| **JPN**      | koyo, sanshoku (dark/light), murasaki-dark, tsuki-dark |
-| **Clay**     | dark, light                                            |
-| **Minium**   | polymer, viridian (dark/light)                         |
-| **Mono**     | dark, dimmed-dark, light, dimmed-light                 |
+Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.ts) lists the collections and their themes.
 
 ## Installation
 

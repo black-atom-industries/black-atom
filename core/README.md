@@ -18,17 +18,7 @@ For details on the color token system, see [Color Token System](./docs/color_tok
 
 ## Available Theme Collections
 
-32 themes across seven collections:
-
-| Collection   | Themes                                                 | Description                  |
-| ------------ | ------------------------------------------------------ | ---------------------------- |
-| **Default**  | dark, dimmed-dark, light, dimmed-light                 | Core default themes          |
-| **Facility** | dark, dimmed-dark, light, dimmed-light                 | Facility-inspired themes     |
-| **Terra**    | spring, summer, fall, winter (dark/light)              | Earth season-inspired themes |
-| **JPN**      | koyo, sanshoku (dark/light), murasaki-dark, tsuki-dark | Japanese-inspired themes     |
-| **Clay**     | dark, light                                            | Clay-inspired themes         |
-| **Minium**   | polymer, viridian (dark/light)                         | Minimal accent themes        |
-| **Mono**     | dark, dimmed-dark, light, dimmed-light                 | Monochrome themes            |
+Every Black Atom theme ships here. [`catalog.ts`](src/themes/catalog.ts) lists the collections and their themes.
 
 ## Usage
 

@@ -18,60 +18,7 @@ source-file /path/to/black-atom/adapters/tmux/themes/clay/black-atom-clay-dark.c
 
 ## Available Themes
 
-32 themes across seven collections:
-
-### Default Collection
-
-- `black-atom-default-dark` - Dark
-- `black-atom-default-dimmed-dark` - Dimmed Dark
-- `black-atom-default-light` - Light
-- `black-atom-default-dimmed-light` - Dimmed Light
-
-### Facility Collection
-
-- `black-atom-facility-dark` - Dark
-- `black-atom-facility-dimmed-dark` - Dimmed Dark
-- `black-atom-facility-light` - Light
-- `black-atom-facility-dimmed-light` - Dimmed Light
-
-### Terra Collection
-
-- `black-atom-terra-spring-dark` - Spring Dark
-- `black-atom-terra-spring-light` - Spring Light
-- `black-atom-terra-summer-dark` - Summer Dark
-- `black-atom-terra-summer-light` - Summer Light
-- `black-atom-terra-fall-dark` - Fall Dark
-- `black-atom-terra-fall-light` - Fall Light
-- `black-atom-terra-winter-dark` - Winter Dark
-- `black-atom-terra-winter-light` - Winter Light
-
-### JPN Collection
-
-- `black-atom-jpn-koyo-dark` - Koyo Dark
-- `black-atom-jpn-koyo-light` - Koyo Light
-- `black-atom-jpn-murasaki-dark` - Murasaki Dark
-- `black-atom-jpn-tsuki-dark` - Tsuki Dark
-- `black-atom-jpn-sanshoku-dark` - Sanshoku Dark
-- `black-atom-jpn-sanshoku-light` - Sanshoku Light
-
-### Clay Collection
-
-- `black-atom-clay-dark` - Dark
-- `black-atom-clay-light` - Light
-
-### Minium Collection
-
-- `black-atom-minium-polymer-dark` - Polymer Dark
-- `black-atom-minium-polymer-light` - Polymer Light
-- `black-atom-minium-viridian-dark` - Viridian Dark
-- `black-atom-minium-viridian-light` - Viridian Light
-
-### Mono Collection
-
-- `black-atom-mono-dark` - Dark
-- `black-atom-mono-light` - Light
-- `black-atom-mono-dimmed-dark` - Dimmed Dark
-- `black-atom-mono-dimmed-light` - Dimmed Light
+Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.ts) lists the collections and their themes.
 
 ## What Gets Themed
 

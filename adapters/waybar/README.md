@@ -77,17 +77,7 @@ window#waybar {
 
 ## Available Themes
 
-32 themes across seven collections:
-
-| Collection   | Description                  | Themes   |
-| ------------ | ---------------------------- | -------- |
-| **Default**  | Core default themes          | 4 themes |
-| **Facility** | Facility-inspired themes     | 4 themes |
-| **Terra**    | Earth season-inspired themes | 8 themes |
-| **JPN**      | Japanese-inspired themes     | 6 themes |
-| **Clay**     | Clay-inspired themes         | 2 themes |
-| **Minium**   | Minimal accent themes        | 4 themes |
-| **Mono**     | Monochrome themes            | 4 themes |
+Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.ts) lists the collections and their themes.
 
 ## Development
 

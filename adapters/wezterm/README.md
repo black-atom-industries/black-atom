@@ -10,17 +10,7 @@ templates, keeping colors identical everywhere while leaving room for platform-s
 
 ## Available Themes
 
-Black Atom includes 32 themes across seven collections, with dark and light appearances:
-
-| Collection   | Description                  |
-| ------------ | ---------------------------- |
-| **Default**  | Core default themes          |
-| **Facility** | Facility-inspired themes     |
-| **Terra**    | Earth season-inspired themes |
-| **JPN**      | Japanese-inspired themes     |
-| **Clay**     | Clay-inspired themes         |
-| **Minium**   | Minimal accent themes        |
-| **Mono**     | Monochrome themes            |
+Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.ts) lists the collections and their themes.
 
 ## Installation
 
