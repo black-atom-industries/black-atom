@@ -6,13 +6,13 @@ function mix(from, to, amount) {
   return "#" + a.map((v, i) => Math.round(v + (b[i] - v) * amount).toString(16).padStart(2, "0")).join("");
 }
 
-const accentSidebar = theme.meta.collection.key === "facility" && theme.meta.appearance === "dark";
-const ink = theme.ui.bg.default;
+const accentSidebar = theme.meta.collection.key === "facility";
+const ink = theme.meta.appearance === "dark" ? theme.ui.bg.default : theme.ui.fg.default;
 const inkSubtle = mix(ink, theme.ui.fg.accent, 0.3);
 const sidebarBg = accentSidebar ? theme.ui.fg.accent : theme.ui.bg.panel;
 const activeRowBg = accentSidebar ? mix(theme.ui.fg.accent, ink, 0.12) : theme.ui.bg.default;
 const selectionBg = accentSidebar ? mix(theme.ui.fg.accent, ink, 0.2) : theme.ui.bg.selection;
-const muted = accentSidebar ? mix(theme.ui.fg.subtle, ink, 0.4) : theme.ui.fg.subtle;
+const muted = accentSidebar ? mix(theme.ui.fg.subtle, ink, theme.meta.appearance === "dark" ? 0.4 : 0.7) : theme.ui.fg.subtle;
 _%>
 # BEGIN BLACK ATOM LIVERY THEME
 # <%= theme.meta.label %>
