@@ -4,18 +4,18 @@ name = "Black Atom — Facility ∷ Dimmed Dark"
 
 [colors]
 foreground = "#c1efd5"
-background = "#21302d"
-cursor_bg = "#b7db6e"
-cursor_border = "#b7db6e"
-cursor_fg = "#21302d"
-selection_bg = "#354e46"
+background = "#1c2020"
+cursor_bg = "#dbee7a"
+cursor_border = "#dbee7a"
+cursor_fg = "#1c2020"
+selection_bg = "#333939"
 selection_fg = "#c1efd5"
-split = "#b7db6e"
+split = "#dbee7a"
 compose_cursor = "#f08cb4"
 scrollbar_thumb = "#91bcad"
 
 ansi = [
-  "#354e46", # black
+  "#333939", # black
   "#eb7aa8", # dark_red
   "#5dba5d", # dark_green
   "#e9b565", # dark_yellow
@@ -29,7 +29,7 @@ brights = [
   "#51796d", # gray
   "#f08cb4", # red
   "#80c980", # green
-  "#b7db6e", # yellow
+  "#dbee7a", # yellow
   "#abe7ca", # blue
   "#b6bee0", # magenta
   "#75d69e", # cyan
@@ -37,27 +37,27 @@ brights = [
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#192323"
-background = "#21302d"
+inactive_tab_edge = "#131717"
+background = "#1c2020"
 
 [colors.tab_bar.active_tab]
-fg_color = "#21302d"
-bg_color = "#b7db6e"
+fg_color = "#1c2020"
+bg_color = "#dbee7a"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#21302d"
+fg_color = "#1c2020"
 bg_color = "#51796d"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#21302d"
-bg_color = "#293c36"
+fg_color = "#1c2020"
+bg_color = "#242a2a"
 
 [colors.tab_bar.new_tab]
-fg_color = "#21302d"
+fg_color = "#1c2020"
 bg_color = "#80c980"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#21302d"
-bg_color = "#293c36"
+fg_color = "#1c2020"
+bg_color = "#242a2a"
 intensity = "Bold"
