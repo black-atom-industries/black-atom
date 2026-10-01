@@ -135,7 +135,8 @@ without a theme) opening a theme picker.
 ## Releases
 
 Releases run through release-please on conventional commits. The repo carries one version for
-core, the adapters and livery together, tagged `v*`. Nothing is published yet.
+core, the adapters and livery together, tagged `v*`. `CHANGELOG.md` holds the release notes, and
+[`docs/releases.md`](docs/releases.md) is the release process.
 
 ## License
 

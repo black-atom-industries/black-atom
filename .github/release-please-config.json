@@ -5,13 +5,15 @@
             "release-type": "simple",
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": false,
+            "include-component-in-tag": false,
+            "skip-changelog": true,
+            "initial-version": "0.9.0",
             "changelog-sections": [
                 { "type": "feat", "section": "Features" },
                 { "type": "refactor", "section": "Refactors" },
                 { "type": "fix", "section": "Bug Fixes" },
                 { "type": "docs", "section": "Documentation" },
-                { "type": "perf", "section": "Performance" },
-                { "type": "ci", "section": "CI" }
+                { "type": "perf", "section": "Performance" }
             ],
             "extra-files": [
                 { "type": "json", "path": "core/deno.json", "jsonpath": "$.version" },

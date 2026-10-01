@@ -46,7 +46,7 @@ one output file per theme next to the template. Generated files are never edited
 Language conventions come from the `dev-style-*` skills — TypeScript, React, CSS, state, TanStack.
 Formatting comes from `deno.json` and `cargo fmt`; never restate either here.
 
-Rust file operations get fixture-based tests, see the `backend-testing` skill.
+Rust file operations get fixture-based tests, see the `repo-backend-testing` skill.
 
 ## Commits
 
@@ -62,8 +62,9 @@ Types: `feat`, `fix`, `refactor`, `chore`, `docs`, `perf`, `ci`.
 Scope is the package directory name (`core`, `livery`, `nvim`, `ghostty`, and so on). Omit it for
 root-level changes and for changes spanning several packages.
 
-Commits pass read-only formatting and lint checks. Pre-push runs `deno task verify`, which
-runs `check` and `test` with their shared steps once and independent steps in parallel.
+Commit through the `repo-commit` skill. Commits pass read-only formatting and lint checks.
+Pre-push runs `deno task verify`, which runs `check` and `test` with their shared steps once and
+independent steps in parallel.
 
 ## Further context
 
@@ -72,15 +73,18 @@ Livery's product and config decisions live in `livery/DESIGN.md` and `livery/ADA
 
 ## Agent setup
 
-Claude Code reads `.claude/`. Skills there, each a task worth following exactly:
+Project skills live in `.agents/skills/`; `.claude/skills` links there. Each is a task worth
+following exactly:
 
-- `new-theme` — add a theme to an existing collection
-- `new-adapter` — add a platform adapter
-- `rename-theme` — rename a theme across core, adapters, and generated files
-- `rename-token` — rename a color token across core and every template
-- `add-capability` — add a livery capability end to end
-- `release` — cut a release
-- `backend-testing` — fixture-based tests for livery's Rust file operations
+- `repo-commit` — commit a change, with its changelog entry and the CI-parity run
+- `repo-changelog` — write the changelog entry for a change, or curate a release section
+- `repo-release` — cut a release
+- `repo-new-theme` — add a theme to an existing collection
+- `repo-new-adapter` — add a platform adapter
+- `repo-rename-theme` — rename a theme across core, adapters, and generated files
+- `repo-rename-token` — rename a color token across core and every template
+- `repo-add-capability` — add a livery capability end to end
+- `repo-backend-testing` — fixture-based tests for livery's Rust file operations
 
 `.claude/hooks/` runs `no-fs-plugin` and `check-bindings` after a write.
 
