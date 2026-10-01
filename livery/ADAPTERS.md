@@ -12,14 +12,14 @@ every adapter falls into exactly one class:
 | Class        | Adapters                                  | Definition                                                                                                                                                                |
 | ------------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **External** | helm-tmux, delta                          | The app's theme files are provided outside of livery — by a compiled binary or the user — so livery only performs switching.                                              |
-| **Linked**   | ghostty, zed, tmux, obsidian, nvim, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer setup may add once. |
+| **Linked**   | ghostty, zed, tmux, obsidian, nvim, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once. |
 | **Merged**   | lazygit, herdr                            | The app cannot read external theme files, so on every switch livery reads the managed theme and writes its values directly into the app's config.                         |
 
 Two per-adapter properties are deliberately **not** classes:
 
 - **Setup precondition** — a one-time manual step livery cannot automate (tell livery which config folders to manage). Orthogonal to who consumes the files.
 - **Switch pointer** — the config line or property that selects the active theme. Every adapter has
-  one; livery's apply step rewrites it.
+  one; livery's apply step rewrites it and never adds it, so an apply fails until the pointer exists.
 
 In the settings screen, **AUTO-DETECT** checks which apps exist (conservatively: does the configured
 config file exist?), and **SET UP** runs the class-appropriate chain — enable → link (Linked only) →
@@ -33,7 +33,7 @@ verify — always ending with verification, so the row reflects the true state.
   bare name in its own themes dir (it rejects `~` paths in `theme =`).
 - **Switch pointer:** `theme = <themeKey>.conf` in `~/.config/ghostty/config`.
 - **Reload:** SIGUSR2.
-- **Precondition:** none. SET UP is fully automatic.
+- **Precondition:** a `theme = ...` line in the config (any value).
 
 ### zed — Linked
 
@@ -41,7 +41,7 @@ verify — always ending with verification, so the row reflects the true state.
   outside its own themes dir.
 - **Switch pointer:** the `"theme"` property in `settings.json` (structural JSONC edit — no regex).
 - **Reload:** none needed — zed watches its settings file.
-- **Precondition:** none.
+- **Precondition:** a `"theme"` key in `settings.json`, either a string or an object with `dark` and `light`.
 
 ### tmux — Linked
 
@@ -71,9 +71,12 @@ verify — always ending with verification, so the row reflects the true state.
   as ONE theme; collections/variants switch via the Style Settings plugin values.
 - **Switch pointer:** `cssTheme` in `appearance.json` + the variant key in the Style Settings plugin
   data.
-- **Reload:** `obsidian://` URI.
-- **Precondition:** add the Obsidian configuration folders livery should manage, such as
-  `<vault>/.obsidian` or a renamed override folder. Livery applies the theme to every configured folder.
+- **Variant:** set only when the Style Settings plugin's `data.json` exists in the folder.
+- **Reload:** `obsidian vault=<name> reload` through the `obsidian` command, when Obsidian is running.
+  Skipped when two vaults share a name; deferred to the next launch when Obsidian is not running.
+- **Precondition:** none for vaults in Obsidian's registry (`obsidian.json`): setup discovers their
+  configuration folders. Add any other folder, such as a renamed override folder, by hand. Livery
+  applies the theme to every configured folder that has an `appearance.json`.
 
 ### lazygit — Merged
 
@@ -105,9 +108,12 @@ verify — always ending with verification, so the row reflects the true state.
 - **Placement:** one directory symlink,
   `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/black-atom` → the managed `nvim` dir. Neovim puts
   `pack/*/start/*` on the runtimepath itself, so no plugin manager is involved.
-- **Switch pointer:** a `colorscheme = "<themeKey>"` (or `vim.cmd.colorscheme(...)`) line in your
-  config.
-- **Reload:** `nvim --server <socket> --remote-expr` against every running instance.
+- **Switch pointer:** a `colorscheme = "<themeKey>"` assignment in `config_path` (default
+  `~/.config/nvim/lua/config.lua`). A `vim.cmd.colorscheme(...)` call does not match.
+- **Reload:** `nvim --server <socket> --remote-expr` against every running instance whose socket lives
+  under `$TMPDIR/nvim.<user>/`, which covers macOS. Sockets under `$XDG_RUNTIME_DIR` on Linux are not
+  found yet.
+- **Precondition:** the `colorscheme = "..."` line must exist (any value).
 - **Plugin options:** the settings page writes `vim.g.black_atom_core_config` into a managed block
   in `settings_path` (default `~/.config/nvim/init.lua`), between
   `-- BEGIN BLACK ATOM LIVERY CONFIG` and `-- END BLACK ATOM LIVERY CONFIG`. The file must already
@@ -128,6 +134,17 @@ verify — always ending with verification, so the row reflects the true state.
 - **Files:** user-owned — maintain your `~/.gitconfig.delta` with `black-atom-dark` /
   `black-atom-light` feature blocks, included from `.gitconfig`.
 - **Switch pointer:** `features = black-atom-<appearance>`.
+
+## Not switched by livery
+
+Livery ships these adapters' generated files in its binary but has no updater for them. Wire them up
+by hand as each adapter's README describes; the theme stays fixed until you change it.
+
+- **niri** — `include` a theme file from the niri config ([`adapters/niri`](../adapters/niri)).
+- **waybar** — `@import` a theme's color definitions in `style.css`
+  ([`adapters/waybar`](../adapters/waybar)).
+- **wezterm** — copy the color schemes into WezTerm's config directory and set `color_scheme`
+  ([`adapters/wezterm`](../adapters/wezterm)).
 
 ## Future directions
 
