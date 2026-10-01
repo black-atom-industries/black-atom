@@ -5,7 +5,7 @@ operation to Rust through `invoke()`.
 
 Repo-wide instructions live in [`AGENTS.md`](../../AGENTS.md); every term is defined in
 [`GLOSSARY.md`](../../GLOSSARY.md). Name things with those words. Component architecture and
-folder conventions come from the `dev-style-react` and `dev-style-tanstack` skills.
+folder conventions come from the `react` and `tanstack` topics of the `nbr-conventions` skill.
 
 No filesystem access from TypeScript. `@tauri-apps/plugin-fs` is off limits: file reads and writes
 go through Rust commands so the home-directory check and the atomic write path always apply. No
