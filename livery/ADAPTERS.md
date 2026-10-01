@@ -137,8 +137,9 @@ verify — always ending with verification, so the row reflects the true state.
 
 ## Not switched by livery
 
-Livery ships these adapters' generated files in its binary but has no updater for them. Wire them up
-by hand as each adapter's README describes; the theme stays fixed until you change it.
+Livery ships these adapters' generated files in its binary but has no updater for them yet
+([#5](https://github.com/nikbrunner/black-atom/issues/5)). Wire them up by hand as each adapter's README
+describes; the theme stays fixed until you change it.
 
 - **niri** — `include` a theme file from the niri config ([`adapters/niri`](../adapters/niri)).
 - **waybar** — `@import` a theme's color definitions in `style.css`
