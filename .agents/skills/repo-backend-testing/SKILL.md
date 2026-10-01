@@ -1,5 +1,5 @@
 ---
-name: backend-testing
+name: repo-backend-testing
 description: Fixture-based testing patterns for Rust file operations (file_ops)
 user-invocable: false
 ---

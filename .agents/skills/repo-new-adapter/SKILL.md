@@ -1,5 +1,5 @@
 ---
-name: new-adapter
+name: repo-new-adapter
 description: Add a new platform adapter to Black Atom, from theme templates through livery wiring. Load when asked to support a new app or tool with Black Atom themes.
 ---
 
@@ -104,7 +104,7 @@ there.
 
 ## 10. Test
 
-For a new updater module, load the `backend-testing` skill. Add realistic input/expected fixture
+For a new updater module, load the `repo-backend-testing` skill. Add realistic input/expected fixture
 pairs under `livery/core/tests/fixtures/`, write `#[cfg(test)] mod tests` in `<name>.rs` following
 `updaters/zed.rs`, include an idempotency test.
 

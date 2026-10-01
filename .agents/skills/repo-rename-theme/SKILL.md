@@ -1,5 +1,5 @@
 ---
-name: rename-theme
+name: repo-rename-theme
 description: Use when renaming a theme key across core, every adapter, and generated files.
 user-invocable: false
 ---

@@ -1,5 +1,5 @@
 ---
-name: new-theme
+name: repo-new-theme
 description: Add a theme to an existing collection. Load when asked to create, design, or add a new Black Atom theme, variant, or appearance.
 ---
 

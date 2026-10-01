@@ -1,5 +1,5 @@
 ---
-name: add-capability
+name: repo-add-capability
 description: Add a livery capability end to end, from core Rust logic through the Tauri command to the frontend query hook. Load when adding a new user-facing action to the livery app, not a new per-app updater (see the updaters guide in `livery/src-tauri/AGENTS.md` for that).
 ---
 
@@ -16,7 +16,7 @@ feature it belongs to: `livery/core/src/config/`, `livery/core/src/themes/`, or 
 `livery/core/src/updaters/`. Read `livery/core/src/updaters/mod.rs` first to see where similar
 logic already sits.
 
-If the function touches files, read the `backend-testing` skill and follow its fixture pattern:
+If the function touches files, read the `repo-backend-testing` skill and follow its fixture pattern:
 real config fixtures under `livery/core/tests/fixtures/`, not inline test strings, plus an
 idempotency test. Add `#[cfg(test)] mod tests` in the source file for anything else.
 

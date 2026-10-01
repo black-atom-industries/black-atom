@@ -23,7 +23,7 @@ Commands validate that a path is under `$HOME` before writing. Writes are atomic
 `shellexpand::tilde`.
 
 Unit tests live in `#[cfg(test)] mod tests` inside the source file. File operations get fixtures,
-see the `backend-testing` skill.
+see the `repo-backend-testing` skill.
 
 Two end-to-end suites: `livery/core/tests/setup_smoke.rs` calls the crate functions directly, and
 `livery/cli/tests/cli_smoke.rs` spawns the built `livery` binary. Both point `$HOME` and the

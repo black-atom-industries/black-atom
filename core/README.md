@@ -131,11 +131,11 @@ theme's key, label, and collection metadata.
 The `collections` tuple in `src/themes/catalog.ts` drives collection and theme key types;
 `themeCatalog` combines the collections' `.themes` maps, and `collectionOrder` sorts by `meta.order`.
 
-Detailed guides live in `.claude/skills/`:
+Detailed guides live in `.agents/skills/`:
 
-- `new-theme` — add a theme to an existing collection
-- `new-adapter` — add a platform adapter
-- `rename-theme` — rename a theme across core, adapters, and generated files
+- `repo-new-theme` — add a theme to an existing collection
+- `repo-new-adapter` — add a platform adapter
+- `repo-rename-theme` — rename a theme across core, adapters, and generated files
 
 ## Contributing
 

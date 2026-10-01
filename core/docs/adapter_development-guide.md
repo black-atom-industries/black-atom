@@ -15,7 +15,7 @@ the core theme definitions:
 
 ## Creating an Adapter
 
-See the `new-adapter` skill (`.claude/skills/new-adapter/SKILL.md`) for the full walkthrough. In
+See the `repo-new-adapter` skill (`.agents/skills/repo-new-adapter/SKILL.md`) for the full walkthrough. In
 outline:
 
 1. Create `adapters/<name>/`

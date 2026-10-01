@@ -1,5 +1,5 @@
 ---
-name: rename-token
+name: repo-rename-token
 description: Rename a color token across core and every template. Load when renaming a key under theme.ui, theme.syntax, theme.palette, or theme.primaries — anywhere from the type definition down to adapter templates and the monitor app.
 user-invocable: false
 ---
