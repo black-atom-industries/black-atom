@@ -45,7 +45,7 @@ export function provisionDevLauncher(
                 const target = Deno.readLinkSync(command);
                 if (
                     basename(target) === "livery-dev" &&
-                    /^black-atom-dev-[0-9a-f]{16}$/.test(basename(dirname(target))) &&
+                    /^black-atom-dev-[0-9a-f]+$/.test(basename(dirname(target))) &&
                     dirname(dirname(target)) === resolve(tmpdir())
                 ) {
                     try {
