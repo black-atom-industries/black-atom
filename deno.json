@@ -14,6 +14,7 @@
         "build": "deno run -A scripts/build.ts",
         "install:macos": "deno run -A scripts/install-macos.ts",
         "generate": "deno run -A core/src/tasks/generate.ts",
+        "eval:skills": "cd .agents && claude plugin eval . --allow-tools Bash Edit Write --scaffold --trust-plugin --no-publish -j 4 --max-cost-usd 25 --judge-model sonnet",
         "build:ui": {
             "command": "cd livery && deno run -A npm:vite build",
             "dependencies": ["generate"]

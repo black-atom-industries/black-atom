@@ -28,3 +28,4 @@ HANDOFF-*.md
 /adapters/nvim/check.json
 /adapters/nvim/Session.vim
 /PLAN.md
+.agents/evals/results/
