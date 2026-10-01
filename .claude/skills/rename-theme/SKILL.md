@@ -29,8 +29,8 @@ in one commit. Example below uses collection `minium`, old name `polymer`, new n
 
 5. Update every adapter config in one pass:
    `grep -rl "black-atom-<collection>-<old>" adapters/*/black-atom-adapter.json` then edit each
-   match, replacing the old key with the new one in the `themes` array. All ten adapters
-   (ghostty, herdr, lazygit, niri, nvim, obsidian, tmux, waybar, wezterm, zed) share one
+   match, replacing the old key with the new one in the `themes` array. All eleven adapters
+   (ghostty, herdr, lazygit, niri, nvim, obsidian, tmux, tuicr, waybar, wezterm, zed) share one
    `black-atom-adapter.json` schema; only the ones listing this theme need the edit.
 
 6. nvim also hand-maintains a loader stub outside the generated tree, one per theme, at

@@ -31,8 +31,8 @@ description: Add a theme to an existing collection. Load when asked to create, d
 
 5. Add the theme key to every adapter that declares this collection: open each
    `adapters/<name>/black-atom-adapter.json` and append the key to that collection's `themes`
-   array, keeping existing order. All ten adapter dirs (`ghostty`, `herdr`, `lazygit`, `niri`,
-   `nvim`, `obsidian`, `tmux`, `waybar`, `wezterm`, `zed`) declare the seven collections and
+   array, keeping existing order. All eleven adapter dirs (`ghostty`, `herdr`, `lazygit`, `niri`,
+   `nvim`, `obsidian`, `tmux`, `tuicr`, `waybar`, `wezterm`, `zed`) declare the seven collections and
    their 32 current themes.
 
 6. Run `deno run -A core/src/tasks/generate.ts` from the repo root. It regenerates every adapter that has a
