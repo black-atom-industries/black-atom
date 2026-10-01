@@ -98,8 +98,8 @@ export default function (
             math: primaries.m30,
             link: accents.a10,
             code: {
-                fg: primaries.l10,
-                bg: primaries.d10,
+                fg: primaries.m40,
+                bg: primaries.d40,
             },
         },
         tag: {

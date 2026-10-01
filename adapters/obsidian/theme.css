@@ -232,7 +232,7 @@ settings:
   --code-string: #d3cebc;
   --code-tag: #fc8a61;
   --code-value: #c2beac;
-  --code-background: #23211c;
+  --code-background: #4a4842;
 
   /* Tags */
   --tag-color: #fc8a61;
@@ -367,7 +367,7 @@ settings:
   --code-string: #6b634d;
   --code-tag: #7b7250;
   --code-value: #322e22;
-  --code-background: #ebe5cf;
+  --code-background: #ddd8c2;
 
   /* Tags */
   --tag-color: #e76b3e;
@@ -501,7 +501,7 @@ settings:
   --code-string: #5bb661;
   --code-tag: #4ec983;
   --code-value: #d2d8df;
-  --code-background: #090e12;
+  --code-background: #25292f;
 
   /* Tags */
   --tag-color: #4ec983;
@@ -635,7 +635,7 @@ settings:
   --code-string: #5bb661;
   --code-tag: #4ec983;
   --code-value: #d2d8df;
-  --code-background: #090e12;
+  --code-background: #25292f;
 
   /* Tags */
   --tag-color: #4ec983;
@@ -770,7 +770,7 @@ settings:
   --code-string: #5bb661;
   --code-tag: #4ec983;
   --code-value: #d2d8df;
-  --code-background: #12171b;
+  --code-background: #3e4349;
 
   /* Tags */
   --tag-color: #4ec983;
@@ -905,7 +905,7 @@ settings:
   --code-string: #409d48;
   --code-tag: #2eaf6b;
   --code-value: #292e34;
-  --code-background: #c8ced5;
+  --code-background: #a8afb5;
 
   /* Tags */
   --tag-color: #2eaf6b;
@@ -1039,7 +1039,7 @@ settings:
   --code-string: #409d48;
   --code-tag: #2eaf6b;
   --code-value: #292e34;
-  --code-background: #c8ced5;
+  --code-background: #a8afb5;
 
   /* Tags */
   --tag-color: #2eaf6b;
@@ -1173,7 +1173,7 @@ settings:
   --code-string: #409d48;
   --code-tag: #2eaf6b;
   --code-value: #292e34;
-  --code-background: #c8ced5;
+  --code-background: #a8afb5;
 
   /* Tags */
   --tag-color: #2eaf6b;
@@ -1578,7 +1578,7 @@ settings:
   --code-string: #3c8e3c;
   --code-tag: #66bd10;
   --code-value: #476a5f;
-  --code-background: #d4dcd8;
+  --code-background: #c6d1cc;
 
   /* Tags */
   --tag-color: #66bd10;
@@ -1713,7 +1713,7 @@ settings:
   --code-string: #53aa53;
   --code-tag: #66bd10;
   --code-value: #51796d;
-  --code-background: #edf1ef;
+  --code-background: #e3e8e6;
 
   /* Tags */
   --tag-color: #66bd10;
@@ -1848,7 +1848,7 @@ settings:
   --code-string: #7fc08c;
   --code-tag: #e49e22;
   --code-value: #d39bb5;
-  --code-background: #1c1121;
+  --code-background: #4a3d50;
 
   /* Tags */
   --tag-color: #e49e22;
@@ -1983,7 +1983,7 @@ settings:
   --code-string: #3aa85b;
   --code-tag: #ed9a00;
   --code-value: #d1649c;
-  --code-background: #f8e7d0;
+  --code-background: #f2daba;
 
   /* Tags */
   --tag-color: #ed9a00;
@@ -2118,7 +2118,7 @@ settings:
   --code-string: #80bda2;
   --code-tag: #dca23a;
   --code-value: #7ea5b7;
-  --code-background: #250d15;
+  --code-background: #5b3e47;
 
   /* Tags */
   --tag-color: #dca23a;
@@ -2253,7 +2253,7 @@ settings:
   --code-string: #d2dae3;
   --code-tag: #f8ac3d;
   --code-value: #c2cad3;
-  --code-background: #162f48;
+  --code-background: #2a435d;
 
   /* Tags */
   --tag-color: #f8ac3d;
@@ -2388,7 +2388,7 @@ settings:
   --code-string: #576975;
   --code-tag: #457ea1;
   --code-value: #0f212d;
-  --code-background: #b4c3c9;
+  --code-background: #a8b9c0;
 
   /* Tags */
   --tag-color: #cc8f00;
@@ -2523,7 +2523,7 @@ settings:
   --code-string: #90b99f;
   --code-tag: #eab899;
   --code-value: #8699c1;
-  --code-background: #0f0f0f;
+  --code-background: #373737;
 
   /* Tags */
   --tag-color: #eab899;
@@ -2658,7 +2658,7 @@ settings:
   --code-string: #ebf3f6;
   --code-tag: #fc8e06;
   --code-value: #e4edf0;
-  --code-background: #000203;
+  --code-background: #111719;
 
   /* Tags */
   --tag-color: #fc8e06;
@@ -2793,7 +2793,7 @@ settings:
   --code-string: #747c7e;
   --code-tag: #0795fd;
   --code-value: #242a2c;
-  --code-background: #eef3f4;
+  --code-background: #e8eced;
 
   /* Tags */
   --tag-color: #fc8e06;
@@ -2928,7 +2928,7 @@ settings:
   --code-string: #c2dfd4;
   --code-tag: #ed9562;
   --code-value: #aed5c6;
-  --code-background: #12352a;
+  --code-background: #215848;
 
   /* Tags */
   --tag-color: #ed9562;
@@ -3063,7 +3063,7 @@ settings:
   --code-string: #569c85;
   --code-tag: #00af44;
   --code-value: #194034;
-  --code-background: #c2dfd4;
+  --code-background: #aed5c6;
 
   /* Tags */
   --tag-color: #e95e00;
@@ -3198,7 +3198,7 @@ settings:
   --code-string: #dad7d4;
   --code-tag: #e4e4e4;
   --code-value: #c6c3c1;
-  --code-background: #070504;
+  --code-background: #2b2826;
 
   /* Tags */
   --tag-color: #e4e4e4;
@@ -3333,7 +3333,7 @@ settings:
   --code-string: #d1d1d1;
   --code-tag: #d2b5bd;
   --code-value: #c4c4c4;
-  --code-background: #090909;
+  --code-background: #2e2e2e;
 
   /* Tags */
   --tag-color: #d2b5bd;
@@ -3468,7 +3468,7 @@ settings:
   --code-string: #7a7a7a;
   --code-tag: #776f71;
   --code-value: #292929;
-  --code-background: #d1d1d1;
+  --code-background: #c4c4c4;
 
   /* Tags */
   --tag-color: #5f5155;
@@ -3603,7 +3603,7 @@ settings:
   --code-string: #a09e9b;
   --code-tag: #4d4d4d;
   --code-value: #181614;
-  --code-background: #f1eeeb;
+  --code-background: #e0ddda;
 
   /* Tags */
   --tag-color: #2e2e2e;
@@ -3738,7 +3738,7 @@ settings:
   --code-string: #95a483;
   --code-tag: #d68c00;
   --code-value: #e67f3c;
-  --code-background: #2e2119;
+  --code-background: #382a23;
 
   /* Tags */
   --tag-color: #d68c00;
@@ -4008,7 +4008,7 @@ settings:
   --code-string: #92d49a;
   --code-tag: #d1a762;
   --code-value: #e89a61;
-  --code-background: #272c2a;
+  --code-background: #313634;
 
   /* Tags */
   --tag-color: #d1a762;
@@ -4278,7 +4278,7 @@ settings:
   --code-string: #96a85e;
   --code-tag: #bcb067;
   --code-value: #dba06f;
-  --code-background: #092520;
+  --code-background: #2a433a;
 
   /* Tags */
   --tag-color: #bcb067;
@@ -4548,7 +4548,7 @@ settings:
   --code-string: #82c3d3;
   --code-tag: #fba952;
   --code-value: #eb8656;
-  --code-background: #1a222e;
+  --code-background: #212f3f;
 
   /* Tags */
   --tag-color: #fba952;

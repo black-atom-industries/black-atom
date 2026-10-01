@@ -92,8 +92,8 @@ export default function (
             math: primaries.m20,
             link: accents.a20,
             code: {
-                fg: primaries.d40,
-                bg: primaries.l20,
+                fg: primaries.m10,
+                bg: primaries.l10,
             },
         },
         tag: {

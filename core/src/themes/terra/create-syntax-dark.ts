@@ -92,8 +92,8 @@ export default function (
             math: palette.darkGreen,
             link: palette.green,
             code: {
-                fg: primaries.l10,
-                bg: primaries.d30,
+                fg: primaries.m40,
+                bg: primaries.d40,
             },
         },
         tag: {

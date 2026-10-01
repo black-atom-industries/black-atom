@@ -169,7 +169,7 @@ local theme = {
                 },
                 code = {
                     fg = "#b19b7c",
-                    bg = "#1c1121",
+                    bg = "#4a3d50",
                 },
             },
             tag = {

@@ -168,8 +168,8 @@ local theme = {
                     unchecked = "#8d9399",
                 },
                 code = {
-                    fg = "#d2d8df",
-                    bg = "#12171b",
+                    fg = "#8d9399",
+                    bg = "#3e4349",
                 },
             },
             tag = {

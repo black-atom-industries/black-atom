@@ -118,6 +118,7 @@ return {
             ["@markup.strikethrough"] = { fg = syntax.comment.error, strikethrough = true },
 
             ["@markup.raw"] = { fg = syntax.markup.code.fg },
+            ["@markup.raw.markdown_inline"] = { fg = syntax.markup.code.fg, bg = syntax.markup.code.bg },
 
             ["@markup.list"] = { fg = syntax.markup.list.default },
             ["@markup.list.checked"] = { fg = syntax.markup.list.checked },

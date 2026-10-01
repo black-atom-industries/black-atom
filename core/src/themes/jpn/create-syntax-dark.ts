@@ -92,8 +92,8 @@ export default function (
                 unchecked: palette.lightGray,
             },
             code: {
-                fg: palette.lightGray,
-                bg: primaries.d10,
+                fg: primaries.m40,
+                bg: primaries.d40,
             },
         },
         tag: {
