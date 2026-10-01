@@ -223,6 +223,15 @@ fn run_with_timeout(mut command: Command, timeout: Duration) -> Result<Output, S
         }
     };
 
+    // Descendants of a killed child can keep the pipes open, so joining the
+    // readers after a timeout would block until they exit.
+    if timed_out {
+        return Err(format!(
+            "nvim reload timed out after {}s",
+            timeout.as_secs()
+        ));
+    }
+
     let stdout = stdout_reader
         .join()
         .map_err(|_| "nvim stdout reader panicked".to_string())?
@@ -231,13 +240,6 @@ fn run_with_timeout(mut command: Command, timeout: Duration) -> Result<Output, S
         .join()
         .map_err(|_| "nvim stderr reader panicked".to_string())?
         .map_err(|error| format!("could not read nvim stderr: {error}"))?;
-
-    if timed_out {
-        return Err(format!(
-            "nvim reload timed out after {}s",
-            timeout.as_secs()
-        ));
-    }
 
     Ok(Output {
         status,
@@ -759,7 +761,9 @@ vim.g.black_atom_core_config = {
     #[test]
     fn test_run_with_timeout_stops_a_hung_command() {
         let mut command = Command::new("sh");
-        command.args(["-c", "sleep 10"]);
+        // The trailing `:` keeps every shell from exec-ing sleep, so an
+        // orphaned descendant holds the pipes after the timeout kill.
+        command.args(["-c", "sleep 10; :"]);
         let started = Instant::now();
 
         let error = run_with_timeout(command, Duration::from_millis(50)).unwrap_err();
