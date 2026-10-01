@@ -70,7 +70,8 @@ The message is a [Conventional Commit](https://www.conventionalcommits.org/); re
 <type>(<scope>): <imperative summary>
 ```
 
-When `AGENTS.md` names a commit suffix, such as an issue reference, end the subject with it.
+Read the commit conventions in `AGENTS.md` before drafting, and end the subject with any commit suffix they name, such as
+an issue reference.
 
 - `feat` for new user-facing behavior, `fix` for a user-facing bug fix. Both trigger a release.
 - `docs`, `refactor`, `perf`, `test`, `ci`, `chore` for the rest. Only `docs`, `refactor`, and `perf` count toward a release.
