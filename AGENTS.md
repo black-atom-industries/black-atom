@@ -62,9 +62,6 @@ Types: `feat`, `fix`, `refactor`, `chore`, `docs`, `perf`, `ci`.
 Scope is the package directory name (`core`, `livery`, `nvim`, `ghostty`, and so on). Omit it for
 root-level changes and for changes spanning several packages.
 
-Until 0.9.0 is released, new changelog entries go into the `0.9.0` section of `CHANGELOG.md`; no
-`## [Unreleased]` section exists before then.
-
 Commit through the `repo-commit` skill. Commits pass read-only formatting and lint checks.
 Pre-push runs `deno task verify`, which runs `check` and `test` with their shared steps once and
 independent steps in parallel.
