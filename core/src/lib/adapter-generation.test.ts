@@ -15,6 +15,7 @@ const adapterNames = [
     "nvim",
     "obsidian",
     "tmux",
+    "tuicr",
     "waybar",
     "wezterm",
     "zed",

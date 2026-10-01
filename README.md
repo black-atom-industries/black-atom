@@ -11,7 +11,7 @@ and everything else you point Black Atom at.
   (`core/src/cli/index.ts`), the adapter schema (`core/adapter.schema.json`), and a preview app
   (`core/monitor/`)
 - `adapters/<name>/` — one directory per platform: ghostty, herdr, lazygit, niri, nvim, obsidian,
-  tmux, waybar, wezterm, zed
+  tmux, tuicr, waybar, wezterm, zed
 - `livery/` — the desktop app that applies a theme across the tools on a machine. GUI binary
   `livery-gui`, terminal client `livery`
 - `website/`, `ui/` — placeholders
@@ -78,6 +78,9 @@ setting that points at one. See `adapters/zed/README.md` and `adapters/obsidian/
 waybar share one template across collections instead of one per collection. See
 `adapters/niri/README.md`, `adapters/waybar/README.md`, `adapters/herdr/README.md`,
 `adapters/lazygit/README.md`.
+
+**tuicr** loads a generated TOML file from its local themes directory. See
+`adapters/tuicr/README.md`.
 
 **Neovim** installs straight from this repo, no livery required. Put `adapters/nvim` on the
 runtimepath:

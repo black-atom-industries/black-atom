@@ -79,7 +79,7 @@ Each adapter directory contains:
 
 ### Adapters
 
-ghostty, herdr, lazygit, niri, nvim, obsidian, tmux, waybar, wezterm, zed, each under `adapters/<name>/`.
+ghostty, herdr, lazygit, niri, nvim, obsidian, tmux, tuicr, waybar, wezterm, zed, each under `adapters/<name>/`.
 
 ## Development
 
