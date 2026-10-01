@@ -10,8 +10,8 @@ A color token is a key under `theme.ui`, `theme.syntax`, `theme.palette`, `theme
 `theme.feedback` in `ThemeDefinition`. Renaming one touches the type, every collection's color
 creators, every adapter template that reads it, and the monitor app if it displays the raw path.
 
-`theme.primaries.*` stays core-only per `GLOSSARY.md`. Adapter templates consume semantic UI,
-syntax, palette, and feedback tokens.
+Adapter templates never read `theme.primaries.*`; they consume semantic UI, syntax, palette, and
+feedback tokens. The monitor app reads primaries directly.
 
 ## Steps
 
@@ -20,9 +20,9 @@ syntax, palette, and feedback tokens.
    there first.
 2. Rename the key everywhere it's set. Theme files under `core/src/themes/<collection>/*.ts` call
    `defineThemeColors()` with values or creators for each derived group. Check those inputs and
-   the shared creators in all seven collections (`default`, `facility`, `terra`, `jpn`, `clay`,
-   `minium`, `mono`):
-   - `ui` → `core/src/themes/<collection>/create-ui-dark.ts` and `create-ui-light.ts`
+   the shared creators. `default`, `facility`, `terra`, and `jpn` keep their creators in their own
+   directory; `clay`, `minium`, and `mono` share the ones in `core/src/themes/mnml/`:
+   - `ui` → `core/src/themes/<dir>/create-ui-dark.ts` and `create-ui-light.ts`
    - `syntax` → `create-syntax-dark.ts` and `create-syntax-light.ts`
    - `palette` → `create-palette-dark.ts`, `create-palette-light.ts`, and the shared
      `core/src/themes/create-palette.ts`
@@ -35,8 +35,8 @@ syntax, palette, and feedback tokens.
    Grep the full qualified path (`ui.bg.default`, `palette.darkRed`, `syntax.variable.member`), not
    the bare leaf name — a bare `default` or `red` matches unrelated tokens. This covers
    per-collection templates (`adapters/<name>/themes/<collection>/collection.template.<ext>`), the
-   shared single templates (`adapters/herdr/themes/collection.template.toml`,
-   `adapters/waybar/themes/collection.template.css`), and nvim's
+   shared single templates (`adapters/<name>/themes/collection.template.<ext>`, e.g. ghostty,
+   herdr, tuicr, waybar), and nvim's
    `adapters/nvim/templates/collection.template.lua`. Edit every hit with
    `theme.<old>` to `theme.<new>`.
 4. Check the monitor app for the same qualified path, in both raw and CSS-var form:

@@ -9,40 +9,23 @@ user-invocable: false
 ## Running Tests
 
 ```bash
-cargo test
+cargo test -p livery_core
 ```
 
-Runs the whole Cargo workspace from the repo root, `livery/core` and `livery/src-tauri` included.
+Runs `livery_core`, which has no Tauri dependency. `deno task test:rust` runs the whole workspace;
+it builds the UI first because `livery/src-tauri` compiles against `livery/dist`.
 
 ## Fixture-Based Testing
 
-File operations (`livery/core/src/updaters/file_ops/text.rs`,
-`livery/core/src/updaters/file_ops/yaml.rs`) use **real config file fixtures** instead of
-inline test strings. This catches formatting and indentation issues that simplified strings miss.
+File operations under `livery/core/src/updaters/file_ops/` and the updaters built on them use
+**real config file fixtures** instead of inline test strings. This catches formatting and
+indentation issues that simplified strings miss.
 
 ### Fixture Directory
 
-```
-livery/core/tests/fixtures/
-  text/                              # Text-based configs (ghostty, nvim, tmux, delta)
-    ghostty-config.txt               # Input config
-    ghostty-config-expected.txt      # Expected output after patch
-    nvim-config.lua
-    nvim-config-expected.lua
-    nvim-config-vimcmd.lua           # Alternative vim.cmd.colorscheme() syntax
-    nvim-config-vimcmd-expected.lua
-    tmux.conf
-    tmux-expected.conf
-    delta-config.ini
-    delta-config-expected.ini
-  yaml/                              # YAML configs (lazygit)
-    lazygit-config.yml               # Realistic lazygit config (target)
-    lazygit-theme-source.yml         # Black Atom theme file (source/overlay)
-    lazygit-config-expected.yml      # Expected output after merge
-    simple-config.yml
-    simple-overlay.yml
-    simple-config-expected.yml
-```
+`livery/core/tests/fixtures/` groups fixtures by format: `text/`, `yaml/`, `jsonc/`, plus
+`themes/` for theme files an updater reads. Each case is an input `<app>-<case>.<ext>` beside its
+`<app>-<case>-expected.<ext>`. List the directory for the current set before adding a pair.
 
 ### Test Pattern
 

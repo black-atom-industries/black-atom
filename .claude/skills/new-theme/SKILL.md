@@ -38,21 +38,12 @@ description: Add a theme to an existing collection. Load when asked to create, d
 6. Run `deno run -A core/src/tasks/generate.ts` from the repo root. It regenerates every adapter that has a
    `black-atom-adapter.json` in the current tree.
 
-7. nvim only: also create `adapters/nvim/colors/black-atom-<collection>-<name>-<appearance>.lua`
-   (today's layout) with:
-   ```lua
-   local theme = require("black-atom.themes.<collection>.black-atom-<collection>-<name>-<appearance>")
+7. Verify one generated output file per adapter that declares the collection. Outputs live at
+   `adapters/<name>/themes/<collection>/<theme-key>.<ext>`, except nvim's colorschemes at
+   `adapters/nvim/colors/<theme-key>.lua`. Check each adapter's `output` and sibling output
+   before asserting a path.
 
-   require("black-atom").load(theme)
-   ```
-   This file is hand-written, `deno run -A core/src/tasks/generate.ts` does not create it.
+8. Run `deno task check` and `deno task test` from the repo root, both must be green.
 
-8. Verify one generated output file per adapter that declares the collection. Outputs live at
-   `adapters/<name>/themes/<collection>/<theme-key>.<ext>`, except nvim's generated Lua modules
-   at `adapters/nvim/lua/black-atom/themes/<collection>/<theme-key>.lua`. Check each adapter's
-   `outputDir` and sibling output before asserting a path.
-
-9. Run `deno task check` and `deno task test` from the repo root, both must be green.
-
-10. Commit with `feat: add <collection> <name> theme black-atom-industries/livery#68` (no scope,
-    the change spans `core` and multiple adapters).
+9. Commit with `feat: add <collection> <name> theme black-atom-industries/livery#68` (no scope,
+   the change spans `core` and multiple adapters).

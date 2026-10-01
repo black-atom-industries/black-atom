@@ -26,15 +26,16 @@ from a template. If the target format needs a value no token covers, ask before 
 
 Create `adapters/<name>/`:
 
-- `black-atom-adapter.json` — copy the `collections` block verbatim from
-  `adapters/ghostty/black-atom-adapter.json` (all seven collections: `default`, `facility`, `terra`,
-  `jpn`, `clay`, `minium`, `mono`, with 32 theme keys) and change only the `template`
-  path per collection to `./themes/<collection>/collection.template.<ext>`. Keep each collection's
-  `outputDir` at `./themes/<collection>`.
-- `README.md` — what the adapter is, install/usage for the target app.
-- `themes/<collection>/collection.template.<ext>` — one per collection, or one shared
-  `themes/collection.template.<ext>` if every collection needs the same mapping (see herdr,
-  waybar).
+- `black-atom-adapter.json`: copy `adapters/ghostty/black-atom-adapter.json` verbatim (all seven
+  collections: `default`, `facility`, `terra`, `jpn`, `clay`, `minium`, `mono`, with 32 theme keys).
+  Every collection points at one shared template, `./themes/collection.template.conf`; change the
+  extension. When collections need different mappings, point each collection's `template` at
+  `./themes/<collection>/collection.template.<ext>` instead (see zed). Keep each collection's
+  `output` at `./themes/<collection>`.
+- `README.md`: what the adapter is, install/usage for the target app.
+- `LICENSE`: copy from any other adapter.
+- The template: one shared `themes/collection.template.<ext>` (see ghostty, herdr, waybar), or one
+  `themes/<collection>/collection.template.<ext>` per collection.
 
 Keep the adapter outside the Deno workspace. Core discovers it from its
 `black-atom-adapter.json` during central generation.
@@ -48,59 +49,97 @@ grep -r "undefined" adapters/<name>/themes/ || echo clean
 
 Read one generated dark theme and one light theme under `adapters/<name>/themes/<collection>/`.
 Confirm dark themes have dark backgrounds, light themes have light backgrounds, and no template
-tag survived unrendered.
+tag survived unrendered. When the app can load a theme file from the command line, load a dark and
+a light one in it.
 
-## 5. Decide: does livery apply this adapter?
+## 5. Register the adapter name
 
-If the app only needs the generated files (user copies them manually), stop here. If livery should
-switch this app's theme automatically, continue.
+These sites list adapters by name; each needs the new one, in alphabetical order:
 
-## 6. Register `AppName`
+- `core/src/lib/adapter-generation.test.ts`: `adapterNames`. The test compares it against the
+  discovered adapter dirs.
+- `README.md`: the `adapters/<name>/` layout list, and a line in "Using the themes without livery".
+- `core/README.md`: the list under "Adapters".
+
+## 6. Embed in livery
+
+Livery ships every adapter's generated themes in its binary, whether or not it applies them
+(niri, waybar, and wezterm ship without an updater). Add the adapter to:
+
+- `livery/core/build.rs`: the `rerun-if-changed` paths.
+- `livery/core/src/themes/embedded.rs`: the `Adapter` enum, `Adapter::ALL` (and its length),
+  `dir_name()`, a `static` `include_dir!` of `adapters/<name>/themes`, and `embedded()`.
+- `scripts/dev-cycle.ts`: the adapter alternation in `isCliInput`.
+- `livery/core/tests/setup_smoke.rs`: the `report.adapters` count, and one generated file in the
+  unpacked-files list.
+
+## 7. Decide: does livery apply this adapter?
+
+If the app only needs the generated files (user copies them manually), skip to step 13. If livery
+should switch this app's theme automatically, continue.
+
+## 8. Register `AppName`
 
 `livery/core/src/config/types.rs`: add the variant to `enum AppName`, to `AppName::all()`,
 and to `as_str()`. `livery/core/src/config/defaults.rs`: add a default `AppConfig` entry
 (`config_path`, `match_pattern` + `replace_template` for text-patch apps, or `themes_path` for
-linked/merged apps — see `livery/ADAPTERS.md` for the three provisioning classes).
-`livery/core/src/themes/registry.rs`: add the variant's arm to `provisioning()` and to the
-other `match app` blocks in that file (placement, editable fields). These are exhaustive Rust
-matches; the compiler rejects a missing arm.
+merged apps; see `livery/ADAPTERS.md` for the three provisioning classes). A Linked app with
+`themes_path: None` gets its links in `themes/` next to `config_path`.
+`livery/core/src/themes/embedded.rs`: map the variant in `AppName::adapter()`.
+`livery/core/src/themes/registry.rs`: add the variant's arm to `provisioning()`,
+`linked_placement()`, and `editable_fields()`, and pin its fields in
+`test_editable_fields_matches_updaters`. These are exhaustive Rust matches; the compiler rejects a
+missing arm.
 
-## 7. Write the updater
+## 9. Write the updater
 
-Create `livery/core/src/updaters/<name>.rs` with `pub fn update(app_str: &str, app_config:
-&AppConfig, ctx: &UpdateContext) -> UpdateResult`. Use `file_ops::text::patch_text_file` for a
-regex-replace config line (see `updaters/ghostty.rs`), or `file_ops::jsonc`/`file_ops::yaml` for
-structural patching (see `updaters/zed.rs`, `updaters/lazygit.rs`). Register the module with `mod
-<name>;` at the top of `livery/core/src/updaters/mod.rs` and add an arm to `dispatch_update`'s
-`match app` there.
+A text-patch app with no reload needs no module: route it to `patch_text_updater` in
+`dispatch_update` (see delta, helm-tmux, tuicr). Otherwise create
+`livery/core/src/updaters/<name>.rs` with `pub fn update(app_str: &str, app_config: &AppConfig,
+ctx: &UpdateContext) -> UpdateResult`. Use `file_ops::text::patch_text_file` for a regex-replace
+config line (see `updaters/ghostty.rs`), or `file_ops::jsonc`/`file_ops::yaml` for structural
+patching (see `updaters/zed.rs`, `updaters/lazygit.rs`). Register the module with `mod <name>;` at
+the top of `livery/core/src/updaters/mod.rs` and add an arm to `dispatch_update`'s `match app`
+there.
 
-## 8. Test
+## 10. Test
 
-Load the `backend-testing` skill. Add realistic input/expected fixture pairs under
-`livery/core/tests/fixtures/`, write `#[cfg(test)] mod tests` in `<name>.rs` following
-`updaters/zed.rs`, include an idempotency test. Run:
+For a new updater module, load the `backend-testing` skill. Add realistic input/expected fixture
+pairs under `livery/core/tests/fixtures/`, write `#[cfg(test)] mod tests` in `<name>.rs` following
+`updaters/zed.rs`, include an idempotency test.
+
+For a Linked app, add it to the link loop in `livery/core/tests/setup_smoke.rs` and one of its
+links to the symlink assertions there; the status check expects every Linked adapter wired.
+
+Run:
 
 ```bash
-cargo test
+deno task test:rust
 ```
 
-This regenerates `livery/src/bindings.ts` — never hand-edit that file.
+This regenerates `livery/src/bindings.ts`. Never hand-edit that file.
 
-## 9. Frontend settings page
+## 11. Frontend settings page
 
 List `livery/src/components/settings/adapter-pages/` to confirm current files, then add
 `<name>.tsx` there following `zed.tsx` (linked/structural apps) or `ghostty.tsx` (text-patch
 apps): same `AdapterPageProps` shape, `AdapterHeader` + `DraftField`s for editable config fields +
-`ActionRow`. Register the component in that directory's `index.ts`
-(`adapterSettingsPages` map, keyed by the new `AppName`).
+`ActionRow`, and a `PrerequisiteNote` for any setup precondition (see `tmux.tsx`). Register the
+component in that directory's `index.ts` (`adapterSettingsPages` map, keyed by the new
+`AppName`). `livery/src/routes/dev/components.tsx` keys two fixtures by every `AppName`: the
+fixture config's `apps` and `SETTINGS_EDITABLE_FIELDS`.
 
-## 10. Verify and commit
+## 12. Document the contract
+
+`livery/ADAPTERS.md`: add the app to its class in the provisioning table, and a per-adapter
+contract section (files, switch pointer, reload, precondition).
+
+## 13. Verify and commit
 
 ```bash
-deno task check
-deno task test
+deno task verify
 ```
 
-Commit with `feat(livery): add <name> adapter black-atom-industries/livery#68` (adjust scope/issue
-per the root `AGENTS.md` commit conventions). Do not stage automatically; leave the diff for
-review.
+Commit per the root `AGENTS.md` commit conventions: `feat(<name>): add <name> adapter` for the
+adapter, and a separate `feat(livery): apply <name> themes` for the livery wiring. Leave the diff
+unstaged for review.

@@ -26,12 +26,11 @@ tracked in a follow-up issue, so a release today is a tag and a changelog.
 2. Run the full check suite from the repo root:
 
    ```bash
-   deno task check
-   deno task test
-   cargo clippy --workspace -- -D warnings
+   deno task verify
    ```
 
-   All three must pass clean before cutting a release.
+   It runs `check` (including `cargo clippy --workspace --all-targets -- -D warnings`) and `test`.
+   It must pass clean before cutting a release.
 
 3. Prove the bundle builds locally:
 

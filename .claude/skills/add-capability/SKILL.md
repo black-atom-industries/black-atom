@@ -53,18 +53,19 @@ bindings and asserts every `Capability` has a camelCase wrapper in them.
 ## 5. Regenerate bindings
 
 ```bash
-cargo test
+deno task test:rust
 ```
 
-This runs the whole Cargo workspace and, on the way, re-exports
+This builds the UI the Tauri crate compiles against, runs the whole Cargo workspace, and on the way
+re-exports
 `livery/src/bindings.ts` through the `export_typescript_bindings` test in `lib.rs`. Never hand-edit
-`bindings.ts`. The PostToolUse hook and the pre-commit check both verify it matches what `cargo
-test` produces, so a stale binding fails before it reaches a commit.
+`bindings.ts`. The PostToolUse hook only checks that it is non-empty and carries the tauri-specta
+header, so rerun the tests after every change to a command or exported type.
 
 ## 6. Frontend
 
 Call the new binding through a TanStack Query hook in `livery/src/queries/`, following
-`livery/src/queries/use-themes-status.ts`: a `TOPIC` constant, a `queryKey` helper, `useQuery` for
+`livery/src/queries/use-config.ts`: a `TOPIC` constant, a `queryKey` helper, `useQuery` for
 reads, `useMutation` for writes with a `mutationKey` under the same topic so the MutationCache
 invalidates related queries automatically.
 
@@ -77,12 +78,11 @@ operation goes through the command from step 4.
 ## 7. Verify
 
 ```bash
-deno task check
-deno task test
-cargo clippy
+deno task verify
 ```
 
-All three clean before committing.
+It runs `check` (including `cargo clippy --workspace --all-targets -- -D warnings`) and `test`.
+Clean before committing.
 
 ## 8. Commit
 
