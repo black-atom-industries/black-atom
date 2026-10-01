@@ -58,7 +58,6 @@ These sites list adapters by name; each needs the new one, in alphabetical order
 
 - `core/src/lib/adapter-generation.test.ts`: `adapterNames`. The test compares it against the
   discovered adapter dirs.
-- `README.md`: the `adapters/<name>/` layout list, and a line in "Using the themes without livery".
 - `core/README.md`: the list under "Adapters".
 
 ## 6. Embed in livery
@@ -75,7 +74,8 @@ Livery ships every adapter's generated themes in its binary, whether or not it a
 
 ## 7. Decide: does livery apply this adapter?
 
-If the app only needs the generated files (user copies them manually), skip to step 13. If livery
+If the app only needs the generated files (user copies them manually), add it to "Not switched by livery"
+in `livery/ADAPTERS.md` and skip to step 13. If livery
 should switch this app's theme automatically, continue.
 
 ## 8. Register `AppName`
