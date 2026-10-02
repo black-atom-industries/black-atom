@@ -38,7 +38,7 @@ Vendored via Fontsource (static weights 400/500/700, family names match the toke
 **Hierarchy through contrast:** massive display next to tiny mono metadata — the datasheet effect.
 
 History: Berkeley Mono (TX-02) was the original mono target; its license prohibits app bundling
-(EULA §1.14, §9; black-atom-industries/ui#5 unresolved). JetBrains Mono served as interim until the
+(EULA §1.14, §9; #49 unresolved). JetBrains Mono served as interim until the
 design pass settled on Iosevka.
 
 ### Color System
