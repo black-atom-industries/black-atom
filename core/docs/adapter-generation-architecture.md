@@ -80,9 +80,9 @@ An adapter can declare a `postGenerate` command in its `black-atom-adapter.json`
 it in the adapter directory after every file is written. This keeps
 adapter-specific assembly logic inside the adapter, not in core.
 
-## JSR Package
+## Package
 
-Core is published to JSR as [`@black-atom/core`](https://jsr.io/@black-atom/core).
+Core is the workspace package `@black-atom/core`.
 
 ### Exports
 

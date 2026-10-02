@@ -5,18 +5,10 @@
         ".": "./src/mod.ts",
         "./cli": "./src/cli/index.ts"
     },
-    "publish": {
-        "exclude": [
-            "src/tasks/",
-            "src/lib/generate-schema.ts",
-            "src/lib/discover-adapters.ts"
-        ]
-    },
     "tasks": {
         "test": "deno test --allow-all",
         "schema": "deno run --allow-read --allow-write src/lib/generate-schema.ts && deno fmt .",
         "dev": "deno run -A src/tasks/dev.ts",
-        "publish": "deno publish --allow-slow-types",
         "test:terminal-colors": "bash scripts/test-terminal-colors.sh",
         "test:terminal-colors:dev": "deno run -A scripts/test-terminal-colors-dev.ts"
     },

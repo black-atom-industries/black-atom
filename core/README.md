@@ -1,7 +1,5 @@
 # Black Atom Core
 
-[![JSR](https://jsr.io/badges/@black-atom/core)](https://jsr.io/@black-atom/core)
-
 > The core theme definitions and generation engine for the Black Atom theme ecosystem
 
 ## What is Black Atom Core?
@@ -96,19 +94,10 @@ deno task test
 
 # Generate the adapter JSON schema
 deno task schema
-
-# Publish to JSR
-deno task publish
 ```
 
 `deno task check` and `deno task test` at the repo root run typechecking, linting, formatting, and
 tests across every workspace member, core included.
-
-> **Note on `--allow-slow-types`**: The publish task uses `--allow-slow-types` because the theme
-> catalog in `src/themes/catalog.ts` derives its key types from an `as const` collections tuple
-> and combines the collection theme maps with `as const satisfies`. JSR's
-> fast check cannot resolve these inferred types. Tracked in
-> [DEV-292](https://linear.app/black-atom-industries/issue/DEV-292).
 
 ### Creating New Themes and Adapters
 
