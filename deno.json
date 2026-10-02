@@ -99,5 +99,6 @@
             "env": true,
             "run": true
         }
-    }
+    },
+    "allowScripts": ["npm:@swc/core@1.16.0", "npm:esbuild@0.25.12", "npm:fsevents@2.3.3"]
 }
