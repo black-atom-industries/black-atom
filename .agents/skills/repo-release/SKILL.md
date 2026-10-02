@@ -26,7 +26,7 @@ Opens a release before its PR exists, so the work in between aims at it.
 2. Create the milestone and assign the issues the release should close:
 
    ```sh
-   gh api repos/nikbrunner/black-atom/milestones -f title="v<version>"
+   gh api repos/black-atom-industries/black-atom/milestones -f title="v<version>"
    gh issue edit <number> --milestone "v<version>"
    ```
 
@@ -75,5 +75,5 @@ is committed, so a diff means a template or theme change went in without its out
 Ask for explicit approval immediately before merging the release PR. After the release, close the milestone:
 
 ```sh
-gh api -X PATCH repos/nikbrunner/black-atom/milestones/<number> -f state=closed
+gh api -X PATCH repos/black-atom-industries/black-atom/milestones/<number> -f state=closed
 ```

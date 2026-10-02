@@ -16,7 +16,7 @@ The step is done when every outcome has exactly one entry and nothing the change
 
 - One neutral line in present tense: what Black Atom now does or has. No instruction to the reader, no "so that" clause.
 - Name config keys, commands, and flags in backticks, as a user would type them.
-- Link an issue or PR only when one exists: `([#123](https://github.com/nikbrunner/black-atom/pull/123))`.
+- Link an issue or PR only when one exists: `([#123](https://github.com/black-atom-industries/black-atom/pull/123))`.
 - `**Breaking:**` entries go under `### Breaking`, with nested bullets only for separate facts a reader acts on, such as a
   renamed config key.
 

@@ -45,7 +45,7 @@ Formatting comes from `deno.json` and `cargo fmt`; never restate either here.
 ## Commits
 
 ```
-<type>(<scope>): <description> black-atom-industries/livery#68
+<type>(<scope>): <description> #22
 ```
 
 The trailing reference is the open migration epic. Once it closes, commits reference their own

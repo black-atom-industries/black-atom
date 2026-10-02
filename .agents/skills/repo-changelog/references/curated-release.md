@@ -27,5 +27,5 @@ Highlights are the one place where prose addresses the reader, and they carry no
 ## Screenshots
 
 Store screenshots under `docs/assets/changelog/<version>-<topic>.webp`, captured clean at a fixed size. Reference them with
-an absolute URL pinned to the release tag, `https://raw.githubusercontent.com/nikbrunner/black-atom/v<version>/...`, so they render in
+an absolute URL pinned to the release tag, `https://raw.githubusercontent.com/black-atom-industries/black-atom/v<version>/...`, so they render in
 the GitHub Release notes and keep showing that release after later captures replace the files on `main`.
