@@ -7,6 +7,31 @@ export function shellQuote(value: string): string {
     return `'${value.replaceAll("'", "'\\''")}'`;
 }
 
+const LAUNCHER_ENV_KEYS = new Set([
+    "HOME",
+    "USER",
+    "LOGNAME",
+    "SHELL",
+    "PATH",
+    "TMPDIR",
+    "TMUX_TMPDIR",
+    "TERM",
+    "LANG",
+    "CARGO_HOME",
+    "RUSTUP_HOME",
+    "DENO_DIR",
+    "CARGO_TARGET_DIR",
+]);
+
+/** `state.json` sits on disk for the whole session, so it carries only what the CLI needs. */
+export function launcherEnv(env: Record<string, string>): Record<string, string> {
+    return Object.fromEntries(
+        Object.entries(env).filter(([key]) =>
+            LAUNCHER_ENV_KEYS.has(key) || key.startsWith("XDG_") || key.startsWith("LC_")
+        ),
+    );
+}
+
 export async function createDevEnvironment(binary: string) {
     const directory = await Deno.makeTempDir({ prefix: "black-atom-dev-" });
     const env: Record<string, string> = {
@@ -15,7 +40,7 @@ export async function createDevEnvironment(binary: string) {
     };
     const statePath = join(directory, "state.json");
     const launcher = join(directory, "livery-dev");
-    const state: DevState = { owner: Deno.pid, status: "pending", binary, env };
+    const state: DevState = { owner: Deno.pid, status: "pending", binary, env: launcherEnv(env) };
     function setState(status: string) {
         state.status = status;
         Deno.writeTextFileSync(`${statePath}.tmp`, JSON.stringify(state), { mode: 0o600 });

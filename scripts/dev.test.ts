@@ -121,9 +121,18 @@ Deno.test("launcher preserves inherited home, existing config, arguments and rea
         { mode: 0o700 },
     );
     try {
-        await withEnvironment({ HOME: fixture, XDG_CONFIG_HOME: config }, async () => {
+        await withEnvironment({
+            HOME: fixture,
+            XDG_CONFIG_HOME: config,
+            LIVERY_FIXTURE_TOKEN: "secret",
+        }, async () => {
             const session = await createDevEnvironment(binary);
             try {
+                assert.equal(session.env.LIVERY_FIXTURE_TOKEN, "secret");
+                const persisted = JSON.parse(await Deno.readTextFile(session.statePath)).env;
+                assert.equal(persisted.LIVERY_FIXTURE_TOKEN, undefined);
+                assert.equal(persisted.HOME, fixture);
+                assert.equal(persisted.XDG_CONFIG_HOME, config);
                 assert.equal(session.env.HOME, fixture);
                 assert.equal(session.env.XDG_CONFIG_HOME, config);
                 for (
