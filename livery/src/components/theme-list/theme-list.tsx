@@ -1,4 +1,5 @@
 import { formatCollectionTitle, type ThemeGroup } from "../../lib/themes.ts";
+import type * as Theme from "@black-atom/core";
 import { Badge } from "../primitives/badge/badge.tsx";
 import { ListRow } from "../primitives/list-row/list-row.tsx";
 import { SectionHeader } from "../primitives/section-header/section-header.tsx";
@@ -29,7 +30,7 @@ export function ThemeList({ groups, selectedIndex, activeThemeKey, onSelect }: T
                             key={theme.meta.key}
                             selected={isSelected}
                             name={theme.meta.name}
-                            pips={paletteAccentPips(theme.palette)}
+                            pips={themePips(theme)}
                             appearance={theme.meta.appearance === "dark" ? "D" : "L"}
                             leading={isActive ? <Badge size="mini">ACTIVE</Badge> : null}
                             onClick={() => onSelect(index)}
@@ -57,8 +58,29 @@ export function ThemeList({ groups, selectedIndex, activeThemeKey, onSelect }: T
     );
 }
 
-function paletteAccentPips(
-    palette: { red: string; yellow: string; green: string; magenta: string },
-) {
-    return [palette.red, palette.yellow, palette.green, palette.magenta];
+const PIP_COUNT = 10;
+
+function themePips(theme: Theme.Definition) {
+    const { accents, palette } = theme;
+    const candidates = [
+        accents.a10,
+        accents.a20,
+        accents.a30,
+        accents.a40,
+        palette.red,
+        palette.green,
+        palette.blue,
+        palette.yellow,
+        palette.magenta,
+        palette.cyan,
+    ];
+
+    const colors = new Set([theme.ui.bg.default]);
+
+    for (const color of candidates) {
+        if (colors.size === PIP_COUNT) break;
+        if (color) colors.add(color);
+    }
+
+    return [...colors];
 }

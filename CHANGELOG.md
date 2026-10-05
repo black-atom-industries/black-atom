@@ -11,6 +11,8 @@
 
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>
   - tuicr tints highlighted code in added and deleted lines with 30% of the diff background, so the gutter keeps the full color.
+- Livery — nbr <nikolaus.brunner@protonmail.ch>
+  - The theme list shows five color pips per theme: its background, its accents, then palette colors.
 
 ### Fixed
 

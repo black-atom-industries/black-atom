@@ -15,7 +15,7 @@
 
     /* Component metrics */
     --ba-size-pip: 8px; /* status pip */
-    --ba-size-pip-mini: 7px; /* palette pips */
+    --ba-size-pip-mini: 9px; /* palette pips */
     --ba-size-bar: 3px; /* progress bar height */
     --ba-size-band: 40px; /* accent band height */
     --ba-size-swatch: 26px; /* palette grid cell height */
