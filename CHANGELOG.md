@@ -27,6 +27,7 @@
   - A tuicr setup without the `.tmTheme` links shows as unlinked until SET UP runs again.
 - Development — nbr <nikolaus.brunner@protonmail.ch>
   - The dev session state keeps only the environment variables `livery-dev` needs ([#57](https://github.com/black-atom-industries/black-atom/issues/57)).
+  - The dev bridge on macOS reads request data that arrives after the connection is accepted, instead of failing the request ([#10](https://github.com/black-atom-industries/black-atom/issues/10)).
 
 ---
 

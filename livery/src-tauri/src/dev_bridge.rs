@@ -85,6 +85,9 @@ struct Request {
 }
 
 fn handle_connection(mut stream: TcpStream, token: &str) {
+    // On macOS an accepted stream inherits the listener's non-blocking mode,
+    // and a read that would block then fails the request.
+    let _ = stream.set_nonblocking(false);
     let _ = stream.set_read_timeout(Some(Duration::from_secs(5)));
     let result = read_request(&mut stream).and_then(|request| process_request(request, token));
     match result {
