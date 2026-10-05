@@ -5,7 +5,7 @@ export default function (
     { primaries, feedback, accents }: Theme.CreatorContext,
 ): Theme.Ui {
     function t(color: string) {
-        return tint({ color, with: primaries.l40 });
+        return tint({ color, with: primaries.l40, amount: 0.15 });
     }
 
     const sharedFg = {

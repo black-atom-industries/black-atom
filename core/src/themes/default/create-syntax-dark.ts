@@ -69,7 +69,7 @@ export default function (
             special: primaries.l10,
         },
         comment: {
-            default: primaries.m10,
+            default: primaries.m30,
             doc: accents.a10,
             todo: feedback.success,
             error: feedback.negative,

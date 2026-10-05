@@ -9,6 +9,10 @@
 
 ### Changed
 
+- Themes — nbr <nikolaus.brunner@protonmail.ch> ([#54](https://github.com/black-atom-industries/black-atom/issues/54))
+  - Default Light and Dimmed Light use more saturated accents and feedback colors, and Dimmed Light has lighter surfaces.
+  - Diff and feedback backgrounds in the default themes use a subtler tint.
+  - Comments in Default Dark and Dimmed Dark are brighter.
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>
   - tuicr tints highlighted code in added and deleted lines with 30% of the diff background, so the gutter keeps the full color.
 - Livery — nbr <nikolaus.brunner@protonmail.ch>

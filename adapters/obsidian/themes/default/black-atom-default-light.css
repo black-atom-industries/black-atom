@@ -26,14 +26,14 @@
   --color-yellow-rgb: 100, 106, 112;
   --color-green: #757b81;
   --color-green-rgb: 117, 123, 129;
-  --color-cyan: #2eaf6b;
-  --color-cyan-rgb: 46, 175, 107;
+  --color-cyan: #19b168;
+  --color-cyan-rgb: 25, 177, 104;
   --color-blue: #53595f;
   --color-blue-rgb: 83, 89, 95;
-  --color-purple: #6791f1;
-  --color-purple-rgb: 103, 145, 241;
-  --color-pink: #df6989;
-  --color-pink-rgb: 223, 105, 137;
+  --color-purple: #6390fa;
+  --color-purple-rgb: 99, 144, 250;
+  --color-pink: #fb4583;
+  --color-pink-rgb: 251, 69, 131;
 
   /* Backgrounds */
   --background-primary: #eff6fd;
@@ -44,77 +44,77 @@
   --background-modifier-active-hover: #a8afb5;
   --background-modifier-border: #f6fdff;
   --background-modifier-border-hover: #a8afb5;
-  --background-modifier-border-focus: #2eaf6b;
-  --background-modifier-error-rgb: 255, 212, 230;
-  --background-modifier-error: #ffd4e6;
-  --background-modifier-error-hover: #ffd4e6;
-  --background-modifier-success-rgb: 202, 232, 199;
-  --background-modifier-success: #cae8c7;
-  --background-modifier-message: #cce7ed;
+  --background-modifier-border-focus: #19b168;
+  --background-modifier-error-rgb: 254, 233, 238;
+  --background-modifier-error: #fee9ee;
+  --background-modifier-error-hover: #fee9ee;
+  --background-modifier-success-rgb: 222, 238, 221;
+  --background-modifier-success: #deeedd;
+  --background-modifier-message: #deeced;
   --background-modifier-form-field: #eff6fd;
 
   /* Text */
   --text-normal: #0e1217;
   --text-muted: #43484e;
   --text-faint: #646a70;
-  --text-accent: #2eaf6b;
-  --text-accent-hover: #2eaf6b;
+  --text-accent: #19b168;
+  --text-accent-hover: #19b168;
   --text-on-accent: #c8ced5;
   --text-on-accent-inverted: #0e1217;
-  --text-error: #ff50a7;
-  --text-warning: #ff7e00;
-  --text-success: #00a800;
+  --text-error: #fb80aa;
+  --text-warning: #f29520;
+  --text-success: #11a22f;
   --text-selection: #a8afb5;
   --text-highlight-bg: #a8afb5;
 
   /* Interactive */
   --interactive-normal: #eff6fd;
   --interactive-hover: #a8afb5;
-  --interactive-accent: #2eaf6b;
-  --interactive-accent-hover: #2eaf6b;
+  --interactive-accent: #19b168;
+  --interactive-accent-hover: #19b168;
 
   /* Headings */
-  --h1-color: #2eaf6b;
-  --h2-color: #2eaf6b;
-  --h3-color: #2eaf6b;
+  --h1-color: #19b168;
+  --h2-color: #19b168;
+  --h3-color: #19b168;
   --h4-color: #292e34;
   --h5-color: #292e34;
   --h6-color: #292e34;
 
   /* Markup */
-  --bold-color: #2eaf6b;
-  --italic-color: #2eaf6b;
+  --bold-color: #19b168;
+  --italic-color: #19b168;
   --blockquote-border-color: #53595f;
-  --link-color: #2eaf6b;
-  --link-color-hover: #2eaf6b;
-  --link-external-color: #2eaf6b;
-  --link-external-color-hover: #2eaf6b;
+  --link-color: #19b168;
+  --link-color-hover: #19b168;
+  --link-external-color: #19b168;
+  --link-external-color-hover: #19b168;
 
   /* Code / Syntax Highlighting */
   --code-normal: #292e34;
   --code-comment: #757b81;
   --code-function: #1b2025;
-  --code-important: #6791f1;
-  --code-keyword: #6791f1;
+  --code-important: #6390fa;
+  --code-keyword: #6390fa;
   --code-operator: #1b2025;
   --code-property: #53595f;
   --code-punctuation: #292e34;
-  --code-string: #409d48;
-  --code-tag: #2eaf6b;
+  --code-string: #11a22f;
+  --code-tag: #19b168;
   --code-value: #292e34;
   --code-background: #a8afb5;
 
   /* Tags */
-  --tag-color: #2eaf6b;
-  --tag-color-hover: #2eaf6b;
+  --tag-color: #19b168;
+  --tag-color-hover: #19b168;
   --tag-background: #a8afb5;
   --tag-background-hover: #f6fdff;
 
   /* Graph */
   --graph-line: #f6fdff;
-  --graph-node: #2eaf6b;
-  --graph-node-focused: #2eaf6b;
-  --graph-node-tag: #2eaf6b;
+  --graph-node: #19b168;
+  --graph-node-focused: #19b168;
+  --graph-node-tag: #19b168;
   --graph-node-attachment: #757b81;
 
   /* Scrollbar */
@@ -128,7 +128,7 @@
   --nav-item-background-selected: #a8afb5;
   --nav-item-color: #0e1217;
   --nav-item-color-hover: #0e1217;
-  --nav-item-color-active: #2eaf6b;
+  --nav-item-color-active: #19b168;
   --nav-item-color-selected: #0e1217;
 }
 
@@ -160,14 +160,14 @@
   --color-yellow-rgb: 100, 106, 112;
   --color-green: #757b81;
   --color-green-rgb: 117, 123, 129;
-  --color-cyan: #2eaf6b;
-  --color-cyan-rgb: 46, 175, 107;
+  --color-cyan: #19b168;
+  --color-cyan-rgb: 25, 177, 104;
   --color-blue: #53595f;
   --color-blue-rgb: 83, 89, 95;
-  --color-purple: #6791f1;
-  --color-purple-rgb: 103, 145, 241;
-  --color-pink: #df6989;
-  --color-pink-rgb: 223, 105, 137;
+  --color-purple: #6390fa;
+  --color-purple-rgb: 99, 144, 250;
+  --color-pink: #fb4583;
+  --color-pink-rgb: 251, 69, 131;
 
   /* Backgrounds */
   --background-primary: #eff6fd;
@@ -178,77 +178,77 @@
   --background-modifier-active-hover: #a8afb5;
   --background-modifier-border: #f6fdff;
   --background-modifier-border-hover: #a8afb5;
-  --background-modifier-border-focus: #2eaf6b;
-  --background-modifier-error-rgb: 255, 212, 230;
-  --background-modifier-error: #ffd4e6;
-  --background-modifier-error-hover: #ffd4e6;
-  --background-modifier-success-rgb: 202, 232, 199;
-  --background-modifier-success: #cae8c7;
-  --background-modifier-message: #cce7ed;
+  --background-modifier-border-focus: #19b168;
+  --background-modifier-error-rgb: 254, 233, 238;
+  --background-modifier-error: #fee9ee;
+  --background-modifier-error-hover: #fee9ee;
+  --background-modifier-success-rgb: 222, 238, 221;
+  --background-modifier-success: #deeedd;
+  --background-modifier-message: #deeced;
   --background-modifier-form-field: #eff6fd;
 
   /* Text */
   --text-normal: #0e1217;
   --text-muted: #43484e;
   --text-faint: #646a70;
-  --text-accent: #2eaf6b;
-  --text-accent-hover: #2eaf6b;
+  --text-accent: #19b168;
+  --text-accent-hover: #19b168;
   --text-on-accent: #c8ced5;
   --text-on-accent-inverted: #0e1217;
-  --text-error: #ff50a7;
-  --text-warning: #ff7e00;
-  --text-success: #00a800;
+  --text-error: #fb80aa;
+  --text-warning: #f29520;
+  --text-success: #11a22f;
   --text-selection: #a8afb5;
   --text-highlight-bg: #a8afb5;
 
   /* Interactive */
   --interactive-normal: #eff6fd;
   --interactive-hover: #a8afb5;
-  --interactive-accent: #2eaf6b;
-  --interactive-accent-hover: #2eaf6b;
+  --interactive-accent: #19b168;
+  --interactive-accent-hover: #19b168;
 
   /* Headings */
-  --h1-color: #2eaf6b;
-  --h2-color: #2eaf6b;
-  --h3-color: #2eaf6b;
+  --h1-color: #19b168;
+  --h2-color: #19b168;
+  --h3-color: #19b168;
   --h4-color: #292e34;
   --h5-color: #292e34;
   --h6-color: #292e34;
 
   /* Markup */
-  --bold-color: #2eaf6b;
-  --italic-color: #2eaf6b;
+  --bold-color: #19b168;
+  --italic-color: #19b168;
   --blockquote-border-color: #53595f;
-  --link-color: #2eaf6b;
-  --link-color-hover: #2eaf6b;
-  --link-external-color: #2eaf6b;
-  --link-external-color-hover: #2eaf6b;
+  --link-color: #19b168;
+  --link-color-hover: #19b168;
+  --link-external-color: #19b168;
+  --link-external-color-hover: #19b168;
 
   /* Code / Syntax Highlighting */
   --code-normal: #292e34;
   --code-comment: #757b81;
   --code-function: #1b2025;
-  --code-important: #6791f1;
-  --code-keyword: #6791f1;
+  --code-important: #6390fa;
+  --code-keyword: #6390fa;
   --code-operator: #1b2025;
   --code-property: #53595f;
   --code-punctuation: #292e34;
-  --code-string: #409d48;
-  --code-tag: #2eaf6b;
+  --code-string: #11a22f;
+  --code-tag: #19b168;
   --code-value: #292e34;
   --code-background: #a8afb5;
 
   /* Tags */
-  --tag-color: #2eaf6b;
-  --tag-color-hover: #2eaf6b;
+  --tag-color: #19b168;
+  --tag-color-hover: #19b168;
   --tag-background: #a8afb5;
   --tag-background-hover: #f6fdff;
 
   /* Graph */
   --graph-line: #f6fdff;
-  --graph-node: #2eaf6b;
-  --graph-node-focused: #2eaf6b;
-  --graph-node-tag: #2eaf6b;
+  --graph-node: #19b168;
+  --graph-node-focused: #19b168;
+  --graph-node-tag: #19b168;
   --graph-node-attachment: #757b81;
 
   /* Scrollbar */
@@ -262,6 +262,6 @@
   --nav-item-background-selected: #a8afb5;
   --nav-item-color: #0e1217;
   --nav-item-color-hover: #0e1217;
-  --nav-item-color-active: #2eaf6b;
+  --nav-item-color-active: #19b168;
   --nav-item-color-selected: #0e1217;
 }
