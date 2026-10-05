@@ -2,7 +2,10 @@
     "$schema": "../../core/adapter.schema.json",
     "collections": {
         "default": {
-            "template": "./themes/collection.template.toml",
+            "template": [
+                "./themes/collection.template.toml",
+                "./themes/collection.template.tmTheme"
+            ],
             "output": "./themes/default",
             "themes": [
                 "black-atom-default-dark",
@@ -12,7 +15,10 @@
             ]
         },
         "facility": {
-            "template": "./themes/collection.template.toml",
+            "template": [
+                "./themes/collection.template.toml",
+                "./themes/collection.template.tmTheme"
+            ],
             "output": "./themes/facility",
             "themes": [
                 "black-atom-facility-dark",
@@ -22,7 +28,10 @@
             ]
         },
         "terra": {
-            "template": "./themes/collection.template.toml",
+            "template": [
+                "./themes/collection.template.toml",
+                "./themes/collection.template.tmTheme"
+            ],
             "output": "./themes/terra",
             "themes": [
                 "black-atom-terra-spring-dark",
@@ -36,7 +45,10 @@
             ]
         },
         "jpn": {
-            "template": "./themes/collection.template.toml",
+            "template": [
+                "./themes/collection.template.toml",
+                "./themes/collection.template.tmTheme"
+            ],
             "output": "./themes/jpn",
             "themes": [
                 "black-atom-jpn-koyo-dark",
@@ -48,7 +60,10 @@
             ]
         },
         "clay": {
-            "template": "./themes/collection.template.toml",
+            "template": [
+                "./themes/collection.template.toml",
+                "./themes/collection.template.tmTheme"
+            ],
             "output": "./themes/clay",
             "themes": [
                 "black-atom-clay-dark",
@@ -56,7 +71,10 @@
             ]
         },
         "minium": {
-            "template": "./themes/collection.template.toml",
+            "template": [
+                "./themes/collection.template.toml",
+                "./themes/collection.template.tmTheme"
+            ],
             "output": "./themes/minium",
             "themes": [
                 "black-atom-minium-polymer-dark",
@@ -66,7 +84,10 @@
             ]
         },
         "mono": {
-            "template": "./themes/collection.template.toml",
+            "template": [
+                "./themes/collection.template.toml",
+                "./themes/collection.template.tmTheme"
+            ],
             "output": "./themes/mono",
             "themes": [
                 "black-atom-mono-dark",

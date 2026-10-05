@@ -52,11 +52,11 @@ fn is_linked(app: AppName) -> bool {
     }
     match placement {
         registry::LinkedPlacement::PackDir => symlinks::pack_dir_link_is_wired(&managed_dir),
-        registry::LinkedPlacement::FlatByExtension(extension) => {
+        registry::LinkedPlacement::FlatByExtensions(extensions) => {
             let Some(dir) = configured_themes_dir(app) else {
                 return false;
             };
-            symlinks::has_managed_links(&dir, &managed_dir, extension)
+            symlinks::has_managed_links(&dir, &managed_dir, extensions)
         }
         registry::LinkedPlacement::ConfigFolderThemeDir => configured_themes_dirs(app)
             .map(|dirs| {
@@ -220,8 +220,8 @@ fn link_app_themes_inner(
         })?;
 
     match placement {
-        registry::LinkedPlacement::FlatByExtension(extension) => {
-            symlinks::sync_flat_symlinks(&managed_dir, &themes_dir, extension)
+        registry::LinkedPlacement::FlatByExtensions(extensions) => {
+            symlinks::sync_flat_symlinks(&managed_dir, &themes_dir, extensions)
         }
         registry::LinkedPlacement::ConfigFolderThemeDir => {
             symlinks::sync_config_folder_theme_links(&managed_dir, &themes_dir)

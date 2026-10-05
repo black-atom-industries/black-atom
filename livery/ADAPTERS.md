@@ -55,8 +55,10 @@ verify — always ending with verification, so the row reflects the true state.
 
 ### tuicr — Linked
 
-- **Files:** flat symlinks in `~/.config/tuicr/themes/` → managed dir. tuicr looks local themes up
-  by bare name in its own themes dir.
+- **Files:** flat symlinks in `~/.config/tuicr/themes/` → managed dir, one per `.toml` theme and
+  one per `.tmTheme` syntax theme. tuicr looks local themes up by bare name in its own themes dir and
+  resolves `syntax_theme` next to the link
+  ([agavra/tuicr#749](https://github.com/agavra/tuicr/issues/749)).
 - **Switch pointer:** `theme = "<themeKey>"` in `~/.config/tuicr/config.toml`. It takes precedence
   over `theme_dark`, `theme_light`, and `appearance`.
 - **Reload:** none — tuicr reads its theme on start.

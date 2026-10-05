@@ -14,8 +14,9 @@ diff_context = "#d5f4e3"
 diff_hunk_header = "#c3eed9"
 expanded_context_fg = "#75a490"
 
-syntax_add_bg = "#415a41"
-syntax_del_bg = "#644754"
+syntax_theme = "black-atom-facility-dark.tmTheme"
+syntax_add_bg = "#1c261f"
+syntax_del_bg = "#262124"
 
 file_added = "#96e497"
 file_modified = "#c3eed9"

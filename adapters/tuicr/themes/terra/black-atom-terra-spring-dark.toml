@@ -14,8 +14,9 @@ diff_context = "#d6d0c2"
 diff_hunk_header = "#99b9e6"
 expanded_context_fg = "#677e72"
 
-syntax_add_bg = "#4b614d"
-syntax_del_bg = "#593d38"
+syntax_theme = "black-atom-terra-spring-dark.tmTheme"
+syntax_add_bg = "#2e3730"
+syntax_del_bg = "#322c29"
 
 file_added = "#92d49a"
 file_modified = "#99b9e6"

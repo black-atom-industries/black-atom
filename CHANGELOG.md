@@ -7,6 +7,19 @@
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>
   - A collection's `template` in `black-atom-adapter.json` accepts a list, and each template renders one file per theme.
 
+### Changed
+
+- Adapters — nbr <nikolaus.brunner@protonmail.ch>
+  - tuicr tints highlighted code in added and deleted lines with 30% of the diff background, so the gutter keeps the full color.
+
+### Fixed
+
+- Adapters — nbr <nikolaus.brunner@protonmail.ch>
+  - tuicr themes highlight code with Black Atom syntax colors from a generated `.tmTheme` instead of tuicr's bundled base16 theme.
+- Livery — nbr <nikolaus.brunner@protonmail.ch>
+  - The tuicr setup links each theme's `.tmTheme` next to its `.toml`.
+  - A tuicr setup without the `.tmTheme` links shows as unlinked until SET UP runs again.
+
 ---
 
 ## `0.9.0` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2026.10.01

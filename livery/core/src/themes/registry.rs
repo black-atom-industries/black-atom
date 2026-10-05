@@ -32,12 +32,12 @@ pub fn provisioning(app: AppName) -> ThemeProvisioning {
 /// How a Linked adapter's files are placed into the app's scan location.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum LinkedPlacement {
-    /// Flat symlinks in the app's own themes dir, one per theme file with the
-    /// given extension — for apps that look themes up by bare name (zed can't
+    /// Flat symlinks in the app's own themes dir, one per theme file with one
+    /// of the given extensions — for apps that look themes up by bare name (zed can't
     /// read outside its dir, ghostty rejects `~` paths, tmux gets a local
     /// `source-file` target). Theme keys are globally unique, so flattening
     /// the collection nesting loses nothing.
-    FlatByExtension(&'static str),
+    FlatByExtensions(&'static [&'static str]),
     /// Each configuration folder's `themes/Black Atom/` dir gets the merged `theme.css` +
     /// `manifest.json` pair — Obsidian scans per-theme subdirectories.
     ConfigFolderThemeDir,
@@ -51,9 +51,11 @@ pub enum LinkedPlacement {
 
 pub fn linked_placement(app: AppName) -> Option<LinkedPlacement> {
     match app {
-        AppName::Ghostty | AppName::Tmux => Some(LinkedPlacement::FlatByExtension(".conf")),
-        AppName::Zed => Some(LinkedPlacement::FlatByExtension(".json")),
-        AppName::Tuicr => Some(LinkedPlacement::FlatByExtension(".toml")),
+        AppName::Ghostty | AppName::Tmux => Some(LinkedPlacement::FlatByExtensions(&[".conf"])),
+        AppName::Zed => Some(LinkedPlacement::FlatByExtensions(&[".json"])),
+        // tuicr resolves `syntax_theme` next to the link, not its target:
+        // https://github.com/agavra/tuicr/issues/749
+        AppName::Tuicr => Some(LinkedPlacement::FlatByExtensions(&[".toml", ".tmTheme"])),
         AppName::Obsidian => Some(LinkedPlacement::ConfigFolderThemeDir),
         AppName::Nvim => Some(LinkedPlacement::PackDir),
         AppName::HelmTmux | AppName::Delta | AppName::Lazygit | AppName::Herdr => None,

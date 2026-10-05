@@ -156,6 +156,7 @@ mod tests {
                 keys(dir, &mut actual);
             }
             actual.sort();
+            actual.dedup();
             assert_eq!(actual, expected, "{}", adapter.dir_name());
         }
     }

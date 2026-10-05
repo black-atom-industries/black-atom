@@ -5,13 +5,14 @@
 ## About
 
 This directory is the [tuicr](https://github.com/agavra/tuicr) adapter for Black Atom. It contains
-committed local theme files for every Black Atom theme.
+committed local theme files for every Black Atom theme, each a `.toml` theme plus the `.tmTheme`
+syntax theme it points at.
 
 ## Collections
 
 Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.ts) lists the collections and their themes.
 
-Generated files live at `themes/<collection>/<theme-key>.toml`.
+Generated files live at `themes/<collection>/<theme-key>.toml` and `themes/<collection>/<theme-key>.tmTheme`.
 
 ## Usage
 
@@ -34,7 +35,7 @@ collection folders:
 
 ```sh
 mkdir -p ~/.config/tuicr/themes
-cp themes/*/*.toml ~/.config/tuicr/themes/
+cp themes/*/*.toml themes/*/*.tmTheme ~/.config/tuicr/themes/
 ```
 
 On Windows the directory is `%APPDATA%\tuicr\themes\`.
@@ -54,15 +55,15 @@ theme_light = "black-atom-default-light"
 
 `tuicr --theme black-atom-default-dark` selects one for a single run.
 
-The files set no `syntax_theme`, so tuicr highlights code with its bundled dark or light syntax
-theme, chosen from the theme background.
+Each theme's `syntax_theme` names the `.tmTheme` with the same key, which carries the Black Atom
+syntax colors. tuicr resolves it next to the theme file, so both files go into the same directory.
 
 ## Development
 
 Requirements: [Deno](https://deno.com/).
 
 ```sh
-deno run -A ../../core/src/cli/index.ts generate  # regenerate committed TOML files
+deno run -A ../../core/src/cli/index.ts generate  # regenerate committed theme files
 deno run -A ../../core/src/cli/index.ts generate --watch       # regenerate on template changes
 ```
 

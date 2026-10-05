@@ -16,21 +16,21 @@ pub struct SymlinkSyncStats {
     pub skipped: Vec<String>,
 }
 
-/// Point `<app_themes_dir>/<file>` at every `black-atom-*<extension>` one
-/// collection level below `managed_dir`, then prune managed-owned links
-/// whose file no longer exists in the fresh set.
+/// Point `<app_themes_dir>/<file>` at every `black-atom-*` file ending in one
+/// of `extensions` one collection level below `managed_dir`, then prune
+/// managed-owned links whose file no longer exists in the fresh set.
 #[cfg(unix)]
 pub fn sync_flat_symlinks(
     managed_dir: &Path,
     app_themes_dir: &Path,
-    extension: &str,
+    extensions: &[&str],
 ) -> Result<SymlinkSyncStats, String> {
     ensure_under_home(app_themes_dir)?;
     ensure_under_home(managed_dir)?;
     std::fs::create_dir_all(app_themes_dir)
         .map_err(|e| format!("Failed to create {}: {e}", app_themes_dir.display()))?;
 
-    let fresh = fresh_theme_files(managed_dir, extension)?;
+    let fresh = fresh_theme_files(managed_dir, extensions)?;
     let mut stats = SymlinkSyncStats::default();
 
     for (name, target) in &fresh {
@@ -201,7 +201,7 @@ fn link_destination(link: &Path) -> Option<PathBuf> {
 /// level below the managed dir, filtered by extension.
 fn fresh_theme_files(
     managed_dir: &Path,
-    extension: &str,
+    extensions: &[&str],
 ) -> Result<HashMap<String, PathBuf>, String> {
     let mut fresh = HashMap::new();
     let collections = std::fs::read_dir(managed_dir)
@@ -216,7 +216,7 @@ fn fresh_theme_files(
         for file in files.flatten() {
             let name = file.file_name();
             let Some(name) = name.to_str() else { continue };
-            if name.starts_with("black-atom-") && name.ends_with(extension) {
+            if name.starts_with("black-atom-") && extensions.iter().any(|ext| name.ends_with(ext)) {
                 fresh.insert(name.to_string(), file.path());
             }
         }
@@ -234,16 +234,19 @@ fn link_points_at(link: &Path, target: &Path) -> bool {
     }
 }
 
-/// Does the app's flat themes dir hold at least one managed link? Anything
-/// less means the placement was never run, or was undone.
+/// Does the app's flat themes dir hold at least one managed link for every
+/// extension? Anything less means the placement was never run, was undone, or
+/// predates an extension the adapter now ships.
 #[cfg(unix)]
-pub fn has_managed_links(app_themes_dir: &Path, managed_dir: &Path, extension: &str) -> bool {
-    let Ok(fresh) = fresh_theme_files(managed_dir, extension) else {
+pub fn has_managed_links(app_themes_dir: &Path, managed_dir: &Path, extensions: &[&str]) -> bool {
+    let Ok(fresh) = fresh_theme_files(managed_dir, extensions) else {
         return false;
     };
-    fresh
-        .iter()
-        .any(|(name, target)| link_points_at(&app_themes_dir.join(name), target))
+    extensions.iter().all(|ext| {
+        fresh.iter().any(|(name, target)| {
+            name.ends_with(ext) && link_points_at(&app_themes_dir.join(name), target)
+        })
+    })
 }
 
 /// Is the configuration folder's `Black Atom` theme dir wired to the managed pair?
@@ -262,7 +265,11 @@ pub fn pack_dir_link_is_wired(managed_dir: &Path) -> bool {
 }
 
 #[cfg(not(unix))]
-pub fn has_managed_links(_app_themes_dir: &Path, _managed_dir: &Path, _extension: &str) -> bool {
+pub fn has_managed_links(
+    _app_themes_dir: &Path,
+    _managed_dir: &Path,
+    _extensions: &[&str],
+) -> bool {
     false
 }
 
@@ -398,7 +405,7 @@ mod tests {
         let outside = tempfile::TempDir::new().unwrap();
         let app_dir = outside.path().join("themes");
 
-        let err = sync_flat_symlinks(&s.managed, &app_dir, ".json").unwrap_err();
+        let err = sync_flat_symlinks(&s.managed, &app_dir, &[".json"]).unwrap_err();
 
         assert!(
             err.contains("outside the home directory"),
@@ -417,7 +424,7 @@ mod tests {
         std::os::unix::fs::symlink(&escape, &hop).unwrap();
         let app_dir = hop.join("themes");
 
-        let err = sync_flat_symlinks(&s.managed, &app_dir, ".json").unwrap_err();
+        let err = sync_flat_symlinks(&s.managed, &app_dir, &[".json"]).unwrap_err();
 
         assert!(err.contains("dangling symlink"), "unexpected error: {err}");
         assert!(err.contains("hop"), "error must name the component: {err}");
@@ -435,7 +442,7 @@ mod tests {
         std::fs::create_dir_all(hop.parent().unwrap()).unwrap();
         std::os::unix::fs::symlink(outside.path(), &hop).unwrap();
 
-        let err = sync_flat_symlinks(&s.managed, &hop.join("themes"), ".json").unwrap_err();
+        let err = sync_flat_symlinks(&s.managed, &hop.join("themes"), &[".json"]).unwrap_err();
 
         assert!(
             err.contains("outside the home directory"),
@@ -455,7 +462,7 @@ mod tests {
         let hop = s.app_dir.parent().unwrap().join("hop");
         std::os::unix::fs::symlink(&real, &hop).unwrap();
 
-        let stats = sync_flat_symlinks(&s.managed, &hop.join("themes"), ".json").unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &hop.join("themes"), &[".json"]).unwrap();
 
         assert_eq!(stats.linked, 1);
         assert!(real
@@ -471,7 +478,7 @@ mod tests {
             .app_dir
             .join("../../../../../../../../../tmp/livery-escape");
 
-        let err = sync_flat_symlinks(&s.managed, &escaping, ".json").unwrap_err();
+        let err = sync_flat_symlinks(&s.managed, &escaping, &[".json"]).unwrap_err();
 
         assert!(
             err.contains("outside the home directory"),
@@ -482,7 +489,7 @@ mod tests {
     #[test]
     fn test_creates_links_into_managed_dir() {
         let s = setup(".json");
-        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
 
         assert_eq!(stats.linked, 1);
         let link = s.app_dir.join("black-atom-jpn-koyo-dark.json");
@@ -512,11 +519,52 @@ mod tests {
         )
         .unwrap();
 
-        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".conf").unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, &[".conf"]).unwrap();
 
         assert_eq!(stats.linked, 1);
         assert!(s.app_dir.join("black-atom-jpn-koyo-dark.conf").exists());
         assert!(!s.app_dir.join("black-atom-other.json").exists());
+    }
+
+    #[test]
+    fn test_links_every_listed_extension_without_pruning_the_other() {
+        // tuicr's theme .toml names a sibling .tmTheme; both must sit side by side.
+        let s = setup(".toml");
+        std::fs::write(
+            s.managed
+                .join("jpn")
+                .join("black-atom-jpn-koyo-dark.tmTheme"),
+            "syntax",
+        )
+        .unwrap();
+        let extensions = &[".toml", ".tmTheme"];
+
+        let first = sync_flat_symlinks(&s.managed, &s.app_dir, extensions).unwrap();
+        let second = sync_flat_symlinks(&s.managed, &s.app_dir, extensions).unwrap();
+
+        assert_eq!(first.linked, 2);
+        assert_eq!(second.pruned, 0);
+        assert!(s.app_dir.join("black-atom-jpn-koyo-dark.toml").exists());
+        assert!(s.app_dir.join("black-atom-jpn-koyo-dark.tmTheme").exists());
+    }
+
+    #[test]
+    fn test_a_missing_extension_reads_as_unlinked() {
+        let s = setup(".toml");
+        sync_flat_symlinks(&s.managed, &s.app_dir, &[".toml"]).unwrap();
+        std::fs::write(
+            s.managed
+                .join("jpn")
+                .join("black-atom-jpn-koyo-dark.tmTheme"),
+            "syntax",
+        )
+        .unwrap();
+
+        assert!(!has_managed_links(
+            &s.app_dir,
+            &s.managed,
+            &[".toml", ".tmTheme"]
+        ));
     }
 
     #[test]
@@ -526,7 +574,7 @@ mod tests {
         let link = s.app_dir.join("black-atom-jpn-koyo-dark.json");
         std::os::unix::fs::symlink("/nonexistent/clone/theme.json", &link).unwrap();
 
-        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
 
         assert_eq!(stats.linked, 1);
         assert!(link
@@ -552,7 +600,7 @@ mod tests {
         )
         .unwrap();
 
-        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
 
         assert_eq!(stats.pruned, 1);
         assert!(std::fs::symlink_metadata(s.app_dir.join("black-atom-gone.json")).is_err());
@@ -571,7 +619,7 @@ mod tests {
         let link = s.app_dir.join("black-atom-gone.json");
         std::os::unix::fs::symlink(alias.join("jpn/black-atom-gone.json"), &link).unwrap();
 
-        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
 
         assert_eq!(stats.pruned, 1);
         assert!(std::fs::symlink_metadata(link).is_err());
@@ -585,7 +633,7 @@ mod tests {
         let real = s.app_dir.join("black-atom-jpn-koyo-dark.json");
         std::fs::write(&real, "user's own file").unwrap();
 
-        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
 
         assert_eq!(stats.skipped, vec!["black-atom-jpn-koyo-dark.json"]);
         assert_eq!(std::fs::read_to_string(&real).unwrap(), "user's own file");
@@ -594,8 +642,8 @@ mod tests {
     #[test]
     fn test_rerun_is_stable() {
         let s = setup(".json");
-        sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
-        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+        sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
         assert_eq!(stats.linked, 1);
         assert_eq!(stats.pruned, 0);
         assert!(stats.skipped.is_empty());
@@ -611,12 +659,12 @@ mod tests {
         std::fs::create_dir_all(s.app_dir.parent().unwrap()).unwrap();
         std::os::unix::fs::symlink(&real_dir, &s.app_dir).unwrap();
 
-        sync_flat_symlinks(&s.managed, &s.app_dir, ".conf").unwrap();
+        sync_flat_symlinks(&s.managed, &s.app_dir, &[".conf"]).unwrap();
 
         let link = s.app_dir.join("black-atom-jpn-koyo-dark.conf");
         assert!(std::fs::read_link(&link).unwrap().is_relative());
         assert_eq!(std::fs::read_to_string(&link).unwrap(), "content");
-        assert!(has_managed_links(&s.app_dir, &s.managed, ".conf"));
+        assert!(has_managed_links(&s.app_dir, &s.managed, &[".conf"]));
     }
 
     #[test]
@@ -627,10 +675,10 @@ mod tests {
         let target = s.managed.join("jpn").join("black-atom-jpn-koyo-dark.json");
         std::os::unix::fs::symlink(&target, &link).unwrap();
 
-        sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+        sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
 
         assert!(std::fs::read_link(&link).unwrap().is_relative());
-        assert!(has_managed_links(&s.app_dir, &s.managed, ".json"));
+        assert!(has_managed_links(&s.app_dir, &s.managed, &[".json"]));
     }
 
     #[test]
@@ -643,7 +691,7 @@ mod tests {
         )
         .unwrap();
 
-        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, ".json").unwrap();
+        let stats = sync_flat_symlinks(&s.managed, &s.app_dir, &[".json"]).unwrap();
 
         assert_eq!(stats.pruned, 1);
         assert!(!s.app_dir.join("black-atom-gone.json").exists());
