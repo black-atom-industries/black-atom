@@ -1,0 +1,17 @@
+{
+    "imports": {
+        "@playwright/test": "npm:@playwright/test@1.62.1"
+    },
+    "tasks": {
+        "build:bridge": "cargo build -p livery-gui --bin livery-bridge",
+        "test": {
+            "command": "deno run -A npm:@playwright/test@1.62.1 test",
+            "dependencies": ["build:bridge"]
+        },
+        "test:ui": {
+            "command": "deno run -A npm:@playwright/test@1.62.1 test --ui",
+            "dependencies": ["build:bridge"]
+        },
+        "report": "deno run -A npm:@playwright/test@1.62.1 show-report"
+    }
+}

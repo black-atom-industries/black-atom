@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "system_appearance": false,
+    "active_theme": "black-atom-default-dimmed-dark",
+    "apps": {
+        "zed": {
+            "enabled": true,
+            "config_path": "~/.config/zed/settings.json"
+        },
+        "delta": {
+            "enabled": true,
+            "config_path": "~/.gitconfig.delta"
+        },
+        "lazygit": {
+            "enabled": true,
+            "config_path": "~/.config/lazygit/config.yml",
+            "themes_path": "~/.local/share/black-atom/themes/lazygit"
+        }
+    }
+}

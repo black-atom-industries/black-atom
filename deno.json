@@ -3,7 +3,8 @@
     "workspace": [
         "./core",
         "./core/monitor",
-        "./livery"
+        "./livery",
+        "./livery/e2e"
     ],
     "nodeModulesDir": "auto",
     "unstable": [
@@ -37,6 +38,8 @@
         },
         "check": { "dependencies": ["check:deno", "check:rust"] },
         "test": { "dependencies": ["test:deno", "test:rust"] },
+        "test:e2e": "cd livery/e2e && deno task test",
+        "test:e2e:ui": "cd livery/e2e && deno task test:ui",
         "verify": { "dependencies": ["check", "test"] },
         "install:hooks": "lefthook install"
     },
@@ -45,7 +48,11 @@
         "target/",
         "livery/vite.config.ts.timestamp-*",
         "adapters/nvim/syntax_examples/",
-        "livery/docs/design-system/reference/"
+        "livery/docs/design-system/reference/",
+        "livery/e2e/.vite/",
+        "livery/e2e/fixtures/",
+        "livery/e2e/playwright-report/",
+        "livery/e2e/test-results/"
     ],
     "lint": {
         "rules": {
@@ -93,6 +100,7 @@
         ]
     },
     "test": {
+        "exclude": ["livery/e2e/"],
         "permissions": {
             "read": true,
             "write": true,

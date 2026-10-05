@@ -1,7 +1,7 @@
 pub mod commands;
 
 #[cfg(debug_assertions)]
-mod dev_bridge;
+pub mod dev_bridge;
 
 use tauri_specta::{collect_commands, Builder};
 
