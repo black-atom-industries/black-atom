@@ -45,93 +45,99 @@ async function processCollectionTemplates(
     for (const [, collectionConfig] of Object.entries(collections)) {
         if (!collectionConfig) continue;
 
-        const { template: templatePath, output, themes } = collectionConfig;
+        const { template: templates, output, themes } = collectionConfig;
 
-        try {
-            // Read the collection template once
-            const template = await Deno.readTextFile(templatePath);
+        for (const templatePath of [templates].flat()) {
+            try {
+                // Read the collection template once
+                const template = await Deno.readTextFile(templatePath);
 
-            const generatedFiles: string[] = [];
-            const errors: string[] = [];
+                const generatedFiles: string[] = [];
+                const errors: string[] = [];
 
-            // Process each theme in the collection
-            for (const themeKey of themes) {
-                const theme = themeMap[themeKey as Theme.Key];
+                // Process each theme in the collection
+                for (const themeKey of themes) {
+                    const theme = themeMap[themeKey as Theme.Key];
 
-                if (!theme) {
-                    errors.push(`Theme "${themeKey}" not found`);
-                    continue;
-                }
-
-                // Determine the output path: collection.output if set, else next to the template
-                const outputDir = output ?? dirname(templatePath);
-                const outputFileName = basename(templatePath)
-                    .replace(".template.", ".")
-                    .replace(/collection/, themeKey);
-                const outputPath = join(outputDir, outputFileName);
-
-                try {
-                    // Render the template with the theme data
-                    const content = eta.renderString(template, theme);
-
-                    // Check for undefined values in the rendered content and extract variable names
-                    const undefinedMatches = content.match(/\bundefined\b/g);
-                    if (undefinedMatches) {
-                        // Try to find the undefined variable in the template
-                        const templateVariablePattern = /<%=\s*(theme\.[^%]+?)\s*%>/g;
-                        const templateVars = Array.from(template.matchAll(templateVariablePattern));
-
-                        // Find which variable is undefined by checking each one
-                        for (const match of templateVars) {
-                            const varPath = match[1].trim();
-                            // Simple check: try to access the property path and see if it throws or returns undefined
-                            try {
-                                const checkFunction = new Function(
-                                    "theme",
-                                    `try { return ${varPath}; } catch { return undefined; }`,
-                                );
-                                const result = checkFunction(theme);
-                                if (result === undefined) {
-                                    errors.push(`Template contains undefined variable: ${varPath}`);
-                                    break;
-                                }
-                            } catch {
-                                errors.push(`Template contains undefined variable: ${varPath}`);
-                                break;
-                            }
-                        }
-
-                        if (errors.length === 0) {
-                            errors.push(
-                                `Template contains ${undefinedMatches.length} undefined variable(s)`,
-                            );
-                        }
+                    if (!theme) {
+                        errors.push(`Theme "${themeKey}" not found`);
                         continue;
                     }
 
-                    // Write the output
-                    await writeOutput(content, outputPath);
-                    generatedFiles.push(outputPath);
-                } catch (error) {
-                    errors.push(
-                        `Failed to process theme "${themeKey}": ${
-                            error instanceof Error ? error.message : String(error)
-                        }`,
+                    // Determine the output path: collection.output if set, else next to the template
+                    const outputDir = output ?? dirname(templatePath);
+                    const outputFileName = basename(templatePath)
+                        .replace(".template.", ".")
+                        .replace(/collection/, themeKey);
+                    const outputPath = join(outputDir, outputFileName);
+
+                    try {
+                        // Render the template with the theme data
+                        const content = eta.renderString(template, theme);
+
+                        // Check for undefined values in the rendered content and extract variable names
+                        const undefinedMatches = content.match(/\bundefined\b/g);
+                        if (undefinedMatches) {
+                            // Try to find the undefined variable in the template
+                            const templateVariablePattern = /<%=\s*(theme\.[^%]+?)\s*%>/g;
+                            const templateVars = Array.from(
+                                template.matchAll(templateVariablePattern),
+                            );
+
+                            // Find which variable is undefined by checking each one
+                            for (const match of templateVars) {
+                                const varPath = match[1].trim();
+                                // Simple check: try to access the property path and see if it throws or returns undefined
+                                try {
+                                    const checkFunction = new Function(
+                                        "theme",
+                                        `try { return ${varPath}; } catch { return undefined; }`,
+                                    );
+                                    const result = checkFunction(theme);
+                                    if (result === undefined) {
+                                        errors.push(
+                                            `Template contains undefined variable: ${varPath}`,
+                                        );
+                                        break;
+                                    }
+                                } catch {
+                                    errors.push(`Template contains undefined variable: ${varPath}`);
+                                    break;
+                                }
+                            }
+
+                            if (errors.length === 0) {
+                                errors.push(
+                                    `Template contains ${undefinedMatches.length} undefined variable(s)`,
+                                );
+                            }
+                            continue;
+                        }
+
+                        // Write the output
+                        await writeOutput(content, outputPath);
+                        generatedFiles.push(outputPath);
+                    } catch (error) {
+                        errors.push(
+                            `Failed to process theme "${themeKey}": ${
+                                error instanceof Error ? error.message : String(error)
+                            }`,
+                        );
+                    }
+                }
+
+                // Collect errors for this collection
+                if (errors.length > 0) {
+                    allErrors.push(...errors);
+                }
+            } catch (error) {
+                if (error instanceof Deno.errors.NotFound) {
+                    allErrors.push(`Collection template file not found: ${templatePath}`);
+                } else if (error instanceof Error) {
+                    allErrors.push(
+                        `Failed to process collection template ${templatePath}: ${error.message}`,
                     );
                 }
-            }
-
-            // Collect errors for this collection
-            if (errors.length > 0) {
-                allErrors.push(...errors);
-            }
-        } catch (error) {
-            if (error instanceof Deno.errors.NotFound) {
-                allErrors.push(`Collection template file not found: ${templatePath}`);
-            } else if (error instanceof Error) {
-                allErrors.push(
-                    `Failed to process collection template ${templatePath}: ${error.message}`,
-                );
             }
         }
     }

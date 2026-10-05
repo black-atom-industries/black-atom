@@ -41,8 +41,8 @@ async function watchAdapter(adapterConfig: AdapterConfig) {
     // Collect template paths from the adapter config
     if (adapterConfig.collections) {
         for (const collection of Object.values(adapterConfig.collections)) {
-            if (collection?.template) {
-                templatePaths.add(collection.template);
+            for (const template of [collection?.template ?? []].flat()) {
+                templatePaths.add(template);
             }
         }
     }

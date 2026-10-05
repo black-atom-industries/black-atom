@@ -68,6 +68,9 @@ Templates use [Eta](https://eta.js.org/) syntax. The output filename is derived 
 
 Example: `themes/collection.template.lua` → `themes/black-atom-jpn-koyo-yoru.lua`
 
+A collection's `template` is one path or a list of paths. Each template in the list renders its own
+file per theme, as tuicr does for its `.toml` theme and `.tmTheme` syntax theme.
+
 Templates reference **UI**, **syntax**, and **palette** colors, never primaries directly. This
 keeps adapters stable when core internals change.
 

@@ -54,8 +54,12 @@ function generateSchema() {
                 "type": "object",
                 "properties": {
                     "template": {
-                        "type": "string",
-                        "description": "Path to the collection template file",
+                        "oneOf": [
+                            { "type": "string" },
+                            { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+                        ],
+                        "description":
+                            "Path to the collection template file, or several templates that each render one file per theme",
                     },
                     "output": {
                         "type": "string",

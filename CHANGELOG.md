@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Adapters — nbr <nikolaus.brunner@protonmail.ch>
+  - A collection's `template` in `black-atom-adapter.json` accepts a list, and each template renders one file per theme.
+
+---
+
 ## `0.9.0` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2026.10.01
 
 ### Highlights

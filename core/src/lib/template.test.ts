@@ -86,3 +86,42 @@ Deno.test("processTemplates writes next to the template when output is unset", a
         assertEquals(written, "bg: #332733;");
     });
 });
+
+Deno.test("processTemplates renders every template in a template list", async () => {
+    await withTempAdapterDir(async (adapterDir) => {
+        await Deno.mkdir(join(adapterDir, "themes"), { recursive: true });
+        await Deno.writeTextFile(
+            join(adapterDir, "themes", "collection.template.css"),
+            "bg: <%= theme.ui.bg.default %>;",
+        );
+        await Deno.writeTextFile(
+            join(adapterDir, "themes", "collection.template.txt"),
+            "<%= theme.meta.key %>",
+        );
+
+        const adapterConfig = {
+            $schema: "irrelevant",
+            enabled: true,
+            collections: {
+                jpn: {
+                    template: ["themes/collection.template.css", "themes/collection.template.txt"],
+                    output: "themes/jpn",
+                    themes: ["black-atom-jpn-koyo-dark"],
+                },
+            },
+        } as unknown as AdapterConfig;
+
+        const errors = await processTemplates(adapterConfig, themeMap);
+        assertEquals(errors, []);
+
+        const outputDir = join(adapterDir, "themes", "jpn");
+        assertEquals(
+            await Deno.readTextFile(join(outputDir, "black-atom-jpn-koyo-dark.css")),
+            "bg: #332733;",
+        );
+        assertEquals(
+            await Deno.readTextFile(join(outputDir, "black-atom-jpn-koyo-dark.txt")),
+            "black-atom-jpn-koyo-dark",
+        );
+    });
+});

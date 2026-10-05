@@ -8,7 +8,7 @@ import type * as Theme from "../types/theme.ts";
  */
 export function createAdapterConfigSchema(themeKeys: readonly string[]) {
     const collectionConfigSchema = z.object({
-        template: z.string(),
+        template: z.union([z.string(), z.array(z.string()).min(1)]),
         output: z.string().optional(),
         themes: z.array(z.enum(themeKeys as unknown as [string, ...string[]])).min(1),
     });

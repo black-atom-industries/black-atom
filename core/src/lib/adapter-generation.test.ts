@@ -45,7 +45,9 @@ Deno.test("all adapters contain exactly the catalog outputs and regenerate ident
             const collections = Object.fromEntries(
                 Object.entries(config.collections).map(([key, collection]) => {
                     if (!collection) throw new Error(`Missing collection: ${key}`);
-                    const template = join(adapterDir, collection.template);
+                    const template = [collection.template].flat().map((path) =>
+                        join(adapterDir, path)
+                    );
                     for (const theme of collection.themes) {
                         const definition = Object.values(themeCatalog).find((item) =>
                             item.meta.key === theme
@@ -60,16 +62,18 @@ Deno.test("all adapters contain exactly the catalog outputs and regenerate ident
                 if (!collection) throw new Error(`Missing collection: ${key}`);
                 for (const theme of collection.themes) {
                     keys.push(theme);
-                    const name = basename(collection.template).replace(".template.", ".")
-                        .replace("collection", theme);
-                    const output = join(collection.output ?? dirname(collection.template), name);
-                    expected.push(output);
-                    const generated = await Deno.readTextFile(join(tempDir, key, name));
-                    assertEquals(
-                        await Deno.readTextFile(join(adapterDir, output)),
-                        generated,
-                        `${adapter}/${output}`,
-                    );
+                    for (const template of [collection.template].flat()) {
+                        const name = basename(template).replace(".template.", ".")
+                            .replace("collection", theme);
+                        const output = join(collection.output ?? dirname(template), name);
+                        expected.push(output);
+                        const generated = await Deno.readTextFile(join(tempDir, key, name));
+                        assertEquals(
+                            await Deno.readTextFile(join(adapterDir, output)),
+                            generated,
+                            `${adapter}/${output}`,
+                        );
+                    }
                 }
             }
             assertEquals(keys.sort(), [...themeKeys].sort(), adapter);
