@@ -28,6 +28,7 @@
   - The tuicr setup links each theme's `.tmTheme` next to its `.toml`.
   - A tuicr setup without the `.tmTheme` links shows as unlinked until SET UP runs again.
 - Development — nbr <nikolaus.brunner@protonmail.ch>
+  - Development builds read the adapter themes from the working tree, so a running dev GUI never applies stale themes ([#56](https://github.com/black-atom-industries/black-atom/issues/56)).
   - The dev session state keeps only the environment variables `livery-dev` needs ([#57](https://github.com/black-atom-industries/black-atom/issues/57)).
   - The dev bridge on macOS reads request data that arrives after the connection is accepted, instead of failing the request ([#10](https://github.com/black-atom-industries/black-atom/issues/10)).
 

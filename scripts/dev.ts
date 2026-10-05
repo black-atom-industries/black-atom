@@ -5,7 +5,6 @@ import { isGenerationInput } from "../core/src/tasks/adapters/watch.ts";
 import { createDevCycle, isCliInput } from "./dev-cycle.ts";
 import { createDevEnvironment, provisionDevLauncher } from "./dev-environment.ts";
 import { createDevProcesses } from "./dev-process.ts";
-import { createGuiRefresh } from "./dev-gui.ts";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const binary = join(root, "target/debug/livery");
@@ -21,18 +20,15 @@ const launcherLink = await (async () => {
         throw error;
     }
 })();
-const guiRefresh = createGuiRefresh(session.directory);
 const processes = createDevProcesses({ cwd: root, env: session.env, stopGraceMs: 1000 });
 const finished = Promise.withResolvers<number>();
 let stopping = false;
 let initial = true;
 let servicesStarted = false;
 let fingerprint = "";
-let embeddedFingerprint = "";
 
-async function cliFingerprint(): Promise<{ cli: string; embedded: string }> {
+async function cliFingerprint(): Promise<string> {
     const hash = createHash("sha256");
-    const embeddedHash = createHash("sha256");
     async function visit(path: string) {
         const stat = await Deno.stat(path);
         if (stat.isDirectory) {
@@ -49,16 +45,12 @@ async function cliFingerprint(): Promise<{ cli: string; embedded: string }> {
             const content = await Deno.readFile(path);
             hash.update(name);
             hash.update(content);
-            if (name.startsWith("adapters/")) {
-                embeddedHash.update(name);
-                embeddedHash.update(content);
-            }
         }
     }
     for (const path of ["Cargo.toml", "Cargo.lock", "livery/cli", "livery/core", "adapters"]) {
         await visit(join(root, path));
     }
-    return { cli: hash.digest("hex"), embedded: embeddedHash.digest("hex") };
+    return hash.digest("hex");
 }
 
 const cycle = createDevCycle({
@@ -75,10 +67,9 @@ const cycle = createDevCycle({
     },
     build: async () => {
         const next = await cliFingerprint();
-        if (next.cli !== fingerprint) {
+        if (next !== fingerprint) {
             await processes.run(["cargo", "build", "-p", "livery-cli"]);
-            fingerprint = next.cli;
-            embeddedFingerprint = next.embedded;
+            fingerprint = next;
         }
     },
     reapply: async () => {
@@ -91,15 +82,13 @@ const cycle = createDevCycle({
         }
     },
     state: (status) => {
-        if (status === "ready") guiRefresh.publish(embeddedFingerprint);
         session.setState(status);
         if (status.startsWith("failed:")) console.error(status);
         if (status === "ready" && !servicesStarted) {
             servicesStarted = true;
             for (const packagePath of ["core/monitor", "livery"]) {
-                const args = packagePath === "livery" ? ["--config", guiRefresh.config] : [];
                 processes.startService(
-                    [Deno.execPath(), "task", "dev", ...args],
+                    [Deno.execPath(), "task", "dev"],
                     join(root, packagePath),
                 );
             }

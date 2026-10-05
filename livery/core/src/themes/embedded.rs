@@ -4,6 +4,9 @@
 //! themes without a network round trip. The templates and repo noise ride
 //! along in the embedded dirs; `unpack` decides what reaches the disk.
 
+use std::borrow::Cow;
+use std::path::{Path, PathBuf};
+
 use include_dir::{include_dir, Dir};
 
 /// One embedded adapter. Wider than `AppName`: niri, waybar, and wezterm have
@@ -126,6 +129,168 @@ pub fn extra_files(adapter: Adapter) -> &'static [(&'static str, &'static str)] 
         ],
         _ => &[],
     }
+}
+
+/// The repo's `adapters/` dir, which the embedded dirs above are copied from.
+const ADAPTERS_DIR: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/../../adapters");
+
+/// Where each embedded dir and extra file lives under `adapters/`.
+fn repo_dir(adapter: Adapter, prefix: &str) -> String {
+    match (adapter, prefix) {
+        (Adapter::Nvim, prefix) => format!("nvim/{prefix}"),
+        (adapter, _) => format!("{}/themes", adapter.dir_name()),
+    }
+}
+
+/// Which part of an adapter's unpacked dir a payload file belongs to.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Origin {
+    /// A file inside an embedded dir, unpacked under this prefix.
+    Dir(&'static str),
+    /// A file from [`extra_files`], unpacked at the adapter dir root.
+    Extra,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PayloadFile {
+    pub origin: Origin,
+    /// Relative to the embedded dir, or the bare file name for an extra file.
+    pub path: PathBuf,
+    source: Source,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+enum Source {
+    Embedded(&'static [u8]),
+    /// Read only when the file is written, so checking the stamp of an
+    /// unchanged working tree costs a stat per file.
+    Disk {
+        path: PathBuf,
+        len: u64,
+        modified_ns: u128,
+    },
+}
+
+impl PayloadFile {
+    pub fn contents(&self) -> Result<Cow<'static, [u8]>, String> {
+        match &self.source {
+            Source::Embedded(bytes) => Ok(Cow::Borrowed(bytes)),
+            Source::Disk { path, .. } => std::fs::read(path)
+                .map(Cow::Owned)
+                .map_err(|e| format!("Failed to read {}: {e}", path.display())),
+        }
+    }
+
+    /// What the stamp hashes: the contents of an embedded file, the size and
+    /// modification time of a file on disk.
+    pub fn fingerprint(&self) -> Cow<'static, [u8]> {
+        match &self.source {
+            Source::Embedded(bytes) => Cow::Borrowed(bytes),
+            Source::Disk {
+                len, modified_ns, ..
+            } => Cow::Owned(format!("{len}:{modified_ns}").into_bytes()),
+        }
+    }
+}
+
+/// Every file livery ships for `adapter`. Debug builds read them from the
+/// repo's `adapters/` whenever it exists, so a running development build
+/// never serves themes older than the working tree; release builds, and
+/// debug builds away from the repo, use the embedded copy.
+pub fn payload(adapter: Adapter) -> Result<Vec<PayloadFile>, String> {
+    let repo = Path::new(ADAPTERS_DIR);
+    if cfg!(debug_assertions) && repo.is_dir() {
+        payload_from(adapter, Some(repo))
+    } else {
+        payload_from(adapter, None)
+    }
+}
+
+/// [`payload`] from `adapters_dir`, or from the embedded copy when `None`.
+pub fn payload_from(
+    adapter: Adapter,
+    adapters_dir: Option<&Path>,
+) -> Result<Vec<PayloadFile>, String> {
+    let mut files = Vec::new();
+    for (prefix, dir) in embedded(adapter) {
+        match adapters_dir {
+            Some(root) => read_tree(
+                &root.join(repo_dir(adapter, prefix)),
+                Path::new(""),
+                prefix,
+                &mut files,
+            )?,
+            None => collect_embedded(dir, prefix, &mut files),
+        }
+    }
+    for (name, content) in extra_files(adapter) {
+        let source = match adapters_dir {
+            Some(root) => disk_source(root.join(adapter.dir_name()).join(name))?,
+            None => Source::Embedded(content.as_bytes()),
+        };
+        files.push(PayloadFile {
+            origin: Origin::Extra,
+            path: PathBuf::from(name),
+            source,
+        });
+    }
+    Ok(files)
+}
+
+fn collect_embedded(
+    dir: &'static Dir<'static>,
+    prefix: &'static str,
+    files: &mut Vec<PayloadFile>,
+) {
+    for file in dir.files() {
+        files.push(PayloadFile {
+            origin: Origin::Dir(prefix),
+            path: file.path().to_path_buf(),
+            source: Source::Embedded(file.contents()),
+        });
+    }
+    for child in dir.dirs() {
+        collect_embedded(child, prefix, files);
+    }
+}
+
+fn read_tree(
+    dir: &Path,
+    relative: &Path,
+    prefix: &'static str,
+    files: &mut Vec<PayloadFile>,
+) -> Result<(), String> {
+    let entries =
+        std::fs::read_dir(dir).map_err(|e| format!("Failed to read {}: {e}", dir.display()))?;
+    for entry in entries.flatten() {
+        let path = entry.path();
+        let relative = relative.join(entry.file_name());
+        if path.is_dir() {
+            read_tree(&path, &relative, prefix, files)?;
+        } else {
+            files.push(PayloadFile {
+                origin: Origin::Dir(prefix),
+                path: relative,
+                source: disk_source(path)?,
+            });
+        }
+    }
+    Ok(())
+}
+
+fn disk_source(path: PathBuf) -> Result<Source, String> {
+    let meta =
+        std::fs::metadata(&path).map_err(|e| format!("Failed to read {}: {e}", path.display()))?;
+    let modified_ns = meta
+        .modified()
+        .ok()
+        .and_then(|time| time.duration_since(std::time::UNIX_EPOCH).ok())
+        .map_or(0, |since| since.as_nanos());
+    Ok(Source::Disk {
+        path,
+        len: meta.len(),
+        modified_ns,
+    })
 }
 
 #[cfg(test)]

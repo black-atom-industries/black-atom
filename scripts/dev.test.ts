@@ -420,64 +420,6 @@ Deno.test("failed compilation keeps CLI unavailable until a successful rebuild",
     cycle.stop();
 });
 
-import { createGuiRefresh } from "./dev-gui.ts";
-
-Deno.test("GUI refresh observes only successful settled embedded changes", async () => {
-    const fixture = await Deno.makeTempDir();
-    const refresh = createGuiRefresh(fixture);
-    const stamp = `${refresh.directory}/embedded`;
-    let embedded = "initial";
-    let fail = false;
-    const gate = Promise.withResolvers<void>();
-    const started = Promise.withResolvers<void>();
-    let builds = 0;
-    const cycle = createDevCycle({
-        generate: () => fail ? Promise.reject(new Error("generation failed")) : Promise.resolve(),
-        build: async () => {
-            if (++builds === 2) {
-                started.resolve();
-                await gate.promise;
-            }
-        },
-        reapply: () => Promise.resolve(),
-        state: (value) => {
-            if (value === "ready") refresh.publish(embedded);
-        },
-        isGenerationInput: (path) => path.endsWith("theme.ts"),
-        debounceMs: 10_000,
-    });
-    try {
-        assert.deepEqual(JSON.parse(refresh.config), {
-            build: { additionalWatchFolders: [refresh.directory] },
-        });
-        cycle.schedule("theme.ts");
-        await cycle.flush();
-        assert.throws(() => Deno.statSync(stamp));
-        embedded = "changed";
-        cycle.schedule("adapters/ghostty/themes/example.toml");
-        const work = cycle.flush();
-        await started.promise;
-        assert.throws(() => Deno.statSync(stamp));
-        fail = true;
-        cycle.schedule("theme.ts");
-        gate.resolve();
-        await work;
-        assert.throws(() => Deno.statSync(stamp));
-        fail = false;
-        embedded = "settled";
-        cycle.schedule("theme.ts");
-        await cycle.flush();
-        assert.equal(await Deno.readTextFile(stamp), "settled");
-        Deno.utimeSync(stamp, 1, 1);
-        cycle.schedule("livery/cli/src/main.rs");
-        await cycle.flush();
-        assert.equal(Deno.statSync(stamp).mtime?.getTime(), 1000);
-    } finally {
-        cycle.stop();
-        await Deno.remove(fixture, { recursive: true });
-    }
-});
-
 Deno.test("launcher placement handles unset HOME without changing the captured environment", async () => {
     const fixture = await Deno.makeTempDir();
     await Deno.mkdir(`${fixture}/bin`);

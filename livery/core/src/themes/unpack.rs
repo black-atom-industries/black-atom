@@ -1,15 +1,14 @@
-//! Writes the embedded adapter themes into `paths::themes_root()`.
+//! Writes the adapter theme payload into `paths::themes_root()`.
 //!
-//! Runs at startup. A `.stamp` file holding a hash of the whole embedded
-//! payload decides whether anything needs writing, so an unchanged binary
-//! re-launches for free and a rebuilt one with edited adapter sources
-//! replaces the tree.
+//! Runs at startup and before theme operations. A `.stamp` file holding a
+//! hash of the whole payload decides whether anything needs writing, so an
+//! unchanged payload costs nothing and edited adapter sources replace the
+//! tree. See [`embedded::payload`] for where a build reads the payload from.
 
-use std::path::{Path, PathBuf};
+use std::borrow::Cow;
+use std::path::Path;
 
-use include_dir::Dir;
-
-use super::embedded::{self, Adapter};
+use super::embedded::{self, Adapter, Origin, PayloadFile};
 use crate::paths;
 
 const STAMP_FILE: &str = ".stamp";
@@ -26,10 +25,14 @@ pub struct UnpackReport {
     pub stamp: String,
 }
 
-/// Bring `<themes_root>` in sync with the embedded payload.
+/// Bring `<themes_root>` in sync with the payload.
 pub fn ensure_unpacked() -> Result<UnpackReport, String> {
     let root = paths::themes_root();
-    let stamp = payload_stamp();
+    let payloads = Adapter::ALL
+        .iter()
+        .map(|&adapter| embedded::payload(adapter).map(|files| (adapter, files)))
+        .collect::<Result<Vec<_>, _>>()?;
+    let stamp = payload_stamp(&payloads);
 
     std::fs::create_dir_all(&root)
         .map_err(|e| format!("Failed to create {}: {e}", root.display()))?;
@@ -46,8 +49,8 @@ pub fn ensure_unpacked() -> Result<UnpackReport, String> {
 
     let mut files = 0;
     let mut adapters = 0;
-    for adapter in Adapter::ALL {
-        files += unpack_adapter(&root, adapter)?;
+    for (adapter, payload) in &payloads {
+        files += unpack_adapter(&root, *adapter, payload)?;
         adapters += 1;
     }
 
@@ -64,7 +67,7 @@ pub fn ensure_unpacked() -> Result<UnpackReport, String> {
 
 /// Write one adapter into `.staging-<adapter>`, then swap it over the live
 /// dir — a failure part-way never leaves a half-written adapter visible.
-fn unpack_adapter(root: &Path, adapter: Adapter) -> Result<u32, String> {
+fn unpack_adapter(root: &Path, adapter: Adapter, payload: &[PayloadFile]) -> Result<u32, String> {
     let name = adapter.dir_name();
     let staging = root.join(format!("{STAGING_PREFIX}{name}"));
     let _ = std::fs::remove_dir_all(&staging);
@@ -72,38 +75,24 @@ fn unpack_adapter(root: &Path, adapter: Adapter) -> Result<u32, String> {
         .map_err(|e| format!("Failed to create {}: {e}", staging.display()))?;
 
     let mut files = 0;
-    for (prefix, dir) in embedded::embedded(adapter) {
-        files += write_dir(dir, &staging.join(prefix), prefix)?;
-    }
-    for (name, content) in embedded::extra_files(adapter) {
-        write_file(&staging.join(name), content.as_bytes())?;
+    for file in payload {
+        let dest = match file.origin {
+            Origin::Dir(prefix) => {
+                let Some(file_name) = file.path.file_name().and_then(|n| n.to_str()) else {
+                    continue;
+                };
+                if !is_unpackable(prefix, file_name) {
+                    continue;
+                }
+                staging.join(prefix).join(&file.path)
+            }
+            Origin::Extra => staging.join(&file.path),
+        };
+        write_file(&dest, &file.contents()?)?;
         files += 1;
     }
 
     swap_into_place(&staging, &root.join(name), name)?;
-    Ok(files)
-}
-
-/// Recursively write an embedded dir's unpackable files, mirroring its
-/// structure.
-fn write_dir(dir: &Dir<'_>, dest: &Path, prefix: &str) -> Result<u32, String> {
-    let mut files = 0;
-    for file in dir.files() {
-        let Some(name) = file.path().file_name().and_then(|n| n.to_str()) else {
-            continue;
-        };
-        if !is_unpackable(prefix, name) {
-            continue;
-        }
-        write_file(&dest.join(name), file.contents())?;
-        files += 1;
-    }
-    for child in dir.dirs() {
-        let Some(name) = child.path().file_name().and_then(|n| n.to_str()) else {
-            continue;
-        };
-        files += write_dir(child, &dest.join(name), prefix)?;
-    }
     Ok(files)
 }
 
@@ -159,20 +148,25 @@ fn sweep_stale_dirs(root: &Path) {
     }
 }
 
-/// A hash over every embedded file's path and contents, templates included.
+/// A hash over every payload file's path and contents, templates included.
 /// Content-addressed rather than version-tagged: `CARGO_PKG_VERSION` holds
 /// still across a development cycle, so a debug build with edited adapters
 /// would keep serving the previously unpacked tree.
-fn payload_stamp() -> String {
-    let mut entries: Vec<(String, &'static [u8])> = Vec::new();
-    for adapter in Adapter::ALL {
-        for (prefix, dir) in embedded::embedded(adapter) {
-            collect(dir, adapter.dir_name(), prefix, &mut entries);
-        }
-        for (name, content) in embedded::extra_files(adapter) {
-            entries.push((format!("{}/{name}", adapter.dir_name()), content.as_bytes()));
-        }
-    }
+fn payload_stamp(payloads: &[(Adapter, Vec<PayloadFile>)]) -> String {
+    let mut entries: Vec<(String, Cow<[u8]>)> = payloads
+        .iter()
+        .flat_map(|(adapter, files)| {
+            files.iter().map(move |file| {
+                let path = match file.origin {
+                    Origin::Dir(prefix) => {
+                        Path::new(adapter.dir_name()).join(prefix).join(&file.path)
+                    }
+                    Origin::Extra => Path::new(adapter.dir_name()).join(&file.path),
+                };
+                (path.to_string_lossy().into_owned(), file.fingerprint())
+            })
+        })
+        .collect();
     entries.sort_by(|a, b| a.0.cmp(&b.0));
 
     // FNV-1a: no dependency, and stable across processes and releases unlike
@@ -187,25 +181,10 @@ fn payload_stamp() -> String {
     for (path, contents) in &entries {
         eat(path.as_bytes());
         eat(&[0]);
-        eat(contents);
+        eat(contents.as_ref());
         eat(&[0]);
     }
     format!("{hash:016x}")
-}
-
-fn collect(
-    dir: &Dir<'static>,
-    adapter: &str,
-    prefix: &str,
-    entries: &mut Vec<(String, &'static [u8])>,
-) {
-    for file in dir.files() {
-        let path = PathBuf::from(adapter).join(prefix).join(file.path());
-        entries.push((path.to_string_lossy().into_owned(), file.contents()));
-    }
-    for child in dir.dirs() {
-        collect(child, adapter, prefix, entries);
-    }
 }
 
 #[cfg(test)]
@@ -226,11 +205,48 @@ mod tests {
         assert!(!is_unpackable("colors", "template.lua"));
     }
 
+    fn embedded_payloads() -> Vec<(Adapter, Vec<PayloadFile>)> {
+        Adapter::ALL
+            .iter()
+            .map(|&adapter| (adapter, embedded::payload_from(adapter, None).unwrap()))
+            .collect()
+    }
+
     #[test]
     fn test_stamp_is_stable_and_hex() {
-        let stamp = payload_stamp();
-        assert_eq!(stamp, payload_stamp());
+        let stamp = payload_stamp(&embedded_payloads());
+        assert_eq!(stamp, payload_stamp(&embedded_payloads()));
         assert_eq!(stamp.len(), 16);
         assert!(stamp.chars().all(|c| c.is_ascii_hexdigit()));
+    }
+
+    #[test]
+    fn test_repo_payload_follows_edits_on_disk() {
+        let adapters = tempfile::TempDir::new().unwrap();
+        let theme = adapters
+            .path()
+            .join("ghostty/themes/default/black-atom-default-dark.conf");
+        std::fs::create_dir_all(theme.parent().unwrap()).unwrap();
+        std::fs::write(&theme, "background = #000000").unwrap();
+
+        let read = || {
+            vec![(
+                Adapter::Ghostty,
+                embedded::payload_from(Adapter::Ghostty, Some(adapters.path())).unwrap(),
+            )]
+        };
+        let before = read();
+        assert_eq!(
+            before[0].1[0].contents().unwrap().as_ref(),
+            b"background = #000000"
+        );
+
+        std::fs::write(&theme, "background = #ff0000ff").unwrap();
+        let after = read();
+        assert_eq!(
+            after[0].1[0].contents().unwrap().as_ref(),
+            b"background = #ff0000ff"
+        );
+        assert_ne!(payload_stamp(&before), payload_stamp(&after));
     }
 }
