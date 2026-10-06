@@ -59,6 +59,7 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
     }
 
     let mut failed = 0;
+    let mut notes = Vec::new();
     let mut applied = 0;
     std::thread::scope(|scope| {
         let (sender, receiver) = std::sync::mpsc::channel();
@@ -102,16 +103,29 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
             if theme_was_applied(&result) {
                 applied += 1;
             }
+            let inline_message = match result.message {
+                Some(message) if result.status == UpdateStatus::Done => {
+                    notes.push(format!("{label}: {message}"));
+                    None
+                }
+                message => message,
+            };
             println!(
                 "  {label:<10} {}{}",
                 result.status.as_str(),
-                result
-                    .message
+                inline_message
                     .map(|message| format!(" — {message}"))
                     .unwrap_or_default()
             );
         }
     });
+
+    if !notes.is_empty() {
+        println!();
+        for note in &notes {
+            println!("  {note}");
+        }
+    }
 
     // One updater landing is enough to change what the user is looking at,
     // so the record follows the machine rather than the exit code. A run that

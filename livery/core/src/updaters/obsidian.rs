@@ -71,11 +71,7 @@ pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> Upd
             Some(format!("{summary}; warnings: {}", warnings.join("; ")))
         }
     } else if !warnings.is_empty() {
-        Some(format!(
-            "{} Obsidian config folder(s) updated; warnings reported: {}",
-            outcomes.len(),
-            warnings.join("; ")
-        ))
+        Some(warnings.join("; "))
     } else {
         None
     };
