@@ -62,7 +62,7 @@ _%>
             <key>settings</key>
             <dict>
                 <key>background</key>
-                <string><%= theme.ui.bg.default %></string>
+                <string><%= theme.ui.bg.panel %></string>
                 <key>foreground</key>
                 <string><%= theme.ui.fg.default %></string>
                 <key>caret</key>
