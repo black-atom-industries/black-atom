@@ -22,7 +22,11 @@ Agent executions and automated tests must run livery, `tauri dev`, `livery apply
 updaters with a temporary fixture `$HOME` and XDG directories. Updaters write to config files.
 User-started development inherits the user's normal environment and existing configuration.
 
+Trust the real mise config before swapping `$HOME`. Under a fixture home, mise reads it as an
+untrusted project config and every shimmed tool fails.
+
 ```bash
+export MISE_TRUSTED_CONFIG_PATHS="$HOME/.config/mise"
 export HOME="$(mktemp -d)"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
