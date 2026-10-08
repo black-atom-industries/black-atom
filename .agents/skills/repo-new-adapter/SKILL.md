@@ -80,6 +80,10 @@ should switch this app's theme automatically, continue.
 
 ## 8. Register `AppName`
 
+When the app already has an `AppName` and changes provisioning class, every site below is an edit
+to an existing arm. A user's saved `match_pattern` and `replace_template` override the defaults, so
+migrate the old pointer in `normalize_config` (`livery/core/src/config/io.rs`) with a test.
+
 `livery/core/src/config/types.rs`: add the variant to `enum AppName`, to `AppName::all()`,
 and to `as_str()`. `livery/core/src/config/defaults.rs`: add a default `AppConfig` entry
 (`config_path`, `match_pattern` + `replace_template` for text-patch apps, or `themes_path` for
