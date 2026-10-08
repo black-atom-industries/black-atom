@@ -1,10 +1,10 @@
 import { defineThemeColors } from "../define-theme-colors.ts";
 import { oklch } from "../../utils/color.ts";
 
-import createPalette from "../mnml/create-palette-dark.ts";
-import createSyntax from "../mnml/create-syntax-dark.ts";
-import createUi from "../mnml/create-ui-dark.ts";
-import createFeedback from "../mnml/create-feedback-dark.ts";
+import createPalette from "./create-palette-dark.ts";
+import createSyntax from "./create-syntax-dark.ts";
+import createUi from "./create-ui-dark.ts";
+import createFeedback from "./create-feedback-dark.ts";
 
 export default defineThemeColors({
     primaries: {

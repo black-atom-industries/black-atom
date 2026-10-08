@@ -1,10 +1,10 @@
 import { defineThemeColors } from "../define-theme-colors.ts";
 import { oklch } from "../../utils/color.ts";
 
-import createPalette from "../mnml/create-palette-dark.ts";
-import createSyntax from "../mnml/create-syntax-dark.ts";
-import createUi from "../mnml/create-ui-dark.ts";
-import createFeedback from "../mnml/create-feedback-dark.ts";
+import createPalette from "./create-palette-dark.ts";
+import createSyntax from "./create-syntax-dark.ts";
+import createUi from "./create-ui-dark.ts";
+import createFeedback from "./create-feedback-dark.ts";
 
 export default defineThemeColors({
     primaries: {
@@ -30,16 +30,25 @@ export default defineThemeColors({
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
-            debug: false,
-            override: (palette) => ({
-                ...palette,
-                yellow: accents.a10,
-                darkYellow: accents.a10,
-                blue: accents.a20,
-                darkBlue: accents.a20,
-            }),
+            darkRed: oklch(0.60, 0.175, 30),
+            red: accents.a30!,
+
+            darkGreen: oklch(0.65, 0.125, 150),
+            green: oklch(0.75, 0.125, 150),
+
+            darkYellow: oklch(0.70, 0.150, 72),
+            yellow: accents.a10,
+
+            darkBlue: oklch(0.65, 0.125, 255),
+            blue: accents.a20,
+
+            darkMagenta: oklch(0.60, 0.150, 350),
+            magenta: oklch(0.70, 0.150, 350),
+
+            darkCyan: oklch(0.65, 0.100, 200),
+            cyan: oklch(0.75, 0.100, 200),
         }),
-    feedback: ({ accents }) => createFeedback(accents),
+    feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,
     syntax: (context) => ({
         ...createSyntax(context),

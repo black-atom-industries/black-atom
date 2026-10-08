@@ -20,8 +20,7 @@ feedback tokens. The monitor app reads primaries directly.
    there first.
 2. Rename the key everywhere it's set. Theme files under `core/src/themes/<collection>/*.ts` call
    `defineThemeColors()` with values or creators for each derived group. Check those inputs and
-   the shared creators. `default`, `facility`, `terra`, and `jpn` keep their creators in their own
-   directory; `clay`, `minium`, and `mono` share the ones in `core/src/themes/mnml/`:
+   the creators. Every collection keeps its own creators in its directory:
    - `ui` → `core/src/themes/<dir>/create-ui-dark.ts` and `create-ui-light.ts`
    - `syntax` → `create-syntax-dark.ts` and `create-syntax-light.ts`
    - `palette` → `create-palette-dark.ts`, `create-palette-light.ts`, and the shared

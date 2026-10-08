@@ -19,22 +19,22 @@
 
 
   /* Extended Colors */
-  --color-red: #7b919d;
-  --color-red-rgb: 123, 145, 157;
-  --color-orange: #617683;
-  --color-orange-rgb: 97, 118, 131;
-  --color-yellow: #617683;
-  --color-yellow-rgb: 97, 118, 131;
-  --color-green: #617683;
-  --color-green-rgb: 97, 118, 131;
-  --color-cyan: #7b919d;
-  --color-cyan-rgb: 123, 145, 157;
-  --color-blue: #cc8f00;
-  --color-blue-rgb: 204, 143, 0;
-  --color-purple: #617683;
-  --color-purple-rgb: 97, 118, 131;
-  --color-pink: #617683;
-  --color-pink-rgb: 97, 118, 131;
+  --color-red: #db5241;
+  --color-red-rgb: 219, 82, 65;
+  --color-orange: #ac6900;
+  --color-orange-rgb: 172, 105, 0;
+  --color-yellow: #cc8f00;
+  --color-yellow-rgb: 204, 143, 0;
+  --color-green: #429c5a;
+  --color-green-rgb: 66, 156, 90;
+  --color-cyan: #1c989e;
+  --color-cyan-rgb: 28, 152, 158;
+  --color-blue: #457ea1;
+  --color-blue-rgb: 69, 126, 161;
+  --color-purple: #c65b93;
+  --color-purple-rgb: 198, 91, 147;
+  --color-pink: #a53c75;
+  --color-pink-rgb: 165, 60, 117;
 
   /* Backgrounds */
   --background-primary: #c3cfd4;
@@ -46,27 +46,27 @@
   --background-modifier-border: #d2dbdf;
   --background-modifier-border-hover: #b4c3c9;
   --background-modifier-border-focus: #cc8f00;
-  --background-modifier-error-rgb: 229, 186, 182;
-  --background-modifier-error: #e5bab6;
-  --background-modifier-error-hover: #e5bab6;
-  --background-modifier-success-rgb: 194, 203, 175;
-  --background-modifier-success: #c2cbaf;
-  --background-modifier-message: #b3cddf;
+  --background-modifier-error-rgb: 214, 177, 171;
+  --background-modifier-error: #d6b1ab;
+  --background-modifier-error-hover: #d6b1ab;
+  --background-modifier-success-rgb: 173, 193, 176;
+  --background-modifier-success: #adc1b0;
+  --background-modifier-message: #abb9c2;
   --background-modifier-form-field: #c3cfd4;
 
   /* Text */
   --text-normal: #0f212d;
-  --text-muted: #4c5d67;
-  --text-faint: #617683;
+  --text-muted: #617683;
+  --text-faint: #7b919d;
   --text-accent: #cc8f00;
   --text-accent-hover: #cc8f00;
-  --text-on-accent: #b4c3c9;
+  --text-on-accent: #c3cfd4;
   --text-on-accent-inverted: #0f212d;
-  --text-error: #f14d4c;
-  --text-warning: #cd7b00;
-  --text-success: #819e00;
-  --text-selection: #a8b9c0;
-  --text-highlight-bg: #a8b9c0;
+  --text-error: #db5241;
+  --text-warning: #cc8f00;
+  --text-success: #429c5a;
+  --text-selection: #b4c3c9;
+  --text-highlight-bg: #b4c3c9;
 
   /* Interactive */
   --interactive-normal: #c3cfd4;
@@ -85,24 +85,24 @@
   /* Markup */
   --bold-color: #cc8f00;
   --italic-color: #cc8f00;
-  --blockquote-border-color: #617683;
-  --link-color: #457ea1;
-  --link-color-hover: #457ea1;
-  --link-external-color: #457ea1;
-  --link-external-color-hover: #457ea1;
+  --blockquote-border-color: #429c5a;
+  --link-color: #429c5a;
+  --link-color-hover: #429c5a;
+  --link-external-color: #429c5a;
+  --link-external-color-hover: #429c5a;
 
   /* Code / Syntax Highlighting */
-  --code-normal: #1c2b34;
-  --code-comment: #576975;
+  --code-normal: #457ea1;
+  --code-comment: #4c5d67;
   --code-function: #cc8f00;
-  --code-important: #cc8f00;
-  --code-keyword: #cc8f00;
-  --code-operator: #0f212d;
-  --code-property: #4c5d67;
-  --code-punctuation: #2d404b;
-  --code-string: #576975;
-  --code-tag: #457ea1;
-  --code-value: #0f212d;
+  --code-important: #c65b93;
+  --code-keyword: #c65b93;
+  --code-operator: #2b6083;
+  --code-property: #457ea1;
+  --code-punctuation: #4c5d67;
+  --code-string: #429c5a;
+  --code-tag: #cc8f00;
+  --code-value: #2b6083;
   --code-background: #a8b9c0;
 
   /* Tags */
@@ -115,18 +115,18 @@
   --graph-line: #d2dbdf;
   --graph-node: #cc8f00;
   --graph-node-focused: #cc8f00;
-  --graph-node-tag: #7b919d;
-  --graph-node-attachment: #617683;
+  --graph-node-tag: #1c989e;
+  --graph-node-attachment: #429c5a;
 
   /* Scrollbar */
   --scrollbar-bg: #c3cfd4;
   --scrollbar-thumb-bg: #d2dbdf;
-  --scrollbar-active-thumb-bg: #4c5d67;
+  --scrollbar-active-thumb-bg: #617683;
 
   /* Nav */
   --nav-item-background-hover: #b4c3c9;
   --nav-item-background-active: #d2dbdf;
-  --nav-item-background-selected: #a8b9c0;
+  --nav-item-background-selected: #b4c3c9;
   --nav-item-color: #0f212d;
   --nav-item-color-hover: #0f212d;
   --nav-item-color-active: #cc8f00;
