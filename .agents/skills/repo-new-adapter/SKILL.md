@@ -119,6 +119,11 @@ deno task test:rust
 
 This regenerates `livery/src/bindings.ts`. Never hand-edit that file.
 
+`livery/e2e/` pins per-adapter behavior in its specs, fixture homes, and screenshot baselines. Search
+`livery/e2e/tests` and `livery/e2e/fixtures` for the app name, update what the change invalidates,
+and run `deno task test:e2e`. Look at a changed screenshot before accepting it with
+`--update-snapshots`.
+
 ## 11. Frontend settings page
 
 List `livery/src/components/settings/adapter-pages/` to confirm current files, then add

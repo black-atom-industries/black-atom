@@ -63,6 +63,11 @@ deno task verify
 
 A docs-only change may skip `deno task verify`, but say that it was skipped.
 
+`deno task verify` leaves out the end-to-end suite. When the staged change touches the livery UI, an updater's files or
+pointer, or anything under `livery/e2e/`, also run `deno task test:e2e`. A failing spec or screenshot means the suite needs the
+same update as the code: fix its specs, fixtures, or baselines in this commit, and look at a changed screenshot before
+accepting it with `--update-snapshots`.
+
 ## 6. Draft and ask
 
 The message is a [Conventional Commit](https://www.conventionalcommits.org/); release-please derives the next version from it:
