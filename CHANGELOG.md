@@ -19,10 +19,11 @@
 
 ### Changed
 
-- Themes — nbr <nikolaus.brunner@protonmail.ch> ([#54](https://github.com/black-atom-industries/black-atom/issues/54))
-  - Default Light and Dimmed Light use more saturated accents and feedback colors, and Dimmed Light has lighter surfaces.
-  - Diff and feedback backgrounds in the default themes use a subtler tint.
-  - Comments in Default Dark and Dimmed Dark are brighter.
+- Themes — nbr <nikolaus.brunner@protonmail.ch>
+  - Default Light and Dimmed Light use more saturated accents and feedback colors, and Dimmed Light has lighter surfaces ([#54](https://github.com/black-atom-industries/black-atom/issues/54)).
+  - Diff and feedback backgrounds in the default themes use a subtler tint ([#54](https://github.com/black-atom-industries/black-atom/issues/54)).
+  - Comments in Default Dark and Dimmed Dark are brighter ([#54](https://github.com/black-atom-industries/black-atom/issues/54)).
+  - Minium Polymer Dark and Light take their colors from Teenage Engineering hardware: neutral aluminium grays with the signature orange as main accent.
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>
   - tuicr tints highlighted code in added and deleted lines with 30% of the diff background, so the gutter keeps the full color.
   - tuicr themes use the panel background for the main surface and the code background.
