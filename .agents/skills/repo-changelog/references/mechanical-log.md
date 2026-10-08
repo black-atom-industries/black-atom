@@ -31,8 +31,8 @@ each change is a sub-bullet:
   - An unknown key prints its file and line.
 ```
 
-Put the link on the root when every sub-bullet shares it, otherwise on each sub-bullet. Reuse an existing root before adding
-one; current roots are Themes, Adapters, Livery, Livery CLI, and Documentation.
+Put the link on the root when every sub-bullet shares it, otherwise on each sub-bullet. Reuse a root that already appears in
+`CHANGELOG.md` before adding one.
 
 ## Exceptions
 

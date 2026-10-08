@@ -1,6 +1,6 @@
 ---
 name: repo-new-theme
-description: Add a theme to an existing collection. Load when asked to create, design, or add a new Black Atom theme, variant, or appearance.
+description: Add a theme to an existing collection. Load when asked to create, design, or add a new Black Atom theme, variant, or appearance, or to rework an existing theme's colors.
 ---
 
 # New Theme
@@ -8,11 +8,8 @@ description: Add a theme to an existing collection. Load when asked to create, d
 1. Design the theme with the user before writing code: which collection (the `collections` tuple in
    `core/src/themes/catalog.ts` lists them), what name, dark and/or light appearance, and what makes
    it fit the collection's concept. Read one or two existing files in
-   `core/src/themes/<collection>/` for the collection's palette rules first, for example
-   `core/src/themes/terra/black-atom-terra-winter-dark.ts` or
-   `core/src/themes/clay/black-atom-clay-dark.ts`. `terra` derives palette colors with hue
-   shifts per season, `clay` uses two accent tokens (`a10`, `a20`), `default`
-   overrides palette cyan/magenta from accents. The theme key is
+   `core/src/themes/<collection>/` for the collection's palette rules first: how many accent tokens
+   it uses and which palette colors it overrides or derives. The theme key is
    `black-atom-<collection>[-<name>]-<dark|light>`.
 
 2. Create `core/src/themes/<collection>/black-atom-<collection>-<name>-<appearance>.ts`. Copy the
@@ -20,6 +17,16 @@ description: Add a theme to an existing collection. Load when asked to create, d
    then value-or-creator inputs for accents, palette, feedback, UI, and syntax) and only change
    `primaries`, `accents`, and any per-collection palette overrides. Colors go through
    `oklch()` from `core/src/utils/color.ts`. No comments in theme definition files.
+
+   A color that exists in both appearances keeps its hue and changes lightness: the dark variant
+   is a step lighter than the light one, usually with a little less chroma. This holds for accents
+   and for palette colors set in an `override`. Compare a dark and light sibling in the collection
+   to see the step it uses.
+
+   When the user gives reference material (photos, products, palettes), sample its colors and use
+   them as they are, apart from that lightness step between appearances. Never shift lightness,
+   chroma, or hue for contrast. After the theme generates, report weak contrast pairs (token,
+   background, ratio) and let the user decide whether to change them.
 
 3. Register the key in `core/src/themes/<collection>/mod.ts`: import the new theme file and add
    one `{ meta: { name, appearance, status }, colors }` entry to `defineCollection()`'s `themes`
