@@ -18,8 +18,9 @@ pub enum ThemeProvisioning {
 
 pub fn provisioning(app: AppName) -> ThemeProvisioning {
     match app {
-        AppName::HelmTmux | AppName::Delta => ThemeProvisioning::External,
-        AppName::Ghostty
+        AppName::HelmTmux => ThemeProvisioning::External,
+        AppName::Delta
+        | AppName::Ghostty
         | AppName::Zed
         | AppName::Tmux
         | AppName::Obsidian
@@ -52,13 +53,14 @@ pub enum LinkedPlacement {
 pub fn linked_placement(app: AppName) -> Option<LinkedPlacement> {
     match app {
         AppName::Ghostty | AppName::Tmux => Some(LinkedPlacement::FlatByExtensions(&[".conf"])),
+        AppName::Delta => Some(LinkedPlacement::FlatByExtensions(&[".gitconfig"])),
         AppName::Zed => Some(LinkedPlacement::FlatByExtensions(&[".json"])),
         // tuicr resolves `syntax_theme` next to the link, not its target:
         // https://github.com/agavra/tuicr/issues/749
         AppName::Tuicr => Some(LinkedPlacement::FlatByExtensions(&[".toml", ".tmTheme"])),
         AppName::Obsidian => Some(LinkedPlacement::ConfigFolderThemeDir),
         AppName::Nvim => Some(LinkedPlacement::PackDir),
-        AppName::HelmTmux | AppName::Delta | AppName::Lazygit | AppName::Herdr => None,
+        AppName::HelmTmux | AppName::Lazygit | AppName::Herdr => None,
     }
 }
 
@@ -83,17 +85,19 @@ pub enum AdapterEditableField {
 /// nvim/ghostty/tmux have dedicated updaters; delta, helm, and tuicr route
 /// through the shared `patch_text_updater`, so all six read pattern+template. zed
 /// patches structurally (JSONC) from `config_path`; obsidian patches each
-/// configured Obsidian config folder. tmux, lazygit, and herdr additionally point
+/// configured Obsidian config folder. tmux, delta, lazygit, and herdr additionally point
 /// `themes_path` at the managed themes dir.
 /// nvim additionally writes its managed Lua settings block into `settings_path`.
 pub fn editable_fields(app: AppName) -> Vec<AdapterEditableField> {
     use AdapterEditableField::*;
     match app {
         AppName::Nvim => vec![ConfigPath, MatchPattern, ReplaceTemplate, SettingsPath],
-        AppName::Ghostty | AppName::Tuicr | AppName::HelmTmux | AppName::Delta => {
+        AppName::Ghostty | AppName::Tuicr | AppName::HelmTmux => {
             vec![ConfigPath, MatchPattern, ReplaceTemplate]
         }
-        AppName::Tmux => vec![ConfigPath, ThemesPath, MatchPattern, ReplaceTemplate],
+        AppName::Tmux | AppName::Delta => {
+            vec![ConfigPath, ThemesPath, MatchPattern, ReplaceTemplate]
+        }
         AppName::Zed => vec![ConfigPath],
         AppName::Obsidian => vec![],
         AppName::Lazygit | AppName::Herdr => vec![ConfigPath, ThemesPath],
@@ -128,7 +132,7 @@ mod tests {
         );
         assert_eq!(
             editable_fields(AppName::Delta),
-            vec![ConfigPath, MatchPattern, ReplaceTemplate]
+            vec![ConfigPath, ThemesPath, MatchPattern, ReplaceTemplate]
         );
         assert_eq!(
             editable_fields(AppName::Tmux),

@@ -14,6 +14,7 @@ use include_dir::{include_dir, Dir};
 /// tree is what a user's own tooling reads.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Adapter {
+    Delta,
     Ghostty,
     Herdr,
     Lazygit,
@@ -28,7 +29,8 @@ pub enum Adapter {
 }
 
 impl Adapter {
-    pub const ALL: [Adapter; 11] = [
+    pub const ALL: [Adapter; 12] = [
+        Adapter::Delta,
         Adapter::Ghostty,
         Adapter::Herdr,
         Adapter::Lazygit,
@@ -46,6 +48,7 @@ impl Adapter {
     /// the monorepo.
     pub fn dir_name(self) -> &'static str {
         match self {
+            Adapter::Delta => "delta",
             Adapter::Ghostty => "ghostty",
             Adapter::Herdr => "herdr",
             Adapter::Lazygit => "lazygit",
@@ -63,10 +66,11 @@ impl Adapter {
 
 impl crate::config::types::AppName {
     /// The embedded adapter behind this app, if livery ships theme files for
-    /// it. Delta has no adapter repo and helm-tmux compiles its themes in.
+    /// it. Helm-tmux compiles its themes in.
     pub fn adapter(self) -> Option<Adapter> {
         use crate::config::types::AppName;
         match self {
+            AppName::Delta => Some(Adapter::Delta),
             AppName::Ghostty => Some(Adapter::Ghostty),
             AppName::Herdr => Some(Adapter::Herdr),
             AppName::Lazygit => Some(Adapter::Lazygit),
@@ -75,11 +79,12 @@ impl crate::config::types::AppName {
             AppName::Tmux => Some(Adapter::Tmux),
             AppName::Tuicr => Some(Adapter::Tuicr),
             AppName::Zed => Some(Adapter::Zed),
-            AppName::Delta | AppName::HelmTmux => None,
+            AppName::HelmTmux => None,
         }
     }
 }
 
+static DELTA: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/delta/themes");
 static GHOSTTY: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/ghostty/themes");
 static HERDR: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/herdr/themes");
 static LAZYGIT: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/lazygit/themes");
@@ -106,6 +111,7 @@ pub const OBSIDIAN_MANIFEST_JSON: &str =
 /// prefix is `""` for adapters whose `themes/` dir maps onto the adapter dir.
 pub fn embedded(adapter: Adapter) -> Vec<(&'static str, &'static Dir<'static>)> {
     match adapter {
+        Adapter::Delta => vec![("", &DELTA)],
         Adapter::Ghostty => vec![("", &GHOSTTY)],
         Adapter::Herdr => vec![("", &HERDR)],
         Adapter::Lazygit => vec![("", &LAZYGIT)],
@@ -344,7 +350,7 @@ mod tests {
     #[test]
     fn test_app_names_map_onto_adapters() {
         for app in AppName::all() {
-            let expected = !matches!(app, AppName::Delta | AppName::HelmTmux);
+            let expected = !matches!(app, AppName::HelmTmux);
             assert_eq!(app.adapter().is_some(), expected, "{}", app.as_str());
         }
     }

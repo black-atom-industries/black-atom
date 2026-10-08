@@ -251,7 +251,11 @@ fn normalize_config_folder(folder: &str) -> String {
     normalized
 }
 
-/// Normalize legacy Obsidian fields and persist the new schema before callers
+/// A stored delta pattern for the `features = black-atom-<appearance>` pointer,
+/// migrated on read to the include pointer.
+const LEGACY_DELTA_MATCH_PATTERN: &str = r"features\s*=\s*black-atom-(dark|light)";
+
+/// Normalize legacy Obsidian and delta fields and persist the new schema before callers
 /// receive the config. The change is written only when the in-memory schema
 /// actually changes, so a second read is a no-op.
 fn normalize_config(config: &mut Config, path: &Path) {
@@ -281,6 +285,19 @@ fn normalize_config(config: &mut Config, path: &Path) {
         folders = normalize_config_folders(folders);
         changed |= !had_folders || folders != original_folders;
         obsidian.config_folders = Some(folders);
+    }
+
+    if let Some(delta) = config.apps.get_mut(&AppName::Delta) {
+        let default = &Config::default().apps[&AppName::Delta];
+        if delta.match_pattern.as_deref() == Some(LEGACY_DELTA_MATCH_PATTERN) {
+            delta.match_pattern = default.match_pattern.clone();
+            delta.replace_template = default.replace_template.clone();
+            changed = true;
+        }
+        if delta.themes_path.is_none() {
+            delta.themes_path = default.themes_path.clone();
+            changed = true;
+        }
     }
 
     if changed {
@@ -519,6 +536,26 @@ mod tests {
             obsidian.config_folders.as_ref().unwrap(),
             &[appearance.parent().unwrap().to_string_lossy().to_string()]
         );
+    }
+
+    #[test]
+    fn legacy_delta_pointer_migrates_to_the_include_pointer() {
+        let dir = tempfile::TempDir::new().unwrap();
+        let mut config = Config::default();
+        let delta = config.apps.get_mut(&AppName::Delta).unwrap();
+        delta.themes_path = None;
+        delta.match_pattern = Some(LEGACY_DELTA_MATCH_PATTERN.to_string());
+        delta.replace_template = Some("features = black-atom-{appearance}".to_string());
+        let path = dir.path().join("config.json");
+
+        normalize_config(&mut config, &path);
+
+        let migrated: Config = serde_json::from_str(&fs::read_to_string(path).unwrap()).unwrap();
+        let default = &Config::default().apps[&AppName::Delta];
+        let delta = &migrated.apps[&AppName::Delta];
+        assert_eq!(delta.match_pattern, default.match_pattern);
+        assert_eq!(delta.replace_template, default.replace_template);
+        assert_eq!(delta.themes_path, default.themes_path);
     }
 
     #[test]

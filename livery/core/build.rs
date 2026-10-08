@@ -1,5 +1,6 @@
 fn main() {
     for path in [
+        "delta/themes",
         "ghostty/themes",
         "herdr/themes",
         "lazygit/themes",

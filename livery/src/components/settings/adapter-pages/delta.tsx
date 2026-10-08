@@ -8,7 +8,8 @@ import {
 import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
-/** delta — external provisioning, patches ~/.gitconfig.delta via regex. */
+/** delta — linked provisioning, an include points at the managed themes
+    dir; the active theme is selected via a regex-patched line. */
 export function DeltaSettings(
     {
         appConfig,
@@ -50,6 +51,17 @@ export function DeltaSettings(
                         onPickPath={onPickPath}
                     />
                 )}
+                {editableFields.has("themes_path") && (
+                    <DraftField
+                        label="THEMES_PATH"
+                        optional
+                        note="WHERE THEME FILES LIVE"
+                        value={appConfig.themes_path ?? ""}
+                        onCommit={(value) => onFieldCommit("themes_path", value)}
+                        pathKind="directory"
+                        onPickPath={onPickPath}
+                    />
+                )}
                 {editableFields.has("match_pattern") && (
                     <DraftField
                         label="MATCH_PATTERN"
@@ -85,9 +97,9 @@ export function DeltaSettings(
                 onTestApply={onTestApply}
                 testApplyResult={testApplyResult}
             />
-            <ClassDefinition provisioning="external" />
+            <ClassDefinition provisioning="linked" />
             <PrerequisiteNote>
-                Maintain your own ~/.gitconfig.delta with black-atom-dark/light features.
+                Keep an include path in ~/.gitconfig.delta pointing at ~/.config/delta/themes.
             </PrerequisiteNote>
         </div>
     );

@@ -125,10 +125,11 @@ fn setup_chain_end_to_end() {
     let managed_root = paths::themes_root();
     let report = unpack::ensure_unpacked().unwrap();
     assert!(report.unpacked, "first run must write the embedded themes");
-    assert_eq!(report.adapters, 11);
+    assert_eq!(report.adapters, 12);
     assert!(report.files > 200, "unpacked only {} files", report.files);
 
     for (adapter, file) in [
+        ("delta", "default/black-atom-default-dark.gitconfig"),
         ("ghostty", "default/black-atom-default-dark.conf"),
         ("tmux", "jpn/black-atom-jpn-koyo-dark.conf"),
         ("zed", "jpn/black-atom-jpn-koyo-dark.json"),
@@ -220,6 +221,7 @@ fn setup_chain_end_to_end() {
 
     // 4. Link the Linked adapters, then check the placements on disk.
     for app in [
+        AppName::Delta,
         AppName::Ghostty,
         AppName::Zed,
         AppName::Tmux,
@@ -237,6 +239,7 @@ fn setup_chain_end_to_end() {
         assert!(result.linked.unwrap_or(0) > 0);
     }
     for link in [
+        home.join(".config/delta/themes/black-atom-jpn-koyo-dark.gitconfig"),
         home.join(".config/ghostty/themes/black-atom-jpn-koyo-dark.conf"),
         home.join(".config/ghostty/themes/black-atom-default-dark.conf"),
         home.join(".config/tmux/themes/black-atom-jpn-koyo-dark.conf"),
@@ -267,7 +270,7 @@ fn setup_chain_end_to_end() {
     }
 
     // 5. Status: every app carries its class and its editable fields, and
-    // the six Linked adapters now report their placement as wired.
+    // the seven Linked adapters now report their placement as wired.
     let status = block_on(themes::get_app_status()).unwrap();
     assert_eq!(status.len(), AppName::all().len());
     for entry in &status {

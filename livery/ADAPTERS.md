@@ -9,11 +9,11 @@ themes directory** (`$XDG_DATA_HOME/black-atom/themes/<adapter>/`, falling back 
 `~/.local/share`). What happens next depends on one question — **who consumes those files** — and
 every adapter falls into exactly one class:
 
-| Class        | Adapters                                  | Definition                                                                                                                                                                |
-| ------------ | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **External** | helm-tmux, delta                          | The app's theme files are provided outside of livery — by a compiled binary or the user — so livery only performs switching.                                              |
-| **Linked**   | ghostty, zed, tmux, obsidian, nvim, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once. |
-| **Merged**   | lazygit, herdr                            | The app cannot read external theme files, so on every switch livery reads the managed theme and writes its values directly into the app's config.                         |
+| Class        | Adapters                                         | Definition                                                                                                                                                                |
+| ------------ | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **External** | helm-tmux                                        | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching.                                                          |
+| **Linked**   | ghostty, zed, tmux, delta, obsidian, nvim, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once. |
+| **Merged**   | lazygit, herdr                                   | The app cannot read external theme files, so on every switch livery reads the managed theme and writes its values directly into the app's config.                         |
 
 Two per-adapter properties are deliberately **not** classes:
 
@@ -52,6 +52,16 @@ verify — always ending with verification, so the row reflects the true state.
   once; livery rewrites it per switch.
 - **Reload:** `tmux source-file`.
 - **Precondition:** the `source-file` line must exist (any theme path matching the pattern).
+
+### delta — Linked
+
+- **Files:** flat symlinks in `~/.config/delta/themes/` → managed dir. Each file sets delta's
+  `[delta]` section: appearance, diff and line-number styles, and `syntax-theme = ansi`.
+- **Switch pointer:** `path = ~/.config/delta/themes/<themeKey>.gitconfig` under `[include]` in
+  `~/.gitconfig.delta`, which `.gitconfig` includes. Put the include before your own `[delta]`
+  section so your settings win.
+- **Reload:** none needed — delta reads git config on every run.
+- **Precondition:** the include `path` line must exist (any Black Atom theme path).
 
 ### tuicr — Linked
 
@@ -130,12 +140,6 @@ verify — always ending with verification, so the row reflects the true state.
 
 - **Files:** compiled into the Helm binary — nothing to install.
 - **Switch pointer:** `theme: <themeKey>` in `~/.config/black-atom/helm-tmux/config.yml`.
-
-### delta — External
-
-- **Files:** user-owned — maintain your `~/.gitconfig.delta` with `black-atom-dark` /
-  `black-atom-light` feature blocks, included from `.gitconfig`.
-- **Switch pointer:** `features = black-atom-<appearance>`.
 
 ## Not switched by livery
 

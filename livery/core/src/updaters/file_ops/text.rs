@@ -158,16 +158,23 @@ mod tests {
     }
 
     #[test]
-    fn test_delta_appearance_replace() {
+    fn test_delta_include_replace() {
         let file = copy_fixture_to_temp("text/delta-config.ini");
         let path = file.path().to_str().unwrap().to_string();
         let mut vars = HashMap::new();
-        vars.insert("appearance".to_string(), "light".to_string());
+        vars.insert(
+            "themeKey".to_string(),
+            "black-atom-jpn-koyo-light".to_string(),
+        );
+        vars.insert(
+            "themesPath".to_string(),
+            "~/.config/delta/themes".to_string(),
+        );
 
         patch_text_file(
             path.clone(),
-            r"features\s*=\s*black-atom-(dark|light)".to_string(),
-            "features = black-atom-{appearance}".to_string(),
+            r"path\s*=\s*\S+/black-atom-[\w-]+\.gitconfig".to_string(),
+            "path = {themesPath}/{themeKey}.gitconfig".to_string(),
             vars,
         )
         .unwrap();

@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Breaking
+
+- Livery — nbr <nikolaus.brunner@protonmail.ch>
+  - **Breaking:** delta switches themes through an `[include]` line in `~/.gitconfig.delta`, `path = ~/.config/delta/themes/<themeKey>.gitconfig`, and livery links the theme files into `~/.config/delta/themes/`.
+    - The include replaces `features = black-atom-<appearance>` and the `black-atom-dark` and `black-atom-light` blocks, and sits above the `[delta]` section.
+    - A saved livery config moves to the new pointer on its next read.
+
 ### Added
 
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>

@@ -29,7 +29,7 @@ test("writes the theme into every enabled adapter", async ({ page }) => {
     expect(zed).toContain("// Unrelated settings stay untouched");
 
     const delta = readHomeFile("~/.gitconfig.delta");
-    expect(delta).toContain("features = black-atom-light");
+    expect(delta).toContain(`path = ~/.config/delta/themes/${dimmedLight.key}.gitconfig`);
     expect(delta).toContain("line-numbers = true");
 
     const managedTheme = join(
@@ -78,7 +78,9 @@ test("reports a failing adapter and still applies the others", async ({ page }) 
     await expect(rail).toContainText("1 ERROR");
     await expect(rail).toContainText("zed");
 
-    expect(readHomeFile("~/.gitconfig.delta")).toContain("features = black-atom-light");
+    expect(readHomeFile("~/.gitconfig.delta")).toContain(
+        `path = ~/.config/delta/themes/${dimmedLight.key}.gitconfig`,
+    );
     await expect.poll(() => readLiveryConfig().active_theme).toBe(dimmedLight.key);
 });
 

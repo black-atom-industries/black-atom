@@ -58,7 +58,7 @@ const SETTINGS_EDITABLE_FIELDS: Record<AppName, AdapterEditableField[]> = {
     nvim: ["config_path", "match_pattern", "replace_template"],
     ghostty: ["config_path", "match_pattern", "replace_template"],
     "helm-tmux": ["config_path", "match_pattern", "replace_template"],
-    delta: ["config_path", "match_pattern", "replace_template"],
+    delta: ["config_path", "themes_path", "match_pattern", "replace_template"],
     tmux: ["config_path", "themes_path", "match_pattern", "replace_template"],
     zed: ["config_path"],
     lazygit: ["config_path", "themes_path"],
