@@ -8,6 +8,7 @@ import { createAdapterConfigSchema } from "./validate-adapter.ts";
 
 const adaptersDir = fromFileUrl(new URL("../../../adapters/", import.meta.url));
 const adapterNames = [
+    "delta",
     "ghostty",
     "herdr",
     "lazygit",

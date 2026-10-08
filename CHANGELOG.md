@@ -5,6 +5,7 @@
 ### Added
 
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>
+  - A delta adapter generates one git config per theme with diff, line-number, and header colors, and `syntax-theme = ansi`.
   - A collection's `template` in `black-atom-adapter.json` accepts a list, and each template renders one file per theme.
 - Development — nbr <nikolaus.brunner@protonmail.ch>
   - Livery has Playwright end-to-end tests that run the UI against the real backend in a fixture home ([#10](https://github.com/black-atom-industries/black-atom/issues/10)).

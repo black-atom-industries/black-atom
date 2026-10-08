@@ -1,0 +1,79 @@
+{
+    "$schema": "../../core/adapter.schema.json",
+    "collections": {
+        "default": {
+            "template": "./themes/collection.template.gitconfig",
+            "output": "./themes/default",
+            "themes": [
+                "black-atom-default-dark",
+                "black-atom-default-dimmed-dark",
+                "black-atom-default-light",
+                "black-atom-default-dimmed-light"
+            ]
+        },
+        "facility": {
+            "template": "./themes/collection.template.gitconfig",
+            "output": "./themes/facility",
+            "themes": [
+                "black-atom-facility-dark",
+                "black-atom-facility-dimmed-dark",
+                "black-atom-facility-light",
+                "black-atom-facility-dimmed-light"
+            ]
+        },
+        "terra": {
+            "template": "./themes/collection.template.gitconfig",
+            "output": "./themes/terra",
+            "themes": [
+                "black-atom-terra-spring-dark",
+                "black-atom-terra-spring-light",
+                "black-atom-terra-summer-dark",
+                "black-atom-terra-summer-light",
+                "black-atom-terra-fall-dark",
+                "black-atom-terra-fall-light",
+                "black-atom-terra-winter-dark",
+                "black-atom-terra-winter-light"
+            ]
+        },
+        "jpn": {
+            "template": "./themes/collection.template.gitconfig",
+            "output": "./themes/jpn",
+            "themes": [
+                "black-atom-jpn-koyo-dark",
+                "black-atom-jpn-koyo-light",
+                "black-atom-jpn-murasaki-dark",
+                "black-atom-jpn-tsuki-dark",
+                "black-atom-jpn-sanshoku-dark",
+                "black-atom-jpn-sanshoku-light"
+            ]
+        },
+        "clay": {
+            "template": "./themes/collection.template.gitconfig",
+            "output": "./themes/clay",
+            "themes": [
+                "black-atom-clay-dark",
+                "black-atom-clay-light"
+            ]
+        },
+        "minium": {
+            "template": "./themes/collection.template.gitconfig",
+            "output": "./themes/minium",
+            "themes": [
+                "black-atom-minium-polymer-dark",
+                "black-atom-minium-polymer-light",
+                "black-atom-minium-viridian-dark",
+                "black-atom-minium-viridian-light"
+            ]
+        },
+        "mono": {
+            "template": "./themes/collection.template.gitconfig",
+            "output": "./themes/mono",
+            "themes": [
+                "black-atom-mono-dark",
+                "black-atom-mono-light",
+                "black-atom-mono-dimmed-dark",
+                "black-atom-mono-dimmed-light"
+            ]
+        }
+    }
+}
