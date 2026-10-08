@@ -71,8 +71,8 @@ The message is a [Conventional Commit](https://www.conventionalcommits.org/); re
 <type>(<scope>): <imperative summary>
 ```
 
-Read the commit conventions in `AGENTS.md` before drafting, and end the subject with any commit suffix they name, such as
-an issue reference.
+End the subject with `#22`, the open migration epic. Once it closes, end it with the commit's own issue:
+`<type>(<scope>): <summary> #<issue>`.
 
 - `feat` for new user-facing behavior, `fix` for a user-facing bug fix. Both trigger a release.
 - `docs`, `refactor`, `perf`, `test`, `ci`, `chore` for the rest. Only `docs`, `refactor`, and `perf` count toward a release.

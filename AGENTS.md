@@ -42,17 +42,6 @@ one output file per theme next to the template. Generated files are never edited
 Language conventions come from the `nbr-conventions` skill — TypeScript, React, CSS, state, TanStack.
 Formatting comes from `deno.json` and `cargo fmt`; never restate either here.
 
-## Commits
-
-```
-<type>(<scope>): <description> #22
-```
-
-The trailing reference is the open migration epic. Once it closes, commits reference their own
-issue: `<type>(<scope>): <description> #<issue>`.
-
-Commit through the `repo-commit` skill; it owns types, scopes, and the checks.
-
 ## Further context
 
 Scoped instructions: `livery/src/AGENTS.md` (frontend), `livery/src-tauri/AGENTS.md` (backend).
