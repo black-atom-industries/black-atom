@@ -59,7 +59,7 @@ deno task verify
 ```
 
 `deno task verify` is the CI-parity pass. The pre-commit hook checks formatting and lint on staged files; pre-push runs
-`deno task verify`. If verification fails, fix the cause, restage, and run it again.
+`deno task verify`, and `deno task test:e2e` when the push touches `livery/`, `core/src/`, or adapter themes. If verification fails, fix the cause, restage, and run it again.
 
 A docs-only change may skip `deno task verify`, but say that it was skipped.
 

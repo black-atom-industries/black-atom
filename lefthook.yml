@@ -25,3 +25,9 @@ pre-push:
     jobs:
         - name: workspace-verify
           run: deno task verify
+        - name: livery-e2e
+          glob:
+              - "livery/**"
+              - "core/src/**"
+              - "adapters/*/themes/**"
+          run: deno task test:e2e
