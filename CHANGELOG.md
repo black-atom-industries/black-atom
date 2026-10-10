@@ -2,6 +2,71 @@
 
 ## [0.10.0](https://github.com/black-atom-industries/black-atom/compare/v0.9.0...v0.10.0) (2026-10-10)
 
+### Highlights
+
+#### Node instead of Deno
+
+The Deno team joined Cloudflare, and Deno itself only gets bug fixes and security updates until October 2027
+([announcement](https://deno.com/blog/cloudflare)). Black Atom now builds and generates on Node 24 with npm workspaces.
+Building livery from a clone, generating themes, and working on an adapter need Node instead of Deno, and every task is
+an npm script:
+
+```sh
+npm install
+npm run install:macos   # build and install the app and the livery command
+npm run generate        # regenerate every adapter's themes
+```
+
+Inside an adapter directory, `node ../../core/src/cli/index.ts generate` regenerates that adapter. Formatting, linting,
+type checks, and tests run through oxfmt, ESLint, TypeScript, and Vitest
+([#58](https://github.com/black-atom-industries/black-atom/issues/58)).
+
+#### Kagi Search
+
+A new adapter themes Kagi Search with one brutalist custom CSS per theme pair: square corners, hard offset shadows,
+thick rules, uppercase titles, monospace fonts, and code blocks in the theme's syntax colors. Each file carries the light
+and the dark variant and follows Kagi's appearance setting. Knobs for fonts, case, border widths, and shadow offsets sit
+at the top of the file. Livery copies a theme to the clipboard, ready to paste into Kagi's custom CSS setting:
+
+```sh
+livery adapter kagi black-atom-jpn-koyo --font "JetBrains Mono"
+```
+
+Without a theme it opens a picker.
+
+#### delta
+
+delta gets a generated git config per theme with diff, line-number, and header colors, and `syntax-theme = ansi`. Livery
+links the files into `~/.config/delta/themes/` and switches delta with the rest of your tools.
+
+#### Refreshed themes
+
+Minium Polymer takes its colors from Teenage Engineering hardware: neutral aluminium grays with the signature orange as
+the main accent. JPN Sanshoku shares the JPN syntax and UI colors, with a full palette built from its amber, blue, and
+vermilion. Default Light and Dimmed Light use more saturated accents and feedback colors, Dimmed Light has lighter
+surfaces, the Default Dark and Dimmed Dark comments are brighter, and diff backgrounds use a subtler tint
+([#54](https://github.com/black-atom-industries/black-atom/issues/54)).
+
+#### Important fixes
+
+tuicr highlights code with Black Atom syntax colors from a generated `.tmTheme`, where it used to fall back to its bundled
+base16 theme. Livery links the `.tmTheme` next to each tuicr theme.
+
+#### Upgrading from 0.9
+
+delta switches through an include. In `~/.gitconfig.delta`, replace the `features` line and the `black-atom-dark` and
+`black-atom-light` blocks with an include above your own `[delta]` section, then run `livery setup`:
+
+```diff
+-[delta]
+-    features = black-atom-dark
++[include]
++    path = ~/.config/delta/themes/black-atom-default-dark.gitconfig
+```
+
+Run `livery setup` once more for tuicr as well; until then livery shows its setup as unlinked.
+
+In an existing clone, delete the `node_modules` directories Deno created before the first `npm install`.
 
 ### ⚠ BREAKING CHANGES
 
