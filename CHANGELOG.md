@@ -1,52 +1,91 @@
 # Changelog
 
-## [Unreleased]
+## `0.10.0` &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2026.10.10
 
-### Breaking
+### Highlights
 
-- Livery — nbr <nikolaus.brunner@protonmail.ch>
-  - **Breaking:** delta switches themes through an `[include]` line in `~/.gitconfig.delta`, `path = ~/.config/delta/themes/<themeKey>.gitconfig`, and livery links the theme files into `~/.config/delta/themes/`.
-    - The include replaces `features = black-atom-<appearance>` and the `black-atom-dark` and `black-atom-light` blocks, and sits above the `[delta]` section.
-    - A saved livery config moves to the new pointer on its next read.
+#### Node instead of Deno
+
+The Deno team joined Cloudflare, and Deno itself only gets bug fixes and security updates until October 2027
+([announcement](https://deno.com/blog/cloudflare)). Black Atom now builds and generates on Node 24 with npm workspaces.
+Building livery from a clone, generating themes, and working on an adapter need Node instead of Deno, and every task is
+an npm script:
+
+```sh
+npm install
+npm run install:macos   # build and install the app and the livery command
+npm run generate        # regenerate every adapter's themes
+```
+
+Inside an adapter directory, `node ../../core/src/cli/index.ts generate` regenerates that adapter. Formatting, linting,
+type checks, and tests run through oxfmt, ESLint, TypeScript, and Vitest
+([#58](https://github.com/black-atom-industries/black-atom/issues/58)).
+
+#### Kagi Search
+
+A new adapter themes Kagi Search with one brutalist custom CSS per theme pair: square corners, hard offset shadows,
+thick rules, uppercase titles, monospace fonts, and code blocks in the theme's syntax colors. Each file carries the light
+and the dark variant and follows Kagi's appearance setting. Knobs for fonts, case, border widths, and shadow offsets sit
+at the top of the file. Livery copies a theme to the clipboard, ready to paste into Kagi's custom CSS setting:
+
+```sh
+livery adapter kagi black-atom-jpn-koyo --font "JetBrains Mono"
+```
+
+Without a theme it opens a picker.
+
+#### delta
+
+delta gets a generated git config per theme with diff, line-number, and header colors, and `syntax-theme = ansi`. Livery
+links the files into `~/.config/delta/themes/` and switches delta with the rest of your tools.
+
+#### Refreshed themes
+
+Minium Polymer takes its colors from Teenage Engineering hardware: neutral aluminium grays with the signature orange as
+the main accent. JPN Sanshoku shares the JPN syntax and UI colors, with a full palette built from its amber, blue, and
+vermilion. Default Light and Dimmed Light use more saturated accents and feedback colors, Dimmed Light has lighter
+surfaces, the Default Dark and Dimmed Dark comments are brighter, and diff backgrounds use a subtler tint
+([#54](https://github.com/black-atom-industries/black-atom/issues/54)).
+
+#### Important fixes
+
+tuicr highlights code with Black Atom syntax colors from a generated `.tmTheme`, where it used to fall back to its bundled
+base16 theme. Livery links the `.tmTheme` next to each tuicr theme.
+
+#### Upgrading from 0.9
+
+delta switches through an include. In `~/.gitconfig.delta`, replace the `features` line and the `black-atom-dark` and
+`black-atom-light` blocks with an include above your own `[delta]` section, then run `livery setup`:
+
+```diff
+-[delta]
+-    features = black-atom-dark
++[include]
++    path = ~/.config/delta/themes/black-atom-default-dark.gitconfig
+```
+
+Run `livery setup` once more for tuicr as well; until then livery shows its setup as unlinked.
+
+In an existing clone, delete the `node_modules` directories Deno created before the first `npm install`.
 
 ### Added
 
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>
-  - A delta adapter generates one git config per theme with diff, line-number, and header colors, and `syntax-theme = ansi`.
   - A collection's `template` in `black-atom-adapter.json` accepts a list, and each template renders one file per theme.
-  - A Kagi adapter builds one brutalist custom CSS for Kagi Search per theme pair, with a centered layout, code blocks in the theme's syntax colors, and knobs for fonts, case, border widths, and shadow offsets at the top.
-  - Each Kagi file holds a theme's light and dark variant and follows Kagi's appearance setting, with Auto following the system color scheme.
-- Livery — nbr <nikolaus.brunner@protonmail.ch>
-  - `livery adapter kagi` copies a Kagi theme to the clipboard, picking one interactively when no theme is given, and can put a preferred font first through a prompt or `--font`.
 - Development — nbr <nikolaus.brunner@protonmail.ch>
   - Livery has Playwright end-to-end tests that run the UI against the real backend in a fixture home ([#10](https://github.com/black-atom-industries/black-atom/issues/10)).
 
 ### Changed
 
-- Themes — nbr <nikolaus.brunner@protonmail.ch>
-  - Default Light and Dimmed Light use more saturated accents and feedback colors, and Dimmed Light has lighter surfaces ([#54](https://github.com/black-atom-industries/black-atom/issues/54)).
-  - Diff and feedback backgrounds in the default themes use a subtler tint ([#54](https://github.com/black-atom-industries/black-atom/issues/54)).
-  - Comments in Default Dark and Dimmed Dark are brighter ([#54](https://github.com/black-atom-industries/black-atom/issues/54)).
-  - Minium Polymer Dark and Light take their colors from Teenage Engineering hardware: neutral aluminium grays with the signature orange as main accent.
-  - JPN Sanshoku Dark and Light share the JPN syntax and UI colors, with a full palette built from their amber, blue, and vermilion.
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>
   - tuicr tints highlighted code in added and deleted lines with 30% of the diff background, so the gutter keeps the full color.
   - tuicr themes use the panel background for the main surface and the code background.
 - Livery — nbr <nikolaus.brunner@protonmail.ch>
   - The theme list shows five color pips per theme: its background, its accents, then palette colors.
   - `livery apply` lists notes from successful updates, such as a deferred Obsidian reload, below the results.
-- Development — nbr <nikolaus.brunner@protonmail.ch> ([#58](https://github.com/black-atom-industries/black-atom/issues/58))
-  - The workspace runs on Node 24 and npm workspaces: `npm install`, then `npm run dev`, `npm run check`, `npm run test`, and `npm run verify`.
-  - oxfmt formats, ESLint lints, TypeScript type-checks, and Vitest runs the tests.
-  - An adapter regenerates its themes with `node ../../core/src/cli/index.ts generate`.
 
 ### Fixed
 
-- Adapters — nbr <nikolaus.brunner@protonmail.ch>
-  - tuicr themes highlight code with Black Atom syntax colors from a generated `.tmTheme` instead of tuicr's bundled base16 theme.
-- Livery — nbr <nikolaus.brunner@protonmail.ch>
-  - The tuicr setup links each theme's `.tmTheme` next to its `.toml`.
-  - A tuicr setup without the `.tmTheme` links shows as unlinked until SET UP runs again.
 - Development — nbr <nikolaus.brunner@protonmail.ch>
   - Development builds read the adapter themes from the working tree, so a running dev GUI never applies stale themes ([#56](https://github.com/black-atom-industries/black-atom/issues/56)).
   - The dev session state keeps only the environment variables `livery-dev` needs ([#57](https://github.com/black-atom-industries/black-atom/issues/57)).
