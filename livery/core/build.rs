@@ -3,6 +3,7 @@ fn main() {
         "delta/themes",
         "ghostty/themes",
         "herdr/themes",
+        "kagi/themes",
         "lazygit/themes",
         "niri/themes",
         "obsidian/themes",

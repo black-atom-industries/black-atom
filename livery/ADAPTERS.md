@@ -147,6 +147,10 @@ Livery ships these adapters' generated files in its binary but has no updater fo
 ([#5](https://github.com/black-atom-industries/black-atom/issues/5)). Wire them up by hand as each adapter's README
 describes; the theme stays fixed until you change it.
 
+- **kagi** — paste a theme file into Kagi's Custom CSS setting
+  ([`adapters/kagi`](../adapters/kagi)). The setting lives in the Kagi account and Kagi's API cannot
+  write it, so livery has no way to switch it. `livery adapter kagi` copies a theme file to the
+  clipboard.
 - **niri** — `include` a theme file from the niri config ([`adapters/niri`](../adapters/niri)).
 - **waybar** — `@import` a theme's color definitions in `style.css`
   ([`adapters/waybar`](../adapters/waybar)).

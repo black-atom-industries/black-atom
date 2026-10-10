@@ -125,7 +125,7 @@ fn setup_chain_end_to_end() {
     let managed_root = paths::themes_root();
     let report = unpack::ensure_unpacked().unwrap();
     assert!(report.unpacked, "first run must write the embedded themes");
-    assert_eq!(report.adapters, 12);
+    assert_eq!(report.adapters, 13);
     assert!(report.files > 200, "unpacked only {} files", report.files);
 
     for (adapter, file) in [
@@ -144,6 +144,7 @@ fn setup_chain_end_to_end() {
         ("herdr", "default/black-atom-default-dark.toml"),
         ("tuicr", "default/black-atom-default-dark.toml"),
         ("lazygit", "default/black-atom-default-dark.yml"),
+        ("kagi", "default/black-atom-default.css"),
     ] {
         let path = managed_root.join(adapter).join(file);
         assert!(path.is_file(), "missing unpacked file: {}", path.display());

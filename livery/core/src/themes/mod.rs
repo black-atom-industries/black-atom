@@ -5,6 +5,7 @@ pub mod catalog;
 pub mod commands;
 pub mod detect;
 pub mod embedded;
+pub mod kagi;
 pub mod registry;
 pub mod symlinks;
 pub mod unpack;

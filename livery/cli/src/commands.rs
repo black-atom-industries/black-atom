@@ -334,6 +334,109 @@ fn report(label: &str, result: &updaters::UpdateResult) -> Result<(), String> {
     Ok(())
 }
 
+pub fn kagi(theme: Option<&str>, font: Option<&str>) -> Result<(), String> {
+    let name = match theme {
+        Some(theme) => theme.to_string(),
+        None => pick_kagi()?,
+    };
+    let css = livery_core::themes::kagi::css(&name)?;
+    let font = match font {
+        Some(font) => font.to_string(),
+        None => ask_font()?,
+    };
+    let font = font.trim().replace('"', "");
+    copy_to_clipboard(&livery_core::themes::kagi::with_font(css, &font))?;
+    let name = livery_core::themes::kagi::name_for(&name);
+    if font.is_empty() {
+        println!("Copied {name} — paste it into https://kagi.com/settings/custom_css");
+    } else {
+        println!(
+            "Copied {name} with {font} first — paste it into https://kagi.com/settings/custom_css"
+        );
+    }
+    Ok(())
+}
+
+fn ask_font() -> Result<String, String> {
+    use std::io::IsTerminal;
+
+    if !std::io::stdin().is_terminal() {
+        return Ok(String::new());
+    }
+    match inquire::Text::new("Preferred font")
+        .with_help_message(
+            "Installed font family to put first in both font stacks. Leave empty to keep the theme's fonts.",
+        )
+        .prompt()
+    {
+        Ok(font) => Ok(font),
+        Err(
+            inquire::InquireError::OperationCanceled | inquire::InquireError::OperationInterrupted,
+        ) => Ok(String::new()),
+        Err(e) => Err(format!("no font read: {e}")),
+    }
+}
+
+/// The cursor opens on the file holding the Active Theme.
+fn pick_kagi() -> Result<String, String> {
+    let names = livery_core::themes::kagi::names();
+    let starting_cursor = livery_core::config::commands::get_active_theme()
+        .and_then(|key| {
+            let name = livery_core::themes::kagi::name_for(&key);
+            names.iter().position(|candidate| *candidate == name)
+        })
+        .unwrap_or(0);
+
+    let choice = inquire::Select::new("Kagi theme", names)
+        .with_page_size(15)
+        .with_starting_cursor(starting_cursor)
+        .prompt()
+        .map_err(|e| format!("no theme picked: {e}"))?;
+
+    Ok(choice.to_string())
+}
+
+fn copy_to_clipboard(text: &str) -> Result<(), String> {
+    use std::io::Write;
+    use std::process::{Command, Stdio};
+
+    let tools: &[(&str, &[&str])] = if cfg!(target_os = "macos") {
+        &[("pbcopy", &[])]
+    } else {
+        &[("wl-copy", &[]), ("xclip", &["-selection", "clipboard"])]
+    };
+
+    for (program, args) in tools {
+        let Ok(mut child) = Command::new(program)
+            .args(*args)
+            .stdin(Stdio::piped())
+            .spawn()
+        else {
+            continue;
+        };
+        child
+            .stdin
+            .take()
+            .ok_or_else(|| format!("{program} has no stdin"))?
+            .write_all(text.as_bytes())
+            .map_err(|e| format!("could not write to {program}: {e}"))?;
+        let status = child
+            .wait()
+            .map_err(|e| format!("{program} did not finish: {e}"))?;
+        return if status.success() {
+            Ok(())
+        } else {
+            Err(format!("{program} exited with {status}"))
+        };
+    }
+
+    let tried: Vec<&str> = tools.iter().map(|(program, _)| *program).collect();
+    Err(format!(
+        "no clipboard tool found, tried {}",
+        tried.join(", ")
+    ))
+}
+
 pub fn pick_and_apply() -> Result<(), String> {
     unpacked()?;
     apply(&pick_theme("Theme")?)

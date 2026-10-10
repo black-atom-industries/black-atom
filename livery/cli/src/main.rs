@@ -44,6 +44,23 @@ enum Command {
     },
     /// Write the stored Neovim plugin settings into nvim's managed Lua block
     NvimSettings,
+    /// Copy an adapter's theme file to the clipboard
+    Adapter {
+        #[command(subcommand)]
+        adapter: AdapterCommand,
+    },
+}
+
+#[derive(Subcommand)]
+enum AdapterCommand {
+    /// Copy a Kagi custom CSS theme to the clipboard; without a theme, pick one interactively
+    Kagi {
+        /// Kagi theme name or any theme key, for example black-atom-jpn-koyo
+        theme: Option<String>,
+        /// Font to prefer over the theme's font stacks, for example "JetBrains Mono"
+        #[arg(long)]
+        font: Option<String>,
+    },
 }
 
 /// The CLI surface exposing a capability. Exhaustive on purpose: a new
@@ -87,6 +104,9 @@ fn main() -> std::process::ExitCode {
         Some(Command::Setup { yes }) => commands::setup(yes),
         Some(Command::Appearance { mode }) => commands::appearance(&mode),
         Some(Command::NvimSettings) => commands::nvim_settings(),
+        Some(Command::Adapter {
+            adapter: AdapterCommand::Kagi { theme, font },
+        }) => commands::kagi(theme.as_deref(), font.as_deref()),
     };
 
     match result {

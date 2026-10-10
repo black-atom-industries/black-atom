@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 
 use include_dir::{include_dir, Dir};
 
-/// One embedded adapter. Wider than `AppName`: niri, waybar, and wezterm have
+/// One embedded adapter. Wider than `AppName`: kagi, niri, waybar, and wezterm have
 /// no livery updater but their themes ship all the same, and the unpacked
 /// tree is what a user's own tooling reads.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -17,6 +17,7 @@ pub enum Adapter {
     Delta,
     Ghostty,
     Herdr,
+    Kagi,
     Lazygit,
     Niri,
     Nvim,
@@ -29,10 +30,11 @@ pub enum Adapter {
 }
 
 impl Adapter {
-    pub const ALL: [Adapter; 12] = [
+    pub const ALL: [Adapter; 13] = [
         Adapter::Delta,
         Adapter::Ghostty,
         Adapter::Herdr,
+        Adapter::Kagi,
         Adapter::Lazygit,
         Adapter::Niri,
         Adapter::Nvim,
@@ -51,6 +53,7 @@ impl Adapter {
             Adapter::Delta => "delta",
             Adapter::Ghostty => "ghostty",
             Adapter::Herdr => "herdr",
+            Adapter::Kagi => "kagi",
             Adapter::Lazygit => "lazygit",
             Adapter::Niri => "niri",
             Adapter::Nvim => "nvim",
@@ -87,6 +90,7 @@ impl crate::config::types::AppName {
 static DELTA: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/delta/themes");
 static GHOSTTY: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/ghostty/themes");
 static HERDR: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/herdr/themes");
+static KAGI: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/kagi/themes");
 static LAZYGIT: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/lazygit/themes");
 static NIRI: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/niri/themes");
 static OBSIDIAN: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/obsidian/themes");
@@ -114,6 +118,7 @@ pub fn embedded(adapter: Adapter) -> Vec<(&'static str, &'static Dir<'static>)> 
         Adapter::Delta => vec![("", &DELTA)],
         Adapter::Ghostty => vec![("", &GHOSTTY)],
         Adapter::Herdr => vec![("", &HERDR)],
+        Adapter::Kagi => vec![("", &KAGI)],
         Adapter::Lazygit => vec![("", &LAZYGIT)],
         Adapter::Niri => vec![("", &NIRI)],
         Adapter::Obsidian => vec![("", &OBSIDIAN)],
@@ -321,7 +326,8 @@ mod tests {
         let expected: Vec<super::super::catalog::ThemeEntry> =
             serde_json::from_str(include_str!("../../tests/fixtures/catalog.json")).unwrap();
         let expected: Vec<_> = expected.into_iter().map(|theme| theme.key).collect();
-        for adapter in Adapter::ALL {
+        // Kagi ships one file per light/dark pair, named without the appearance suffix.
+        for adapter in Adapter::ALL.into_iter().filter(|a| *a != Adapter::Kagi) {
             let mut actual = Vec::new();
             for (_, dir) in embedded(adapter) {
                 keys(dir, &mut actual);
