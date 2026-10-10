@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+dir="$(cd "$(dirname "$0")/.." && pwd)/.gh-stub"
+case "$1 ${2:-}" in
+  "pr view")
+    cat "$dir/pr-view.json" ;;
+  "pr list")
+    echo "15	chore(main): release 0.11.0	release-please--branches--main" ;;
+  "pr checkout")
+    git checkout -q release-please--branches--main
+    echo "Switched to branch 'release-please--branches--main'" ;;
+  "pr edit")
+    while [ $# -gt 0 ]; do
+      if [ "$1" = "--body-file" ]; then cp "$2" "$dir/edited-body.md"; fi
+      shift
+    done
+    echo "https://github.com/black-atom-industries/black-atom/pull/15" ;;
+  "pr merge")
+    echo "$*" >> "$dir/merge-calls.log"
+    echo "Merged pull request #15" ;;
+  *)
+    echo "gh stub: unsupported: $*" >&2
+    exit 1 ;;
+esac
