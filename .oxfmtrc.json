@@ -26,6 +26,7 @@
         "livery/e2e/test-results/",
         "adapters/*/themes/",
         "adapters/kagi/fragments/",
+        "adapters/kagi/styles/base.css",
         "adapters/nvim/lua/black-atom/themes/",
         "adapters/nvim/colors/",
         "adapters/nvim/syntax_examples/",
