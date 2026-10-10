@@ -5,14 +5,14 @@ show up in the terminal, the editor, and the rest of the desktop. Livery switche
 
 ## Install
 
-On macOS, build and install the livery app and the `livery` command from a clone, with [Deno](https://deno.com) and
+On macOS, build and install the livery app and the `livery` command from a clone, with [Node.js](https://nodejs.org/) 24+ and
 [Rust](https://rustup.rs) installed:
 
 ```bash
 git clone https://github.com/black-atom-industries/black-atom.git
 cd black-atom
-deno install
-deno task install:macos
+npm install
+npm run install:macos
 ```
 
 The themes themselves need no install: each directory under [`adapters/`](adapters) holds the generated files and a

@@ -5,7 +5,7 @@ import { useStore } from "@tanstack/react-store";
 import { useMutationState } from "@tanstack/react-query";
 import { collectionOrder, themeCatalog } from "@black-atom/core";
 import { commands } from "../../bindings.ts";
-import denoConfig from "../../../deno.json" with { type: "json" };
+import packageJson from "../../../package.json" with { type: "json" };
 import { AppHeader } from "../../components/app-header/index.ts";
 import { AppFooter } from "../../components/app-footer/index.ts";
 import { ApplyRail } from "../../components/apply-rail/index.ts";
@@ -237,7 +237,7 @@ function AppLayout() {
             <div className={styles.root}>
                 <header className={styles.header}>
                     <AppHeader
-                        version={denoConfig.version}
+                        version={packageJson.version}
                         context={isSettings
                             ? `SETTINGS / ${settingsSection.toUpperCase()}`
                             : `${themeCount} THEMES · ${collectionCount} COLLECTIONS · ENV ${env}`}

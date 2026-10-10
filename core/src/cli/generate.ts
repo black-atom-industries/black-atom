@@ -1,10 +1,15 @@
 import * as z from "zod";
-import * as colors from "@std/fmt/colors";
+import { existsSync, watch } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import process from "node:process";
+import { styleText } from "node:util";
 
 import { config } from "../config.ts";
 import { themeKeys } from "../themes/catalog.ts";
 
 import { type AdapterConfig, createAdapterConfigSchema } from "../lib/validate-adapter.ts";
+import { isNotFound } from "../lib/fs-errors.ts";
 import log from "../lib/log.ts";
 import { processTemplates } from "../lib/template.ts";
 import { themeCatalog } from "../themes/catalog.ts";
@@ -12,18 +17,20 @@ import { themeCatalog } from "../themes/catalog.ts";
 async function getAdapterConfig(): Promise<AdapterConfig> {
     try {
         const adapterConfigSchema = createAdapterConfigSchema(themeKeys);
-        const adapterConfig = await Deno.readTextFile(config.adapterFileName);
+        const adapterConfig = await readFile(config.adapterFileName, "utf8");
         return adapterConfigSchema.parse(JSON.parse(adapterConfig));
     } catch (error) {
-        if (error instanceof Deno.errors.NotFound) {
-            log.error(`No \`${config.adapterFileName}\` found in current directory. Abort.`);
-            Deno.exit(1);
+        if (isNotFound(error)) {
+            log.error(
+                `No \`${config.adapterFileName}\` found in current directory. Abort.`,
+            );
+            process.exit(1);
         }
 
         if (error instanceof z.ZodError) {
             log.error("Invalid adapter configuration!");
             console.dir(error.issues);
-            Deno.exit(1);
+            process.exit(1);
         }
 
         throw error;
@@ -35,7 +42,7 @@ async function getAdapterConfig(): Promise<AdapterConfig> {
  * when changes are detected.
  */
 async function watchAdapter(adapterConfig: AdapterConfig) {
-    const cwd = Deno.cwd();
+    const cwd = process.cwd();
     const templatePaths = new Set<string>();
 
     // Collect template paths from the adapter config
@@ -50,9 +57,6 @@ async function watchAdapter(adapterConfig: AdapterConfig) {
     // Watch the current directory for changes to template files
     log.info(`Watching for changes in template files in ${cwd}...`);
     log.info("Press Ctrl+C to stop watching");
-
-    // Create a watcher for the current directory
-    const watcher = Deno.watchFs(cwd);
 
     // Debounce mechanism
     let debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -76,7 +80,7 @@ async function watchAdapter(adapterConfig: AdapterConfig) {
             log.hr_thick("👀 Template changes detected");
             log.info(
                 `Processing changes:\n${
-                    relevantChanges.map((p) => `   - ${colors.yellow(p)}`)
+                    relevantChanges.map((p) => `   - ${styleText("yellow", p)}`)
                         .join("\n")
                 }`,
             );
@@ -104,23 +108,20 @@ async function watchAdapter(adapterConfig: AdapterConfig) {
         }
     };
 
-    for await (const event of watcher) {
-        if (event.kind === "modify" || event.kind === "create") {
-            // Add paths to pending changes
-            for (const path of event.paths) {
-                pendingChanges.add(path);
-            }
+    // Watch the current directory for changes to template files
+    watch(cwd, { recursive: true }, (_event, filename) => {
+        if (!filename || !existsSync(join(cwd, filename))) return;
+        pendingChanges.add(join(cwd, filename));
 
-            // Clear existing timer if there is one
-            if (debounceTimer !== null) {
-                clearTimeout(debounceTimer);
-                debounceTimer = null;
-            }
-
-            // Set new timer for debouncing
-            debounceTimer = setTimeout(processChanges, 500);
+        // Clear existing timer if there is one
+        if (debounceTimer !== null) {
+            clearTimeout(debounceTimer);
+            debounceTimer = null;
         }
-    }
+
+        // Set new timer for debouncing
+        debounceTimer = setTimeout(processChanges, 500);
+    });
 }
 
 export default async function (options: string[] = []) {

@@ -1,10 +1,13 @@
-import { assertEquals } from "@std/assert";
-import { join } from "@std/path";
+import { assert, expect, test } from "vitest";
+import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import process from "node:process";
 import { config } from "../../config.ts";
 import { isGenerationInput } from "./watch.ts";
 import { copyToVault } from "./obsidian.ts";
 
-Deno.test("generation inputs include sources and Obsidian styles, excluding generated output", () => {
+test("generation inputs include sources and Obsidian styles, excluding generated output", () => {
     for (
         const path of [
             "obsidian/styles/ui/editor.css",
@@ -13,9 +16,9 @@ Deno.test("generation inputs include sources and Obsidian styles, excluding gene
         ]
     ) {
         const actual = path.endsWith(".template") ? path + ".conf" : path;
-        assertEquals(isGenerationInput(join(config.dir.adapters, actual)), true);
+        assert.deepEqual(isGenerationInput(join(config.dir.adapters, actual)), true);
     }
-    assertEquals(isGenerationInput(join(config.dir.themes, "default.ts")), true);
+    assert.deepEqual(isGenerationInput(join(config.dir.themes, "default.ts")), true);
     for (
         const path of [
             "ghostty/themes/default/generated.conf",
@@ -23,51 +26,52 @@ Deno.test("generation inputs include sources and Obsidian styles, excluding gene
             "obsidian/styles/editor.css.tmp",
         ]
     ) {
-        assertEquals(isGenerationInput(join(config.dir.adapters, path)), false);
+        assert.deepEqual(isGenerationInput(join(config.dir.adapters, path)), false);
     }
 });
 
-Deno.test("Obsidian dev copy writes CSS and renamed manifest to explicit temporary vault", async () => {
-    const vault = await Deno.makeTempDir();
-    const previous = Deno.env.get("OBSIDIAN_DEV_VAULT");
-    Deno.env.set("OBSIDIAN_DEV_VAULT", vault);
+test("Obsidian dev copy writes CSS and renamed manifest to explicit temporary vault", async () => {
+    const vault = await mkdtemp(join(tmpdir(), "black-atom-test-"));
+    const previous = process.env["OBSIDIAN_DEV_VAULT"];
+    process.env["OBSIDIAN_DEV_VAULT"] = vault;
     try {
         await copyToVault();
         const dest = join(vault, ".obsidian/themes/Black Atom Development");
-        assertEquals(
-            await Deno.readTextFile(join(dest, "theme.css")),
-            await Deno.readTextFile(join(config.dir.adapters, "obsidian/theme.css")),
+        assert.deepEqual(
+            await readFile(join(dest, "theme.css"), "utf8"),
+            await readFile(join(config.dir.adapters, "obsidian/theme.css"), "utf8"),
         );
-        assertEquals(
-            JSON.parse(await Deno.readTextFile(join(dest, "manifest.json"))).name,
+        assert.deepEqual(
+            JSON.parse(await readFile(join(dest, "manifest.json"), "utf8")).name,
             "Black Atom Development",
         );
     } finally {
-        if (previous === undefined) Deno.env.delete("OBSIDIAN_DEV_VAULT");
-        else Deno.env.set("OBSIDIAN_DEV_VAULT", previous);
-        await Deno.remove(vault, { recursive: true });
+        if (previous === undefined) delete process.env["OBSIDIAN_DEV_VAULT"];
+        else process.env["OBSIDIAN_DEV_VAULT"] = previous;
+        await rm(vault, { recursive: true, force: true });
     }
 });
 
-import { assertRejects } from "@std/assert";
 import { generateDevelopment } from "./watch.ts";
 
-Deno.test("development generation skips disabled templates and rejects malformed configs", async () => {
-    const fixture = await Deno.makeTempDir();
+test("development generation skips disabled templates and rejects malformed configs", async () => {
+    const fixture = await mkdtemp(join(tmpdir(), "black-atom-test-"));
     const adapter = join(fixture, "disabled");
-    await Deno.mkdir(adapter);
+    await mkdir(adapter);
     const configPath = join(adapter, "black-atom-adapter.json");
     const marker = join(adapter, "postGenerate-ran");
     const script = join(adapter, "postGenerate.ts");
-    await Deno.writeTextFile(
+    await writeFile(
         script,
-        `Deno.writeTextFileSync(${JSON.stringify(marker)}, "generated");`,
+        `import { writeFileSync } from "node:fs";\nwriteFileSync(${
+            JSON.stringify(marker)
+        }, "generated");`,
     );
     const adapterConfig = {
         $schema: "schema.json",
         collections: {},
         enabled: false,
-        postGenerate: `${Deno.execPath()} run -A ${script}`,
+        postGenerate: `${process.execPath} ${script}`,
     };
     const original = Object.getOwnPropertyDescriptor(config, "dir")!;
     const directories = config.dir;
@@ -76,22 +80,20 @@ Deno.test("development generation skips disabled templates and rejects malformed
         configurable: true,
     });
     try {
-        await Deno.writeTextFile(configPath, JSON.stringify(adapterConfig));
+        await writeFile(configPath, JSON.stringify(adapterConfig));
         await generateDevelopment([join(adapter, "collection.template.conf")]);
-        await assertRejects(() => Deno.stat(marker), Deno.errors.NotFound);
-        await Deno.writeTextFile(configPath, JSON.stringify({ ...adapterConfig, enabled: true }));
+        await expect(stat(marker)).rejects.toMatchObject({ code: "ENOENT" });
+        await writeFile(configPath, JSON.stringify({ ...adapterConfig, enabled: true }));
         await generateDevelopment([configPath]);
-        assertEquals(await Deno.readTextFile(marker), "generated");
-        await Deno.remove(marker);
-        await Deno.writeTextFile(configPath, "{");
-        await assertRejects(
-            () => generateDevelopment([configPath]),
-            Error,
+        assert.deepEqual(await readFile(marker, "utf8"), "generated");
+        await rm(marker);
+        await writeFile(configPath, "{");
+        await expect(generateDevelopment([configPath])).rejects.toThrow(
             "Cannot read adapter config",
         );
-        await assertRejects(() => Deno.stat(marker), Deno.errors.NotFound);
+        await expect(stat(marker)).rejects.toMatchObject({ code: "ENOENT" });
     } finally {
         Object.defineProperty(config, "dir", original);
-        await Deno.remove(fixture, { recursive: true });
+        await rm(fixture, { recursive: true, force: true });
     }
 });

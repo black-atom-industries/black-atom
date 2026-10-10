@@ -37,13 +37,13 @@ Create `adapters/<name>/`:
 - The template: one shared `themes/collection.template.<ext>` (see ghostty, herdr, waybar), or one
   `themes/<collection>/collection.template.<ext>` per collection.
 
-Keep the adapter outside the Deno workspace. Core discovers it from its
+Keep the adapter outside the npm workspaces. Core discovers it from its
 `black-atom-adapter.json` during central generation.
 
 ## 4. Generate and verify
 
 ```bash
-deno task generate
+npm run generate
 grep -r "undefined" adapters/<name>/themes/ || echo clean
 ```
 
@@ -118,14 +118,14 @@ links to the symlink assertions there; the status check expects every Linked ada
 Run:
 
 ```bash
-deno task test:rust
+npm run test:rust
 ```
 
 This regenerates `livery/src/bindings.ts`. Never hand-edit that file.
 
 `livery/e2e/` pins per-adapter behavior in its specs, fixture homes, and screenshot baselines. Search
 `livery/e2e/tests` and `livery/e2e/fixtures` for the app name, update what the change invalidates,
-and run `deno task test:e2e`. Look at a changed screenshot before accepting it with
+and run `npm run test:e2e`. Look at a changed screenshot before accepting it with
 `--update-snapshots`.
 
 ## 11. Frontend settings page
@@ -146,7 +146,7 @@ contract section (files, switch pointer, reload, precondition).
 ## 13. Verify and commit
 
 ```bash
-deno task verify
+npm run verify
 ```
 
 Commit through `repo-commit`: `feat(<name>): add <name> adapter` for the adapter, and a separate

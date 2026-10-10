@@ -1,4 +1,5 @@
-import * as colors from "@std/fmt/colors";
+import process from "node:process";
+import { styleText } from "node:util";
 
 // Configuration for the log system
 const config = {
@@ -62,24 +63,32 @@ function createHorizontalRule(prefix: string, charType: string): string {
 
 const log = {
     error: (message: string) => {
-        console.error(colors.red(config.icon.error + config.separator + message));
+        console.error(
+            styleText("red", config.icon.error + config.separator + message, { stream: process.stderr }),
+        );
     },
     info: (message: string) => {
-        console.info(colors.gray(config.icon.info + config.separator + message));
+        console.info(
+            styleText("gray", config.icon.info + config.separator + message),
+        );
     },
     warn: (message: string) => {
-        console.warn(colors.yellow(config.icon.warn + config.separator + message));
+        console.warn(
+            styleText("yellow", config.icon.warn + config.separator + message, { stream: process.stderr }),
+        );
     },
     success: (message: string) => {
-        console.log(colors.green(config.icon.success + config.separator + message));
+        console.log(
+            styleText("green", config.icon.success + config.separator + message),
+        );
     },
     hr_thick: (prefix: string = "") => {
         const hr = createHorizontalRule(prefix, config.hr.thick);
-        console.log(colors.brightYellow(hr));
+        console.log(styleText("yellowBright", hr));
     },
     hr_thin: (prefix: string = "") => {
         const hr = createHorizontalRule(prefix, config.hr.thin);
-        console.log(colors.brightYellow(hr));
+        console.log(styleText("yellowBright", hr));
     },
 };
 

@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import process from "node:process";
 
 export function startDevProcess(
     command: string[],
@@ -6,7 +7,7 @@ export function startDevProcess(
 ) {
     const child = spawn(command[0], command.slice(1), {
         ...options,
-        env: { ...Deno.env.toObject(), ...options.env },
+        env: { ...process.env, ...options.env },
         detached: true,
         stdio: "inherit",
     });
@@ -15,14 +16,19 @@ export function startDevProcess(
             console.error(`${command[0]}: ${error.message}`);
             resolve(1);
         });
-        child.once("exit", (code, signal) => resolve(code ?? (signal === "SIGINT" ? 130 : 1)));
+        child.once(
+            "exit",
+            (code, signal) => resolve(code ?? (signal === "SIGINT" ? 130 : 1)),
+        );
     });
-    function signalGroup(signal: Deno.Signal) {
+    function signalGroup(signal: NodeJS.Signals) {
         if (child.pid === undefined) return;
         try {
-            Deno.kill(-child.pid, signal);
+            process.kill(-child.pid, signal);
         } catch (error) {
-            if (!(error instanceof Deno.errors.NotFound)) throw error;
+            if (
+                !(error instanceof Error && "code" in error && error.code === "ESRCH")
+            ) throw error;
         }
     }
     return {
@@ -66,7 +72,9 @@ export function createDevProcesses(
             const child = start(command);
             const code = await child.status;
             children.delete(child);
-            if (code !== 0) throw new Error(`${command.join(" ")} exited with ${code}`);
+            if (code !== 0) {
+                throw new Error(`${command.join(" ")} exited with ${code}`);
+            }
         },
     };
 }

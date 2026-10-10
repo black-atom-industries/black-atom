@@ -30,7 +30,7 @@ export default defineConfig({
         {
             name: "vite",
             command:
-                `deno run -A npm:vite --config e2e/vite.config.ts --port ${vitePort} --strictPort`,
+                `npx vite --config e2e/vite.config.ts --host 127.0.0.1 --port ${vitePort} --strictPort`,
             cwd: "..",
             url: baseURL,
             env: bridgeEnv,

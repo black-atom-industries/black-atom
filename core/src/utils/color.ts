@@ -11,7 +11,7 @@ import type { HexColor } from "../types/colors.ts";
  * oklch(0.7, 0.2, 180) // Returns '#00b3b3'
  */
 export function oklch(l: number, c: number, h: number): HexColor {
-    return formatHex(libOklch({ l, c, h })) as HexColor;
+    return formatHex(libOklch({ mode: "oklch", l, c, h })) as HexColor;
 }
 
 /**
@@ -47,6 +47,8 @@ export function tint(
     // unrelated hues (e.g., orange-on-white -> green).
     const base = libOklch(baseColor);
     const tint = libOklch(color);
+    if (!base) throw new Error(`Invalid color: ${baseColor}`);
+    if (!tint) throw new Error(`Invalid color: ${color}`);
 
     base.c = 0;
     base.h = tint.h;

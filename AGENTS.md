@@ -27,7 +27,7 @@ untrusted project config and every shimmed tool fails.
 
 ```bash
 export MISE_TRUSTED_CONFIG_PATHS="$HOME/.config/mise"
-export HOME="$(mktemp -d)"
+export HOME="$(realpath "$(mktemp -d)")"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 ```
@@ -44,7 +44,7 @@ one output file per theme next to the template. Generated files are never edited
 ## Conventions
 
 Language conventions come from the `nbr-conventions` skill — TypeScript, React, CSS, state, TanStack.
-Formatting comes from `deno.json` and `cargo fmt`; never restate either here.
+Formatting comes from `.oxfmtrc.json` and `cargo fmt`; never restate either here.
 
 ## Further context
 

@@ -1,18 +1,18 @@
-import * as colors from "@std/fmt/colors";
+import { styleText } from "node:util";
 
 /**
  * Display help information about commands and usage
  */
 export default function help(): void {
     console.log(`Usage:
-  deno run -A core/src/tasks/generate.ts                                 (from the repo root)
-  deno run -A ../../core/src/cli/index.ts generate [--watch] (inside an adapter directory)
+  node core/src/tasks/generate.ts                            (from the repo root)
+  node ../../core/src/cli/index.ts generate [--watch] (inside an adapter directory)
 
 Commands:
-  ${colors.yellow("generate")}        Generate theme files from templates
-    ${colors.dim("Options:")}
-    ${colors.cyan("--watch, -w")}       Watch for changes and regenerate themes
+  ${styleText("yellow", "generate")}        Generate theme files from templates
+    ${styleText("dim", "Options:")}
+    ${styleText("cyan", "--watch, -w")}       Watch for changes and regenerate themes
 
-  ${colors.cyan("--help, -h")}        Show this help message
+  ${styleText("cyan", "--help, -h")}        Show this help message
 `);
 }

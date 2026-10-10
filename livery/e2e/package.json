@@ -1,0 +1,32 @@
+{
+    "name": "livery-e2e",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build:bridge": "cargo build -p livery-gui --bin livery-bridge",
+        "test": "npm run build:bridge && playwright test",
+        "test:ui": "npm run build:bridge && playwright test --ui",
+        "report": "playwright show-report"
+    },
+    "devDependencies": {
+        "@playwright/test": "1.62.1",
+        "@tanstack/router-plugin": "^1.168.32",
+        "@tauri-apps/cli": "^2.12.0",
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.4",
+        "vite": "^6.4.3"
+    },
+    "dependencies": {
+        "@base-ui/react": "^1.7.0",
+        "@tanstack/react-devtools": "^0.10.10",
+        "@tanstack/react-query": "^5.101.4",
+        "@tanstack/react-query-devtools": "^5.101.4",
+        "@tanstack/react-router": "^1.170.29",
+        "@tanstack/react-router-devtools": "^1.167.1",
+        "@tauri-apps/plugin-dialog": "^2.7.2",
+        "@tauri-apps/plugin-opener": "^2.5.4",
+        "cva": "^1.0.0-beta.8",
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8"
+    }
+}

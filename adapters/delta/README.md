@@ -4,10 +4,10 @@ Black Atom diff colors for [delta](https://github.com/dandavison/delta), the git
 
 ## Installation
 
-Generate the theme files (requires [Deno](https://deno.land/)):
+Generate the theme files (requires [Node.js](https://nodejs.org/) 24+):
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate
+node ../../core/src/cli/index.ts generate
 ```
 
 Then include your preferred theme from your git config, before your own `[delta]` section so your
@@ -37,7 +37,7 @@ with a Black Atom terminal theme.
 ## Development
 
 Theme files are generated from `themes/collection.template.gitconfig` through the Black Atom core
-CLI. Run `deno run -A ../../core/src/cli/index.ts generate` after editing it.
+CLI. Run `node ../../core/src/cli/index.ts generate` after editing it.
 
 ## License
 

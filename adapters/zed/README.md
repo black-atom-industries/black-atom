@@ -21,11 +21,11 @@ Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.
 ### Install the theme files
 
 [Livery](../../livery/README.md) does this for you: `livery setup`, then `livery apply <theme>`.
-To do it by hand instead, generate the theme files (requires [Deno](https://deno.land/)) and copy
+To do it by hand instead, generate the theme files (requires [Node.js](https://nodejs.org/) 24+) and copy
 the `.json` files to your Zed themes directory:
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate
+node ../../core/src/cli/index.ts generate
 mkdir -p ~/.config/zed/themes
 cp themes/*/*.json ~/.config/zed/themes/
 ```
@@ -49,11 +49,11 @@ Alternatively, you can edit your Zed settings JSON file directly:
 
 ## Development
 
-Requirements: [Deno](https://deno.land/).
+Requirements: [Node.js](https://nodejs.org/) 24+.
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate  # regenerate theme files
-deno run -A ../../core/src/cli/index.ts generate --watch        # watch mode
+node ../../core/src/cli/index.ts generate  # regenerate theme files
+node ../../core/src/cli/index.ts generate --watch        # watch mode
 ```
 
 ### Theme Format

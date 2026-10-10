@@ -159,7 +159,7 @@ mod tests {
 
     /// Regenerates ../src/bindings.ts on every test run, so command/type
     /// changes never ship stale bindings — no GUI launch required.
-    /// Deno type-checks livery/src in parallel with this test, so the file is
+    /// tsc type-checks livery/src in parallel with this test, so the file is
     /// only replaced when it changed, and atomically through a rename.
     #[test]
     fn export_typescript_bindings() {

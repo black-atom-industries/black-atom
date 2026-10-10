@@ -68,9 +68,9 @@ Prepare the release notes with [`repo-changelog`](../repo-changelog/SKILL.md) in
 it curates the section and sets the release date. The section's version must match the release PR title. Read the title
 after release-please has finished its run for the latest push to `main`; each run can change the version.
 
-Regenerate every adapter with `deno task generate` and confirm `git status` is clean. Generated output
+Regenerate every adapter with `npm run generate` and confirm `git status` is clean. Generated output
 is committed, so a diff means a template or theme change went in without its output. Then prove the release build with
-`deno task build`.
+`npm run build`.
 
 Ask for explicit approval immediately before merging the release PR. After the release, close the milestone:
 

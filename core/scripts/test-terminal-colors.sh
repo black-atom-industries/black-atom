@@ -3,9 +3,9 @@
 # to visually check contrast and distinguishability.
 #
 # Usage:
-#   deno task test:terminal-colors                              # print only (no name)
-#   deno task test:terminal-colors black-atom-default-light     # print with name in header
-#   deno task test:terminal-colors black-atom-default-light --capture  # print + screenshot
+#   npm run test:terminal-colors                              # print only (no name)
+#   npm run test:terminal-colors black-atom-default-light     # print with name in header
+#   npm run test:terminal-colors black-atom-default-light --capture  # print + screenshot
 #
 # The --capture flag saves a screenshot to tmp/<name>.png (or tmp/terminal-colors.png if no name).
 

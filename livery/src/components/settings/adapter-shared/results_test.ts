@@ -1,7 +1,7 @@
-import { assertEquals } from "@std/assert";
+import { assert, test } from "vitest";
 import { findConfigFolderVerification } from "./results.ts";
 
-Deno.test("matches Obsidian verification by configured folder identity", () => {
+test("matches Obsidian verification by configured folder identity", () => {
     const result = {
         status: "verified" as const,
         exists: true,
@@ -13,9 +13,9 @@ Deno.test("matches Obsidian verification by configured folder identity", () => {
         }],
     };
 
-    assertEquals(
+    assert.deepEqual(
         findConfigFolderVerification(result, "~/Notes/.obsidian"),
         result.config_folders[0],
     );
-    assertEquals(findConfigFolderVerification(result, "/Users/nik/Notes/.obsidian"), undefined);
+    assert.deepEqual(findConfigFolderVerification(result, "/Users/nik/Notes/.obsidian"), undefined);
 });

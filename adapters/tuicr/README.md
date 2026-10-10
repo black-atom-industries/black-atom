@@ -60,11 +60,11 @@ syntax colors. tuicr resolves it next to the theme file, so both files go into t
 
 ## Development
 
-Requirements: [Deno](https://deno.com/).
+Requirements: [Node.js](https://nodejs.org/) 24+.
 
 ```sh
-deno run -A ../../core/src/cli/index.ts generate  # regenerate committed theme files
-deno run -A ../../core/src/cli/index.ts generate --watch       # regenerate on template changes
+node ../../core/src/cli/index.ts generate  # regenerate committed theme files
+node ../../core/src/cli/index.ts generate --watch       # regenerate on template changes
 ```
 
 Templates use Eta syntax and semantic Black Atom colors only. One shared template covers every

@@ -1,4 +1,4 @@
-import { assertEquals } from "@std/assert";
+import { assert, test } from "vitest";
 import type * as Theme from "../types/theme.ts";
 import { themeCatalog } from "./catalog.ts";
 import { defineThemeColors } from "./define-theme-colors.ts";
@@ -8,7 +8,7 @@ function selectColors(theme: Theme.Colors): Theme.Colors {
     return { primaries, accents, palette, feedback, ui, syntax };
 }
 
-Deno.test("defineThemeColors resolves creators in dependency order", () => {
+test("defineThemeColors resolves creators in dependency order", () => {
     const colors = selectColors(themeCatalog["black-atom-default-dark"]);
     const calls: string[] = [];
 
@@ -36,7 +36,7 @@ Deno.test("defineThemeColors resolves creators in dependency order", () => {
         },
     });
 
-    assertEquals(calls, [
+    assert.deepEqual(calls, [
         "primaries",
         "primaries,accents",
         "primaries,accents,palette",

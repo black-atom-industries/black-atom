@@ -1,12 +1,15 @@
-import { Eta } from "@eta";
-import { basename, dirname, join } from "@std/path";
+import { Eta } from "eta";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { basename, dirname, join } from "node:path";
+import process from "node:process";
 import type * as Theme from "../types/theme.ts";
 
+import { isNotFound } from "./fs-errors.ts";
 import type { AdapterConfig } from "./validate-adapter.ts";
 
 // Initialize Eta with options
 const eta = new Eta({
-    views: Deno.cwd(), // Use current working directory as views directory
+    views: process.cwd(), // Use current working directory as views directory
     cache: true, // Enable caching for better performance
     autoEscape: false, // Don't escape HTML since we're not generating HTML
     varName: "theme", // Use 'theme' as the variable name in templates
@@ -24,7 +27,10 @@ export async function processTemplates(
 ): Promise<string[]> {
     // Process collection templates
     if (adapterConfig.collections) {
-        return await processCollectionTemplates(adapterConfig.collections, themeMap);
+        return await processCollectionTemplates(
+            adapterConfig.collections,
+            themeMap,
+        );
     } else {
         throw new Error("No collections defined in adapter configuration");
     }
@@ -50,7 +56,7 @@ async function processCollectionTemplates(
         for (const templatePath of [templates].flat()) {
             try {
                 // Read the collection template once
-                const template = await Deno.readTextFile(templatePath);
+                const template = await readFile(templatePath, "utf8");
 
                 const generatedFiles: string[] = [];
                 const errors: string[] = [];
@@ -101,7 +107,9 @@ async function processCollectionTemplates(
                                         break;
                                     }
                                 } catch {
-                                    errors.push(`Template contains undefined variable: ${varPath}`);
+                                    errors.push(
+                                        `Template contains undefined variable: ${varPath}`,
+                                    );
                                     break;
                                 }
                             }
@@ -131,7 +139,7 @@ async function processCollectionTemplates(
                     allErrors.push(...errors);
                 }
             } catch (error) {
-                if (error instanceof Deno.errors.NotFound) {
+                if (isNotFound(error)) {
                     allErrors.push(`Collection template file not found: ${templatePath}`);
                 } else if (error instanceof Error) {
                     allErrors.push(
@@ -150,17 +158,20 @@ async function processCollectionTemplates(
  * @param content The processed content to write
  * @param templatePath The template path to derive the output path from or the explicit output path
  */
-export async function writeOutput(content: string, templatePath: string): Promise<void> {
+export async function writeOutput(
+    content: string,
+    templatePath: string,
+): Promise<void> {
     // Generate output path by removing .template from the file name
     const outputPath = templatePath.replace(".template.", ".");
 
     // Ensure the output directory exists
-    await Deno.mkdir(dirname(outputPath), { recursive: true });
+    await mkdir(dirname(outputPath), { recursive: true });
 
     // Skip unchanged files: livery/core/build.rs reruns on any mtime change here
-    const existing = await Deno.readTextFile(outputPath).catch(() => null);
+    const existing = await readFile(outputPath, "utf8").catch(() => null);
     if (existing === content) return;
 
     // Write the processed content
-    await Deno.writeTextFile(outputPath, content);
+    await writeFile(outputPath, content);
 }

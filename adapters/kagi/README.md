@@ -71,7 +71,7 @@ Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.
 
 ## Development
 
-`deno task generate` from the repository root renders one color fragment per theme into
+`npm run generate` from the repository root renders one color fragment per theme into
 `fragments/`, then runs `scripts/postGenerate.ts`, which pairs light and dark fragments and writes
 the finished files to `themes/`.
 

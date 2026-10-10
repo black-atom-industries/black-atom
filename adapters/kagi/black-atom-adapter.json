@@ -1,6 +1,6 @@
 {
     "$schema": "../../core/adapter.schema.json",
-    "postGenerate": "deno run --allow-read --allow-write scripts/postGenerate.ts",
+    "postGenerate": "node scripts/postGenerate.ts",
     "collections": {
         "default": {
             "template": "./fragments/collection.template.css",

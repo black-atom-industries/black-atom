@@ -1,7 +1,7 @@
 {
     "permissions": {
         "allow": [
-            "Bash(deno:*)",
+            "Bash(npm:*)",
             "Bash(cargo:*)",
             "Bash(gh pr:*)",
             "Bash(gh issue:*)",
@@ -20,7 +20,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "deno fmt \"$FILEPATH\" 2>/dev/null; case \"$FILEPATH\" in *livery/core/*|*livery/cli/*|*livery/src-tauri/*) cargo fmt --all 2>/dev/null;; esac; true"
+                        "command": ".claude/hooks/format.sh"
                     },
                     {
                         "type": "command",

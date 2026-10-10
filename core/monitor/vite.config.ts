@@ -21,9 +21,6 @@ export default defineConfig({
         }),
         react(),
     ],
-    define: {
-        __API_BASE__: JSON.stringify(`http://localhost:${API_PORT}`),
-    },
     resolve: {
         alias: {
             "@core": resolve(__dirname, "../src"),

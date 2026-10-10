@@ -20,11 +20,11 @@ Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.
 
 ### Install the theme files
 
-Generate the theme files (requires [Deno](https://deno.land/)) and copy the `.toml` files to your
+Generate the theme files (requires [Node.js](https://nodejs.org/) 24+) and copy the `.toml` files to your
 WezTerm configuration directory:
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate
+node ../../core/src/cli/index.ts generate
 mkdir -p ~/.config/wezterm/colors
 cp themes/*/*.toml ~/.config/wezterm/colors/
 ```
@@ -85,11 +85,11 @@ For WezTerm to find themes by name, they must be placed in one of these director
 
 ## Development
 
-Requirements: [Deno](https://deno.land/).
+Requirements: [Node.js](https://nodejs.org/) 24+.
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate  # regenerate theme files
-deno run -A ../../core/src/cli/index.ts generate --watch        # watch mode
+node ../../core/src/cli/index.ts generate  # regenerate theme files
+node ../../core/src/cli/index.ts generate --watch        # watch mode
 ```
 
 ### Theme Format

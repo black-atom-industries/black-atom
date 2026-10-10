@@ -11,7 +11,7 @@ always run from source, never fetched as a package.
 
 ```mermaid
 flowchart TD
-    A["Edit .template. files"] --> B["deno run -A core/src/tasks/generate.ts"]
+    A["Edit .template. files"] --> B["node core/src/tasks/generate.ts"]
     B --> C["discoverAdapters():<br/>scan adapters/ for<br/>black-atom-adapter.json"]
     C --> D["Filter: enabled"]
     D --> E["For each adapter:<br/>read black-atom-adapter.json"]
@@ -46,14 +46,14 @@ At the repo root:
 
 | Task                                     | Purpose                                                           |
 | ---------------------------------------- | ----------------------------------------------------------------- |
-| `deno run -A core/src/tasks/generate.ts` | Regenerate every adapter once                                     |
-| `deno task dev`                          | Watch core and every adapter's templates, regenerate, and reapply |
+| `node core/src/tasks/generate.ts` | Regenerate every adapter once                                     |
+| `npm run dev`                          | Watch core and every adapter's templates, regenerate, and reapply |
 
 Inside a single adapter directory (`adapters/<name>/`):
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate
-deno run -A ../../core/src/cli/index.ts generate --watch
+node ../../core/src/cli/index.ts generate
+node ../../core/src/cli/index.ts generate --watch
 ```
 
 The root development runner coordinates generation, CLI builds, and reapply using the invoking user's

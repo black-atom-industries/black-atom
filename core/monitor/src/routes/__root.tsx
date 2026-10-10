@@ -22,8 +22,10 @@ import { ThemeSwitcher } from "../partials/theme-switcher";
 import { themeToCssVars } from "../lib/theme-css-vars";
 import { DEFAULT_THEME_KEY, themeKeys } from "@core/themes/catalog.ts";
 
+const [firstThemeKey, ...otherThemeKeys] = themeKeys;
+
 const rootSearchSchema = z.object({
-    themeKey: z.enum(themeKeys).default(DEFAULT_THEME_KEY),
+    themeKey: z.enum([firstThemeKey, ...otherThemeKeys]).default(DEFAULT_THEME_KEY),
 });
 
 const rootSearchDefaults = rootSearchSchema.parse({});

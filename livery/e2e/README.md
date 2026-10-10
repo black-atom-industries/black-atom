@@ -9,17 +9,17 @@ Tauri commands. Tests assert on rendered UI state and on the files livery writes
 From the repository root:
 
 ```bash
-deno task test:e2e        # headless
-deno task test:e2e:ui     # Playwright UI mode: watch each step, inspect snapshots
+npm run test:e2e        # headless
+npm run test:e2e:ui     # Playwright UI mode: watch each step, inspect snapshots
 ```
 
-Inside `livery/e2e`, the same tasks are `deno task test`, `deno task test:ui` and
-`deno task report` (last HTML report). Arguments pass through, for example
-`deno task test tests/settings` or `deno task test --update-snapshots`. Both test tasks build
+Inside `livery/e2e`, the same tasks are `npm run test`, `npm run test:ui` and
+`npm run report` (last HTML report). Arguments pass through, for example
+`npm run test -- tests/settings` or `npm run test -- --update-snapshots`. Both test tasks build
 `livery-bridge` first. Stop UI mode with Ctrl+C so Playwright shuts down both servers.
 
 Chromium comes from the Playwright browser cache. On a machine without it, run
-`deno run -A npm:@playwright/test@1.62.1 install chromium` once.
+`npx playwright install chromium` once.
 
 ## Isolation
 
@@ -33,7 +33,7 @@ Set `LIVERY_E2E_HOME` to reuse one fixture home across runs, for example to insp
 UI-mode session. It must still be a `livery-e2e-*` directory directly under the system temp dir.
 
 Vite listens on `1520` and the bridge on `1522`, configurable through `LIVERY_E2E_VITE_PORT` and
-`LIVERY_E2E_BRIDGE_PORT`, so a running `deno task dev` on `1420`/`1422` is never touched. The e2e
+`LIVERY_E2E_BRIDGE_PORT`, so a running `npm run dev` on `1420`/`1422` is never touched. The e2e
 Vite server keeps its dependency cache in `e2e/.vite`.
 
 Scenarios enable only adapters whose updaters stay inside the fixture home: zed, delta, lazygit,

@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es2024",
+        "lib": ["es2024", "dom", "dom.iterable"],
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "types": ["node", "vite/client"],
+        "strict": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["src", "e2e", "vite.config.ts"],
+    "exclude": ["e2e/fixtures", "e2e/playwright-report", "e2e/test-results"]
+}

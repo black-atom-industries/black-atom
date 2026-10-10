@@ -1,0 +1,24 @@
+{
+    "name": "@black-atom/core",
+    "version": "0.9.0",
+    "private": true,
+    "type": "module",
+    "exports": {
+        ".": "./src/mod.ts",
+        "./cli": "./src/cli/index.ts"
+    },
+    "scripts": {
+        "schema": "node src/lib/generate-schema.ts && oxfmt adapter.schema.json",
+        "dev": "node src/tasks/dev.ts",
+        "test:terminal-colors": "bash scripts/test-terminal-colors.sh",
+        "test:terminal-colors:dev": "node scripts/test-terminal-colors-dev.ts"
+    },
+    "dependencies": {
+        "culori": "^4",
+        "eta": "3.5.0",
+        "zod": "^3.24.2"
+    },
+    "devDependencies": {
+        "@types/culori": "^4.0.1"
+    }
+}

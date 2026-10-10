@@ -1,32 +1,32 @@
 import { build, targetDirectory } from "./build.ts";
-import { cp } from "node:fs/promises";
+import { cp, mkdir, mkdtemp, rename, rm } from "node:fs/promises";
+import { homedir } from "node:os";
+import process from "node:process";
+import { isNotFound } from "../core/src/lib/fs-errors.ts";
 import { dirname, join } from "node:path";
 
 export async function installArtifact(source: string, destination: string) {
-    await Deno.mkdir(dirname(destination), { recursive: true });
-    const staging = await Deno.makeTempDir({
-        dir: dirname(destination),
-        prefix: ".livery-install-",
-    });
+    await mkdir(dirname(destination), { recursive: true });
+    const staging = await mkdtemp(join(dirname(destination), ".livery-install-"));
     const prepared = join(staging, "prepared");
     const backup = join(staging, "previous");
     try {
         await cp(source, prepared, { recursive: true, preserveTimestamps: true });
         let previous = false;
         try {
-            await Deno.rename(destination, backup);
+            await rename(destination, backup);
             previous = true;
         } catch (error) {
-            if (!(error instanceof Deno.errors.NotFound)) throw error;
+            if (!isNotFound(error)) throw error;
         }
         try {
-            await Deno.rename(prepared, destination);
+            await rename(prepared, destination);
         } catch (error) {
-            if (previous) await Deno.rename(backup, destination);
+            if (previous) await rename(backup, destination);
             throw error;
         }
     } finally {
-        await Deno.remove(staging, { recursive: true });
+        await rm(staging, { recursive: true });
     }
 }
 
@@ -34,14 +34,17 @@ export async function installMacos({
     appOnly = false,
     appDestination = "/Applications/livery.app",
     cliDestination = join(
-        Deno.env.get("CARGO_HOME") ?? join(Deno.env.get("HOME")!, ".cargo"),
+        process.env.CARGO_HOME ?? join(homedir(), ".cargo"),
         "bin/livery",
     ),
     buildArtifacts = build,
     artifactRoot = join(targetDirectory, "release"),
 } = {}) {
     await buildArtifacts({ appOnly, bundles: "app" });
-    await installArtifact(join(artifactRoot, "bundle/macos/livery.app"), appDestination);
+    await installArtifact(
+        join(artifactRoot, "bundle/macos/livery.app"),
+        appDestination,
+    );
     console.log(`Installed app: ${appDestination}`);
     if (!appOnly) {
         try {
@@ -56,6 +59,8 @@ export async function installMacos({
 }
 
 if (import.meta.main) {
-    if (Deno.build.os !== "darwin") throw new Error("install:macos requires macOS");
-    await installMacos({ appOnly: Deno.args.includes("--app-only") });
+    if (process.platform !== "darwin") {
+        throw new Error("install:macos requires macOS");
+    }
+    await installMacos({ appOnly: process.argv.includes("--app-only") });
 }

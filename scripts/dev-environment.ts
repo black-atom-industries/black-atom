@@ -1,6 +1,18 @@
+import {
+    lstatSync,
+    readlinkSync,
+    renameSync,
+    rmSync,
+    statSync,
+    symlinkSync,
+    writeFileSync,
+} from "node:fs";
+import { mkdtemp, writeFile } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import { homedir, tmpdir } from "node:os";
+import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { isAlreadyExists, isNotFound } from "../core/src/lib/fs-errors.ts";
 import type { DevState } from "./dev-launcher.ts";
 
 export function shellQuote(value: string): string {
@@ -19,40 +31,49 @@ const LAUNCHER_ENV_KEYS = new Set([
     "LANG",
     "CARGO_HOME",
     "RUSTUP_HOME",
-    "DENO_DIR",
     "CARGO_TARGET_DIR",
 ]);
 
 /** `state.json` sits on disk for the whole session, so it carries only what the CLI needs. */
-export function launcherEnv(env: Record<string, string>): Record<string, string> {
+export function launcherEnv(
+    env: Record<string, string>,
+): Record<string, string> {
     return Object.fromEntries(
         Object.entries(env).filter(([key]) =>
-            LAUNCHER_ENV_KEYS.has(key) || key.startsWith("XDG_") || key.startsWith("LC_")
+            LAUNCHER_ENV_KEYS.has(key) || key.startsWith("XDG_") ||
+            key.startsWith("LC_")
         ),
     );
 }
 
 export async function createDevEnvironment(binary: string) {
-    const directory = await Deno.makeTempDir({ prefix: "black-atom-dev-" });
+    const directory = await mkdtemp(join(tmpdir(), "black-atom-dev-"));
     const env: Record<string, string> = {
-        ...Deno.env.toObject(),
+        ...process.env,
         CARGO_TARGET_DIR: dirname(dirname(binary)),
     };
     const statePath = join(directory, "state.json");
     const launcher = join(directory, "livery-dev");
-    const state: DevState = { owner: Deno.pid, status: "pending", binary, env: launcherEnv(env) };
+    const state: DevState = {
+        owner: process.pid,
+        status: "pending",
+        binary,
+        env: launcherEnv(env),
+    };
     function setState(status: string) {
         state.status = status;
-        Deno.writeTextFileSync(`${statePath}.tmp`, JSON.stringify(state), { mode: 0o600 });
-        Deno.renameSync(`${statePath}.tmp`, statePath);
+        writeFileSync(`${statePath}.tmp`, JSON.stringify(state), { mode: 0o600 });
+        renameSync(`${statePath}.tmp`, statePath);
     }
     setState("pending");
-    const launchScript = fileURLToPath(new URL("./dev-launcher.ts", import.meta.url));
-    await Deno.writeTextFile(
+    const launchScript = fileURLToPath(
+        new URL("./dev-launcher.ts", import.meta.url),
+    );
+    await writeFile(
         launcher,
-        `#!/bin/sh\nexec ${shellQuote(Deno.execPath())} run --no-config -A ${
-            shellQuote(launchScript)
-        } ${shellQuote(statePath)} "$@"\n`,
+        `#!/bin/sh\nexec ${shellQuote(process.execPath)} ${shellQuote(launchScript)} ${
+            shellQuote(statePath)
+        } "$@"\n`,
         { mode: 0o700 },
     );
     return { directory, env, launcher, statePath, setState };
@@ -63,26 +84,26 @@ export function provisionDevLauncher(
     { home = homedir(), path: searchPath }: { home?: string; path: string },
 ) {
     for (const directory of searchPath.split(":")) {
-        const command = join(directory || Deno.cwd(), "livery-dev");
+        const command = join(directory || process.cwd(), "livery-dev");
         try {
-            const existing = Deno.lstatSync(command);
-            if (existing.isSymlink) {
-                const target = Deno.readLinkSync(command);
+            const existing = lstatSync(command);
+            if (existing.isSymbolicLink()) {
+                const target = readlinkSync(command);
                 if (
                     basename(target) === "livery-dev" &&
-                    /^black-atom-dev-[0-9a-f]+$/.test(basename(dirname(target))) &&
+                    /^black-atom-dev-[0-9A-Za-z]+$/.test(basename(dirname(target))) &&
                     dirname(dirname(target)) === resolve(tmpdir())
                 ) {
                     try {
-                        Deno.lstatSync(target);
+                        lstatSync(target);
                     } catch (error) {
-                        if (!(error instanceof Deno.errors.NotFound)) throw error;
-                        const current = Deno.lstatSync(command);
+                        if (!isNotFound(error)) throw error;
+                        const current = lstatSync(command);
                         if (
-                            current.isSymlink && current.ino === existing.ino &&
-                            current.dev === existing.dev && Deno.readLinkSync(command) === target
+                            current.isSymbolicLink() && current.ino === existing.ino &&
+                            current.dev === existing.dev && readlinkSync(command) === target
                         ) {
-                            Deno.removeSync(command);
+                            rmSync(command);
                             console.log(`Removed stale development launcher: ${command}`);
                             continue;
                         }
@@ -90,7 +111,7 @@ export function provisionDevLauncher(
                 }
             }
         } catch (error) {
-            if (error instanceof Deno.errors.NotFound) continue;
+            if (isNotFound(error)) continue;
             throw error;
         }
         throw new Error(
@@ -104,18 +125,20 @@ export function provisionDevLauncher(
     directories.sort((a, b) => Number(b === preferred) - Number(a === preferred));
     const directory = directories.find((path) => {
         try {
-            return Deno.statSync(path).isDirectory;
+            return statSync(path).isDirectory();
         } catch (error) {
-            if (error instanceof Deno.errors.NotFound) return false;
+            if (isNotFound(error)) return false;
             throw error;
         }
     });
-    if (!directory) throw new Error("livery-dev needs an existing user bin directory in PATH.");
+    if (!directory) {
+        throw new Error("livery-dev needs an existing user bin directory in PATH.");
+    }
     const path = join(directory, "livery-dev");
     try {
-        Deno.symlinkSync(launcher, path);
+        symlinkSync(launcher, path);
     } catch (error) {
-        if (error instanceof Deno.errors.AlreadyExists) {
+        if (isAlreadyExists(error)) {
             throw new Error(
                 `${path} already exists. Another dev session or command owns livery-dev; stop that session or remove its stale link explicitly.`,
             );
@@ -126,11 +149,13 @@ export function provisionDevLauncher(
         path,
         remove() {
             try {
-                if (Deno.lstatSync(path).isSymlink && Deno.readLinkSync(path) === launcher) {
-                    Deno.removeSync(path);
+                if (
+                    lstatSync(path).isSymbolicLink() && readlinkSync(path) === launcher
+                ) {
+                    rmSync(path);
                 }
             } catch (error) {
-                if (!(error instanceof Deno.errors.NotFound)) throw error;
+                if (!isNotFound(error)) throw error;
             }
         },
     };

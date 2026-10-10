@@ -1,10 +1,12 @@
-import { join } from "@std/path";
-import { existsSync } from "@std/fs";
+import { spawn } from "node:child_process";
+import { existsSync, watch } from "node:fs";
+import { join } from "node:path";
+import process from "node:process";
 
 /**
  * Watches generated Ghostty config files for changes and re-runs the terminal color test.
  *
- * Requires `deno task dev` (or manual generation) to be running separately.
+ * Requires `npm run dev` (or manual generation) to be running separately.
  * When generation writes new .conf files, this watcher picks up the change,
  * reloads Ghostty, and re-displays the color test.
  *
@@ -13,32 +15,37 @@ import { existsSync } from "@std/fs";
  */
 
 const scriptDir = import.meta.dirname!;
-const repoRoot = join(scriptDir, "..");
-const orgDir = join(repoRoot, "..");
+const repoRoot = join(scriptDir, "..", "..");
 const testScript = join(scriptDir, "test-terminal-colors.sh");
 
-// Resolve the Ghostty adapter's themes output directory
-const ghosttyThemesDir = join(orgDir, "ghostty", "themes");
+const ghosttyThemesDir = join(repoRoot, "adapters", "ghostty", "themes");
 
 if (!existsSync(ghosttyThemesDir)) {
     console.error(`Ghostty themes directory not found: ${ghosttyThemesDir}`);
-    console.error("Make sure the ghostty adapter repo exists as a sibling directory.");
-    Deno.exit(1);
+    console.error("Run `npm run generate` first.");
+    process.exit(1);
 }
 
-const args = Deno.args.filter((a) => a !== "--capture");
+const args = process.argv.slice(2).filter((a) => a !== "--capture");
 const themeName = args[0] || "";
-const capture = Deno.args.includes("--capture");
+const capture = process.argv.includes("--capture");
 
-const cmd = [testScript, ...(themeName ? [themeName] : []), ...(capture ? ["--capture"] : [])];
+const cmd = [
+    testScript,
+    ...(themeName ? [themeName] : []),
+    ...(capture ? ["--capture"] : []),
+];
+
+function exec([command, ...args]: string[], stdio: "inherit" | "ignore"): Promise<number> {
+    return new Promise((resolve) => {
+        const child = spawn(command, args, { stdio });
+        child.once("error", () => resolve(1));
+        child.once("exit", (code) => resolve(code ?? 1));
+    });
+}
 
 async function run() {
-    const command = new Deno.Command(cmd[0], {
-        args: cmd.slice(1),
-        stdout: "inherit",
-        stderr: "inherit",
-    });
-    await command.output();
+    await exec(cmd, "inherit");
 }
 
 /**
@@ -46,69 +53,58 @@ async function run() {
  * Uses SIGUSR2 signal (Ghostty 1.2.0+) with AppleScript menu fallback on macOS.
  */
 async function reloadGhostty() {
-    try {
-        // Try SIGUSR2 signal (Ghostty 1.2.0+)
-        const pkill = new Deno.Command("pkill", {
-            args: ["-SIGUSR2", "ghostty"],
-            stdout: "null",
-            stderr: "null",
-        });
-        const result = await pkill.output();
-        if (result.success) return;
-    } catch {
-        // pkill not available or failed
-    }
+    // Try SIGUSR2 signal (Ghostty 1.2.0+)
+    if (await exec(["pkill", "-SIGUSR2", "ghostty"], "ignore") === 0) return;
 
     // Fallback: AppleScript on macOS
-    if (Deno.build.os === "darwin") {
-        try {
-            const osascript = new Deno.Command("osascript", {
-                args: [
-                    "-e",
-                    `tell application "System Events"
-                        tell process "Ghostty"
-                            try
-                                click menu item "Reload Configuration" of menu "Ghostty" of menu bar 1
-                            end try
-                        end tell
-                    end tell`,
-                ],
-                stdout: "null",
-                stderr: "null",
-            });
-            await osascript.output();
-        } catch {
-            // AppleScript not available
-        }
+    if (process.platform === "darwin") {
+        await exec([
+            "osascript",
+            "-e",
+            `tell application "System Events"
+                tell process "Ghostty"
+                    try
+                        click menu item "Reload Configuration" of menu "Ghostty" of menu bar 1
+                    end try
+                end tell
+            end tell`,
+        ], "ignore");
     }
 }
 
 console.log(`Watching ${ghosttyThemesDir} for generated config changes...\n`);
-console.log(`┌──────────────────────────────────────────────────────────────────┐`);
-console.log(`│                                                                  │`);
-console.log(`│  Watches generated Ghostty .conf files (not theme sources).      │`);
+console.log(
+    `┌──────────────────────────────────────────────────────────────────┐`,
+);
+console.log(
+    `│                                                                  │`,
+);
+console.log(
+    `│  Watches generated Ghostty .conf files (not theme sources).      │`,
+);
 console.log(`│  Run dev separately to trigger generation.              │`);
-console.log(`│                                                                  │`);
-console.log(`└──────────────────────────────────────────────────────────────────┘`);
+console.log(
+    `│                                                                  │`,
+);
+console.log(
+    `└──────────────────────────────────────────────────────────────────┘`,
+);
 console.log(`\nPress Ctrl+C to stop.\n`);
 
 await run();
 
-const watcher = Deno.watchFs(ghosttyThemesDir, { recursive: true });
 let debounce: ReturnType<typeof setTimeout> | undefined;
 
-for await (const event of watcher) {
-    if (event.kind === "modify" || event.kind === "create") {
-        // Only react to .conf file changes (generated output)
-        if (!event.paths.some((p) => p.endsWith(".conf"))) continue;
+watch(ghosttyThemesDir, { recursive: true }, (_event, filename) => {
+    // Only react to .conf file changes (generated output)
+    if (!filename?.endsWith(".conf") || !existsSync(join(ghosttyThemesDir, filename))) return;
 
-        clearTimeout(debounce);
-        debounce = setTimeout(async () => {
-            await reloadGhostty();
-            // Brief pause for Ghostty to apply the new config
-            await new Promise((resolve) => setTimeout(resolve, 200));
-            console.clear();
-            await run();
-        }, 300);
-    }
-}
+    clearTimeout(debounce);
+    debounce = setTimeout(async () => {
+        await reloadGhostty();
+        // Brief pause for Ghostty to apply the new config
+        await new Promise((resolve) => setTimeout(resolve, 200));
+        console.clear();
+        await run();
+    }, 300);
+});

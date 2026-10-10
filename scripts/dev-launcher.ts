@@ -1,3 +1,7 @@
+import { spawn } from "node:child_process";
+import { readFileSync } from "node:fs";
+import process from "node:process";
+
 export interface DevState {
     owner: number;
     status: string;
@@ -5,23 +9,25 @@ export interface DevState {
     env: Record<string, string>;
 }
 
-export async function launchDev(statePath: string, args: string[]): Promise<number> {
+export async function launchDev(
+    statePath: string,
+    args: string[],
+): Promise<number> {
     try {
-        const state: DevState = JSON.parse(Deno.readTextFileSync(statePath));
-        Deno.kill(state.owner, 0);
+        const state: DevState = JSON.parse(readFileSync(statePath, "utf8"));
+        process.kill(state.owner, 0);
         if (state.status !== "ready") {
             console.error(`livery-dev is not ready (${state.status}).`);
             return 1;
         }
-        const result = await new Deno.Command(state.binary, {
-            args,
+        const child = spawn(state.binary, args, {
             env: state.env,
-            clearEnv: true,
-            stdin: "inherit",
-            stdout: "inherit",
-            stderr: "inherit",
-        }).spawn().status;
-        return result.code;
+            stdio: "inherit",
+        });
+        return await new Promise<number>((resolve, reject) => {
+            child.once("error", reject);
+            child.once("exit", (code) => resolve(code ?? 1));
+        });
     } catch (error) {
         console.error(
             `livery-dev is unavailable: ${error instanceof Error ? error.message : error}`,
@@ -30,4 +36,6 @@ export async function launchDev(statePath: string, args: string[]): Promise<numb
     }
 }
 
-if (import.meta.main) Deno.exit(await launchDev(Deno.args[0], Deno.args.slice(1)));
+if (import.meta.main) {
+    process.exit(await launchDev(process.argv[2], process.argv.slice(3)));
+}

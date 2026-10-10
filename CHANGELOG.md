@@ -35,6 +35,10 @@
 - Livery — nbr <nikolaus.brunner@protonmail.ch>
   - The theme list shows five color pips per theme: its background, its accents, then palette colors.
   - `livery apply` lists notes from successful updates, such as a deferred Obsidian reload, below the results.
+- Development — nbr <nikolaus.brunner@protonmail.ch> ([#58](https://github.com/black-atom-industries/black-atom/issues/58))
+  - The workspace runs on Node 24 and npm workspaces: `npm install`, then `npm run dev`, `npm run check`, `npm run test`, and `npm run verify`.
+  - oxfmt formats, ESLint lints, TypeScript type-checks, and Vitest runs the tests.
+  - An adapter regenerates its themes with `node ../../core/src/cli/index.ts generate`.
 
 ### Fixed
 

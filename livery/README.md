@@ -2,17 +2,19 @@
 
 > Paint your cockpit.
 
-A desktop app and CLI for applying [Black Atom](../core/) themes across your developer tools. Pick
-a theme once, apply it everywhere.
+A desktop app and CLI for applying [Black Atom](../core/) themes across your
+developer tools. Pick a theme once, apply it everywhere.
 
 ## How it works
 
-Livery embeds every adapter's generated theme files in its binary and unpacks them into
-`$XDG_DATA_HOME/black-atom/themes/<adapter>/` (`~/.local/share` if `XDG_DATA_HOME` is unset).
-Livery's own settings live in `$XDG_CONFIG_HOME/black-atom/livery/config.json`.
+Livery embeds every adapter's generated theme files in its binary and unpacks
+them into `$XDG_DATA_HOME/black-atom/themes/<adapter>/` (`~/.local/share` if
+`XDG_DATA_HOME` is unset). Livery's own settings live in
+`$XDG_CONFIG_HOME/black-atom/livery/config.json`.
 
-Each supported app falls into one provisioning class: Linked, Merged, or External. See
-[ADAPTERS.md](ADAPTERS.md) for the class definitions and per-app contracts.
+Each supported app falls into one provisioning class: Linked, Merged, or
+External. See [ADAPTERS.md](ADAPTERS.md) for the class definitions and per-app
+contracts.
 
 ## CLI
 
@@ -31,35 +33,38 @@ livery adapter kagi [theme] [--font <family>]  # copy a Kagi theme to the clipbo
 
 ## GUI
 
-`livery-gui` is the Tauri desktop app. Same picker, status, and setup flows as the CLI, in a
-window.
+`livery-gui` is the Tauri desktop app. Same picker, status, and setup flows as
+the CLI, in a window.
 
 ## Development
 
 ```sh
-deno task dev   # from the repo root: GUI, CLI, monitor, generation
-deno task test  # from the repo root: prepares frontend, tests Deno and Rust
+npm run dev   # from the repo root: GUI, CLI, monitor, generation
+npm run test  # from the repo root: prepares frontend, runs Vitest and Rust tests
 ```
 
-The GUI and `livery-dev` share the environment inherited when development starts, including existing
-home and XDG configuration paths. For GUI-only work, `cd livery && deno task dev` starts Tauri.
-`deno task airship` wraps the same GUI with the Airship development bridge.
+The GUI and `livery-dev` share the environment inherited when development
+starts, including existing home and XDG configuration paths. For GUI-only work,
+`cd livery && npm run dev` starts Tauri.
 
 Bundle the desktop app:
 
 ```sh
-cd livery && deno task build
+cd livery && npm run build
 ```
 
-From the root, `deno task build` builds both app and CLI; `deno task install:macos` installs both.
-The package-local `install:macos` installs only the app.
+From the root, `npm run build` builds both app and CLI;
+`npm run install:macos` installs both. The package-local `install:macos`
+installs only the app.
 
-Automated tests and agent-run development, setup, and apply commands use temporary fixture homes and
-XDG directories. See the Sandbox section in the root `AGENTS.md`.
+Automated tests and agent-run development, setup, and apply commands use
+temporary fixture homes and XDG directories. See the Sandbox section in the root
+`AGENTS.md`.
 
 ## Architecture
 
-- **Frontend**: React + TanStack (Router, Store, Query) in a Tauri v2 webview, `livery/src/`
+- **Frontend**: React + TanStack (Router, Store, Query) in a Tauri v2 webview,
+  `livery/src/`
 - **Domain logic**: `livery/core/` (crate `livery_core`), no Tauri dependency
 - **Tauri shell**: `livery/src-tauri/` (binary `livery-gui`)
 - **CLI**: `livery/cli/` (crate `livery-cli`, binary `livery`)
@@ -73,12 +78,13 @@ Livery writes logs to the platform log directory:
 | macOS    | `~/Library/Logs/industries.black-atom.livery/livery.log`      |
 | Linux    | `~/.local/share/industries.black-atom.livery/logs/livery.log` |
 
-Logs rotate automatically at 5 MB. Previous log files are kept alongside the current one.
+Logs rotate automatically at 5 MB. Previous log files are kept alongside the
+current one.
 
 ## Origin of name
 
-[Livery](https://en.wikipedia.org/wiki/Livery_(aircraft)) is the paint scheme of an aircraft, its
-visual identity.
+[Livery](https://en.wikipedia.org/wiki/Livery_(aircraft)) is the paint scheme of
+an aircraft, its visual identity.
 
 ## License
 

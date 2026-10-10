@@ -1,11 +1,10 @@
-/// <reference lib="deno.ns" />
-import { assertEquals, assertGreater, assertLessOrEqual, assertThrows } from "@std/assert";
+import { assert, test } from "vitest";
 import { analyzeThemeContrast, INTENDED_PAIRINGS } from "./contrast-analysis.ts";
 import type * as Theme from "../types/theme.ts";
 
-Deno.test("INTENDED_PAIRINGS has all expected categories", () => {
+test("INTENDED_PAIRINGS has all expected categories", () => {
     const names = INTENDED_PAIRINGS.map((c) => c.name);
-    assertEquals(names, [
+    assert.deepEqual(names, [
         "Content on surfaces",
         "Interactive states",
         "Feedback",
@@ -14,13 +13,13 @@ Deno.test("INTENDED_PAIRINGS has all expected categories", () => {
     ]);
 });
 
-Deno.test("each pairing has fg and bg keys", () => {
+test("each pairing has fg and bg keys", () => {
     for (const category of INTENDED_PAIRINGS) {
         for (const pair of category.pairs) {
-            assertEquals(typeof pair.fg, "string");
-            assertEquals(typeof pair.bg, "string");
-            assertEquals(pair.fg.startsWith("fg."), true, `${pair.fg} should start with fg.`);
-            assertEquals(pair.bg.startsWith("bg."), true, `${pair.bg} should start with bg.`);
+            assert.deepEqual(typeof pair.fg, "string");
+            assert.deepEqual(typeof pair.bg, "string");
+            assert.deepEqual(pair.fg.startsWith("fg."), true, `${pair.fg} should start with fg.`);
+            assert.deepEqual(pair.bg.startsWith("bg."), true, `${pair.bg} should start with bg.`);
         }
     }
 });
@@ -65,45 +64,45 @@ const testTheme = {
     },
 } as unknown as Theme.Definition;
 
-Deno.test("analyzeThemeContrast returns correct structure", () => {
+test("analyzeThemeContrast returns correct structure", () => {
     const result = analyzeThemeContrast(testTheme);
-    assertEquals(typeof result.primary.ratio, "number");
-    assertEquals(result.primary.fg.key, "fg.default");
-    assertEquals(result.primary.bg.key, "bg.default");
-    assertEquals(result.categories.length, INTENDED_PAIRINGS.length);
-    assertGreater(result.passRate.aa, 0);
-    assertLessOrEqual(result.passRate.aa, 1);
-    assertGreater(result.passRate.aaa, 0);
-    assertLessOrEqual(result.passRate.aaa, 1);
-    assertEquals(typeof result.worstPair.ratio, "number");
+    assert.deepEqual(typeof result.primary.ratio, "number");
+    assert.deepEqual(result.primary.fg.key, "fg.default");
+    assert.deepEqual(result.primary.bg.key, "bg.default");
+    assert.deepEqual(result.categories.length, INTENDED_PAIRINGS.length);
+    assert.isAbove(result.passRate.aa, 0);
+    assert.isAtMost(result.passRate.aa, 1);
+    assert.isAbove(result.passRate.aaa, 0);
+    assert.isAtMost(result.passRate.aaa, 1);
+    assert.deepEqual(typeof result.worstPair.ratio, "number");
 });
 
-Deno.test("analyzeThemeContrast primary pair matches fg.default/bg.default", () => {
+test("analyzeThemeContrast primary pair matches fg.default/bg.default", () => {
     const result = analyzeThemeContrast(testTheme);
-    assertEquals(result.primary.fg.color, "#c5cad0");
-    assertEquals(result.primary.bg.color, "#1a1d23");
-    assertGreater(result.primary.ratio, 7);
-    assertEquals(result.primary.level, "AAA");
+    assert.deepEqual(result.primary.fg.color, "#c5cad0");
+    assert.deepEqual(result.primary.bg.color, "#1a1d23");
+    assert.isAbove(result.primary.ratio, 7);
+    assert.deepEqual(result.primary.level, "AAA");
 });
 
-Deno.test("analyzeThemeContrast worstPair has lowest ratio", () => {
+test("analyzeThemeContrast worstPair has lowest ratio", () => {
     const result = analyzeThemeContrast(testTheme);
     const allPairs = result.categories.flatMap((c) => c.pairs);
     const minRatio = Math.min(...allPairs.map((p) => p.ratio));
-    assertEquals(result.worstPair.ratio, minRatio);
+    assert.deepEqual(result.worstPair.ratio, minRatio);
 });
 
-Deno.test("analyzeThemeContrast pass rates are consistent with pairs", () => {
+test("analyzeThemeContrast pass rates are consistent with pairs", () => {
     const result = analyzeThemeContrast(testTheme);
     const allPairs = result.categories.flatMap((c) => c.pairs);
     const total = allPairs.length;
     const aaCount = allPairs.filter((p) => p.level === "AA" || p.level === "AAA").length;
     const aaaCount = allPairs.filter((p) => p.level === "AAA").length;
-    assertEquals(result.passRate.aa, aaCount / total);
-    assertEquals(result.passRate.aaa, aaaCount / total);
+    assert.deepEqual(result.passRate.aa, aaCount / total);
+    assert.deepEqual(result.passRate.aaa, aaaCount / total);
 });
 
-Deno.test("analyzeThemeContrast throws on missing token", () => {
+test("analyzeThemeContrast throws on missing token", () => {
     const incompleteTheme = {
         meta: { key: "incomplete" },
         ui: {
@@ -112,7 +111,7 @@ Deno.test("analyzeThemeContrast throws on missing token", () => {
         },
     } as unknown as Theme.Definition;
 
-    assertThrows(
+    assert.throws(
         () => analyzeThemeContrast(incompleteTheme),
     );
 });

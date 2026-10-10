@@ -45,10 +45,10 @@ This adapter generates CSS files containing GTK color definitions using `@define
 
 ### Setup
 
-Generate the theme files (requires [Deno](https://deno.land/)):
+Generate the theme files (requires [Node.js](https://nodejs.org/) 24+):
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate
+node ../../core/src/cli/index.ts generate
 ```
 
 Import a theme in your `style.css`:
@@ -82,8 +82,8 @@ Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.
 ## Development
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate  # regenerate theme files
-deno run -A ../../core/src/cli/index.ts generate --watch        # watch mode
+node ../../core/src/cli/index.ts generate  # regenerate theme files
+node ../../core/src/cli/index.ts generate --watch        # watch mode
 ```
 
 ### Layout

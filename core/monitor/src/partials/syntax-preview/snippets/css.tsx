@@ -1,4 +1,3 @@
-// deno-lint-ignore-file jsx-curly-braces
 import { CodeBlock } from "../../../components/syntax-preview/code-block";
 
 const s = (varName: string) => ({ color: `var(--ba-syntax-${varName})` });

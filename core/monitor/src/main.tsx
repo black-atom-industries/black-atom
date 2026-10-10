@@ -1,4 +1,3 @@
-/// <reference path="./vite-env.d.ts" />
 import "open-props/style";
 import "./fonts.css";
 import { StrictMode } from "react";

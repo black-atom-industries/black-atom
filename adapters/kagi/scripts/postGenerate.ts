@@ -10,16 +10,18 @@
  * Called by Core after generation.
  */
 
-const base = await Deno.readTextFile("styles/base.css");
+import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 
-await Deno.remove("themes", { recursive: true }).catch(() => {});
+const base = await readFile("styles/base.css", "utf8");
+
+await rm("themes", { recursive: true, force: true });
 
 let count = 0;
-for await (const collection of Deno.readDir("fragments")) {
-    if (!collection.isDirectory) continue;
+for (const collection of await readdir("fragments", { withFileTypes: true })) {
+    if (!collection.isDirectory()) continue;
 
     const pairs = new Map<string, { light?: string; dark?: string }>();
-    for await (const entry of Deno.readDir(`fragments/${collection.name}`)) {
+    for (const entry of await readdir(`fragments/${collection.name}`, { withFileTypes: true })) {
         const match = entry.name.match(/^black-atom-(.+)-(light|dark)\.css$/);
         if (!match) continue;
         const [, name, appearance] = match;
@@ -28,11 +30,11 @@ for await (const collection of Deno.readDir("fragments")) {
         pairs.set(name, pair);
     }
 
-    await Deno.mkdir(`themes/${collection.name}`, { recursive: true });
+    await mkdir(`themes/${collection.name}`, { recursive: true });
     for (const [name, { light, dark }] of pairs) {
         const fragments = [];
         for (const file of [light, dark]) {
-            if (file) fragments.push((await Deno.readTextFile(file)).trimEnd());
+            if (file) fragments.push((await readFile(file, "utf8")).trimEnd());
         }
         const labels = fragments.map((fragment) =>
             fragment.match(/^\/\* (.+) for Kagi \*\//)?.[1] ?? name
@@ -45,7 +47,7 @@ for await (const collection of Deno.readDir("fragments")) {
             " */",
         ].join("\n");
         const parts = [header, base.trimEnd(), ...fragments];
-        await Deno.writeTextFile(
+        await writeFile(
             `themes/${collection.name}/black-atom-${name}.css`,
             parts.join("\n\n") + "\n",
         );

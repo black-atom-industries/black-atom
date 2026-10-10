@@ -9,6 +9,7 @@
  * Called by Core after generation.
  */
 
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import { config } from "./config.ts";
 
 /**
@@ -21,11 +22,11 @@ async function collectFiles(
     ext: string,
 ): Promise<string[]> {
     const files: string[] = [];
-    for await (const entry of Deno.readDir(dir)) {
+    for (const entry of await readdir(dir, { withFileTypes: true })) {
         const path = `${dir}/${entry.name}`;
-        if (entry.isDirectory) {
+        if (entry.isDirectory()) {
             files.push(...await collectFiles(path, ext));
-        } else if (entry.isFile && entry.name.endsWith(ext)) {
+        } else if (entry.isFile() && entry.name.endsWith(ext)) {
             files.push(path);
         }
     }
@@ -49,8 +50,9 @@ async function postGenerate(): Promise<void> {
     const parts: string[] = [];
 
     // Variants settings block
-    const variantsYaml = await Deno.readTextFile(
+    const variantsYaml = await readFile(
         `${config.paths.styles}/variants.settings.yaml`,
+        "utf8",
     );
     parts.push(buildVariantsSettingsBlock(variantsYaml));
 
@@ -61,7 +63,7 @@ async function postGenerate(): Promise<void> {
     );
     const fragments: string[] = [];
     for (const file of settingsFiles) {
-        const content = await Deno.readTextFile(file);
+        const content = await readFile(file, "utf8");
         fragments.push(content.trimEnd());
     }
     if (fragments.length > 0) {
@@ -72,7 +74,7 @@ async function postGenerate(): Promise<void> {
     const themeFiles = (await collectFiles(config.paths.themes, ".css"))
         .filter((f) => !f.includes(".template."));
     for (const file of themeFiles) {
-        const content = await Deno.readTextFile(file);
+        const content = await readFile(file, "utf8");
         parts.push(content.trimEnd());
     }
 
@@ -80,14 +82,14 @@ async function postGenerate(): Promise<void> {
     const uiCssFiles = (await collectFiles(config.paths.ui, ".css"))
         .filter((f) => !f.endsWith(".settings.yaml"));
     for (const file of uiCssFiles) {
-        const content = await Deno.readTextFile(file);
+        const content = await readFile(file, "utf8");
         parts.push(content.trimEnd());
     }
 
     // Write output, skipping an unchanged file: livery/core/build.rs reruns on its mtime
     const output = parts.join("\n\n") + "\n";
-    const existing = await Deno.readTextFile(config.paths.output).catch(() => null);
-    if (existing !== output) await Deno.writeTextFile(config.paths.output, output);
+    const existing = await readFile(config.paths.output, "utf8").catch(() => null);
+    if (existing !== output) await writeFile(config.paths.output, output);
     console.log(`Assembly complete: ${config.paths.output}`);
 }
 

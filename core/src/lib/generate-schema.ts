@@ -1,3 +1,4 @@
+import { writeFileSync } from "node:fs";
 import { themeKeys } from "../themes/catalog.ts";
 import log from "./log.ts";
 
@@ -82,7 +83,7 @@ function generateSchema() {
     };
 
     // Write the schema to adapter.schema.json
-    Deno.writeTextFileSync(
+    writeFileSync(
         "adapter.schema.json",
         JSON.stringify(schema, null, 2),
     );

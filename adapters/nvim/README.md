@@ -215,16 +215,16 @@ Individual tasks are also available: `mise run lint`, `mise run typecheck`,
 ### Working with Templates
 
 Theme files are generated from templates through the Black Atom core CLI. You need
-[Deno](https://deno.land/) installed.
+[Node.js](https://nodejs.org/) 24+ installed.
 
 1. Edit the template in `templates/collection.template.lua` (one template, all collections)
 2. Generate theme files:
    ```bash
-   deno run -A ../../core/src/cli/index.ts generate
+   node ../../core/src/cli/index.ts generate
    ```
 3. Or use watch mode for live regeneration:
    ```bash
-   deno run -A ../../core/src/cli/index.ts generate --watch
+   node ../../core/src/cli/index.ts generate --watch
    ```
 
 ## License

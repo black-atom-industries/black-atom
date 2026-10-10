@@ -38,7 +38,7 @@ in one commit.
    generated output, e.g. `adapters/*/themes/<collection>/black-atom-<collection>-<old>-dark.<ext>`
    and nvim's `adapters/nvim/colors/black-atom-<collection>-<old>-dark.lua`.
 
-8. Run `deno task generate` from the repo root to regenerate every adapter's output for the new
+8. Run `npm run generate` from the repo root to regenerate every adapter's output for the new
    key. Confirm the new generated files exist and no `black-atom-<collection>-<old>` file remains
    under `adapters/`.
 
@@ -46,7 +46,7 @@ in one commit.
    in the Obsidian adapter, inspect that file and `adapters/obsidian/styles/variants.settings.yaml`
    for the old key after generation.
 
-10. Run `deno task verify` from the repo root (type check, lint, format, clippy, Deno and Rust
+10. Run `npm run verify` from the repo root (type check, lint, format, clippy, TypeScript and Rust
     tests). It must be clean.
 
 11. Commit everything as one commit through `repo-commit`:

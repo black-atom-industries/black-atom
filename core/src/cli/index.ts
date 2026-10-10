@@ -8,17 +8,18 @@
  *
  * @example
  * ```sh
- * deno run -A ../../core/src/cli/index.ts generate
- * deno run -A ../../core/src/cli/index.ts generate --watch
+ * node ../../core/src/cli/index.ts generate
+ * node ../../core/src/cli/index.ts generate --watch
  * ```
  */
 
+import process from "node:process";
 import generate from "./generate.ts";
 import help from "./help.ts";
 
 if (import.meta.main) {
-    const command = Deno.args[0];
-    const options = Deno.args.slice(1);
+    const command = process.argv[2];
+    const options = process.argv.slice(3);
 
     switch (command) {
         case "generate":
@@ -32,6 +33,6 @@ if (import.meta.main) {
 
         default:
             help();
-            Deno.exit(1);
+            process.exit(1);
     }
 }

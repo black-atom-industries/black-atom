@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useConfig } from "../../../queries/use-config.ts";
 import { GeneralPanel } from "../../../components/settings/general-panel/index.ts";
-import denoConfig from "../../../../deno.json" with { type: "json" };
+import packageJson from "../../../../package.json" with { type: "json" };
 
 export const Route = createFileRoute("/_app/settings/general")({
     component: GeneralRoute,
@@ -30,7 +30,7 @@ function GeneralRoute() {
         <GeneralPanel
             followOsAppearance={config.query.data.system_appearance}
             onToggleFollowOsAppearance={toggleSystemAppearance}
-            liveryVersion={denoConfig.version}
+            liveryVersion={packageJson.version}
             cursored
         />
     );

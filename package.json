@@ -1,0 +1,46 @@
+{
+    "name": "black-atom",
+    "private": true,
+    "type": "module",
+    "workspaces": [
+        "core",
+        "core/monitor",
+        "livery",
+        "livery/e2e"
+    ],
+    "scripts": {
+        "dev": "node scripts/dev.ts",
+        "build": "node scripts/build.ts",
+        "install:macos": "node scripts/install-macos.ts",
+        "generate": "node core/src/tasks/generate.ts",
+        "eval:skills": "cd .agents && claude plugin eval . --allow-tools Bash Edit Write --scaffold --trust-plugin --no-publish -j 4 --max-cost-usd 25 --judge-model sonnet",
+        "build:ui": "npm run generate && vite build livery",
+        "check": "npm run build:ui && npm run check:ts && npm run check:rust",
+        "check:ts": "tsc -p tsconfig.json && tsc -p core/monitor && tsc -p livery && eslint && oxfmt --check",
+        "check:rust": "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
+        "test": "npm run build:ui && npm run test:ts && npm run test:rust",
+        "test:ts": "vitest run",
+        "test:rust": "cargo test --workspace",
+        "test:e2e": "npm run test --workspace livery/e2e --",
+        "test:e2e:ui": "npm run test:ui --workspace livery/e2e --",
+        "verify": "npm run build:ui && npm run check:ts && npm run check:rust && npm run test:ts && npm run test:rust",
+        "fmt": "oxfmt",
+        "lint": "eslint",
+        "install:hooks": "lefthook install"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^24",
+        "eslint": "^10.12.0",
+        "globals": "^17.13.0",
+        "oxfmt": "0.72.0",
+        "typescript": "~6.0.3",
+        "typescript-eslint": "^8.71.1",
+        "vite": "^6.4.3",
+        "vitest": "^5.0.3"
+    },
+    "allowScripts": {
+        "@swc/core@1.16.13": true,
+        "esbuild@0.25.12": true
+    }
+}

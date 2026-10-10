@@ -1,4 +1,7 @@
+import { watch } from "node:fs";
+import { readdir, readFile, rm, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
+import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import { isGenerationInput } from "../core/src/tasks/adapters/watch.ts";
@@ -12,15 +15,19 @@ const session = await createDevEnvironment(binary);
 const launcherLink = await (async () => {
     try {
         return provisionDevLauncher(session.launcher, {
-            home: Deno.env.get("HOME"),
-            path: Deno.env.get("PATH") ?? "",
+            home: process.env.HOME,
+            path: process.env.PATH ?? "",
         });
     } catch (error) {
-        await Deno.remove(session.directory, { recursive: true });
+        await rm(session.directory, { recursive: true });
         throw error;
     }
 })();
-const processes = createDevProcesses({ cwd: root, env: session.env, stopGraceMs: 1000 });
+const processes = createDevProcesses({
+    cwd: root,
+    env: session.env,
+    stopGraceMs: 1000,
+});
 const finished = Promise.withResolvers<number>();
 let stopping = false;
 let initial = true;
@@ -30,11 +37,11 @@ let fingerprint = "";
 async function cliFingerprint(): Promise<string> {
     const hash = createHash("sha256");
     async function visit(path: string) {
-        const stat = await Deno.stat(path);
-        if (stat.isDirectory) {
-            const entries = Array.from(Deno.readDirSync(path)).sort((a, b) =>
-                a.name.localeCompare(b.name)
-            );
+        if ((await stat(path)).isDirectory()) {
+            const entries = (await readdir(path, { withFileTypes: true })).sort((
+                a,
+                b,
+            ) => a.name.localeCompare(b.name));
             for (const entry of entries) {
                 if (!["target", "node_modules", ".git"].includes(entry.name)) {
                     await visit(join(path, entry.name));
@@ -42,12 +49,20 @@ async function cliFingerprint(): Promise<string> {
             }
         } else if (isCliInput(relative(root, path))) {
             const name = relative(root, path);
-            const content = await Deno.readFile(path);
+            const content = await readFile(path);
             hash.update(name);
             hash.update(content);
         }
     }
-    for (const path of ["Cargo.toml", "Cargo.lock", "livery/cli", "livery/core", "adapters"]) {
+    for (
+        const path of [
+            "Cargo.toml",
+            "Cargo.lock",
+            "livery/cli",
+            "livery/core",
+            "adapters",
+        ]
+    ) {
         await visit(join(root, path));
     }
     return hash.digest("hex");
@@ -57,9 +72,7 @@ const cycle = createDevCycle({
     isGenerationInput,
     generate: async (paths) => {
         await processes.run([
-            Deno.execPath(),
-            "run",
-            "-A",
+            process.execPath,
             join(root, "scripts/dev-generate.ts"),
             ...(initial ? [] : paths),
         ]);
@@ -87,23 +100,34 @@ const cycle = createDevCycle({
         if (status === "ready" && !servicesStarted) {
             servicesStarted = true;
             for (const packagePath of ["core/monitor", "livery"]) {
-                processes.startService(
-                    [Deno.execPath(), "task", "dev"],
-                    join(root, packagePath),
-                );
+                processes.startService(["npm", "run", "dev"], join(root, packagePath));
             }
         }
     },
 });
+function onChange(directory: string) {
+    return (_event: string, filename: string | null) => {
+        if (!filename) return;
+        const path = join(directory, filename);
+        if (isGenerationInput(path) || isCliInput(relative(root, path))) {
+            cycle.schedule(path);
+        }
+    };
+}
 const watchers = [
-    Deno.watchFs([
-        join(root, "core/src/themes"),
-        join(root, "adapters"),
-        join(root, "livery/cli"),
-        join(root, "livery/core"),
-    ], { recursive: true }),
-    Deno.watchFs(root, { recursive: false }),
+    ...["core/src/themes", "adapters", "livery/cli", "livery/core"].map((path) =>
+        watch(join(root, path), { recursive: true }, onChange(join(root, path)))
+    ),
+    watch(root, onChange(root)),
 ];
+for (const watcher of watchers) {
+    watcher.on("error", (error) => {
+        if (!stopping) {
+            console.error(error);
+            void stop(1);
+        }
+    });
+}
 
 async function stop(code: number) {
     if (stopping) return;
@@ -115,37 +139,23 @@ async function stop(code: number) {
 }
 const interrupt = () => void stop(130);
 const terminate = () => void stop(143);
-Deno.addSignalListener("SIGINT", interrupt);
-Deno.addSignalListener("SIGTERM", terminate);
+process.on("SIGINT", interrupt);
+process.on("SIGTERM", terminate);
 
 console.log(
     `Development CLI: livery-dev (${launcherLink.path})\nDevelopment home: ${session.env.HOME}`,
 );
-const watching = Promise.all(watchers.map(async (watcher) => {
-    for await (const event of watcher) {
-        if (event.kind === "access") continue;
-        for (const path of event.paths) {
-            if (isGenerationInput(path) || isCliInput(relative(root, path))) cycle.schedule(path);
-        }
-    }
-})).catch((error) => {
-    if (!stopping) {
-        console.error(error);
-        void stop(1);
-    }
-});
 
 try {
     cycle.schedule(join(root, "core/src/themes/catalog.ts"));
     await cycle.flush();
     void processes.finished.then(stop);
-    Deno.exitCode = await finished.promise;
+    process.exitCode = await finished.promise;
 } finally {
     await stop(1);
-    await watching;
-    Deno.removeSignalListener("SIGINT", interrupt);
-    Deno.removeSignalListener("SIGTERM", terminate);
+    process.off("SIGINT", interrupt);
+    process.off("SIGTERM", terminate);
     session.setState("stopped");
     launcherLink.remove();
-    await Deno.remove(session.directory, { recursive: true });
+    await rm(session.directory, { recursive: true });
 }

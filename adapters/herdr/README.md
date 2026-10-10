@@ -53,11 +53,11 @@ block; switch complete Black Atom variants through Livery instead.
 
 ## Development
 
-Requirements: [Deno](https://deno.com/).
+Requirements: [Node.js](https://nodejs.org/) 24+.
 
 ```sh
-deno run -A ../../core/src/cli/index.ts generate  # regenerate committed TOML files
-deno run -A ../../core/src/cli/index.ts generate --watch       # regenerate on template changes
+node ../../core/src/cli/index.ts generate  # regenerate committed TOML files
+node ../../core/src/cli/index.ts generate --watch       # regenerate on template changes
 ```
 
 Templates use Eta syntax and semantic Black Atom colors only. `surface_dim` uses `ui.bg.panel`, and

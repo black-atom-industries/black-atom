@@ -4,10 +4,10 @@ Beautiful tmux color schemes from the Black Atom Industries theme collection.
 
 ## Installation
 
-Generate the theme files (requires [Deno](https://deno.land/)):
+Generate the theme files (requires [Node.js](https://nodejs.org/) 24+):
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate
+node ../../core/src/cli/index.ts generate
 ```
 
 Then source your preferred theme in your `~/.tmux.conf`:
@@ -50,7 +50,7 @@ Each collection has its own styling philosophy:
 Theme files are generated from templates through the Black Atom core CLI. To modify themes:
 
 1. Edit the appropriate template file in `themes/*/collection.template.conf`
-2. Run `deno run -A ../../core/src/cli/index.ts generate` to regenerate theme files (or `deno run -A ../../core/src/cli/index.ts generate --watch` for watch mode)
+2. Run `node ../../core/src/cli/index.ts generate` to regenerate theme files (or `node ../../core/src/cli/index.ts generate --watch` for watch mode)
 3. Test the changes in tmux
 
 ## License

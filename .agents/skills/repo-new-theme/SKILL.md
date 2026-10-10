@@ -34,14 +34,14 @@ description: Add a theme to an existing collection. Load when asked to create, d
    and collection metadata. The `collections` tuple in `core/src/themes/catalog.ts` drives key
    types, and `themeCatalog` combines the collections' `.themes` maps.
 
-4. Run `deno task check` from the repo root and fix any type errors before touching adapters.
+4. Run `npm run check` from the repo root and fix any type errors before touching adapters.
 
 5. Add the theme key to every adapter that declares this collection: open each
    `adapters/<name>/black-atom-adapter.json` and append the key to that collection's `themes`
    array, keeping existing order. `grep -l '"<collection>"' adapters/*/black-atom-adapter.json` lists
    them.
 
-6. Run `deno task generate` from the repo root. It regenerates every adapter that has a
+6. Run `npm run generate` from the repo root. It regenerates every adapter that has a
    `black-atom-adapter.json` in the current tree.
 
 7. Verify one generated output file per adapter that declares the collection. Outputs live at
@@ -49,7 +49,7 @@ description: Add a theme to an existing collection. Load when asked to create, d
    `adapters/nvim/colors/<theme-key>.lua`. Check each adapter's `output` and sibling output
    before asserting a path.
 
-8. Run `deno task check` and `deno task test` from the repo root, both must be green.
+8. Run `npm run check` and `npm run test` from the repo root, both must be green.
 
 9. Commit through `repo-commit` as `feat: add <collection> <name> theme` (no scope, the change
    spans `core` and several adapters).

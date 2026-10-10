@@ -4,19 +4,12 @@ assert_lefthook_installed: true
 pre-commit:
     piped: true
     jobs:
-        - name: deno-format
-          glob: "**/*.{ts,tsx,js,jsx,mts,cts,mjs,cjs,json,jsonc,md,markdown,css,scss,sass,less,yml,yaml,html,ipynb}"
-          # Deno's wildcard-directory exclusions need leaf globs for explicit file arguments.
-          exclude: &deno-directory-exclusions
-              - "adapters/*/themes/**"
-              - "**/.claude/**"
-              - "**/.agents/**"
-              - "**/.impeccable/**"
-          run: deno fmt --check --permit-no-files {staged_files}
-        - name: deno-lint
+        - name: format
+          glob: "**/*.{ts,tsx,js,jsx,mts,cts,mjs,cjs,json,jsonc,md,markdown,css,scss,less,yml,yaml,toml,html}"
+          run: npx oxfmt --check --no-error-on-unmatched-pattern {staged_files}
+        - name: lint
           glob: "**/*.{ts,tsx,js,jsx,mts,cts,mjs,cjs}"
-          exclude: *deno-directory-exclusions
-          run: deno lint --permit-no-files {staged_files}
+          run: npx eslint --no-warn-ignored {staged_files}
         - name: rust-format
           glob: "**/*.rs"
           run: cargo fmt --check
@@ -24,10 +17,10 @@ pre-commit:
 pre-push:
     jobs:
         - name: workspace-verify
-          run: deno task verify
+          run: npm run verify
         - name: livery-e2e
           glob:
               - "livery/**"
               - "core/src/**"
               - "adapters/*/themes/**"
-          run: deno task test:e2e
+          run: npm run test:e2e

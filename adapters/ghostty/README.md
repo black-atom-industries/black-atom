@@ -81,11 +81,11 @@ ghostty +list-themes
 
 ## Development
 
-Requirements: [Deno](https://deno.land/).
+Requirements: [Node.js](https://nodejs.org/) 24+.
 
 ```bash
-deno run -A ../../core/src/cli/index.ts generate  # regenerate theme files
-deno run -A ../../core/src/cli/index.ts generate --watch        # watch mode
+node ../../core/src/cli/index.ts generate  # regenerate theme files
+node ../../core/src/cli/index.ts generate --watch        # watch mode
 ```
 
 ### Theme Format

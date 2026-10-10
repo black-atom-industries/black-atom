@@ -81,7 +81,7 @@ This collection-based approach:
 
 ## Theme Adaptation Process
 
-1. Run `deno run -A ../../core/src/cli/index.ts generate` in the adapter directory (or `deno run -A core/src/tasks/generate.ts` at the repo root for
+1. Run `node ../../core/src/cli/index.ts generate` in the adapter directory (or `node core/src/tasks/generate.ts` at the repo root for
    every adapter)
 2. The CLI reads the adapter's `black-atom-adapter.json`
 3. For each collection, the template is processed for each theme in the collection
@@ -163,7 +163,7 @@ After generating theme files:
 ## Development Workflow
 
 1. Update template files when changes are needed
-2. Run `deno run -A core/src/tasks/generate.ts` to regenerate theme files
+2. Run `node core/src/tasks/generate.ts` to regenerate theme files
 3. Test the changes in the target application
 4. Commit both the template changes and the generated files
 

@@ -1,28 +1,28 @@
-import { assertEquals, assertExists } from "@std/assert";
+import { assert, test } from "vitest";
 import type * as Theme from "../types/theme.ts";
 import defaultCollection from "./default/mod.ts";
 import { collectionOrder, themeCatalog } from "./catalog.ts";
 
-Deno.test("collection modules expose metadata and finished themes", () => {
+test("collection modules expose metadata and finished themes", () => {
     const theme = defaultCollection.themes["black-atom-default-dark"];
 
-    assertEquals(defaultCollection.meta.key, "default");
-    assertEquals(theme.meta.name, "Dark");
-    assertEquals(theme.meta.collection.key, "default");
-    assertExists(theme.ui.bg.default);
+    assert.deepEqual(defaultCollection.meta.key, "default");
+    assert.deepEqual(theme.meta.name, "Dark");
+    assert.deepEqual(theme.meta.collection.key, "default");
+    assert.exists(theme.ui.bg.default);
 });
 
-Deno.test("themeCatalog entries contain metadata and finished colors", () => {
+test("themeCatalog entries contain metadata and finished colors", () => {
     const theme = themeCatalog["black-atom-default-dark"];
 
-    assertEquals(theme.meta.key, "black-atom-default-dark");
-    assertEquals(theme.meta.label, "Black Atom — Dark");
-    assertExists(theme.ui.bg.default);
-    assertExists(theme.syntax.keyword.default);
+    assert.deepEqual(theme.meta.key, "black-atom-default-dark");
+    assert.deepEqual(theme.meta.label, "Black Atom — Dark");
+    assert.exists(theme.ui.bg.default);
+    assert.exists(theme.syntax.keyword.default);
 });
 
-Deno.test("collectionOrder follows collection metadata", () => {
-    assertEquals(collectionOrder, [
+test("collectionOrder follows collection metadata", () => {
+    assert.deepEqual(collectionOrder, [
         "default",
         "facility",
         "terra",
@@ -43,4 +43,4 @@ acceptDefaultThemeKey("black-atom-default-dark");
 acceptDefaultThemeKey("black-atom-jpn-koyo-dark");
 
 const defaultThemeKey = "black-atom-default-dark" satisfies keyof typeof defaultCollection.themes;
-assertEquals(defaultThemeKey, "black-atom-default-dark");
+assert.deepEqual(defaultThemeKey, "black-atom-default-dark");

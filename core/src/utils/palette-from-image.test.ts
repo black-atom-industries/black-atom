@@ -1,5 +1,7 @@
-import { assertEquals, assertExists, assertRejects } from "@std/assert";
-import { join } from "@std/path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { assert, expect, test as vitestTest } from "vitest";
+import { join } from "node:path";
 import {
     adjustPaletteSuggestion,
     extractPaletteFromImage,
@@ -8,18 +10,14 @@ import {
 
 async function hasMagick(): Promise<boolean> {
     try {
-        const { success } = await new Deno.Command("magick", {
-            args: ["-version"],
-            stdout: "null",
-            stderr: "null",
-        }).output();
-        return success;
+        await promisify(execFile)("magick", ["-version"]);
+        return true;
     } catch {
         return false;
     }
 }
 
-const test = (await hasMagick()) ? Deno.test : Deno.test.ignore;
+const test = vitestTest.skipIf(!(await hasMagick()));
 
 const testImagePath = join(
     import.meta.dirname ?? ".",
@@ -37,37 +35,33 @@ test("extractPaletteFromImage - valid image", async () => {
         appearance: "auto",
     });
 
-    assertEquals(result.dominantColors.length, 10);
-    assertExists(result.suggestions);
-    assertEquals(result.suggestions.length, 3);
+    assert.deepEqual(result.dominantColors.length, 10);
+    assert.exists(result.suggestions);
+    assert.deepEqual(result.suggestions.length, 3);
 
     result.dominantColors.forEach((color) => {
-        assertEquals(typeof color.hex, "string");
-        assertEquals(color.oklch.l >= 0 && color.oklch.l <= 1, true);
-        assertEquals(color.oklch.c >= 0, true);
-        assertEquals(color.oklch.h >= 0 && color.oklch.h < 360, true);
-        assertEquals(color.percentage > 0, true);
+        assert.deepEqual(typeof color.hex, "string");
+        assert.deepEqual(color.oklch.l >= 0 && color.oklch.l <= 1, true);
+        assert.deepEqual(color.oklch.c >= 0, true);
+        assert.deepEqual(color.oklch.h >= 0 && color.oklch.h < 360, true);
+        assert.deepEqual(color.percentage > 0, true);
     });
 
-    assertExists(result.metadata);
-    assertEquals(typeof result.metadata.avgLightness, "number");
-    assertEquals(typeof result.metadata.avgChroma, "number");
-    assertEquals(
+    assert.exists(result.metadata);
+    assert.deepEqual(typeof result.metadata.avgLightness, "number");
+    assert.deepEqual(typeof result.metadata.avgChroma, "number");
+    assert.deepEqual(
         ["dark", "light", "both"].includes(result.metadata.suggestedAppearance),
         true,
     );
 });
 
-Deno.test("extractPaletteFromImage - image not found", async () => {
-    await assertRejects(
-        async () => {
-            await extractPaletteFromImage({
-                imagePath: "./non-existent-image.jpg",
-            });
-        },
-        Error,
-        "Image not found",
-    );
+test("extractPaletteFromImage - image not found", async () => {
+    await expect(
+        extractPaletteFromImage({
+            imagePath: "./non-existent-image.jpg",
+        }),
+    ).rejects.toThrow("Image not found");
 });
 
 test("generatePrimariesFromSuggestion - dark theme", async () => {
@@ -78,20 +72,20 @@ test("generatePrimariesFromSuggestion - dark theme", async () => {
     const suggestion = result.suggestions[0];
     const code = generatePrimariesFromSuggestion(suggestion, "dark");
 
-    assertEquals(code.includes("const primaries: Theme.Primaries"), true);
-    assertEquals(code.includes("d10:"), true);
-    assertEquals(code.includes("d20:"), true);
-    assertEquals(code.includes("d30:"), true);
-    assertEquals(code.includes("d40:"), true);
-    assertEquals(code.includes("m10:"), true);
-    assertEquals(code.includes("m20:"), true);
-    assertEquals(code.includes("m30:"), true);
-    assertEquals(code.includes("m40:"), true);
-    assertEquals(code.includes("l10:"), true);
-    assertEquals(code.includes("l20:"), true);
-    assertEquals(code.includes("l30:"), true);
-    assertEquals(code.includes("l40:"), true);
-    assertEquals(code.includes("oklch("), true);
+    assert.deepEqual(code.includes("const primaries: Theme.Primaries"), true);
+    assert.deepEqual(code.includes("d10:"), true);
+    assert.deepEqual(code.includes("d20:"), true);
+    assert.deepEqual(code.includes("d30:"), true);
+    assert.deepEqual(code.includes("d40:"), true);
+    assert.deepEqual(code.includes("m10:"), true);
+    assert.deepEqual(code.includes("m20:"), true);
+    assert.deepEqual(code.includes("m30:"), true);
+    assert.deepEqual(code.includes("m40:"), true);
+    assert.deepEqual(code.includes("l10:"), true);
+    assert.deepEqual(code.includes("l20:"), true);
+    assert.deepEqual(code.includes("l30:"), true);
+    assert.deepEqual(code.includes("l40:"), true);
+    assert.deepEqual(code.includes("oklch("), true);
 });
 
 test("generatePrimariesFromSuggestion - light theme", async () => {
@@ -102,11 +96,11 @@ test("generatePrimariesFromSuggestion - light theme", async () => {
     const suggestion = result.suggestions[0];
     const code = generatePrimariesFromSuggestion(suggestion, "light");
 
-    assertEquals(code.includes("const primaries: Theme.Primaries"), true);
+    assert.deepEqual(code.includes("const primaries: Theme.Primaries"), true);
 
     const lightnessValues = code.match(/oklch\(([0-9.]+),/g);
-    assertExists(lightnessValues);
-    assertEquals(lightnessValues.length, 12);
+    assert.exists(lightnessValues);
+    assert.deepEqual(lightnessValues.length, 12);
 });
 
 test("adjustPaletteSuggestion - hue shift", async () => {
@@ -118,9 +112,9 @@ test("adjustPaletteSuggestion - hue shift", async () => {
     const adjusted = adjustPaletteSuggestion(original, { hueShift: 15 });
 
     const expectedHue = (original.accent.h + 15) % 360;
-    assertEquals(Math.abs(adjusted.accent.h - expectedHue) < 0.01, true);
-    assertEquals(adjusted.accent.l, original.accent.l);
-    assertEquals(adjusted.accent.c, original.accent.c);
+    assert.deepEqual(Math.abs(adjusted.accent.h - expectedHue) < 0.01, true);
+    assert.deepEqual(adjusted.accent.l, original.accent.l);
+    assert.deepEqual(adjusted.accent.c, original.accent.c);
 });
 
 test("adjustPaletteSuggestion - chroma multiplier", async () => {
@@ -131,9 +125,9 @@ test("adjustPaletteSuggestion - chroma multiplier", async () => {
     const original = result.suggestions[0];
     const adjusted = adjustPaletteSuggestion(original, { chromaMultiplier: 1.5 });
 
-    assertEquals(Math.abs(adjusted.accent.c - original.accent.c * 1.5) < 0.001, true);
-    assertEquals(adjusted.accent.l, original.accent.l);
-    assertEquals(adjusted.accent.h, original.accent.h);
+    assert.deepEqual(Math.abs(adjusted.accent.c - original.accent.c * 1.5) < 0.001, true);
+    assert.deepEqual(adjusted.accent.l, original.accent.l);
+    assert.deepEqual(adjusted.accent.h, original.accent.h);
 });
 
 test("adjustPaletteSuggestion - lightness shift", async () => {
@@ -145,9 +139,9 @@ test("adjustPaletteSuggestion - lightness shift", async () => {
     const adjusted = adjustPaletteSuggestion(original, { lightnessShift: 0.1 });
 
     const expectedLightness = Math.min(1, original.accent.l + 0.1);
-    assertEquals(Math.abs(adjusted.accent.l - expectedLightness) < 0.001, true);
-    assertEquals(adjusted.accent.c, original.accent.c);
-    assertEquals(adjusted.accent.h, original.accent.h);
+    assert.deepEqual(Math.abs(adjusted.accent.l - expectedLightness) < 0.001, true);
+    assert.deepEqual(adjusted.accent.c, original.accent.c);
+    assert.deepEqual(adjusted.accent.h, original.accent.h);
 });
 
 test("palette suggestions have correct structure", async () => {
@@ -156,21 +150,21 @@ test("palette suggestions have correct structure", async () => {
     });
 
     result.suggestions.forEach((suggestion) => {
-        assertExists(suggestion.name);
-        assertExists(suggestion.description);
-        assertExists(suggestion.accent);
-        assertExists(suggestion.primaries);
-        assertExists(suggestion.harmony);
+        assert.exists(suggestion.name);
+        assert.exists(suggestion.description);
+        assert.exists(suggestion.accent);
+        assert.exists(suggestion.primaries);
+        assert.exists(suggestion.harmony);
 
-        assertEquals(typeof suggestion.primaries.hue, "number");
-        assertEquals(Array.isArray(suggestion.primaries.chromaRange), true);
-        assertEquals(suggestion.primaries.chromaRange.length, 2);
+        assert.deepEqual(typeof suggestion.primaries.hue, "number");
+        assert.deepEqual(Array.isArray(suggestion.primaries.chromaRange), true);
+        assert.deepEqual(suggestion.primaries.chromaRange.length, 2);
 
-        assertEquals(
+        assert.deepEqual(
             ["complementary", "analogous", "triadic"].includes(suggestion.harmony.type),
             true,
         );
-        assertEquals(Array.isArray(suggestion.harmony.colors), true);
+        assert.deepEqual(Array.isArray(suggestion.harmony.colors), true);
     });
 });
 
@@ -180,11 +174,11 @@ test("palette suggestions - vibrant accent has low chroma range", async () => {
     });
 
     const vibrantSuggestion = result.suggestions.find((s) => s.name === "Vibrant Accent");
-    assertExists(vibrantSuggestion);
+    assert.exists(vibrantSuggestion);
 
     const [minChroma, maxChroma] = vibrantSuggestion.primaries.chromaRange;
-    assertEquals(minChroma >= 0.01 && minChroma <= 0.02, true);
-    assertEquals(maxChroma >= 0.05 && maxChroma <= 0.06, true);
+    assert.deepEqual(minChroma >= 0.01 && minChroma <= 0.02, true);
+    assert.deepEqual(maxChroma >= 0.05 && maxChroma <= 0.06, true);
 });
 
 test("palette suggestions - analogous harmony has medium chroma range", async () => {
@@ -193,9 +187,9 @@ test("palette suggestions - analogous harmony has medium chroma range", async ()
     });
 
     const analogousSuggestion = result.suggestions.find((s) => s.name === "Analogous Harmony");
-    assertExists(analogousSuggestion);
+    assert.exists(analogousSuggestion);
 
     const [minChroma, maxChroma] = analogousSuggestion.primaries.chromaRange;
-    assertEquals(minChroma === 0.02, true);
-    assertEquals(maxChroma === 0.06, true);
+    assert.deepEqual(minChroma === 0.02, true);
+    assert.deepEqual(maxChroma === 0.06, true);
 });

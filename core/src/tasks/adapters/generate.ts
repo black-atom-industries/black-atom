@@ -1,5 +1,7 @@
-import { existsSync } from "@std/fs";
-import { join } from "@std/path";
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import process from "node:process";
 import { config } from "../../config.ts";
 import { getAdapters } from "../../lib/discover-adapters.ts";
 import log from "../../lib/log.ts";
@@ -7,13 +9,16 @@ import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
 import { themeKeys } from "../../themes/catalog.ts";
 import { runCommand } from "./utils.ts";
 
-async function runPostGenerate(adapterDir: string, adapter: string): Promise<void> {
+async function runPostGenerate(
+    adapterDir: string,
+    adapter: string,
+): Promise<void> {
     const configPath = join(adapterDir, config.adapterFileName);
     if (!existsSync(configPath)) return;
 
     const adapterConfigSchema = createAdapterConfigSchema(themeKeys);
     const adapterConfig = adapterConfigSchema.parse(
-        JSON.parse(await Deno.readTextFile(configPath)),
+        JSON.parse(await readFile(configPath, "utf8")),
     );
 
     if (adapterConfig.postGenerate) {
@@ -26,12 +31,12 @@ async function runPostGenerate(adapterDir: string, adapter: string): Promise<voi
 async function runGenerate(adapterDir: string): Promise<void> {
     const coreDir = config.dir.core;
     await runCommand([
-        "deno",
-        "run",
-        "-A",
+        process.execPath,
         `${coreDir}/src/cli/index.ts`,
         "generate",
-    ], { cwd: adapterDir });
+    ], {
+        cwd: adapterDir,
+    });
 }
 
 /**

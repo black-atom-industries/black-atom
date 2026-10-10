@@ -16,12 +16,12 @@
 ```bash
 git clone https://github.com/black-atom-industries/black-atom.git
 cd black-atom
-deno install
-deno task dev           # GUI, monitor, generation watcher, development CLI
-deno task check         # Deno checks, Rust format and Clippy (all targets)
-deno task test          # Deno and Rust workspace tests
-deno task build         # release GUI bundle and CLI
-deno task install:macos # build and install app + CLI
+npm install
+npm run dev           # GUI, monitor, generation watcher, development CLI
+npm run check         # type check, lint, format, Rust format and Clippy (all targets)
+npm run test          # Vitest and Rust workspace tests
+npm run build         # release GUI bundle and CLI
+npm run install:macos # build and install app + CLI
 ```
 
 Generation runs automatically before development, checks, tests, and builds. Rust checks and tests
@@ -45,15 +45,15 @@ Install the standalone [Lefthook](https://lefthook.dev/installation/) binary, th
 
 ```bash
 brew install lefthook # macOS; other platforms: see the installation link
-deno task install:hooks
+npm run install:hooks
 ```
 
-Pre-commit checks formatting and lint on staged Deno-supported files, respecting Deno exclusions,
+Pre-commit checks formatting (oxfmt) and lint (ESLint) on staged files, respecting their ignore lists,
 plus workspace Rust formatting when Rust files are staged. Checks are read-only;
-use `deno fmt` and `cargo fmt` to format explicitly.
+use `npm run fmt` and `cargo fmt` to format explicitly.
 
-Pre-push runs `deno task verify`, which runs `check` and `test` with their shared steps once
-and independent steps in parallel. Lefthook skips this job when its
+Pre-push runs `npm run verify`, which runs `check` and `test` with their shared steps once,
+one after another. Lefthook skips this job when its
 push-file detection returns no files. These tasks generate files and build the frontend.
 Review generated changes. Hooks check the current checkout, not snapshots of other refs being pushed. Lefthook temporarily hides and restores unstaged portions of partially
 staged files during commit checks. This is not a full checkout snapshot: workspace Rust formatting

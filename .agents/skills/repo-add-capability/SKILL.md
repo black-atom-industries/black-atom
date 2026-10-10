@@ -53,7 +53,7 @@ bindings and asserts every `Capability` has a camelCase wrapper in them.
 ## 5. Regenerate bindings
 
 ```bash
-deno task test:rust
+npm run test:rust
 ```
 
 This builds the UI the Tauri crate compiles against, runs the whole Cargo workspace, and on the way
@@ -78,7 +78,7 @@ operation goes through the command from step 4.
 ## 7. Verify
 
 ```bash
-deno task verify
+npm run verify
 ```
 
 It runs `check` (including `cargo clippy --workspace --all-targets -- -D warnings`) and `test`.

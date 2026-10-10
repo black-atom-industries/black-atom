@@ -26,20 +26,20 @@ From the repo root:
 
 ```bash
 # Regenerate every adapter
-deno run -A core/src/tasks/generate.ts
+node core/src/tasks/generate.ts
 
 # Watch core and every adapter's templates, regenerate and reapply the active theme on change
-deno task dev
+npm run dev
 ```
 
 From inside a single adapter directory (`adapters/<name>/`):
 
 ```bash
 # Regenerate this adapter only
-deno run -A ../../core/src/cli/index.ts generate
+node ../../core/src/cli/index.ts generate
 
 # Watch this adapter's templates, regenerate on change
-deno run -A ../../core/src/cli/index.ts generate --watch
+node ../../core/src/cli/index.ts generate --watch
 ```
 
 ### Theme Adaptation
@@ -73,7 +73,7 @@ delta, ghostty, herdr, kagi, lazygit, niri, nvim, obsidian, tmux, tuicr, waybar,
 
 ### Prerequisites
 
-- [Deno](https://deno.land/) runtime
+- [Node.js](https://nodejs.org/) 24+
 - [ImageMagick](https://imagemagick.org/) for palette extraction from images (`magick` CLI)
 
 A `.mise.toml` is included. Run `mise install` to get all project tools.
@@ -84,19 +84,19 @@ Run from `core/`:
 
 ```bash
 # Watch and regenerate every adapter
-deno task dev
+npm run dev
 
 # Run the monitor preview app
-(cd monitor && deno task dev)
+(cd monitor && npm run dev)
 
 # Run tests
-deno task test
+npm run test
 
 # Generate the adapter JSON schema
-deno task schema
+npm run schema
 ```
 
-`deno task check` and `deno task test` at the repo root run typechecking, linting, formatting, and
+`npm run check` and `npm run test` at the repo root run typechecking, linting, formatting, and
 tests across every workspace member, core included.
 
 ### Creating New Themes and Adapters
@@ -123,7 +123,7 @@ Contributions are welcome. If you'd like to improve existing themes or add new f
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Run `deno task check` and `deno task test`
+4. Run `npm run check` and `npm run test`
 5. Create a pull request
 
 ## License

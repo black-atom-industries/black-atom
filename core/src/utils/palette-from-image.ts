@@ -1,4 +1,7 @@
 import { formatHex, oklch as toOklch } from "culori";
+import { execFile } from "node:child_process";
+import { stat } from "node:fs/promises";
+import { promisify } from "node:util";
 import type { HexColor } from "../types/colors.ts";
 
 /**
@@ -69,31 +72,21 @@ async function extractDominantColors(
     imagePath: string,
     numColors: number,
 ): Promise<ExtractedColor[]> {
-    const command = new Deno.Command("magick", {
-        args: [
-            imagePath,
-            "-resize",
-            "400x400",
-            "-colors",
-            numColors.toString(),
-            "-unique-colors",
-            "-format",
-            "%c",
-            "histogram:info:-",
-        ],
-        stdout: "piped",
-        stderr: "piped",
+    const output = await promisify(execFile)("magick", [
+        imagePath,
+        "-resize",
+        "400x400",
+        "-colors",
+        numColors.toString(),
+        "-unique-colors",
+        "-format",
+        "%c",
+        "histogram:info:-",
+    ]).catch((error) => {
+        throw new Error(`ImageMagick failed: ${error.stderr ?? error}`);
     });
 
-    const { stdout, stderr, code } = await command.output();
-
-    if (code !== 0) {
-        const errorText = new TextDecoder().decode(stderr);
-        throw new Error(`ImageMagick failed: ${errorText}`);
-    }
-
-    const output = new TextDecoder().decode(stdout);
-    return parseHistogramOutput(output);
+    return parseHistogramOutput(output.stdout);
 }
 
 /**
@@ -263,7 +256,7 @@ export async function extractPaletteFromImage(
     const { imagePath, numColors = 10, appearance = "auto" } = options;
 
     try {
-        await Deno.stat(imagePath);
+        await stat(imagePath);
     } catch {
         throw new Error(`Image not found: ${imagePath}`);
     }
@@ -346,20 +339,48 @@ export function generatePrimariesFromSuggestion(
     const lines: string[] = [];
     lines.push("const primaries: Theme.Primaries = {");
 
-    lines.push("    d10: " + formatOklch(lightnessRanges.d[0], minChroma, hue) + ",");
-    lines.push("    d20: " + formatOklch(lightnessRanges.d[1], minChroma, hue) + ",");
-    lines.push("    d30: " + formatOklch(lightnessRanges.d[2], minChroma, hue) + ",");
-    lines.push("    d40: " + formatOklch(lightnessRanges.d[3], minChroma, hue) + ",");
+    lines.push(
+        "    d10: " + formatOklch(lightnessRanges.d[0], minChroma, hue) + ",",
+    );
+    lines.push(
+        "    d20: " + formatOklch(lightnessRanges.d[1], minChroma, hue) + ",",
+    );
+    lines.push(
+        "    d30: " + formatOklch(lightnessRanges.d[2], minChroma, hue) + ",",
+    );
+    lines.push(
+        "    d40: " + formatOklch(lightnessRanges.d[3], minChroma, hue) + ",",
+    );
     lines.push("");
-    lines.push("    m10: " + formatOklch(lightnessRanges.m[0], chromaProgression(0, 4), hue) + ",");
-    lines.push("    m20: " + formatOklch(lightnessRanges.m[1], chromaProgression(1, 4), hue) + ",");
-    lines.push("    m30: " + formatOklch(lightnessRanges.m[2], chromaProgression(2, 4), hue) + ",");
-    lines.push("    m40: " + formatOklch(lightnessRanges.m[3], chromaProgression(3, 4), hue) + ",");
+    lines.push(
+        "    m10: " +
+            formatOklch(lightnessRanges.m[0], chromaProgression(0, 4), hue) + ",",
+    );
+    lines.push(
+        "    m20: " +
+            formatOklch(lightnessRanges.m[1], chromaProgression(1, 4), hue) + ",",
+    );
+    lines.push(
+        "    m30: " +
+            formatOklch(lightnessRanges.m[2], chromaProgression(2, 4), hue) + ",",
+    );
+    lines.push(
+        "    m40: " +
+            formatOklch(lightnessRanges.m[3], chromaProgression(3, 4), hue) + ",",
+    );
     lines.push("");
-    lines.push("    l10: " + formatOklch(lightnessRanges.l[0], minChroma, hue) + ",");
-    lines.push("    l20: " + formatOklch(lightnessRanges.l[1], minChroma, hue) + ",");
-    lines.push("    l30: " + formatOklch(lightnessRanges.l[2], minChroma, hue) + ",");
-    lines.push("    l40: " + formatOklch(lightnessRanges.l[3], minChroma, hue) + ",");
+    lines.push(
+        "    l10: " + formatOklch(lightnessRanges.l[0], minChroma, hue) + ",",
+    );
+    lines.push(
+        "    l20: " + formatOklch(lightnessRanges.l[1], minChroma, hue) + ",",
+    );
+    lines.push(
+        "    l30: " + formatOklch(lightnessRanges.l[2], minChroma, hue) + ",",
+    );
+    lines.push(
+        "    l40: " + formatOklch(lightnessRanges.l[3], minChroma, hue) + ",",
+    );
     lines.push("};");
 
     return lines.join("\n");

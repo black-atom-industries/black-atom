@@ -16,4 +16,4 @@
 | zed               | 0   | 0   | 2   |
 | **TOTAL**         | 497 | 437 | 637 |
 
-<!-- Entries are prepended by `deno task perf-benchmark` -->
+<!-- Entries are prepended by `npm run test:perf-benchmark -w livery` -->

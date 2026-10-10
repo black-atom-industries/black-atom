@@ -15,8 +15,18 @@
                 { "type": "perf", "section": "Performance" }
             ],
             "extra-files": [
-                { "type": "json", "path": "core/deno.json", "jsonpath": "$.version" },
-                { "type": "json", "path": "livery/deno.json", "jsonpath": "$.version" },
+                { "type": "json", "path": "core/package.json", "jsonpath": "$.version" },
+                { "type": "json", "path": "livery/package.json", "jsonpath": "$.version" },
+                {
+                    "type": "json",
+                    "path": "package-lock.json",
+                    "jsonpath": "$.packages.core.version"
+                },
+                {
+                    "type": "json",
+                    "path": "package-lock.json",
+                    "jsonpath": "$.packages.livery.version"
+                },
                 {
                     "type": "toml",
                     "path": "livery/src-tauri/Cargo.toml",

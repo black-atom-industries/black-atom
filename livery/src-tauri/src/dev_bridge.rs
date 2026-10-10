@@ -172,7 +172,7 @@ fn dispatch(command: &str, args: Value) -> Result<Value, String> {
                     .map(Value::String)
             } else {
                 Err(format!(
-                    "Path directory {directory} is not supported in Airship"
+                    "Path directory {directory} is not supported by the development bridge"
                 ))
             }
         }

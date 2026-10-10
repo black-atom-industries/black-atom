@@ -2,7 +2,7 @@
  * Watches themes and adapter templates, regenerating on change.
  *
  * Usage:
- *   deno task dev
+ *   npm run dev
  */
 
 import { watch } from "./adapters/watch.ts";

@@ -6,6 +6,6 @@ BINDINGS="$(git rev-parse --show-toplevel)/livery/src/bindings.ts"
 
 if [ ! -s "$BINDINGS" ] || ! grep -q "tauri-specta" "$BINDINGS" 2>/dev/null; then
     echo "WARNING: livery/src/bindings.ts is empty or corrupted."
-    echo "Run the app (deno task dev) to regenerate specta bindings."
+    echo "Run the app (npm run dev) to regenerate specta bindings."
     exit 1
 fi

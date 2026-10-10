@@ -12,7 +12,7 @@ user-invocable: false
 cargo test -p livery_core
 ```
 
-Runs `livery_core`, which has no Tauri dependency. `deno task test:rust` runs the whole workspace;
+Runs `livery_core`, which has no Tauri dependency. `npm run test:rust` runs the whole workspace;
 it builds the UI first because `livery/src-tauri` compiles against `livery/dist`.
 
 ## Fixture-Based Testing

@@ -1,28 +1,24 @@
+import { execFile, type ExecFileOptions } from "node:child_process";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
+
 export async function runCommand(
     command: string[],
-    options: Deno.CommandOptions = {},
+    options: ExecFileOptions = {},
 ): Promise<string> {
     try {
-        const process = new Deno.Command(command[0], {
-            args: command.slice(1),
-            stdout: "piped",
-            stderr: "piped",
+        const { stdout } = await execFileAsync(command[0], command.slice(1), {
             ...options,
+            encoding: "utf8",
         });
-
-        const output = await process.output();
-        const stdout = new TextDecoder().decode(output.stdout);
-        const stderr = new TextDecoder().decode(output.stderr);
-
-        if (!output.success) {
-            throw new Error(`Command failed with exit code ${output.code}: ${stderr}`);
-        }
-
         return stdout;
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
 
         // Explicitly rethrow the error to propagate it
-        throw new Error(`Failed to run command ${command.join(" ")}: ${errorMessage}`);
+        throw new Error(
+            `Failed to run command ${command.join(" ")}: ${errorMessage}`,
+        );
     }
 }

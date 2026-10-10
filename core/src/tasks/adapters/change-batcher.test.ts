@@ -1,7 +1,7 @@
-import { assertEquals } from "@std/assert";
+import { assert, test } from "vitest";
 import { createChangeBatcher } from "./change-batcher.ts";
 
-Deno.test("change batcher coalesces pending paths", async () => {
+test("change batcher coalesces pending paths", async () => {
     const batches: string[][] = [];
     const batcher = createChangeBatcher((paths) => {
         batches.push(paths);
@@ -13,10 +13,10 @@ Deno.test("change batcher coalesces pending paths", async () => {
     batcher.schedule("core/a.ts");
     await batcher.flush();
 
-    assertEquals(batches, [["core/a.ts", "core/b.ts"]]);
+    assert.deepEqual(batches, [["core/a.ts", "core/b.ts"]]);
 });
 
-Deno.test("change batcher serializes changes received while processing", async () => {
+test("change batcher serializes changes received while processing", async () => {
     const batches: string[][] = [];
     const firstBatchStarted = Promise.withResolvers<void>();
     const releaseFirstBatch = Promise.withResolvers<void>();
@@ -43,6 +43,6 @@ Deno.test("change batcher serializes changes received while processing", async (
     releaseFirstBatch.resolve();
     await processing;
 
-    assertEquals(batches, [["core/a.ts"], ["core/b.ts", "core/c.ts"]]);
-    assertEquals(maxActiveRuns, 1);
+    assert.deepEqual(batches, [["core/a.ts"], ["core/b.ts", "core/c.ts"]]);
+    assert.deepEqual(maxActiveRuns, 1);
 });

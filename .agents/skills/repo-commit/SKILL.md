@@ -55,16 +55,16 @@ confirmed docs in this same commit.
 Run:
 
 ```sh
-deno task verify
+npm run verify
 ```
 
-`deno task verify` is the CI-parity pass. The pre-commit hook checks formatting and lint on staged files; pre-push runs
-`deno task verify`, and `deno task test:e2e` when the push touches `livery/`, `core/src/`, or adapter themes. If verification fails, fix the cause, restage, and run it again.
+`npm run verify` is the CI-parity pass. The pre-commit hook checks formatting and lint on staged files; pre-push runs
+`npm run verify`, and `npm run test:e2e` when the push touches `livery/`, `core/src/`, or adapter themes. If verification fails, fix the cause, restage, and run it again.
 
-A docs-only change may skip `deno task verify`, but say that it was skipped.
+A docs-only change may skip `npm run verify`, but say that it was skipped.
 
-`deno task verify` leaves out the end-to-end suite. When the staged change touches the livery UI, an updater's files or
-pointer, or anything under `livery/e2e/`, also run `deno task test:e2e`. A failing spec or screenshot means the suite needs the
+`npm run verify` leaves out the end-to-end suite. When the staged change touches the livery UI, an updater's files or
+pointer, or anything under `livery/e2e/`, also run `npm run test:e2e`. A failing spec or screenshot means the suite needs the
 same update as the code: fix its specs, fixtures, or baselines in this commit, and look at a changed screenshot before
 accepting it with `--update-snapshots`.
 

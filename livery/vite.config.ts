@@ -1,20 +1,29 @@
+import process from "node:process";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
-import deno from "@deno/vite-plugin";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 
-const host = Deno.env.get("TAURI_DEV_HOST");
-const devBridgePort = Deno.env.get("LIVERY_DEV_BRIDGE_PORT") ?? "1422";
-const devBridgeToken = Deno.env.get("LIVERY_DEV_BRIDGE_TOKEN") ?? "";
+const host = process.env.TAURI_DEV_HOST;
+const devBridgePort = process.env.LIVERY_DEV_BRIDGE_PORT ?? "1422";
+const devBridgeToken = process.env.LIVERY_DEV_BRIDGE_TOKEN ?? "";
 
 export default defineConfig({
     define: {
-        "import.meta.env.VITE_LIVERY_DEV_BRIDGE_TOKEN": JSON.stringify(devBridgeToken),
+        "import.meta.env.VITE_LIVERY_DEV_BRIDGE_TOKEN": JSON.stringify(
+            devBridgeToken,
+        ),
     },
     clearScreen: false,
+    resolve: {
+        alias: { "@": fileURLToPath(new URL("src", import.meta.url)) },
+    },
     plugins: [
-        deno(),
-        tanstackRouter({ target: "react", autoCodeSplitting: true, addExtensions: true }),
+        tanstackRouter({
+            target: "react",
+            autoCodeSplitting: true,
+            addExtensions: true,
+        }),
         react(),
     ],
     optimizeDeps: {

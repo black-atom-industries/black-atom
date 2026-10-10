@@ -37,14 +37,14 @@ Read the proposed version from the release PR title. Curate its `CHANGELOG.md` s
 highlights by impact, the trimmed log below them, and the heading date set to the release day. The version in the heading
 must match the release PR.
 
-Regenerate every adapter with `deno task generate` and confirm `git status` is clean. Generated output
+Regenerate every adapter with `npm run generate` and confirm `git status` is clean. Generated output
 is committed, so a diff means a template or theme change went in without its output. Then prove the release build with
-`deno task build`.
+`npm run build`.
 
 Check and push it to `main`, staging any release assets with the changelog:
 
 ```sh
-deno task verify
+npm run verify
 git add CHANGELOG.md
 git commit -m "docs: prepare the <version> release <issue reference>"
 git push origin main

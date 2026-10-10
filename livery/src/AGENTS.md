@@ -27,4 +27,4 @@ shell commands either.
 Design tokens are `--ba-*` custom properties in `styles/`; chrome expresses color, type, spacing,
 borders and motion through them and nothing else.
 
-Tests sit next to the code they cover: `foo.ts` gets `foo_test.ts`. Assertions from `@std/assert`.
+Tests sit next to the code they cover: `foo.ts` gets `foo_test.ts`. Vitest runs them; assertions use its `assert`.
