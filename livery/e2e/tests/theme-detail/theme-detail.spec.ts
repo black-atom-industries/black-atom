@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { expect, pickTheme, test } from "../../lib/e2e.ts";
+import { appVersion, expect, pickTheme, test } from "../../lib/e2e.ts";
 
 const detail = (page: Page) => page.locator("[data-component='theme-detail']");
 
@@ -25,5 +25,7 @@ test("matches the theme detail baseline", async ({ page }) => {
     await pickTheme(page, "DEFAULT", "Dimmed Light");
     await expect(detail(page).getByRole("heading")).toHaveText("DIMMED LIGHT");
 
-    await expect(page).toHaveScreenshot("default-dimmed-light-detail.png");
+    await expect(page).toHaveScreenshot("default-dimmed-light-detail.png", {
+        mask: [appVersion(page)],
+    });
 });

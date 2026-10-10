@@ -1,5 +1,5 @@
 import { readLiveryConfig } from "../../lib/fixture-home.ts";
-import { expect, test } from "../../lib/e2e.ts";
+import { appVersion, expect, test } from "../../lib/e2e.ts";
 
 test("the switch disables and re-enables an adapter", async ({ page }) => {
     await page.goto("/settings/adapters/delta");
@@ -36,5 +36,5 @@ test("matches the adapter page baseline", async ({ page }) => {
     await page.goto("/settings/adapters/delta");
     await expect(page.getByRole("switch")).toHaveAttribute("aria-checked", "true");
 
-    await expect(page).toHaveScreenshot("delta-settings.png");
+    await expect(page).toHaveScreenshot("delta-settings.png", { mask: [appVersion(page)] });
 });

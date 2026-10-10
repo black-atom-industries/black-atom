@@ -23,6 +23,11 @@ export const test = base.extend<{ scenario: Scenario; fixtureHome: void }>({
     ],
 });
 
+/** The app version in the header, which changes with every release. */
+export function appVersion(page: Page): Locator {
+    return page.getByText(/^V\d+\.\d+\.\d+/);
+}
+
 /** A theme row, matched on its exact name. */
 export function themeRow(page: Page, name: string): Locator {
     return page.getByRole("option").filter({ has: page.getByText(name, { exact: true }) });

@@ -1,4 +1,4 @@
-import { expect, test, themeRow } from "../../lib/e2e.ts";
+import { appVersion, expect, test, themeRow } from "../../lib/e2e.ts";
 
 test("opens with the cursor on the active theme", async ({ page }) => {
     await page.goto("/");
@@ -54,5 +54,5 @@ test("j/k, gg and G move the cursor", async ({ page }) => {
 test("matches the theme list baseline", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("option", { selected: true })).toContainText("Dimmed Dark");
-    await expect(page).toHaveScreenshot("theme-list.png");
+    await expect(page).toHaveScreenshot("theme-list.png", { mask: [appVersion(page)] });
 });

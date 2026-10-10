@@ -1,4 +1,4 @@
-import { expect, test } from "../../lib/e2e.ts";
+import { appVersion, expect, test } from "../../lib/e2e.ts";
 
 test.use({ scenario: "fresh" });
 
@@ -14,5 +14,5 @@ test("matches the empty state baseline", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByText("PICK A LIVERY, PAINT THE COCKPIT")).toBeVisible();
 
-    await expect(page).toHaveScreenshot("empty-state.png");
+    await expect(page).toHaveScreenshot("empty-state.png", { mask: [appVersion(page)] });
 });
