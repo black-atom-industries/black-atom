@@ -2,26 +2,56 @@
 set -euo pipefail
 . "$(dirname "$0")/../_shared/workspace.sh"
 
-remote="$(mktemp -d)/origin.git"
+remote="$PWD/.git/origin.git"
 git init -q --bare "$remote"
 git remote add origin "$remote"
+
+edit() {
+  python3 - "$@" <<'PY'
+import sys
+from pathlib import Path
+path, old, new = sys.argv[1:4]
+p = Path(path)
+s = p.read_text()
+assert old in s, (path, old)
+p.write_text(s.replace(old, new, 1))
+PY
+}
+ln -s "$root/node_modules" node_modules
+printf 'node_modules\n' >> .git/info/exclude
+commit() {
+  node core/src/tasks/generate.ts >/dev/null
+  git add -A
+  git commit -q -m "$1"
+  git rev-parse --short=7 HEAD
+}
+edit adapters/kagi/styles/base.css "    --ba-case: uppercase;
+" "    --ba-case: uppercase;
+    --ba-nav-tracking: 0.04em;
+"
+edit adapters/kagi/styles/base.css ".serp-nav .nav_item {
+    text-transform: var(--ba-case);
+" ".serp-nav .nav_item {
+    text-transform: var(--ba-case);
+    letter-spacing: var(--ba-nav-tracking);
+"
+tracking=$(commit "feat(kagi): add a letter-spacing knob for the search navigation")
+edit adapters/tuicr/themes/collection.template.toml 'diff_context = "<%= theme.ui.fg.default %>"' 'diff_context = "<%= theme.ui.fg.subtle %>"'
+context=$(commit "feat(tuicr): show diff context lines in the subtle foreground")
 git push -q origin main
+
+link() { printf '[%s](https://github.com/black-atom-industries/black-atom/commit/%s)' "$1" "$1"; }
 
 git checkout -q -b release-please--branches--main
 section="$(mktemp)"
-cat > "$section" <<'MD'
+cat > "$section" <<MD
 ## [0.11.0](https://github.com/black-atom-industries/black-atom/compare/v0.10.0...v0.11.0) (2026-10-12)
+
 
 ### Features
 
-* **kagi:** add a theme picker to the Kagi adapter ([1a2b3c4](https://github.com/black-atom-industries/black-atom/commit/1a2b3c4))
-* **livery:** apply delta themes from the desktop app ([5d6e7f8](https://github.com/black-atom-industries/black-atom/commit/5d6e7f8))
-* **core:** accept a list of templates per collection ([9a0b1c2](https://github.com/black-atom-industries/black-atom/commit/9a0b1c2))
-
-### Bug Fixes
-
-* **tuicr:** keep the panel background on the main surface ([3c4d5e6](https://github.com/black-atom-industries/black-atom/commit/3c4d5e6))
-* **livery:** list update notes below the apply results ([7f8a9b0](https://github.com/black-atom-industries/black-atom/commit/7f8a9b0))
+* **kagi:** add a letter-spacing knob for the search navigation ($(link "$tracking"))
+* **tuicr:** show diff context lines in the subtle foreground ($(link "$context"))
 
 MD
 { head -n 2 CHANGELOG.md; cat "$section"; tail -n +3 CHANGELOG.md; } > CHANGELOG.new
@@ -37,9 +67,9 @@ chmod +x bin/gh
 printf 'bin/\n.gh-stub/\n' >> .git/info/exclude
 
 {
-  printf '> :robot: I have created a release *beep* *boop*\n---\n'
+  printf ':robot: I have created a release *beep* *boop*\n---\n\n\n'
   cat "$section"
-  printf -- '---\nThis PR was generated with Release Please. See documentation at https://github.com/googleapis/release-please#release-please.\n'
+  printf -- '---\nThis PR was generated with [Release Please](https://github.com/googleapis/release-please). See [documentation](https://github.com/googleapis/release-please#release-please).\n'
 } > "$stub_dir/pr-body.md"
 python3 -c '
 import json, sys

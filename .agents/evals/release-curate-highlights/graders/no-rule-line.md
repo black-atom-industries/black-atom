@@ -1,6 +1,6 @@
 ---
 type: regex
-pattern: '^---$'
+pattern: '^-{3}$'
 flags: m
 match: not_contains
 target:
