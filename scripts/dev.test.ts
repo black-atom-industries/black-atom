@@ -1,5 +1,5 @@
 import { test } from "vitest";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { readlinkSync, statSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, readlink, rm, stat, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -521,6 +521,39 @@ test("launcher recovers only dangling Black Atom session links", async () => {
             /already exists/,
         );
         assert.equal(await readFile(command, "utf8"), "foreign command");
+    } finally {
+        await rm(session.directory, { recursive: true, force: true });
+        await rm(home, { recursive: true, force: true });
+    }
+});
+
+import { findAbandonedLaunchers, removeAbandonedLauncher } from "./dev-environment.ts";
+
+test("abandoned launchers are reported only for dead owners and removed on request", async () => {
+    const home = await mkdtemp(join(tmpdir(), "black-atom-test-"));
+    const bin = `${home}/bin`;
+    await mkdir(bin);
+    const session = await createDevEnvironment(`${home}/cli`);
+    const command = `${bin}/livery-dev`;
+    try {
+        await symlink(session.launcher, command);
+        assert.deepEqual(findAbandonedLaunchers(bin), []);
+        const dead = spawnSync("true").pid;
+        const state = JSON.parse(await readFile(session.statePath, "utf8"));
+        await writeFile(session.statePath, JSON.stringify({ ...state, owner: dead }));
+        const [abandoned, ...rest] = findAbandonedLaunchers(bin);
+        assert.deepEqual(rest, []);
+        assert.equal(abandoned.command, command);
+        assert.equal(abandoned.directory, session.directory);
+        assert.equal(abandoned.owner, dead);
+        assert.equal(abandoned.status, "pending");
+        assert.throws(
+            () => provisionDevLauncher(session.launcher, { home, path: bin }),
+            /already exists/,
+        );
+        removeAbandonedLauncher(abandoned);
+        await assert.rejects(readlink(command), { code: "ENOENT" });
+        await assert.rejects(stat(session.directory), { code: "ENOENT" });
     } finally {
         await rm(session.directory, { recursive: true, force: true });
         await rm(home, { recursive: true, force: true });

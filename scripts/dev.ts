@@ -4,13 +4,45 @@ import { join, relative } from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
+import { createInterface } from "node:readline/promises";
 import { isGenerationInput } from "../core/src/tasks/adapters/watch.ts";
 import { createDevCycle, isCliInput } from "./dev-cycle.ts";
-import { createDevEnvironment, provisionDevLauncher } from "./dev-environment.ts";
+import {
+    createDevEnvironment,
+    findAbandonedLaunchers,
+    provisionDevLauncher,
+    removeAbandonedLauncher,
+} from "./dev-environment.ts";
 import { createDevProcesses } from "./dev-process.ts";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const binary = join(root, "target/debug/livery");
+
+async function confirm(question: string): Promise<boolean> {
+    if (!process.stdin.isTTY) return false;
+    const prompt = createInterface({ input: process.stdin, output: process.stdout });
+    try {
+        return /^y(es)?$/i.test((await prompt.question(`${question} [y/N] `)).trim());
+    } finally {
+        prompt.close();
+    }
+}
+
+for (const abandoned of findAbandonedLaunchers(process.env.PATH ?? "")) {
+    console.warn(
+        [
+            "Found livery-dev from a dev session that is no longer running:",
+            `  link     ${abandoned.command}`,
+            `  session  ${abandoned.directory}`,
+            `  owner    PID ${abandoned.owner} (not running)`,
+            `  started  ${abandoned.started.toLocaleString()}`,
+            `  status   ${abandoned.status}`,
+        ].join("\n"),
+    );
+    if (await confirm("Remove its link and session directory?")) {
+        removeAbandonedLauncher(abandoned);
+    }
+}
 const session = await createDevEnvironment(binary);
 const launcherLink = await (async () => {
     try {

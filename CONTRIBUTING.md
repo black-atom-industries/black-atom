@@ -28,8 +28,9 @@ Generation runs automatically before development, checks, tests, and builds. Rus
 build the required frontend first. `dev` and `livery-dev` use the invoking shell's home, XDG directories,
 and existing configuration. Dev links the launcher into an existing user `bin` directory in `PATH`, so a second
 terminal can run `livery-dev list`. Existing commands or another worktree's launcher cause a visible
-conflict. The launcher is ready after successful generation and compilation; shutdown removes its
-symlink. The installed `livery` command stays independent.
+conflict. A launcher left by a dev session that is no longer running is reported at start, and dev
+offers to remove it with its session directory. The launcher is ready after successful generation and
+compilation; shutdown removes its symlink. The installed `livery` command stays independent.
 
 Debug builds read the adapter themes from the repo's `adapters/` instead of their embedded copy, so
 the dev GUI, `livery-dev`, and the end-to-end bridge always apply the current working tree.

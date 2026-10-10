@@ -1,5 +1,6 @@
 import {
     lstatSync,
+    readFileSync,
     readlinkSync,
     renameSync,
     rmSync,
@@ -75,6 +76,67 @@ export async function createDevEnvironment(binary: string) {
     return { directory, env, launcher, statePath, setState };
 }
 
+/** The session directory a `livery-dev` link points into, if it is a dev session launcher. */
+function linkedSessionDirectory(command: string): string | undefined {
+    const target = readlinkSync(command);
+    const directory = dirname(target);
+    if (
+        basename(target) === "livery-dev" &&
+        /^black-atom-dev-[0-9A-Za-z]+$/.test(basename(directory)) &&
+        dirname(directory) === resolve(tmpdir())
+    ) {
+        return directory;
+    }
+}
+
+function isRunning(pid: number): boolean {
+    try {
+        process.kill(pid, 0);
+        return true;
+    } catch (error) {
+        return !(error instanceof Error && "code" in error && error.code === "ESRCH");
+    }
+}
+
+export interface AbandonedLauncher {
+    command: string;
+    directory: string;
+    owner: number;
+    status: string;
+    started: Date;
+}
+
+/** `livery-dev` links on the search path whose session directory survives a dead owner. */
+export function findAbandonedLaunchers(searchPath: string): AbandonedLauncher[] {
+    const abandoned: AbandonedLauncher[] = [];
+    for (const directory of searchPath.split(":")) {
+        const command = join(directory || process.cwd(), "livery-dev");
+        try {
+            if (!lstatSync(command).isSymbolicLink()) continue;
+            const session = linkedSessionDirectory(command);
+            if (!session) continue;
+            const state: DevState = JSON.parse(readFileSync(join(session, "state.json"), "utf8"));
+            if (isRunning(state.owner)) continue;
+            abandoned.push({
+                command,
+                directory: session,
+                owner: state.owner,
+                status: state.status,
+                started: statSync(session).birthtime,
+            });
+        } catch (error) {
+            if (isNotFound(error)) continue;
+            throw error;
+        }
+    }
+    return abandoned;
+}
+
+export function removeAbandonedLauncher({ command, directory }: AbandonedLauncher) {
+    if (linkedSessionDirectory(command) === directory) rmSync(command);
+    rmSync(directory, { recursive: true, force: true });
+}
+
 export function provisionDevLauncher(
     launcher: string,
     { home = homedir(), path: searchPath }: { home?: string; path: string },
@@ -85,11 +147,7 @@ export function provisionDevLauncher(
             const existing = lstatSync(command);
             if (existing.isSymbolicLink()) {
                 const target = readlinkSync(command);
-                if (
-                    basename(target) === "livery-dev" &&
-                    /^black-atom-dev-[0-9A-Za-z]+$/.test(basename(dirname(target))) &&
-                    dirname(dirname(target)) === resolve(tmpdir())
-                ) {
+                if (linkedSessionDirectory(command)) {
                     try {
                         lstatSync(target);
                     } catch (error) {
