@@ -130,8 +130,10 @@ async function stop(code: number) {
 }
 const interrupt = () => void stop(130);
 const terminate = () => void stop(143);
+const hangup = () => void stop(129);
 process.on("SIGINT", interrupt);
 process.on("SIGTERM", terminate);
+process.on("SIGHUP", hangup);
 
 console.log(
     `Development CLI: livery-dev (${launcherLink.path})\nDevelopment home: ${session.env.HOME}`,
@@ -146,6 +148,7 @@ try {
     await stop(1);
     process.off("SIGINT", interrupt);
     process.off("SIGTERM", terminate);
+    process.off("SIGHUP", hangup);
     session.setState("stopped");
     launcherLink.remove();
     await rm(session.directory, { recursive: true });
