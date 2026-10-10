@@ -91,6 +91,7 @@
             "livery/core/",
             "livery/src-tauri/",
             "adapters/*/themes/",
+            "adapters/kagi/fragments/",
             "adapters/nvim/lua/black-atom/themes/",
             "adapters/nvim/colors/",
             "adapters/obsidian/theme.css",

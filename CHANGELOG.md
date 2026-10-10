@@ -14,6 +14,8 @@
 - Adapters — nbr <nikolaus.brunner@protonmail.ch>
   - A delta adapter generates one git config per theme with diff, line-number, and header colors, and `syntax-theme = ansi`.
   - A collection's `template` in `black-atom-adapter.json` accepts a list, and each template renders one file per theme.
+  - A Kagi adapter builds one brutalist custom CSS for Kagi Search per theme pair, with a centered layout, code blocks in the theme's syntax colors, and knobs for fonts, case, border widths, and shadow offsets at the top.
+  - Each Kagi file holds a theme's light and dark variant and follows Kagi's appearance setting, with Auto following the system color scheme.
 - Development — nbr <nikolaus.brunner@protonmail.ch>
   - Livery has Playwright end-to-end tests that run the UI against the real backend in a fixture home ([#10](https://github.com/black-atom-industries/black-atom/issues/10)).
 

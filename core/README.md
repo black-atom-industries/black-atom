@@ -67,7 +67,7 @@ Each adapter directory contains:
 
 ### Adapters
 
-delta, ghostty, herdr, lazygit, niri, nvim, obsidian, tmux, tuicr, waybar, wezterm, zed, each under `adapters/<name>/`.
+delta, ghostty, herdr, kagi, lazygit, niri, nvim, obsidian, tmux, tuicr, waybar, wezterm, zed, each under `adapters/<name>/`.
 
 ## Development
 

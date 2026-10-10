@@ -11,6 +11,7 @@ const adapterNames = [
     "delta",
     "ghostty",
     "herdr",
+    "kagi",
     "lazygit",
     "niri",
     "nvim",
@@ -79,13 +80,17 @@ Deno.test("all adapters contain exactly the catalog outputs and regenerate ident
             }
             assertEquals(keys.sort(), [...themeKeys].sort(), adapter);
             const actual = [];
-            for await (const entry of walk(adapterDir, { includeDirs: false })) {
-                if (
-                    entry.name.startsWith("black-atom-") &&
-                    entry.name !== "black-atom-adapter.json"
-                ) actual.push(relative(adapterDir, entry.path));
+            const outputDirs = new Set(
+                expected.map((output) => join(adapterDir, dirname(output))),
+            );
+            for (const dir of outputDirs) {
+                for await (const entry of walk(dir, { includeDirs: false })) {
+                    if (entry.name.startsWith("black-atom-")) {
+                        actual.push(relative(adapterDir, entry.path));
+                    }
+                }
             }
-            assertEquals(actual.sort(), expected.sort(), adapter);
+            assertEquals([...new Set(actual)].sort(), expected.sort(), adapter);
             const first = new Map<string, string>();
             for await (const entry of walk(tempDir, { includeDirs: false })) {
                 first.set(entry.path, await Deno.readTextFile(entry.path));

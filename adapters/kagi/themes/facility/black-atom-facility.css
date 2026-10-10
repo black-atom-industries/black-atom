@@ -1,0 +1,616 @@
+/*
+ * Black Atom — Facility ∷ Light
+ * Black Atom — Facility ∷ Dark
+ *
+ * Paste this whole file into https://kagi.com/settings/custom_css
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Kode+Mono:wght@400..700&display=swap");
+
+/* Knobs */
+html[class] {
+    --ba-font: "TX-02 Condensed", "Berkeley Mono Condensed", "TX-02", "Berkeley Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --ba-font-heading: "TX-02 Condensed", "Berkeley Mono Condensed", "TX-02", "Berkeley Mono", "Kode Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --ba-case: uppercase;
+    --ba-border-width: 3px;
+    --ba-border-width-thin: 2px;
+    --ba-shadow-offset: 6px;
+    --ba-shadow-offset-small: 4px;
+}
+
+html[class] {
+    --ba-border: var(--ba-border-width) solid var(--ba-fg);
+    --ba-border-thin: var(--ba-border-width-thin) solid var(--ba-fg);
+    --ba-shadow: var(--ba-shadow-offset) var(--ba-shadow-offset) 0 var(--ba-fg);
+    --ba-shadow-small: var(--ba-shadow-offset-small) var(--ba-shadow-offset-small) 0 var(--ba-fg);
+
+    --font-main: var(--ba-font);
+    --font-lufga: var(--ba-font);
+    --font-mono: var(--ba-font);
+
+    --secondary: var(--ba-bg);
+    --primary: var(--ba-fg);
+    --primary-25: color-mix(in oklch, var(--ba-fg) 4%, var(--ba-bg));
+    --primary-50: color-mix(in oklch, var(--ba-fg) 8%, var(--ba-bg));
+    --primary-70: color-mix(in oklch, var(--ba-fg) 12%, var(--ba-bg));
+    --primary-100: color-mix(in oklch, var(--ba-fg) 18%, var(--ba-bg));
+    --primary-200: color-mix(in oklch, var(--ba-fg) 28%, var(--ba-bg));
+    --primary-300: color-mix(in oklch, var(--ba-fg) 40%, var(--ba-bg));
+    --primary-400: color-mix(in oklch, var(--ba-fg) 50%, var(--ba-bg));
+    --primary-600: color-mix(in oklch, var(--ba-fg) 62%, var(--ba-bg));
+    --primary-700: color-mix(in oklch, var(--ba-fg) 72%, var(--ba-bg));
+    --primary-800: color-mix(in oklch, var(--ba-fg) 82%, var(--ba-bg));
+    --primary-850: color-mix(in oklch, var(--ba-fg) 87%, var(--ba-bg));
+    --primary-900: color-mix(in oklch, var(--ba-fg) 92%, var(--ba-bg));
+    --primary-950: color-mix(in oklch, var(--ba-fg) 96%, var(--ba-bg));
+
+    --app-bg: var(--ba-bg);
+    --app-frame-bg: var(--ba-bg);
+    --landing-bg: var(--ba-bg);
+    --app-text: var(--ba-fg);
+    --app-logo: var(--ba-fg);
+    --modal-bg: var(--ba-bg-panel);
+    --modal-bg-secondary: var(--ba-bg-active);
+    --input-bg: var(--ba-bg-active);
+    --hover-bg: var(--ba-bg-hover);
+    --hover-group-bg: var(--ba-bg-hover);
+    --image_brightness: 100%;
+
+    --link: var(--ba-fg);
+    --inverted-link: var(--ba-bg);
+    --yellow: var(--ba-fg-accent);
+    --kagi-highlight: var(--ba-fg-accent);
+    --bottom-bar-bg: var(--ba-fg-accent);
+    --focus-outline: 3px solid var(--ba-fg-accent);
+    --checkbox-bg: var(--ba-fg);
+    --checkbox-check: var(--ba-bg);
+    --accent-alert: var(--ba-fg-negative);
+    --color-danger: var(--ba-fg-negative);
+    --danger: var(--ba-fg-negative);
+    --success: var(--ba-fg-positive);
+    --warning: var(--ba-fg-accent);
+    --info: var(--ba-fg-info);
+
+    --primary-hover: var(--ba-fg-accent);
+    --primary-hover-hover: var(--ba-fg-accent);
+    --primary-visited: var(--ba-fg-subtle);
+
+    --inner-shadow: transparent;
+    --box-shadow: transparent;
+    --box-shadow-15: transparent;
+    --ranked-box-shadow: transparent;
+    --backdrop-bg: color-mix(in oklch, var(--ba-fg) 40%, transparent);
+
+    --k-tooltip-bg: var(--ba-fg);
+    --k-tooltip-text: var(--ba-bg);
+    --quick-search-bg: var(--ba-fg);
+    --quick-search-icon: var(--ba-bg);
+    --btn-primary-bg: var(--ba-fg);
+    --btn-primary-color: var(--ba-bg);
+    --default-border-color: var(--ba-fg);
+
+    --color-search-input: var(--ba-bg-active);
+    --color-search-input-border: var(--ba-fg);
+
+    --search-result-title: var(--ba-fg);
+    --search-result-title-hover: var(--ba-fg-accent);
+    --search-result-content-text: var(--ba-fg);
+    --search-result-url-link: var(--ba-fg-subtle);
+    --search-result-date-bg: var(--ba-fg);
+    --search-result-date-new-bg: var(--ba-fg);
+    --search-result-date-new: var(--ba-bg);
+    --result-item-title-border: var(--ba-fg-accent);
+    --result-item-title-border_hover: var(--ba-fg-accent);
+    --result-item-title-visited-border: var(--ba-fg-subtle);
+    --result-item-highlight: var(--ba-fg-accent);
+
+    --inline-header-title: var(--ba-fg);
+    --inline-header-border: var(--ba-fg);
+    --inline-widget-bg: var(--ba-bg-panel);
+    --inline-widget-hover-bg: var(--ba-bg-active);
+    --inline-domain-tag-bg: var(--ba-bg-panel);
+    --video-item-bg: var(--ba-bg-panel);
+    --m_sri_gap_color: var(--ba-fg);
+
+    --nav_n_se_line: var(--ba-fg-accent);
+    --nav_n_im_line: var(--ba-fg-accent);
+    --nav_n_vi_line: var(--ba-fg-accent);
+    --nav_n_ne_line: var(--ba-fg-accent);
+    --nav_n_ma_line: var(--ba-fg-accent);
+
+    --code-bg: var(--ba-bg-panel);
+    --code-border: var(--ba-fg);
+
+    --gradient-base: var(--ba-bg);
+    --gradient-overlay: none;
+    --gradient-strong: var(--ba-bg);
+}
+
+*,
+*::before,
+*::after {
+    border-radius: 0 !important;
+}
+
+::selection {
+    background: var(--ba-bg-selection);
+    color: var(--ba-fg);
+}
+
+body {
+    font-family: var(--ba-font);
+    background: var(--ba-bg);
+    color: var(--ba-fg);
+}
+
+.serp-nav .nav_item,
+.__sri-title-box,
+.__srgi-title,
+.podcast_result .title,
+.__sri-time,
+.inlineHeader,
+.qa-content > h3,
+.wikipediaFullPageLink {
+    font-family: var(--ba-font-heading) !important;
+}
+
+:focus-visible {
+    outline: none !important;
+    background: var(--ba-bg-active) !important;
+    box-shadow: calc(-1 * var(--ba-shadow-offset)) 0 0 var(--ba-fg-accent) !important;
+}
+
+.app-content-box {
+    margin-inline: auto;
+}
+
+/* Search bar */
+.search-input-container {
+    background: var(--ba-bg-active);
+    border: var(--ba-border) !important;
+    box-shadow: var(--ba-shadow-offset) var(--ba-shadow-offset) 0 var(--ba-fg-accent) !important;
+}
+
+.search-input {
+    background: transparent;
+}
+
+.search-input:focus-visible {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.land_tooltip_message {
+    border: var(--ba-border-thin);
+    box-shadow: var(--ba-shadow-small);
+}
+
+/* Tabs */
+.app-nav {
+    border-bottom: var(--ba-border);
+}
+
+.serp-nav .nav_item {
+    text-transform: var(--ba-case);
+    font-weight: 700;
+}
+
+.serp-nav .nav_item:hover,
+.serp-nav .nav_item.--active {
+    background: var(--ba-fg) !important;
+    color: var(--ba-bg) !important;
+}
+
+/* Filter pills */
+.filter-item,
+.quick-answer-trigger-link {
+    border: var(--ba-border-thin) !important;
+    background: var(--ba-bg-active);
+    text-transform: var(--ba-case);
+}
+
+.filter-item:hover,
+.quick-answer-trigger-link:hover {
+    background: var(--ba-fg) !important;
+    color: var(--ba-bg) !important;
+    box-shadow: var(--ba-shadow-offset-small) var(--ba-shadow-offset-small) 0 var(--ba-fg-accent);
+}
+
+.filter-item:hover *,
+.quick-answer-trigger-link:hover * {
+    color: inherit !important;
+}
+
+/* Popovers */
+.dd-list,
+.k_ui_dropdown_data_list {
+    border: var(--ba-border) !important;
+    box-shadow: var(--ba-shadow) !important;
+    background: var(--ba-bg-panel) !important;
+}
+
+/* Results */
+.search-result,
+.sri-group,
+.newsResultItem,
+.podcast_result {
+    border-top: var(--ba-border);
+    padding-top: 1rem;
+}
+
+.sri-group .search-result {
+    border-top: none;
+    padding-top: 0;
+}
+
+.__sri-title-box,
+.podcast_result .title {
+    font-weight: 700;
+    text-transform: var(--ba-case);
+    letter-spacing: -0.02em;
+}
+
+.__sri-title-box a,
+.__srgi-title a,
+.podcast_result .title a {
+    border-bottom: none !important;
+}
+
+.__sri-title-box a {
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+}
+
+.__sri-title-box a:hover,
+.__srgi-title a:hover,
+.podcast_result .title a:hover {
+    background: var(--ba-fg) !important;
+    color: var(--ba-bg) !important;
+}
+
+.__srgi-title {
+    font-weight: 700;
+}
+
+.sri-group .__srgi {
+    border-left: var(--ba-border);
+    padding-left: 1rem;
+}
+
+.__sri-time {
+    background: var(--ba-fg);
+    color: var(--ba-bg);
+    font-weight: 700;
+    text-transform: var(--ba-case);
+}
+
+/* Inline modules */
+.inline-content {
+    border-top: var(--ba-border);
+    padding-top: 1rem;
+}
+
+.inlineHeader {
+    font-weight: 700;
+    text-transform: var(--ba-case);
+}
+
+.widgetItem {
+    border: var(--ba-border-thin);
+    box-shadow: var(--ba-shadow-small);
+}
+
+.widgetItem:hover {
+    box-shadow: var(--ba-shadow-offset-small) var(--ba-shadow-offset-small) 0 var(--ba-fg-accent);
+}
+
+._0_image_item {
+    outline: var(--ba-border-thin);
+    outline-offset: -2px;
+}
+
+._0_image_item:hover {
+    outline-color: var(--ba-fg-accent);
+    outline-width: 4px;
+    outline-offset: -4px;
+}
+
+/* Quick Answer */
+.qa-container-box {
+    border: var(--ba-border);
+    box-shadow: var(--ba-shadow);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.qa-content > h3 {
+    font-weight: 700;
+    text-transform: var(--ba-case);
+}
+
+.qa-container-box sup > a {
+    background: var(--ba-fg);
+    color: var(--ba-bg);
+}
+
+.qa-container-box sup:hover > a {
+    outline: 2px solid var(--ba-fg-accent);
+}
+
+.related-items a {
+    border: var(--ba-border-thin);
+    background: var(--ba-bg-active);
+}
+
+.related-items a:hover {
+    background: var(--ba-fg) !important;
+    color: var(--ba-bg) !important;
+    box-shadow: var(--ba-shadow-offset-small) var(--ba-shadow-offset-small) 0 var(--ba-fg-accent);
+}
+
+/* Sidebar */
+.wikipediaResult {
+    border: var(--ba-border);
+    box-shadow: var(--ba-shadow);
+    background: var(--ba-bg-panel);
+    padding: 1.25rem;
+}
+
+.wikipediaFullPageLink {
+    font-weight: 700;
+    text-transform: var(--ba-case);
+}
+
+.wikipediaFullPageLink a {
+    border-bottom: none !important;
+}
+
+@media (max-width: 768px) {
+    .wikipediaResult,
+    .qa-container-box {
+        padding: 0.75rem;
+        box-shadow: var(--ba-shadow-small);
+    }
+}
+
+/* Links */
+.wikipediaResult a:not([data-wiki-article*="redlink=1"], .wiki-image a, .wiki-social a, .wikipediaFullPageLink a),
+#amenities_widget .amenities_title a,
+.__sri-rating-stars .info .reviews a,
+.qa-container-box .reference-links a {
+    color: var(--ba-fg) !important;
+    border-bottom: none !important;
+    text-decoration: underline;
+    text-decoration-color: var(--ba-fg-accent);
+    text-decoration-thickness: var(--ba-border-width-thin);
+    text-underline-offset: 0.2em;
+    text-decoration-skip-ink: none;
+}
+
+.wikipediaResult a:not([data-wiki-article*="redlink=1"], .wiki-image a, .wiki-social a, .wikipediaFullPageLink a):visited,
+#amenities_widget .amenities_title a:visited,
+.__sri-rating-stars .info .reviews a:visited,
+.qa-container-box .reference-links a:visited {
+    text-decoration-color: var(--ba-fg-subtle);
+}
+
+.wikipediaResult a:not([data-wiki-article*="redlink=1"], .wiki-image a, .wiki-social a, .wikipediaFullPageLink a):hover,
+#amenities_widget .amenities_title a:hover,
+.__sri-rating-stars .info .reviews a:hover,
+.qa-container-box .reference-links a:hover {
+    background: var(--ba-fg) !important;
+    color: var(--ba-bg) !important;
+    text-decoration-color: var(--ba-fg);
+}
+
+/* Code blocks */
+html[class] .codehilite {
+    --ch-hill: var(--ba-bg-selection);
+    --ch-esc: var(--ba-fg);
+    --ch-g: var(--ba-fg);
+    --ch-l: var(--ba-fg);
+    --ch-n: var(--ba-fg);
+    --ch-x: var(--ba-fg);
+    --ch-p: var(--ba-fg);
+    --ch-w: var(--ba-fg);
+    --ch-gh: var(--ba-fg);
+    --ch-gp: var(--ba-fg);
+    --ch-go: var(--ba-fg);
+    --ch-gu: var(--ba-fg);
+    --ch-gs: var(--ba-fg);
+    --ch-ge: var(--ba-fg);
+    --ch-err: var(--ba-fg-negative);
+    --ch-err-b: var(--ba-fg-negative);
+    --ch-gd: var(--ba-fg-negative);
+    --ch-gr: var(--ba-fg-negative);
+    --ch-gt: var(--ba-fg-negative);
+    --ch-gi: var(--ba-fg-positive);
+    --ch-c: var(--ba-syntax-comment);
+    --ch-ch: var(--ba-syntax-comment);
+    --ch-cm: var(--ba-syntax-comment);
+    --ch-c1: var(--ba-syntax-comment);
+    --ch-cs: var(--ba-syntax-comment-doc);
+    --ch-cpf: var(--ba-syntax-comment-doc);
+    --ch-cp: var(--ba-syntax-import);
+    --ch-kn: var(--ba-syntax-import);
+    --ch-k: var(--ba-syntax-keyword);
+    --ch-kc: var(--ba-syntax-keyword);
+    --ch-kd: var(--ba-syntax-keyword);
+    --ch-kp: var(--ba-syntax-keyword);
+    --ch-kr: var(--ba-syntax-keyword);
+    --ch-ow: var(--ba-syntax-keyword);
+    --ch-kt: var(--ba-syntax-type);
+    --ch-nc: var(--ba-syntax-type);
+    --ch-ne: var(--ba-syntax-type);
+    --ch-o: var(--ba-syntax-operator);
+    --ch-no: var(--ba-syntax-constant);
+    --ch-ld: var(--ba-syntax-constant);
+    --ch-il: var(--ba-syntax-constant);
+    --ch-m: var(--ba-syntax-number);
+    --ch-mb: var(--ba-syntax-number);
+    --ch-mf: var(--ba-syntax-number);
+    --ch-mh: var(--ba-syntax-number);
+    --ch-mi: var(--ba-syntax-number);
+    --ch-mo: var(--ba-syntax-number);
+    --ch-s: var(--ba-syntax-string);
+    --ch-sa: var(--ba-syntax-string);
+    --ch-sb: var(--ba-syntax-string);
+    --ch-sc: var(--ba-syntax-string);
+    --ch-s2: var(--ba-syntax-string);
+    --ch-sh: var(--ba-syntax-string);
+    --ch-sx: var(--ba-syntax-string);
+    --ch-s1: var(--ba-syntax-string);
+    --ch-ss: var(--ba-syntax-string);
+    --ch-dl: var(--ba-syntax-string);
+    --ch-sd: var(--ba-syntax-string-doc);
+    --ch-se: var(--ba-syntax-string-escape);
+    --ch-si: var(--ba-syntax-string-escape);
+    --ch-sr: var(--ba-syntax-string-regexp);
+    --ch-nb: var(--ba-syntax-builtin);
+    --ch-bp: var(--ba-syntax-builtin);
+    --ch-nf: var(--ba-syntax-function);
+    --ch-fm: var(--ba-syntax-function);
+    --ch-py: var(--ba-syntax-function);
+    --ch-nv: var(--ba-syntax-variable);
+    --ch-vc: var(--ba-syntax-variable);
+    --ch-vg: var(--ba-syntax-variable);
+    --ch-vi: var(--ba-syntax-variable);
+    --ch-vm: var(--ba-syntax-variable);
+    --ch-na: var(--ba-syntax-property);
+    --ch-nx: var(--ba-syntax-property);
+    --ch-nn: var(--ba-syntax-module);
+    --ch-nd: var(--ba-syntax-attribute);
+    --ch-nt: var(--ba-syntax-tag);
+    --ch-nl: var(--ba-syntax-tag);
+    --ch-ni: var(--ba-syntax-tag);
+}
+
+/* Black Atom — Facility ∷ Light for Kagi */
+
+/*
+ * Alone, these colors paint every Kagi appearance. Next to a theme of the other
+ * appearance, Kagi's Light, Dark, Moon Dark, and Auto settings pick between them in
+ * either order. Auto keeps `.theme_light` on the page in dark mode, so the
+ * `*_conditional` selectors outrank it.
+ */
+
+html[class],
+html.theme_light[class],
+html.theme_calm_blue[class] {
+  --ba-bg: #f8f9f9;
+  --ba-bg-panel: #ecf1f1;
+  --ba-bg-active: #e3e8e8;
+  --ba-bg-hover: #e3e8e8;
+  --ba-bg-selection: #e3e8e8;
+  --ba-fg: #2b3b33;
+  --ba-fg-subtle: #75a490;
+  --ba-fg-accent: #a8ba33;
+  --ba-fg-disabled: #95b8ac;
+  --ba-fg-negative: #cb4c7c;
+  --ba-fg-positive: #3f9640;
+  --ba-fg-info: #51796d;
+  --ba-syntax-comment: #75a490;
+  --ba-syntax-comment-doc: #358636;
+  --ba-syntax-keyword: #8074bd;
+  --ba-syntax-import: #cb4c7c;
+  --ba-syntax-string: #3f9640;
+  --ba-syntax-string-doc: #3f9640;
+  --ba-syntax-string-escape: #cb4c7c;
+  --ba-syntax-string-regexp: #cb4c7c;
+  --ba-syntax-number: #358636;
+  --ba-syntax-constant: #51796d;
+  --ba-syntax-function: #a8ba33;
+  --ba-syntax-builtin: #a8ba33;
+  --ba-syntax-type: #009a52;
+  --ba-syntax-variable: #51796d;
+  --ba-syntax-property: #51796d;
+  --ba-syntax-module: #5b8972;
+  --ba-syntax-attribute: #d7a537;
+  --ba-syntax-tag: #a8ba33;
+  --ba-syntax-operator: #8074bd;
+  color-scheme: light;
+}
+
+/* Black Atom — Facility ∷ Dark for Kagi */
+
+/*
+ * Alone, these colors paint every Kagi appearance. Next to a theme of the other
+ * appearance, Kagi's Light, Dark, Moon Dark, and Auto settings pick between them in
+ * either order. Auto keeps `.theme_light` on the page in dark mode, so the
+ * `*_conditional` selectors outrank it.
+ */
+
+html[class],
+html.theme_dark[class],
+html.theme_moon_dark[class] {
+  --ba-bg: #0c1010;
+  --ba-bg-panel: #040606;
+  --ba-bg-active: #191e1e;
+  --ba-bg-hover: #191e1e;
+  --ba-bg-selection: #272d2d;
+  --ba-fg: #d5f4e3;
+  --ba-fg-subtle: #91bcad;
+  --ba-fg-accent: #e7fc7c;
+  --ba-fg-disabled: #75a490;
+  --ba-fg-negative: #ffa9d2;
+  --ba-fg-positive: #96e497;
+  --ba-fg-info: #c3eed9;
+  --ba-syntax-comment: #51796d;
+  --ba-syntax-comment-doc: #7bd780;
+  --ba-syntax-keyword: #c3c8ff;
+  --ba-syntax-import: #ffa9d2;
+  --ba-syntax-string: #96e497;
+  --ba-syntax-string-doc: #96e497;
+  --ba-syntax-string-escape: #ffa9d2;
+  --ba-syntax-string-regexp: #ffa9d2;
+  --ba-syntax-number: #7bd780;
+  --ba-syntax-constant: #c3eed9;
+  --ba-syntax-function: #e7fc7c;
+  --ba-syntax-builtin: #e7fc7c;
+  --ba-syntax-type: #8ee4b2;
+  --ba-syntax-variable: #c3eed9;
+  --ba-syntax-property: #91bcad;
+  --ba-syntax-module: #91bcad;
+  --ba-syntax-attribute: #f9c55c;
+  --ba-syntax-tag: #e7fc7c;
+  --ba-syntax-operator: #c3c8ff;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root.theme_dark_conditional[class],
+  :root.theme_moon_dark_conditional[class] {
+    --ba-bg: #0c1010;
+    --ba-bg-panel: #040606;
+    --ba-bg-active: #191e1e;
+    --ba-bg-hover: #191e1e;
+    --ba-bg-selection: #272d2d;
+    --ba-fg: #d5f4e3;
+    --ba-fg-subtle: #91bcad;
+    --ba-fg-accent: #e7fc7c;
+    --ba-fg-disabled: #75a490;
+    --ba-fg-negative: #ffa9d2;
+    --ba-fg-positive: #96e497;
+    --ba-fg-info: #c3eed9;
+    --ba-syntax-comment: #51796d;
+    --ba-syntax-comment-doc: #7bd780;
+    --ba-syntax-keyword: #c3c8ff;
+    --ba-syntax-import: #ffa9d2;
+    --ba-syntax-string: #96e497;
+    --ba-syntax-string-doc: #96e497;
+    --ba-syntax-string-escape: #ffa9d2;
+    --ba-syntax-string-regexp: #ffa9d2;
+    --ba-syntax-number: #7bd780;
+    --ba-syntax-constant: #c3eed9;
+    --ba-syntax-function: #e7fc7c;
+    --ba-syntax-builtin: #e7fc7c;
+    --ba-syntax-type: #8ee4b2;
+    --ba-syntax-variable: #c3eed9;
+    --ba-syntax-property: #91bcad;
+    --ba-syntax-module: #91bcad;
+    --ba-syntax-attribute: #f9c55c;
+    --ba-syntax-tag: #e7fc7c;
+    --ba-syntax-operator: #c3c8ff;
+    color-scheme: dark;
+  }
+}

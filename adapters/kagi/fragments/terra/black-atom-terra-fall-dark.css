@@ -1,0 +1,84 @@
+/* Black Atom — TERRA ∷ Fall Dark for Kagi */
+
+/*
+ * Alone, these colors paint every Kagi appearance. Next to a theme of the other
+ * appearance, Kagi's Light, Dark, Moon Dark, and Auto settings pick between them in
+ * either order. Auto keeps `.theme_light` on the page in dark mode, so the
+ * `*_conditional` selectors outrank it.
+ */
+
+html[class],
+html.theme_dark[class],
+html.theme_moon_dark[class] {
+  --ba-bg: #241710;
+  --ba-bg-panel: #1b0e08;
+  --ba-bg-active: #2e2119;
+  --ba-bg-hover: #2e2119;
+  --ba-bg-selection: #382a23;
+  --ba-fg: #eac5b1;
+  --ba-fg-subtle: #c59174;
+  --ba-fg-accent: #d68c00;
+  --ba-fg-disabled: #b58266;
+  --ba-fg-negative: #e87a69;
+  --ba-fg-positive: #95a483;
+  --ba-fg-info: #d08c62;
+  --ba-syntax-comment: #86563b;
+  --ba-syntax-comment-doc: #889776;
+  --ba-syntax-keyword: #d4896e;
+  --ba-syntax-import: #e87a69;
+  --ba-syntax-string: #95a483;
+  --ba-syntax-string-doc: #95a483;
+  --ba-syntax-string-escape: #e87a69;
+  --ba-syntax-string-regexp: #e67f3c;
+  --ba-syntax-number: #e67f3c;
+  --ba-syntax-constant: #e67f3c;
+  --ba-syntax-function: #d68c00;
+  --ba-syntax-builtin: #d68c00;
+  --ba-syntax-type: #7ea99c;
+  --ba-syntax-variable: #d08c62;
+  --ba-syntax-property: #c27e56;
+  --ba-syntax-module: #c27e56;
+  --ba-syntax-attribute: #7ea99c;
+  --ba-syntax-tag: #d68c00;
+  --ba-syntax-operator: #d4896e;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root.theme_dark_conditional[class],
+  :root.theme_moon_dark_conditional[class] {
+    --ba-bg: #241710;
+    --ba-bg-panel: #1b0e08;
+    --ba-bg-active: #2e2119;
+    --ba-bg-hover: #2e2119;
+    --ba-bg-selection: #382a23;
+    --ba-fg: #eac5b1;
+    --ba-fg-subtle: #c59174;
+    --ba-fg-accent: #d68c00;
+    --ba-fg-disabled: #b58266;
+    --ba-fg-negative: #e87a69;
+    --ba-fg-positive: #95a483;
+    --ba-fg-info: #d08c62;
+    --ba-syntax-comment: #86563b;
+    --ba-syntax-comment-doc: #889776;
+    --ba-syntax-keyword: #d4896e;
+    --ba-syntax-import: #e87a69;
+    --ba-syntax-string: #95a483;
+    --ba-syntax-string-doc: #95a483;
+    --ba-syntax-string-escape: #e87a69;
+    --ba-syntax-string-regexp: #e67f3c;
+    --ba-syntax-number: #e67f3c;
+    --ba-syntax-constant: #e67f3c;
+    --ba-syntax-function: #d68c00;
+    --ba-syntax-builtin: #d68c00;
+    --ba-syntax-type: #7ea99c;
+    --ba-syntax-variable: #d08c62;
+    --ba-syntax-property: #c27e56;
+    --ba-syntax-module: #c27e56;
+    --ba-syntax-attribute: #7ea99c;
+    --ba-syntax-tag: #d68c00;
+    --ba-syntax-operator: #d4896e;
+    color-scheme: dark;
+  }
+}
+

@@ -1,0 +1,46 @@
+/* Black Atom — JPN ∷ Koyo Light for Kagi */
+
+/*
+ * Alone, these colors paint every Kagi appearance. Next to a theme of the other
+ * appearance, Kagi's Light, Dark, Moon Dark, and Auto settings pick between them in
+ * either order. Auto keeps `.theme_light` on the page in dark mode, so the
+ * `*_conditional` selectors outrank it.
+ */
+
+html[class],
+html.theme_light[class],
+html.theme_calm_blue[class] {
+  --ba-bg: #fef2e1;
+  --ba-bg-panel: #f8e7d0;
+  --ba-bg-active: #fff5e5;
+  --ba-bg-hover: #f8e7d0;
+  --ba-bg-selection: #f8e7d0;
+  --ba-fg: #3a2e3b;
+  --ba-fg-subtle: #b19b7c;
+  --ba-fg-accent: #ed9a00;
+  --ba-fg-disabled: #d1ba9b;
+  --ba-fg-negative: #f5345e;
+  --ba-fg-positive: #3aa85b;
+  --ba-fg-info: #9e77dc;
+  --ba-syntax-comment: #725a73;
+  --ba-syntax-comment-doc: #05893e;
+  --ba-syntax-keyword: #f88f4f;
+  --ba-syntax-import: #f5345e;
+  --ba-syntax-string: #3aa85b;
+  --ba-syntax-string-doc: #3aa85b;
+  --ba-syntax-string-escape: #f5345e;
+  --ba-syntax-string-regexp: #f5345e;
+  --ba-syntax-number: #05893e;
+  --ba-syntax-constant: #d1649c;
+  --ba-syntax-function: #ed9a00;
+  --ba-syntax-builtin: #ed9a00;
+  --ba-syntax-type: #00ab93;
+  --ba-syntax-variable: #9e77dc;
+  --ba-syntax-property: #9e77dc;
+  --ba-syntax-module: #d1649c;
+  --ba-syntax-attribute: #f1771e;
+  --ba-syntax-tag: #ed9a00;
+  --ba-syntax-operator: #d1649c;
+  color-scheme: light;
+}
+

@@ -1,0 +1,59 @@
+/* <%= theme.meta.label %> for Kagi */
+<%
+const colors = `
+  --ba-bg: ${theme.ui.bg.default};
+  --ba-bg-panel: ${theme.ui.bg.panel};
+  --ba-bg-active: ${theme.ui.bg.active};
+  --ba-bg-hover: ${theme.ui.bg.hover};
+  --ba-bg-selection: ${theme.ui.bg.selection};
+  --ba-fg: ${theme.ui.fg.default};
+  --ba-fg-subtle: ${theme.ui.fg.subtle};
+  --ba-fg-accent: ${theme.ui.fg.accent};
+  --ba-fg-disabled: ${theme.ui.fg.disabled};
+  --ba-fg-negative: ${theme.ui.fg.negative};
+  --ba-fg-positive: ${theme.ui.fg.positive};
+  --ba-fg-info: ${theme.ui.fg.info};
+  --ba-syntax-comment: ${theme.syntax.comment.default};
+  --ba-syntax-comment-doc: ${theme.syntax.comment.doc};
+  --ba-syntax-keyword: ${theme.syntax.keyword.default};
+  --ba-syntax-import: ${theme.syntax.keyword.import};
+  --ba-syntax-string: ${theme.syntax.string.default};
+  --ba-syntax-string-doc: ${theme.syntax.string.doc};
+  --ba-syntax-string-escape: ${theme.syntax.string.escape};
+  --ba-syntax-string-regexp: ${theme.syntax.string.regexp};
+  --ba-syntax-number: ${theme.syntax.number.default};
+  --ba-syntax-constant: ${theme.syntax.constant.default};
+  --ba-syntax-function: ${theme.syntax.func.default};
+  --ba-syntax-builtin: ${theme.syntax.func.builtin};
+  --ba-syntax-type: ${theme.syntax.type.default};
+  --ba-syntax-variable: ${theme.syntax.variable.default};
+  --ba-syntax-property: ${theme.syntax.property.default};
+  --ba-syntax-module: ${theme.syntax.module.default};
+  --ba-syntax-attribute: ${theme.syntax.attribute.default};
+  --ba-syntax-tag: ${theme.syntax.tag.default};
+  --ba-syntax-operator: ${theme.syntax.operator.default};
+  color-scheme: ${theme.meta.appearance};`;
+%>
+/*
+ * Alone, these colors paint every Kagi appearance. Next to a theme of the other
+ * appearance, Kagi's Light, Dark, Moon Dark, and Auto settings pick between them in
+ * either order. Auto keeps `.theme_light` on the page in dark mode, so the
+ * `*_conditional` selectors outrank it.
+ */
+<% if (theme.meta.appearance === "light") { %>
+html[class],
+html.theme_light[class],
+html.theme_calm_blue[class] {<%= colors %>
+}
+<% } else { %>
+html[class],
+html.theme_dark[class],
+html.theme_moon_dark[class] {<%= colors %>
+}
+
+@media (prefers-color-scheme: dark) {
+  :root.theme_dark_conditional[class],
+  :root.theme_moon_dark_conditional[class] {<%= colors.replaceAll("\n", "\n  ") %>
+  }
+}
+<% } %>
