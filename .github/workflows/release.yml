@@ -40,33 +40,3 @@ jobs:
                   git add Cargo.lock
                   git diff --cached --quiet || git commit -m "chore: sync Cargo.lock with version bump"
                   git push
-
-    publish:
-        needs: release-please
-        if: needs.release-please.outputs.release_created == 'true'
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  ref: ${{ needs.release-please.outputs.tag_name }}
-                  fetch-depth: 0
-
-            - name: extract release notes
-              env:
-                  VERSION: ${{ needs.release-please.outputs.version }}
-              run: |
-                  awk -v heading="## \`${VERSION}\`" '
-                    index($0, heading) == 1 { found = 1; next }
-                    found && /^---$/ { exit }
-                    found { print }
-                  ' CHANGELOG.md > "${RUNNER_TEMP}/release-notes.md"
-                  if ! grep -q '[^[:space:]]' "${RUNNER_TEMP}/release-notes.md"; then
-                    echo "CHANGELOG.md has no section for ${VERSION}" >&2
-                    exit 1
-                  fi
-
-            - name: replace release notes
-              env:
-                  GH_TOKEN: ${{ github.token }}
-                  TAG: ${{ needs.release-please.outputs.tag_name }}
-              run: gh release edit "$TAG" --notes-file "${RUNNER_TEMP}/release-notes.md"

@@ -1,8 +1,8 @@
 ---
 name: repo-commit
 description:
-    "Prepare a commit in the Black Atom repository. Use this when the user asks to commit, stage, ship, or finish a change. Add
-    the changelog entry, stage selectively, run the CI-parity checks, show the exact Conventional Commit, and wait for explicit
+    "Prepare a commit in the Black Atom repository. Use this when the user asks to commit, stage, ship, or finish a change. Stage
+    selectively, run the CI-parity checks, show the exact Conventional Commit, and wait for explicit
     approval."
 argument-hint: "[message-hint or scope-hint, optional]"
 allowed-tools: Bash Read
@@ -10,7 +10,9 @@ allowed-tools: Bash Read
 
 # Commit a change
 
-This skill replaces any global commit workflow in this repository. Do not commit until the user approves the final message.
+This skill is the commit workflow for this repository. Its sections 3 to 5 hold the repo's docs list, checks, and commit
+grammar; global commit workflows read them from here. To sort several changes into commits, use `nbr-git-commit-buckets`
+when it is installed. Do not commit until the user approves the final message.
 Keep unrelated work unstaged. Never bypass hooks with `--no-verify`, stage secrets or credentials, or rewrite history without
 explicit approval. Keep each commit atomic.
 
@@ -28,13 +30,7 @@ git log --oneline -5
 Classify paths as **in scope**, **held back**, or **stray**. Surface unexpected edits and never hide them with reset,
 restore, or clean.
 
-## 2. Verify the changelog entry
-
-The change already carries its user-facing line under `CHANGELOG.md`; `repo-changelog` writes it as part of every
-implementation. Confirm it is present, accurate, and under the correct Unreleased category. Write a new entry only when the
-implementation did not add one.
-
-## 3. Stage selectively
+## 2. Stage selectively
 
 Stage named paths only:
 
@@ -44,13 +40,13 @@ git add path/to/file path/to/another-file
 
 Never use `git add .` or `git add -A`. Unstage any held-back file a hook or helper touched.
 
-## 4. Audit docs
+## 3. Audit docs
 
 When staged changes add or change a config key, command, domain term, or what an updater does (files, pointer, reload,
 precondition), check `README.md`, `GLOSSARY.md`, `core/README.md`, `livery/DESIGN.md`, `livery/ADAPTERS.md`, and the adapter's `README.md` against the diff. Fix and stage the
 confirmed docs in this same commit.
 
-## 5. Verify
+## 4. Verify
 
 Run:
 
@@ -68,9 +64,10 @@ pointer, or anything under `livery/e2e/`, also run `npm run test:e2e`. A failing
 same update as the code: fix its specs, fixtures, or baselines in this commit, and look at a changed screenshot before
 accepting it with `--update-snapshots`.
 
-## 6. Draft and ask
+## 5. Draft and ask
 
-The message is a [Conventional Commit](https://www.conventionalcommits.org/); release-please derives the next version from it:
+The message is a [Conventional Commit](https://www.conventionalcommits.org/). release-please derives the next version from it
+and lists the subject in the release's `CHANGELOG.md` section:
 
 ```text
 <type>(<scope>): <imperative summary>
