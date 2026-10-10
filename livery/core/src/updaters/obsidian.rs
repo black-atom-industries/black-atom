@@ -9,6 +9,18 @@ use super::{ConfigFolderOutcome, UpdateContext, UpdateResult, UpdateStatus};
 /// Update every configured Obsidian configuration folder. File writes remain
 /// authoritative when a running instance cannot be reloaded or targeted by its CLI.
 pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> UpdateResult {
+    update_with_live_reload(app_str, app_config, ctx, reload_live_instance)
+}
+
+fn update_with_live_reload<F>(
+    app_str: &str,
+    app_config: &AppConfig,
+    ctx: &UpdateContext,
+    live_reload: F,
+) -> UpdateResult
+where
+    F: Fn(&Path) -> Option<String>,
+{
     let obsidian_theme = match ctx.appearance {
         "dark" => "obsidian",
         "light" => "moonstone",
@@ -43,6 +55,7 @@ pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> Upd
             obsidian_theme,
             ctx,
             duplicate_basename,
+            &live_reload,
         ));
     }
 
@@ -94,6 +107,7 @@ fn update_config_folder(
     obsidian_theme: &str,
     ctx: &UpdateContext,
     duplicate_basename: bool,
+    live_reload: &impl Fn(&Path) -> Option<String>,
 ) -> ConfigFolderOutcome {
     let config_folder = PathBuf::from(shellexpand::tilde(folder).to_string());
     let appearance_path = config_folder.join("appearance.json");
@@ -142,14 +156,8 @@ fn update_config_folder(
             "Vault basename is shared; reload skipped because the CLI selector is ambiguous"
                 .to_string(),
         )
-    } else if is_running() {
-        config_folder
-            .parent()
-            .ok_or_else(|| "Config folder has no vault root".to_string())
-            .and_then(reload)
-            .err()
     } else {
-        Some("Obsidian is not running; reload deferred until next launch".to_string())
+        live_reload(&config_folder)
     };
     ConfigFolderOutcome {
         config_folder: folder.to_string(),
@@ -157,6 +165,17 @@ fn update_config_folder(
         message,
         reload_warning,
     }
+}
+
+fn reload_live_instance(config_folder: &Path) -> Option<String> {
+    if !is_running() {
+        return Some("Obsidian is not running; reload deferred until next launch".to_string());
+    }
+    config_folder
+        .parent()
+        .ok_or_else(|| "Config folder has no vault root".to_string())
+        .and_then(reload)
+        .err()
 }
 
 fn is_running() -> bool {
@@ -237,7 +256,7 @@ mod tests {
             theme_label: None,
             themes_path: None,
         };
-        let result = update("obsidian", &config, &context);
+        let result = update_with_live_reload("obsidian", &config, &context, |_| None);
         assert_eq!(result.status, UpdateStatus::Error);
         let outcomes = result.config_folders.unwrap();
         assert_eq!(outcomes.len(), 3);
@@ -298,7 +317,7 @@ mod tests {
             themes_path: None,
         };
 
-        let result = update("obsidian", &config, &context);
+        let result = update_with_live_reload("obsidian", &config, &context, |_| None);
         assert_eq!(result.status, UpdateStatus::Done);
         assert!(result
             .message
@@ -314,11 +333,7 @@ mod tests {
 
     #[test]
     fn test_update_outcome_keeps_the_portable_config_folder_identity() {
-        let home = dirs::home_dir().unwrap();
-        let folder = tempfile::TempDir::new_in(&home).unwrap();
-        std::fs::write(folder.path().join("appearance.json"), "{}\n").unwrap();
-        let relative = folder.path().strip_prefix(home).unwrap();
-        let portable = format!("~/{}", relative.to_string_lossy());
+        let portable = "~/black-atom-missing-vault/.obsidian".to_string();
         let config = AppConfig {
             enabled: true,
             config_path: None,
@@ -337,8 +352,9 @@ mod tests {
             themes_path: None,
         };
 
-        let result = update("obsidian", &config, &context);
+        let result = update_with_live_reload("obsidian", &config, &context, |_| None);
 
+        assert_eq!(result.status, UpdateStatus::Error);
         assert_eq!(result.config_folders.unwrap()[0].config_folder, portable);
     }
 
