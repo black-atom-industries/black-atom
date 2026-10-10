@@ -36,9 +36,16 @@ type Props = VariantProps<typeof chipVariants> & {
  *
  * Spec: docs/design-system/reference/components/forms/Chip.jsx
  */
-export function Chip(
-    { active, focused, hotkey, children, onClick, disabled, tabIndex, className }: Props,
-) {
+export function Chip({
+    active,
+    focused,
+    hotkey,
+    children,
+    onClick,
+    disabled,
+    tabIndex,
+    className,
+}: Props) {
     return (
         <button
             data-component="chip"

@@ -20,9 +20,7 @@ const sections = [
 const themes = Object.values(themeCatalog);
 
 function Component() {
-    const [theme, setTheme] = useState<Theme.Definition>(
-        defaultTheme,
-    );
+    const [theme, setTheme] = useState<Theme.Definition>(defaultTheme);
 
     const matches = useMatches();
     const currentPath = matches[matches.length - 1]?.fullPath ?? "/dev";
@@ -54,12 +52,14 @@ function Component() {
                                         padding: "6px 12px",
                                         fontSize: 12,
                                         textDecoration: "none",
-                                        color: currentPath === s.to
-                                            ? "var(--ba-color-fg-positive)"
-                                            : "var(--ba-color-fg-subtle)",
-                                        backgroundColor: currentPath === s.to
-                                            ? "var(--ba-color-bg-hint)"
-                                            : "transparent",
+                                        color:
+                                            currentPath === s.to
+                                                ? "var(--ba-color-fg-positive)"
+                                                : "var(--ba-color-fg-subtle)",
+                                        backgroundColor:
+                                            currentPath === s.to
+                                                ? "var(--ba-color-bg-hint)"
+                                                : "transparent",
                                     }}
                                 >
                                     {s.label}
@@ -100,12 +100,14 @@ function Component() {
                                         textAlign: "left",
                                         cursor: "pointer",
                                         border: "none",
-                                        color: t.meta.key === theme.meta.key
-                                            ? "var(--ba-color-fg-positive)"
-                                            : "var(--ba-color-fg-subtle)",
-                                        backgroundColor: t.meta.key === theme.meta.key
-                                            ? "var(--ba-color-bg-hint)"
-                                            : "transparent",
+                                        color:
+                                            t.meta.key === theme.meta.key
+                                                ? "var(--ba-color-fg-positive)"
+                                                : "var(--ba-color-fg-subtle)",
+                                        backgroundColor:
+                                            t.meta.key === theme.meta.key
+                                                ? "var(--ba-color-bg-hint)"
+                                                : "transparent",
                                     }}
                                 >
                                     {t.meta.label}

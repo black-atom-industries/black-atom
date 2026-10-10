@@ -64,23 +64,23 @@ function createHorizontalRule(prefix: string, charType: string): string {
 const log = {
     error: (message: string) => {
         console.error(
-            styleText("red", config.icon.error + config.separator + message, { stream: process.stderr }),
+            styleText("red", config.icon.error + config.separator + message, {
+                stream: process.stderr,
+            }),
         );
     },
     info: (message: string) => {
-        console.info(
-            styleText("gray", config.icon.info + config.separator + message),
-        );
+        console.info(styleText("gray", config.icon.info + config.separator + message));
     },
     warn: (message: string) => {
         console.warn(
-            styleText("yellow", config.icon.warn + config.separator + message, { stream: process.stderr }),
+            styleText("yellow", config.icon.warn + config.separator + message, {
+                stream: process.stderr,
+            }),
         );
     },
     success: (message: string) => {
-        console.log(
-            styleText("green", config.icon.success + config.separator + message),
-        );
+        console.log(styleText("green", config.icon.success + config.separator + message));
     },
     hr_thick: (prefix: string = "") => {
         const hr = createHorizontalRule(prefix, config.hr.thick);

@@ -46,10 +46,7 @@
             "minProperties": 1
         }
     },
-    "required": [
-        "$schema",
-        "collections"
-    ],
+    "required": ["$schema", "collections"],
     "additionalProperties": false,
     "$defs": {
         "collectionConfig": {
@@ -83,10 +80,7 @@
                     "minItems": 1
                 }
             },
-            "required": [
-                "template",
-                "themes"
-            ],
+            "required": ["template", "themes"],
             "additionalProperties": false
         }
     }

@@ -13,19 +13,19 @@ export default defineThemeColors({
         d30: oklch(0.38, 0.043, 325),
         d40: oklch(0.45, 0.049, 325),
 
-        m10: oklch(0.50, 0.050, 325),
-        m20: oklch(0.60, 0.050, 325),
-        m30: oklch(0.70, 0.050, 75),
-        m40: oklch(0.80, 0.050, 75),
+        m10: oklch(0.5, 0.05, 325),
+        m20: oklch(0.6, 0.05, 325),
+        m30: oklch(0.7, 0.05, 75),
+        m40: oklch(0.8, 0.05, 75),
 
-        l10: oklch(0.900, 0.050, 75),
+        l10: oklch(0.9, 0.05, 75),
         l20: oklch(0.935, 0.035, 75),
         l30: oklch(0.965, 0.025, 75),
         l40: oklch(0.975, 0.025, 75),
     },
     accents: {
         a10: oklch(0.75, 0.175, 75),
-        a20: oklch(0.70, 0.175, 50),
+        a20: oklch(0.7, 0.175, 50),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {

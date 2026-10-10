@@ -33,18 +33,12 @@ export async function installArtifact(source: string, destination: string) {
 export async function installMacos({
     appOnly = false,
     appDestination = "/Applications/livery.app",
-    cliDestination = join(
-        process.env.CARGO_HOME ?? join(homedir(), ".cargo"),
-        "bin/livery",
-    ),
+    cliDestination = join(process.env.CARGO_HOME ?? join(homedir(), ".cargo"), "bin/livery"),
     buildArtifacts = build,
     artifactRoot = join(targetDirectory, "release"),
 } = {}) {
     await buildArtifacts({ appOnly, bundles: "app" });
-    await installArtifact(
-        join(artifactRoot, "bundle/macos/livery.app"),
-        appDestination,
-    );
+    await installArtifact(join(artifactRoot, "bundle/macos/livery.app"), appDestination);
     console.log(`Installed app: ${appDestination}`);
     if (!appOnly) {
         try {

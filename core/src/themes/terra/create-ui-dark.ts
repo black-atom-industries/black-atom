@@ -1,11 +1,14 @@
 import type * as Theme from "../../types/theme.ts";
 import { tint } from "../../utils/color.ts";
 
-export default function (
-    { primaries, palette, feedback, accents }: Theme.CreatorContext,
-): Theme.Ui {
+export default function ({
+    primaries,
+    palette,
+    feedback,
+    accents,
+}: Theme.CreatorContext): Theme.Ui {
     function t(color: string) {
-        return tint({ color, with: primaries.d10, amount: 0.40 });
+        return tint({ color, with: primaries.d10, amount: 0.4 });
     }
 
     return {

@@ -18,7 +18,10 @@ let configWriteQueue = Promise.resolve();
 
 function enqueueConfigWrite<T>(write: () => Promise<T>): Promise<T> {
     const next = configWriteQueue.then(write);
-    configWriteQueue = next.then(() => undefined, () => undefined);
+    configWriteQueue = next.then(
+        () => undefined,
+        () => undefined,
+    );
     return next;
 }
 

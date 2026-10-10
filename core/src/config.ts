@@ -6,11 +6,7 @@ export const config = {
     get dir() {
         return {
             core: fileURLToPath(new URL("../", import.meta.url)),
-            themes: join(
-                fileURLToPath(new URL("../", import.meta.url)),
-                "src",
-                "themes",
-            ),
+            themes: join(fileURLToPath(new URL("../", import.meta.url)), "src", "themes"),
             adapters: fileURLToPath(new URL("../../adapters", import.meta.url)),
         };
     },

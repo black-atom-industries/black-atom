@@ -10,26 +10,24 @@ import styles from "./adapter-page.module.css";
 
 /** helm — external provisioning, themes compiled into the binary; livery
     only patches a config line via regex. */
-export function HelmSettings(
-    {
-        appConfig,
-        editableFields,
-        detected,
-        onToggleEnabled,
-        onFieldCommit,
-        firstFieldRef,
-        onPickPath,
-        onSetUp,
-        setUpResult,
-        onVerifyPath,
-        verifyPathResult,
-        linkable,
-        onLinkThemes,
-        linkThemesResult,
-        onTestApply,
-        testApplyResult,
-    }: AdapterPageProps,
-) {
+export function HelmSettings({
+    appConfig,
+    editableFields,
+    detected,
+    onToggleEnabled,
+    onFieldCommit,
+    firstFieldRef,
+    onPickPath,
+    onSetUp,
+    setUpResult,
+    onVerifyPath,
+    verifyPathResult,
+    linkable,
+    onLinkThemes,
+    linkThemesResult,
+    onTestApply,
+    testApplyResult,
+}: AdapterPageProps) {
     return (
         <div className={styles.root}>
             <AdapterHeader
@@ -67,13 +65,13 @@ export function HelmSettings(
                         onCommit={(value) => onFieldCommit("replace_template", value)}
                     />
                 )}
-                {(editableFields.has("match_pattern") || editableFields.has("replace_template")) &&
-                    (
-                        <p className={styles.fieldGridNote}>
-                            Template variables: {"{themeKey}"} · {"{themesPath}"} ·{" "}
-                            {"{collectionKey}"} · {"{appearance}"}
-                        </p>
-                    )}
+                {(editableFields.has("match_pattern") ||
+                    editableFields.has("replace_template")) && (
+                    <p className={styles.fieldGridNote}>
+                        Template variables: {"{themeKey}"} · {"{themesPath}"} · {"{collectionKey}"}{" "}
+                        · {"{appearance}"}
+                    </p>
+                )}
             </div>
             <ActionRow
                 onSetUp={onSetUp}

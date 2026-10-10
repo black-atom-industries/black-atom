@@ -17,15 +17,13 @@ type Props = {
  * FOLLOW OS APPEARANCE is wired as a toggle; ON PARTIAL FAILURE / APPLY ON
  * SELECT are board-only, no backend support yet.
  */
-export function GeneralPanel(
-    {
-        followOsAppearance,
-        onToggleFollowOsAppearance,
-        liveryVersion,
-        cursored,
-        className,
-    }: Props,
-) {
+export function GeneralPanel({
+    followOsAppearance,
+    onToggleFollowOsAppearance,
+    liveryVersion,
+    cursored,
+    className,
+}: Props) {
     return (
         <div className={[styles.root, className].filter(Boolean).join(" ")}>
             <SectionHeader>BEHAVIOR</SectionHeader>

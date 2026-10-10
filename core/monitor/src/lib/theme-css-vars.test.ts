@@ -73,5 +73,8 @@ test("themeToCssVars generates nested syntax vars", () => {
 test("themeToCssVars excludes meta", () => {
     const vars = themeToCssVars(minimalTheme);
     const keys = Object.keys(vars);
-    assert.deepEqual(keys.some((k) => k.includes("meta")), false);
+    assert.deepEqual(
+        keys.some((k) => k.includes("meta")),
+        false,
+    );
 });

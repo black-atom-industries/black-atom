@@ -31,13 +31,14 @@ export function ProgressBar({ results }: ProgressBarProps) {
     const { value, completedCount, total, currentLabel, status, totalDurationMs } =
         getProgressState(results);
 
-    const labelText = status === "running" && currentLabel
-        ? `Applying ${currentLabel}...`
-        : status === "done"
-        ? "Done"
-        : status === "error"
-        ? "Completed with errors"
-        : "Waiting...";
+    const labelText =
+        status === "running" && currentLabel
+            ? `Applying ${currentLabel}...`
+            : status === "done"
+              ? "Done"
+              : status === "error"
+                ? "Completed with errors"
+                : "Waiting...";
 
     return (
         <Progress.Root
@@ -46,17 +47,13 @@ export function ProgressBar({ results }: ProgressBarProps) {
             value={value}
             max={100}
         >
-            <Progress.Label className={styles.label}>
-                {labelText}
-            </Progress.Label>
+            <Progress.Label className={styles.label}>{labelText}</Progress.Label>
             <span className={styles.counter}>
                 {completedCount} / {total}
                 {totalDurationMs != null && status !== "running" ? ` (${totalDurationMs}ms)` : ""}
             </span>
             <Progress.Track className={styles.track}>
-                <Progress.Indicator
-                    className={indicatorVariants({ status })}
-                />
+                <Progress.Indicator className={indicatorVariants({ status })} />
             </Progress.Track>
         </Progress.Root>
     );

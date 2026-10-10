@@ -51,9 +51,8 @@ function AppLayout() {
     // screen and the record once the rail is dismissed — a pass that wrote
     // nothing must not leave the app tinted as a theme the machine never got.
     // Falling back to default-dark covers a launch before setup ran.
-    const runTheme = phase === "applying" || (phase === "done" && runChangedTheme)
-        ? applyingTheme
-        : null;
+    const runTheme =
+        phase === "applying" || (phase === "done" && runChangedTheme) ? applyingTheme : null;
     const displayedTheme = runTheme ?? activeTheme.theme ?? defaultTheme;
 
     const matches = useMatches();
@@ -81,19 +80,20 @@ function AppLayout() {
 
     // The rail is permanently docked. Idle (nothing applied yet) previews
     // the enabled adapters as pending rows — what an apply will touch.
-    const railMode = phase !== "picking"
-        ? "active" as const
-        : updaterResults.length > 0
-        ? "settled" as const
-        : "idle" as const;
+    const railMode =
+        phase !== "picking"
+            ? ("active" as const)
+            : updaterResults.length > 0
+              ? ("settled" as const)
+              : ("idle" as const);
     const idleRows = useMemo<UpdateResult[]>(
         () =>
             config.query.data
                 ? getEnabledApps(config.query.data.apps).map(([app]) => ({
-                    app,
-                    status: "pending",
-                    duration_ms: null,
-                }))
+                      app,
+                      status: "pending",
+                      duration_ms: null,
+                  }))
                 : [],
         [config.query.data],
     );
@@ -153,8 +153,9 @@ function AppLayout() {
 
         const persistenceFailed = failedApps.includes(ACTIVE_THEME_PERSISTENCE_APP);
         const appearanceFailed = failedApps.includes(SYSTEM_APPEARANCE_APP);
-        const enabledApps = getEnabledApps(config.query.data.apps)
-            .filter(([name]) => failedApps.includes(name));
+        const enabledApps = getEnabledApps(config.query.data.apps).filter(([name]) =>
+            failedApps.includes(name),
+        );
         if (!persistenceFailed && !appearanceFailed && enabledApps.length === 0) return;
 
         const retryUpdaters = createUpdaters(enabledApps, applyingTheme.meta);
@@ -169,25 +170,26 @@ function AppLayout() {
         }));
 
         try {
-            const results = enabledApps.length > 0
-                ? await applyTheme(retryUpdaters, (partial) => {
-                    appStore.setState((s) => ({
-                        ...s,
-                        updaterResults: mergeUpdateResults(s.updaterResults, partial),
-                    }));
-                })
-                : [];
+            const results =
+                enabledApps.length > 0
+                    ? await applyTheme(retryUpdaters, (partial) => {
+                          appStore.setState((s) => ({
+                              ...s,
+                              updaterResults: mergeUpdateResults(s.updaterResults, partial),
+                          }));
+                      })
+                    : [];
             let applied = results.some(themeWasApplied);
 
             if (appearanceFailed) {
-                const appearanceResult = await commands.updateSystemAppearance(
-                    applyingTheme.meta.appearance,
-                ).catch((error) => commandErrorResult(SYSTEM_APPEARANCE_APP, error));
+                const appearanceResult = await commands
+                    .updateSystemAppearance(applyingTheme.meta.appearance)
+                    .catch((error) => commandErrorResult(SYSTEM_APPEARANCE_APP, error));
                 appStore.setState((s) => ({
                     ...s,
                     updaterResults: [
-                        ...s.updaterResults.filter((result) =>
-                            result.app !== SYSTEM_APPEARANCE_APP
+                        ...s.updaterResults.filter(
+                            (result) => result.app !== SYSTEM_APPEARANCE_APP,
                         ),
                         appearanceResult,
                     ],
@@ -202,16 +204,16 @@ function AppLayout() {
                     await activeTheme.set.mutateAsync(applyingTheme.meta.key);
                     appStore.setState((s) => ({
                         ...s,
-                        updaterResults: s.updaterResults.filter((result) =>
-                            result.app !== ACTIVE_THEME_PERSISTENCE_APP
+                        updaterResults: s.updaterResults.filter(
+                            (result) => result.app !== ACTIVE_THEME_PERSISTENCE_APP,
                         ),
                     }));
                 } catch (error) {
                     appStore.setState((s) => ({
                         ...s,
                         updaterResults: [
-                            ...s.updaterResults.filter((result) =>
-                                result.app !== ACTIVE_THEME_PERSISTENCE_APP
+                            ...s.updaterResults.filter(
+                                (result) => result.app !== ACTIVE_THEME_PERSISTENCE_APP,
                             ),
                             activeThemePersistenceError(error),
                         ],
@@ -238,9 +240,11 @@ function AppLayout() {
                 <header className={styles.header}>
                     <AppHeader
                         version={packageJson.version}
-                        context={isSettings
-                            ? `SETTINGS / ${settingsSection.toUpperCase()}`
-                            : `${themeCount} THEMES · ${collectionCount} COLLECTIONS · ENV ${env}`}
+                        context={
+                            isSettings
+                                ? `SETTINGS / ${settingsSection.toUpperCase()}`
+                                : `${themeCount} THEMES · ${collectionCount} COLLECTIONS · ENV ${env}`
+                        }
                     />
                 </header>
                 <main className={styles.main}>
@@ -253,7 +257,9 @@ function AppLayout() {
                                 mode={railMode}
                                 themeName={themeName}
                                 results={railResults}
-                                cursorApp={railMode === "active" ? cursorResult?.app ?? null : null}
+                                cursorApp={
+                                    railMode === "active" ? (cursorResult?.app ?? null) : null
+                                }
                                 expandedApp={expandedApp}
                                 onToggleRow={toggleCursoredRow}
                                 onRetryFailed={handleRetryFailed}
@@ -263,16 +269,15 @@ function AppLayout() {
                 </main>
                 <footer className={styles.footer}>
                     <AppFooter
-                        hints={isSettings
-                            ? (
+                        hints={
+                            isSettings ? (
                                 <>
                                     <KeyHint keys="j/k">ROWS</KeyHint>
                                     <KeyHint keys="space">TOGGLE</KeyHint>
                                     <KeyHint keys="⏎">EDIT FIELD</KeyHint>
                                     <KeyHint keys="esc">BACK</KeyHint>
                                 </>
-                            )
-                            : (
+                            ) : (
                                 <>
                                     <KeyHint keys="j/k">NAVIGATE</KeyHint>
                                     <KeyHint keys="/">SEARCH</KeyHint>
@@ -281,12 +286,17 @@ function AppLayout() {
                                     <KeyHint keys="s">SETTINGS</KeyHint>
                                     <KeyHint keys="q">QUIT</KeyHint>
                                 </>
-                            )}
-                        status={isSettings && isSaving
-                            ? <StatusPip intent="running">SAVING…</StatusPip>
-                            : isSettings && justSaved
-                            ? <StatusPip intent="ok">SAVED</StatusPip>
-                            : <StatusPip intent="ok">READY</StatusPip>}
+                            )
+                        }
+                        status={
+                            isSettings && isSaving ? (
+                                <StatusPip intent="running">SAVING…</StatusPip>
+                            ) : isSettings && justSaved ? (
+                                <StatusPip intent="ok">SAVED</StatusPip>
+                            ) : (
+                                <StatusPip intent="ok">READY</StatusPip>
+                            )
+                        }
                     />
                 </footer>
             </div>

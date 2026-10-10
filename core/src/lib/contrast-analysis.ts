@@ -92,9 +92,7 @@ export const INTENDED_PAIRINGS: PairingCategory[] = [
     },
     {
         name: "Contrast inversion",
-        pairs: [
-            { fg: "fg.contrast", bg: "bg.contrast" },
-        ],
+        pairs: [{ fg: "fg.contrast", bg: "bg.contrast" }],
     },
 ];
 
@@ -105,11 +103,12 @@ function resolveColor(theme: Theme.Definition, key: string) {
     type UiFgKey = keyof Theme.Definition["ui"]["fg"];
 
     const [group, token] = key.split(".");
-    const color = group === "fg"
-        ? theme.ui.fg[token as UiFgKey]
-        : group === "bg"
-        ? theme.ui.bg[token as UiBgKey]
-        : undefined;
+    const color =
+        group === "fg"
+            ? theme.ui.fg[token as UiFgKey]
+            : group === "bg"
+              ? theme.ui.bg[token as UiBgKey]
+              : undefined;
     if (!color) {
         throw new Error(`resolveColor: token "${key}" not found in theme "${theme.meta.key}"`);
     }
@@ -146,7 +145,7 @@ export function analyzeThemeContrast(theme: Theme.Definition): ThemeContrastAnal
 
     const primary = computePair(theme, { fg: "fg.default", bg: "bg.default" });
 
-    const worstPair = allPairs.reduce((worst, p) => p.ratio < worst.ratio ? p : worst);
+    const worstPair = allPairs.reduce((worst, p) => (p.ratio < worst.ratio ? p : worst));
 
     return {
         primary,

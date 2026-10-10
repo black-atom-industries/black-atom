@@ -27,8 +27,7 @@ function filterItems(items: CommandItem[], query: string): CommandItem[] {
     const lower = query.toLowerCase();
     return items.filter(
         (item) =>
-            item.label.toLowerCase().includes(lower) ||
-            (item.group?.toLowerCase().includes(lower)),
+            item.label.toLowerCase().includes(lower) || item.group?.toLowerCase().includes(lower),
     );
 }
 
@@ -71,10 +70,13 @@ export function CommandPalette({
 
     const [highlightIndex, setHighlightIndex] = useState(0);
 
-    const handleSelect = useCallback((item: CommandItem) => {
-        item.onSelect();
-        onOpenChange(false);
-    }, [onOpenChange]);
+    const handleSelect = useCallback(
+        (item: CommandItem) => {
+            item.onSelect();
+            onOpenChange(false);
+        },
+        [onOpenChange],
+    );
 
     // Jump to selected item when not searching
     useEffect(() => {
@@ -139,47 +141,42 @@ export function CommandPalette({
                         className={styles.list}
                         role="listbox"
                         aria-label={placeholder}
-                        aria-activedescendant={filtered[highlightIndex]
-                            ? `cmd-item-${filtered[highlightIndex].id}`
-                            : undefined}
+                        aria-activedescendant={
+                            filtered[highlightIndex]
+                                ? `cmd-item-${filtered[highlightIndex].id}`
+                                : undefined
+                        }
                     >
-                        {filtered.length === 0 && <div className={styles.empty}>{emptyMessage}
-                        </div>}
-                        {Array.from(
-                            grouped,
-                            ([groupKey, groupItems]) => (
-                                <div key={groupKey} className={styles.group}>
-                                    {groupKey && <div className={styles.groupLabel}>{groupKey}
-                                    </div>}
-                                    {groupItems.map((item) => {
-                                        const idx = filtered.indexOf(item);
-                                        return (
-                                            <div
-                                                key={item.id}
-                                                id={`cmd-item-${item.id}`}
-                                                className={styles.item}
-                                                data-index={idx}
-                                                data-highlighted={idx === highlightIndex ||
-                                                    undefined}
-                                                data-selected={item.selected || undefined}
-                                                role="option"
-                                                aria-selected={item.selected}
-                                                onClick={() => handleSelect(item)}
-                                                onMouseEnter={() =>
-                                                    setHighlightIndex(idx)}
-                                            >
-                                                <span>{item.label}</span>
-                                                {item.meta && (
-                                                    <span className={styles.meta}>
-                                                        {item.meta}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            ),
+                        {filtered.length === 0 && (
+                            <div className={styles.empty}>{emptyMessage}</div>
                         )}
+                        {Array.from(grouped, ([groupKey, groupItems]) => (
+                            <div key={groupKey} className={styles.group}>
+                                {groupKey && <div className={styles.groupLabel}>{groupKey}</div>}
+                                {groupItems.map((item) => {
+                                    const idx = filtered.indexOf(item);
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            id={`cmd-item-${item.id}`}
+                                            className={styles.item}
+                                            data-index={idx}
+                                            data-highlighted={idx === highlightIndex || undefined}
+                                            data-selected={item.selected || undefined}
+                                            role="option"
+                                            aria-selected={item.selected}
+                                            onClick={() => handleSelect(item)}
+                                            onMouseEnter={() => setHighlightIndex(idx)}
+                                        >
+                                            <span>{item.label}</span>
+                                            {item.meta && (
+                                                <span className={styles.meta}>{item.meta}</span>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ))}
                     </div>
                 </Dialog.Popup>
             </Dialog.Portal>

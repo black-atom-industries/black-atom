@@ -27,10 +27,7 @@ export async function processTemplates(
 ): Promise<string[]> {
     // Process collection templates
     if (adapterConfig.collections) {
-        return await processCollectionTemplates(
-            adapterConfig.collections,
-            themeMap,
-        );
+        return await processCollectionTemplates(adapterConfig.collections, themeMap);
     } else {
         throw new Error("No collections defined in adapter configuration");
     }
@@ -107,9 +104,7 @@ async function processCollectionTemplates(
                                         break;
                                     }
                                 } catch {
-                                    errors.push(
-                                        `Template contains undefined variable: ${varPath}`,
-                                    );
+                                    errors.push(`Template contains undefined variable: ${varPath}`);
                                     break;
                                 }
                             }
@@ -158,10 +153,7 @@ async function processCollectionTemplates(
  * @param content The processed content to write
  * @param templatePath The template path to derive the output path from or the explicit output path
  */
-export async function writeOutput(
-    content: string,
-    templatePath: string,
-): Promise<void> {
+export async function writeOutput(content: string, templatePath: string): Promise<void> {
     // Generate output path by removing .template from the file name
     const outputPath = templatePath.replace(".template.", ".");
 

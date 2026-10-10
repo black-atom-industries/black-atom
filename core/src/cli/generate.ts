@@ -21,9 +21,7 @@ async function getAdapterConfig(): Promise<AdapterConfig> {
         return adapterConfigSchema.parse(JSON.parse(adapterConfig));
     } catch (error) {
         if (isNotFound(error)) {
-            log.error(
-                `No \`${config.adapterFileName}\` found in current directory. Abort.`,
-            );
+            log.error(`No \`${config.adapterFileName}\` found in current directory. Abort.`);
             process.exit(1);
         }
 
@@ -71,18 +69,16 @@ async function watchAdapter(adapterConfig: AdapterConfig) {
         const changes = Array.from(pendingChanges);
 
         // Filter changes to only include template files or the adapter config
-        const relevantChanges = changes.filter((path) =>
-            path.includes(".template.") ||
-            path.endsWith(config.adapterFileName)
+        const relevantChanges = changes.filter(
+            (path) => path.includes(".template.") || path.endsWith(config.adapterFileName),
         );
 
         if (relevantChanges.length > 0) {
             log.hr_thick("👀 Template changes detected");
             log.info(
-                `Processing changes:\n${
-                    relevantChanges.map((p) => `   - ${styleText("yellow", p)}`)
-                        .join("\n")
-                }`,
+                `Processing changes:\n${relevantChanges
+                    .map((p) => `   - ${styleText("yellow", p)}`)
+                    .join("\n")}`,
             );
 
             try {

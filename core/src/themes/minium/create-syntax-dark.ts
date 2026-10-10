@@ -1,8 +1,6 @@
 import type * as Theme from "../../types/theme.ts";
 
-export default function (
-    { primaries, feedback, accents }: Theme.CreatorContext,
-): Theme.Syntax {
+export default function ({ primaries, feedback, accents }: Theme.CreatorContext): Theme.Syntax {
     return {
         variable: {
             default: primaries.l20,

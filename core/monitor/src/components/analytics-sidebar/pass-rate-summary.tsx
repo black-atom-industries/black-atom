@@ -19,10 +19,7 @@ export function PassRateSummary({ aa, aaa }: Props) {
                 <span className={styles.summaryDetail}>AA pass rate</span>
             </div>
             <div className={styles.summaryRow}>
-                <span
-                    className={styles.summaryValueSecondary}
-                    data-health={getHealth(aaa)}
-                >
+                <span className={styles.summaryValueSecondary} data-health={getHealth(aaa)}>
                     {Math.round(aaa * 100)}%
                 </span>
                 <span className={styles.summaryDetail}>AAA pass rate</span>

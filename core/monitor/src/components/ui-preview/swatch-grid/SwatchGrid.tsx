@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function SwatchGrid({ children }: Props) {
-    return <div className={styles.swatchGrid} data-layout="SwatchGrid">{children}</div>;
+    return (
+        <div className={styles.swatchGrid} data-layout="SwatchGrid">
+            {children}
+        </div>
+    );
 }

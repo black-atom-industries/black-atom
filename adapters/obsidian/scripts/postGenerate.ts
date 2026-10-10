@@ -17,15 +17,12 @@ import { config } from "./config.ts";
  * live one level down, under their collection; the full path list is sorted
  * once so assembly order stays deterministic across collections.
  */
-async function collectFiles(
-    dir: string,
-    ext: string,
-): Promise<string[]> {
+async function collectFiles(dir: string, ext: string): Promise<string[]> {
     const files: string[] = [];
     for (const entry of await readdir(dir, { withFileTypes: true })) {
         const path = `${dir}/${entry.name}`;
         if (entry.isDirectory()) {
-            files.push(...await collectFiles(path, ext));
+            files.push(...(await collectFiles(path, ext)));
         } else if (entry.isFile() && entry.name.endsWith(ext)) {
             files.push(path);
         }
@@ -50,17 +47,11 @@ async function postGenerate(): Promise<void> {
     const parts: string[] = [];
 
     // Variants settings block
-    const variantsYaml = await readFile(
-        `${config.paths.styles}/variants.settings.yaml`,
-        "utf8",
-    );
+    const variantsYaml = await readFile(`${config.paths.styles}/variants.settings.yaml`, "utf8");
     parts.push(buildVariantsSettingsBlock(variantsYaml));
 
     // UI settings block (assembled from sidecars)
-    const settingsFiles = await collectFiles(
-        config.paths.ui,
-        ".settings.yaml",
-    );
+    const settingsFiles = await collectFiles(config.paths.ui, ".settings.yaml");
     const fragments: string[] = [];
     for (const file of settingsFiles) {
         const content = await readFile(file, "utf8");
@@ -71,16 +62,18 @@ async function postGenerate(): Promise<void> {
     }
 
     // Generated theme CSS
-    const themeFiles = (await collectFiles(config.paths.themes, ".css"))
-        .filter((f) => !f.includes(".template."));
+    const themeFiles = (await collectFiles(config.paths.themes, ".css")).filter(
+        (f) => !f.includes(".template."),
+    );
     for (const file of themeFiles) {
         const content = await readFile(file, "utf8");
         parts.push(content.trimEnd());
     }
 
     // UI CSS
-    const uiCssFiles = (await collectFiles(config.paths.ui, ".css"))
-        .filter((f) => !f.endsWith(".settings.yaml"));
+    const uiCssFiles = (await collectFiles(config.paths.ui, ".css")).filter(
+        (f) => !f.endsWith(".settings.yaml"),
+    );
     for (const file of uiCssFiles) {
         const content = await readFile(file, "utf8");
         parts.push(content.trimEnd());

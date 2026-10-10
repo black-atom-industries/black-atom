@@ -21,15 +21,12 @@ type Props = {
  * around, since that fights `:focus-visible` heuristics for no benefit
  * (hotkeys are registered on `document`, not scoped to a focused row).
  */
-export function SettingsSidebar(
-    { appEntries, detectedApps, verifyPathResults }: Props,
-) {
+export function SettingsSidebar({ appEntries, detectedApps, verifyPathResults }: Props) {
     const navigate = useNavigate();
     const matches = useMatches();
     const onGeneral = matches.some((m) => m.routeId === "/_app/settings/general");
-    const selectedAdapter = matches.find(
-        (m) => m.routeId === "/_app/settings/adapters/$adapter",
-    )?.params as { adapter?: AppName } | undefined;
+    const selectedAdapter = matches.find((m) => m.routeId === "/_app/settings/adapters/$adapter")
+        ?.params as { adapter?: AppName } | undefined;
     // ADAPTERS reads as fully selected only at its own index (no adapter
     // picked yet) — once a specific adapter is selected, that row carries
     // the selection and ADAPTERS steps back to an unselected ancestor.
@@ -68,17 +65,18 @@ export function SettingsSidebar(
                             navigate({
                                 to: "/settings/adapters/$adapter",
                                 params: { adapter: appName },
-                            })}
+                            })
+                        }
                         trailing={
                             <span className={styles.badges}>
                                 {detected && !enabled && <StatusPip intent="warn">FOUND</StatusPip>}
-                                {enabled && fault
-                                    ? <StatusPip intent="warn">CHECK</StatusPip>
-                                    : (
-                                        <StatusPip intent={enabled ? "ok" : "off"}>
-                                            {enabled ? "OK" : "DISABLED"}
-                                        </StatusPip>
-                                    )}
+                                {enabled && fault ? (
+                                    <StatusPip intent="warn">CHECK</StatusPip>
+                                ) : (
+                                    <StatusPip intent={enabled ? "ok" : "off"}>
+                                        {enabled ? "OK" : "DISABLED"}
+                                    </StatusPip>
+                                )}
                             </span>
                         }
                     />

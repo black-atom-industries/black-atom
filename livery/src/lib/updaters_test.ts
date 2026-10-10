@@ -181,7 +181,10 @@ test("applyTheme returns the settled results", async () => {
 
     const results = await applyTheme(updaters, () => {});
 
-    assert.deepEqual(results.map((result) => result.status), ["done", "skipped"]);
+    assert.deepEqual(
+        results.map((result) => result.status),
+        ["done", "skipped"],
+    );
 });
 
 // The Active Theme record follows what actually got written, so a run that

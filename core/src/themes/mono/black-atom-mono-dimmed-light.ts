@@ -8,7 +8,7 @@ import createFeedback from "./create-feedback-light.ts";
 
 export default defineThemeColors({
     primaries: {
-        d10: oklch(0.20, 0, 0),
+        d10: oklch(0.2, 0, 0),
         d20: oklch(0.28, 0, 0),
         d30: oklch(0.36, 0, 0),
         d40: oklch(0.42, 0, 0),
@@ -20,7 +20,7 @@ export default defineThemeColors({
 
         l10: oklch(0.82, 0, 0),
         l20: oklch(0.86, 0, 0),
-        l30: oklch(0.90, 0, 0),
+        l30: oklch(0.9, 0, 0),
         l40: oklch(0.94, 0, 0),
     },
     accents: {

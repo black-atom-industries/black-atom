@@ -54,21 +54,19 @@ type Props = VariantProps<typeof listRowVariants> & {
  *
  * Spec: docs/design-system/reference/components/display/ListRow.jsx
  */
-export function ListRow(
-    {
-        selected,
-        dimmed,
-        indented,
-        name,
-        pips,
-        appearance,
-        leading,
-        trailing,
-        onClick,
-        rootRef,
-        className,
-    }: Props,
-) {
+export function ListRow({
+    selected,
+    dimmed,
+    indented,
+    name,
+    pips,
+    appearance,
+    leading,
+    trailing,
+    onClick,
+    rootRef,
+    className,
+}: Props) {
     return (
         <div
             data-component="list-row"

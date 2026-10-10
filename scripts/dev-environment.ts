@@ -35,13 +35,11 @@ const LAUNCHER_ENV_KEYS = new Set([
 ]);
 
 /** `state.json` sits on disk for the whole session, so it carries only what the CLI needs. */
-export function launcherEnv(
-    env: Record<string, string>,
-): Record<string, string> {
+export function launcherEnv(env: Record<string, string>): Record<string, string> {
     return Object.fromEntries(
-        Object.entries(env).filter(([key]) =>
-            LAUNCHER_ENV_KEYS.has(key) || key.startsWith("XDG_") ||
-            key.startsWith("LC_")
+        Object.entries(env).filter(
+            ([key]) =>
+                LAUNCHER_ENV_KEYS.has(key) || key.startsWith("XDG_") || key.startsWith("LC_"),
         ),
     );
 }
@@ -66,14 +64,12 @@ export async function createDevEnvironment(binary: string) {
         renameSync(`${statePath}.tmp`, statePath);
     }
     setState("pending");
-    const launchScript = fileURLToPath(
-        new URL("./dev-launcher.ts", import.meta.url),
-    );
+    const launchScript = fileURLToPath(new URL("./dev-launcher.ts", import.meta.url));
     await writeFile(
         launcher,
-        `#!/bin/sh\nexec ${shellQuote(process.execPath)} ${shellQuote(launchScript)} ${
-            shellQuote(statePath)
-        } "$@"\n`,
+        `#!/bin/sh\nexec ${shellQuote(process.execPath)} ${shellQuote(launchScript)} ${shellQuote(
+            statePath,
+        )} "$@"\n`,
         { mode: 0o700 },
     );
     return { directory, env, launcher, statePath, setState };
@@ -100,8 +96,10 @@ export function provisionDevLauncher(
                         if (!isNotFound(error)) throw error;
                         const current = lstatSync(command);
                         if (
-                            current.isSymbolicLink() && current.ino === existing.ino &&
-                            current.dev === existing.dev && readlinkSync(command) === target
+                            current.isSymbolicLink() &&
+                            current.ino === existing.ino &&
+                            current.dev === existing.dev &&
+                            readlinkSync(command) === target
                         ) {
                             rmSync(command);
                             console.log(`Removed stale development launcher: ${command}`);
@@ -118,9 +116,9 @@ export function provisionDevLauncher(
             `${command} already exists. Another dev session or command owns livery-dev; stop that session or remove its stale link explicitly.`,
         );
     }
-    const directories = searchPath.split(":").filter((path) =>
-        path.startsWith(home + "/") && path.endsWith("/bin")
-    );
+    const directories = searchPath
+        .split(":")
+        .filter((path) => path.startsWith(home + "/") && path.endsWith("/bin"));
     const preferred = join(home, ".local/bin");
     directories.sort((a, b) => Number(b === preferred) - Number(a === preferred));
     const directory = directories.find((path) => {
@@ -149,9 +147,7 @@ export function provisionDevLauncher(
         path,
         remove() {
             try {
-                if (
-                    lstatSync(path).isSymbolicLink() && readlinkSync(path) === launcher
-                ) {
+                if (lstatSync(path).isSymbolicLink() && readlinkSync(path) === launcher) {
                     rmSync(path);
                 }
             } catch (error) {

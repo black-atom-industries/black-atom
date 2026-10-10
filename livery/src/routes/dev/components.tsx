@@ -318,17 +318,17 @@ function Page() {
                 }}
             >
                 <div style={{ width: 220, borderRight: "1px solid var(--ba-color-fg-hint)" }}>
-                    {(Object.entries(settingsFixture.apps) as [AppName, AppConfig][]).map((
-                        [appName],
-                    ) => (
-                        <ListRow
-                            key={appName}
-                            name={appName}
-                            indented
-                            selected={settingsSelectedApp === appName}
-                            onClick={() => setSettingsSelectedApp(appName)}
-                        />
-                    ))}
+                    {(Object.entries(settingsFixture.apps) as [AppName, AppConfig][]).map(
+                        ([appName]) => (
+                            <ListRow
+                                key={appName}
+                                name={appName}
+                                indented
+                                selected={settingsSelectedApp === appName}
+                                onClick={() => setSettingsSelectedApp(appName)}
+                            />
+                        ),
+                    )}
                 </div>
                 <div style={{ flex: 1, padding: "24px 28px" }}>
                     {(() => {
@@ -336,9 +336,9 @@ function Page() {
                         return (
                             <AdapterSettings
                                 appConfig={settingsFixture.apps[settingsSelectedApp]}
-                                editableFields={new Set(
-                                    SETTINGS_EDITABLE_FIELDS[settingsSelectedApp],
-                                )}
+                                editableFields={
+                                    new Set(SETTINGS_EDITABLE_FIELDS[settingsSelectedApp])
+                                }
                                 detected={["ghostty", "tmux"].includes(settingsSelectedApp)}
                                 onToggleEnabled={() => {
                                     setSettingsFixture((prev) => ({
@@ -347,7 +347,8 @@ function Page() {
                                             ...prev.apps,
                                             [settingsSelectedApp]: {
                                                 ...prev.apps[settingsSelectedApp],
-                                                enabled: prev.apps[settingsSelectedApp].enabled ===
+                                                enabled:
+                                                    prev.apps[settingsSelectedApp].enabled ===
                                                     false,
                                             },
                                         },
@@ -390,11 +391,9 @@ function Page() {
                                             ...prev.apps,
                                             obsidian: {
                                                 ...prev.apps.obsidian,
-                                                config_folders:
-                                                    (prev.apps.obsidian.config_folders ?? [])
-                                                        .filter((folder) =>
-                                                            folder !== config_folder
-                                                        ),
+                                                config_folders: (
+                                                    prev.apps.obsidian.config_folders ?? []
+                                                ).filter((folder) => folder !== config_folder),
                                             },
                                         },
                                     }));
@@ -415,14 +414,18 @@ function Page() {
                                     setTimeout(() => {
                                         setSettingsTestApplyResults((prev) => ({
                                             ...prev,
-                                            [appName]: appName === "obsidian"
-                                                ? { status: "error", message: "config not found" }
-                                                : {
-                                                    status: "ok",
-                                                    durationMs: 380 +
-                                                        Math.round(Math.random() * 80),
-                                                    testedThemeLabel: "Fall Dark",
-                                                },
+                                            [appName]:
+                                                appName === "obsidian"
+                                                    ? {
+                                                          status: "error",
+                                                          message: "config not found",
+                                                      }
+                                                    : {
+                                                          status: "ok",
+                                                          durationMs:
+                                                              380 + Math.round(Math.random() * 80),
+                                                          testedThemeLabel: "Fall Dark",
+                                                      },
                                         }));
                                     }, 600);
                                 }}
@@ -436,34 +439,33 @@ function Page() {
                                     setTimeout(() => {
                                         setSettingsVerifyPathResults((prev) => ({
                                             ...prev,
-                                            [appName]: appName === "obsidian"
-                                                ? {
-                                                    status: "verified",
-                                                    exists: true,
-                                                    patternMatches: null,
-                                                    config_folders: [
-                                                        {
-                                                            config_folder: "~/notes/.obsidian",
-                                                            path:
-                                                                "/Users/nik/notes/.obsidian/appearance.json",
-                                                            exists: true,
-                                                        },
-                                                        {
-                                                            config_folder:
-                                                                "~/work-notes/.obsidian-mobile",
-                                                            path:
-                                                                "/Users/nik/work-notes/.obsidian-mobile/appearance.json",
-                                                            exists: true,
-                                                        },
-                                                    ],
-                                                }
-                                                : {
-                                                    status: "verified",
-                                                    exists: true,
-                                                    patternMatches: appName === "ghostty"
-                                                        ? true
-                                                        : null,
-                                                },
+                                            [appName]:
+                                                appName === "obsidian"
+                                                    ? {
+                                                          status: "verified",
+                                                          exists: true,
+                                                          patternMatches: null,
+                                                          config_folders: [
+                                                              {
+                                                                  config_folder:
+                                                                      "~/notes/.obsidian",
+                                                                  path: "/Users/nik/notes/.obsidian/appearance.json",
+                                                                  exists: true,
+                                                              },
+                                                              {
+                                                                  config_folder:
+                                                                      "~/work-notes/.obsidian-mobile",
+                                                                  path: "/Users/nik/work-notes/.obsidian-mobile/appearance.json",
+                                                                  exists: true,
+                                                              },
+                                                          ],
+                                                      }
+                                                    : {
+                                                          status: "verified",
+                                                          exists: true,
+                                                          patternMatches:
+                                                              appName === "ghostty" ? true : null,
+                                                      },
                                         }));
                                     }, 400);
                                 }}
@@ -476,31 +478,33 @@ function Page() {
 
             <SectionLabel>ProgressBar</SectionLabel>
             <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-                {(Object.keys(PROGRESS_FIXTURES) as (keyof typeof PROGRESS_FIXTURES)[]).map((
-                    key,
-                ) => (
-                    <button
-                        key={key}
-                        type="button"
-                        onClick={() => setProgressState(key)}
-                        style={{
-                            fontFamily: "var(--ba-font-mono)",
-                            fontSize: 11,
-                            textTransform: "uppercase",
-                            padding: "4px 10px",
-                            border: "1px solid var(--ba-color-fg-hint)",
-                            background: progressState === key
-                                ? "var(--ba-color-bg-hint)"
-                                : "transparent",
-                            color: progressState === key
-                                ? "var(--ba-color-fg-positive)"
-                                : "var(--ba-color-fg-subtle)",
-                            cursor: "pointer",
-                        }}
-                    >
-                        {key}
-                    </button>
-                ))}
+                {(Object.keys(PROGRESS_FIXTURES) as (keyof typeof PROGRESS_FIXTURES)[]).map(
+                    (key) => (
+                        <button
+                            key={key}
+                            type="button"
+                            onClick={() => setProgressState(key)}
+                            style={{
+                                fontFamily: "var(--ba-font-mono)",
+                                fontSize: 11,
+                                textTransform: "uppercase",
+                                padding: "4px 10px",
+                                border: "1px solid var(--ba-color-fg-hint)",
+                                background:
+                                    progressState === key
+                                        ? "var(--ba-color-bg-hint)"
+                                        : "transparent",
+                                color:
+                                    progressState === key
+                                        ? "var(--ba-color-fg-positive)"
+                                        : "var(--ba-color-fg-subtle)",
+                                cursor: "pointer",
+                            }}
+                        >
+                            {key}
+                        </button>
+                    ),
+                )}
             </div>
             <div style={{ marginBottom: 32 }}>
                 <ProgressBar results={PROGRESS_FIXTURES[progressState]} />

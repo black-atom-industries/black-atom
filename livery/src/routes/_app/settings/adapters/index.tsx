@@ -23,17 +23,14 @@ function AdaptersIndexRoute() {
                 <Button intent="secondary" onClick={ctx.onAutoDetect} disabled={ctx.detecting}>
                     {ctx.detecting ? "DETECTING…" : "AUTO-DETECT"}
                 </Button>
-                {ctx.detectError
-                    ? <span className={styles.detectError}>DETECT FAILED: {ctx.detectError}</span>
-                    : ctx.detections
-                    ? (
-                        <span className={styles.detectMeta}>
-                            {Object.values(ctx.detections).filter(Boolean).length} OF {adapterCount}
-                            {" "}
-                            FOUND
-                        </span>
-                    )
-                    : null}
+                {ctx.detectError ? (
+                    <span className={styles.detectError}>DETECT FAILED: {ctx.detectError}</span>
+                ) : ctx.detections ? (
+                    <span className={styles.detectMeta}>
+                        {Object.values(ctx.detections).filter(Boolean).length} OF {adapterCount}{" "}
+                        FOUND
+                    </span>
+                ) : null}
             </div>
         </div>
     );

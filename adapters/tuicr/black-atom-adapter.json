@@ -65,10 +65,7 @@
                 "./themes/collection.template.tmTheme"
             ],
             "output": "./themes/clay",
-            "themes": [
-                "black-atom-clay-dark",
-                "black-atom-clay-light"
-            ]
+            "themes": ["black-atom-clay-dark", "black-atom-clay-light"]
         },
         "minium": {
             "template": [

@@ -7,9 +7,9 @@ test("saves CONFIG_PATH on Enter", async ({ page }) => {
     await field.fill("~/.config/zed/other.json");
     await field.press("Enter");
 
-    await expect.poll(() => readLiveryConfig().apps.zed.config_path).toBe(
-        "~/.config/zed/other.json",
-    );
+    await expect
+        .poll(() => readLiveryConfig().apps.zed.config_path)
+        .toBe("~/.config/zed/other.json");
 });
 
 test("saves THEMES_PATH on blur", async ({ page }) => {
@@ -30,10 +30,12 @@ test("saves MATCH_PATTERN and REPLACE_TEMPLATE", async ({ page }) => {
     await template.fill("features = {themeKey}");
     await template.press("Enter");
 
-    await expect.poll(() => readLiveryConfig().apps.delta).toMatchObject({
-        match_pattern: "features = .+",
-        replace_template: "features = {themeKey}",
-    });
+    await expect
+        .poll(() => readLiveryConfig().apps.delta)
+        .toMatchObject({
+            match_pattern: "features = .+",
+            replace_template: "features = {themeKey}",
+        });
 });
 
 test("Escape reverts a dirty field without saving", async ({ page }) => {

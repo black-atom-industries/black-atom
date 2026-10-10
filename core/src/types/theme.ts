@@ -41,7 +41,7 @@ export type Key = CatalogThemeKey;
 export type CollectionKey = CatalogCollectionKey;
 export type CollectionMeta = CatalogCollectionMeta;
 export type KeysForCollection<C extends CollectionKey> = CatalogThemeKeysForCollection<C>;
-export type Meta = typeof themeCatalog[Key]["meta"];
+export type Meta = (typeof themeCatalog)[Key]["meta"];
 export type MetaBase = Omit<Meta, "label">;
 
 export interface Primaries {
@@ -243,10 +243,7 @@ export interface Colors {
     syntax: Syntax;
 }
 
-export type CreatorContext = Pick<
-    Colors,
-    "primaries" | "accents" | "palette" | "feedback"
->;
+export type CreatorContext = Pick<Colors, "primaries" | "accents" | "palette" | "feedback">;
 
-export type Definition = typeof themeCatalog[Key];
+export type Definition = (typeof themeCatalog)[Key];
 export type DefinitionMap = Partial<Record<Key, Definition>>;

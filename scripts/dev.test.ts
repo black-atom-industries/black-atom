@@ -24,25 +24,23 @@ function output(
 }
 
 test("CLI inputs exclude GUI, docs and temporary files", () => {
-    for (
-        const path of [
-            "livery/cli/src/main.rs",
-            "livery/core/Cargo.toml",
-            "Cargo.lock",
-            "adapters/ghostty/themes/test.toml",
-            "adapters/nvim/lua/new.lua",
-            "adapters/obsidian/theme.css",
-        ]
-    ) assert.equal(isCliInput(path), true, path);
-    for (
-        const path of [
-            "livery/src/app.css",
-            "livery/src-tauri/src/lib.rs",
-            "README.md",
-            "target/debug/livery",
-            "livery/cli/src/main.rs~",
-        ]
-    ) assert.equal(isCliInput(path), false, path);
+    for (const path of [
+        "livery/cli/src/main.rs",
+        "livery/core/Cargo.toml",
+        "Cargo.lock",
+        "adapters/ghostty/themes/test.toml",
+        "adapters/nvim/lua/new.lua",
+        "adapters/obsidian/theme.css",
+    ])
+        assert.equal(isCliInput(path), true, path);
+    for (const path of [
+        "livery/src/app.css",
+        "livery/src-tauri/src/lib.rs",
+        "README.md",
+        "target/debug/livery",
+        "livery/cli/src/main.rs~",
+    ])
+        assert.equal(isCliInput(path), false, path);
 });
 
 test("readiness closes immediately and failed generation never builds stale CLI", async () => {
@@ -50,7 +48,7 @@ test("readiness closes immediately and failed generation never builds stale CLI"
     let builds = 0;
     let fail = false;
     const cycle = createDevCycle({
-        generate: () => fail ? Promise.reject(new Error("invalid theme")) : Promise.resolve(),
+        generate: () => (fail ? Promise.reject(new Error("invalid theme")) : Promise.resolve()),
         build: () => {
             builds++;
             return Promise.resolve();
@@ -143,62 +141,64 @@ test("launcher preserves inherited home, existing config, arguments and readines
         { mode: 0o700 },
     );
     try {
-        await withEnvironment({
-            HOME: fixture,
-            XDG_CONFIG_HOME: config,
-            LIVERY_FIXTURE_TOKEN: "secret",
-        }, async () => {
-            const session = await createDevEnvironment(binary);
-            try {
-                assert.equal(session.env.LIVERY_FIXTURE_TOKEN, "secret");
-                const persisted = JSON.parse(await readFile(session.statePath, "utf8")).env;
-                assert.equal(persisted.LIVERY_FIXTURE_TOKEN, undefined);
-                assert.equal(persisted.HOME, fixture);
-                assert.equal(persisted.XDG_CONFIG_HOME, config);
-                assert.equal(session.env.HOME, fixture);
-                assert.equal(session.env.XDG_CONFIG_HOME, config);
-                for (
-                    const key of [
+        await withEnvironment(
+            {
+                HOME: fixture,
+                XDG_CONFIG_HOME: config,
+                LIVERY_FIXTURE_TOKEN: "secret",
+            },
+            async () => {
+                const session = await createDevEnvironment(binary);
+                try {
+                    assert.equal(session.env.LIVERY_FIXTURE_TOKEN, "secret");
+                    const persisted = JSON.parse(await readFile(session.statePath, "utf8")).env;
+                    assert.equal(persisted.LIVERY_FIXTURE_TOKEN, undefined);
+                    assert.equal(persisted.HOME, fixture);
+                    assert.equal(persisted.XDG_CONFIG_HOME, config);
+                    assert.equal(session.env.HOME, fixture);
+                    assert.equal(session.env.XDG_CONFIG_HOME, config);
+                    for (const key of [
                         "CARGO_HOME",
                         "RUSTUP_HOME",
                         "XDG_DATA_HOME",
                         "XDG_CACHE_HOME",
-                    ]
-                ) {
-                    assert.equal(session.env[key], process.env[key]);
-                }
-                assert.equal(statSync(session.directory).mode! & 0o077, 0);
-                for (
-                    const state of [
+                    ]) {
+                        assert.equal(session.env[key], process.env[key]);
+                    }
+                    assert.equal(statSync(session.directory).mode! & 0o077, 0);
+                    for (const state of [
                         "pending",
                         "generating",
                         "building",
                         "failed: fixture",
                         "stopped",
-                    ]
-                ) {
-                    session.setState(state);
-                    assert.equal(statSync(session.statePath).mode! & 0o077, 0);
+                    ]) {
+                        session.setState(state);
+                        assert.equal(statSync(session.statePath).mode! & 0o077, 0);
+                        assert.equal(await launchDev(session.statePath, []), 1);
+                        assert.throws(() => statSync(`${fixture}/result`));
+                    }
+                    session.setState("ready");
+                    const result = await output(session.launcher, {
+                        args: ["space arg", "single'quote", "$(untouched)", ""],
+                        env: { HOME: `${fixture}/wrong`, XDG_CONFIG_HOME: `${fixture}/wrong` },
+                    });
+                    assert.equal(result.code, 7, result.stderr);
+                    assert.equal(
+                        await readFile(`${fixture}/result`, "utf8"),
+                        `${fixture}\n${config}\nspace arg\nsingle'quote\n$(untouched)\n\nexisting configuration`,
+                    );
+                    session.setState("stopped");
                     assert.equal(await launchDev(session.statePath, []), 1);
-                    assert.throws(() => statSync(`${fixture}/result`));
+                } finally {
+                    await rm(session.directory, { recursive: true, force: true });
                 }
-                session.setState("ready");
-                const result = await output(session.launcher, {
-                    args: ["space arg", "single'quote", "$(untouched)", ""],
-                    env: { HOME: `${fixture}/wrong`, XDG_CONFIG_HOME: `${fixture}/wrong` },
-                });
-                assert.equal(result.code, 7, result.stderr);
                 assert.equal(
-                    await readFile(`${fixture}/result`, "utf8"),
-                    `${fixture}\n${config}\nspace arg\nsingle'quote\n$(untouched)\n\nexisting configuration`,
+                    await readFile(`${config}/existing`, "utf8"),
+                    "existing configuration",
                 );
-                session.setState("stopped");
-                assert.equal(await launchDev(session.statePath, []), 1);
-            } finally {
-                await rm(session.directory, { recursive: true, force: true });
-            }
-            assert.equal(await readFile(`${config}/existing`, "utf8"), "existing configuration");
-        });
+            },
+        );
     } finally {
         await rm(fixture, { recursive: true, force: true });
     }
@@ -215,34 +215,37 @@ test("launcher preserves unset XDG despite conflicting second-terminal variables
         { mode: 0o700 },
     );
     try {
-        await withEnvironment({
-            HOME: fixture,
-            XDG_CONFIG_HOME: undefined,
-            XDG_DATA_HOME: undefined,
-            XDG_CACHE_HOME: undefined,
-            LIVERY_CALLER_ONLY: undefined,
-        }, async () => {
-            const session = await createDevEnvironment(binary);
-            try {
-                session.setState("ready");
-                const result = await output(session.launcher, {
-                    env: {
-                        HOME: `${fixture}/wrong`,
-                        XDG_CONFIG_HOME: `${fixture}/wrong`,
-                        XDG_DATA_HOME: `${fixture}/conflict`,
-                        XDG_CACHE_HOME: `${fixture}/conflict`,
-                        LIVERY_CALLER_ONLY: "conflict",
-                    },
-                });
-                assert.equal(result.code, 0, result.stderr);
-                assert.equal(
-                    await readFile(`${fixture}/result`, "utf8"),
-                    "unset\nunset\nunset\nunset\nhome configuration",
-                );
-            } finally {
-                await rm(session.directory, { recursive: true, force: true });
-            }
-        });
+        await withEnvironment(
+            {
+                HOME: fixture,
+                XDG_CONFIG_HOME: undefined,
+                XDG_DATA_HOME: undefined,
+                XDG_CACHE_HOME: undefined,
+                LIVERY_CALLER_ONLY: undefined,
+            },
+            async () => {
+                const session = await createDevEnvironment(binary);
+                try {
+                    session.setState("ready");
+                    const result = await output(session.launcher, {
+                        env: {
+                            HOME: `${fixture}/wrong`,
+                            XDG_CONFIG_HOME: `${fixture}/wrong`,
+                            XDG_DATA_HOME: `${fixture}/conflict`,
+                            XDG_CACHE_HOME: `${fixture}/conflict`,
+                            LIVERY_CALLER_ONLY: "conflict",
+                        },
+                    });
+                    assert.equal(result.code, 0, result.stderr);
+                    assert.equal(
+                        await readFile(`${fixture}/result`, "utf8"),
+                        "unset\nunset\nunset\nunset\nhome configuration",
+                    );
+                } finally {
+                    await rm(session.directory, { recursive: true, force: true });
+                }
+            },
+        );
     } finally {
         await rm(fixture, { recursive: true, force: true });
     }
@@ -416,7 +419,7 @@ test("failed compilation keeps CLI unavailable until a successful rebuild", asyn
     let reapplies = 0;
     const cycle = createDevCycle({
         generate: () => Promise.resolve(),
-        build: () => fail ? Promise.reject(new Error("compile failed")) : Promise.resolve(),
+        build: () => (fail ? Promise.reject(new Error("compile failed")) : Promise.resolve()),
         reapply: () => {
             reapplies++;
             return Promise.resolve();
@@ -450,9 +453,9 @@ test("launcher placement handles unset HOME without changing the captured enviro
                     args: [
                         "--input-type=module",
                         "-e",
-                        `import { provisionDevLauncher } from ${
-                            JSON.stringify(new URL("./dev-environment.ts", import.meta.url).href)
-                        }; provisionDevLauncher(process.argv[1], { home: process.env.HOME, path: process.argv[2] });`,
+                        `import { provisionDevLauncher } from ${JSON.stringify(
+                            new URL("./dev-environment.ts", import.meta.url).href,
+                        )}; provisionDevLauncher(process.argv[1], { home: process.env.HOME, path: process.argv[2] });`,
                         session.launcher,
                         `${fixture}/bin`,
                     ],
@@ -500,12 +503,10 @@ test("launcher recovers only dangling Black Atom session links", async () => {
             /already exists/,
         );
         recovered.remove();
-        for (
-            const target of [
-                `${home}/foreign-missing`,
-                `${home}/black-atom-dev-0123456789abcdef/livery-dev`,
-            ]
-        ) {
+        for (const target of [
+            `${home}/foreign-missing`,
+            `${home}/black-atom-dev-0123456789abcdef/livery-dev`,
+        ]) {
             await symlink(target, command);
             assert.throws(
                 () => provisionDevLauncher(session.launcher, { home, path: bin }),

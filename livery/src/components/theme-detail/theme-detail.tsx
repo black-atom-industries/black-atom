@@ -65,9 +65,9 @@ export function ThemeDetail({ theme, isActive }: ThemeDetailProps) {
     const { meta, palette, primaries, syntax } = theme;
     const appearanceLabel = meta.appearance.toUpperCase();
     const appearanceLetter = meta.appearance === "dark" ? "D" : "L";
-    const docCode = `DOC LVR-${meta.collection.key.toUpperCase()}-${
-        initials(meta.name)
-    }-${appearanceLetter} · REV 01`;
+    const docCode = `DOC LVR-${meta.collection.key.toUpperCase()}-${initials(
+        meta.name,
+    )}-${appearanceLetter} · REV 01`;
 
     const accents = getAccentBands(theme);
     const feedback = getFeedbackBands(theme);
@@ -93,9 +93,11 @@ export function ThemeDetail({ theme, isActive }: ThemeDetailProps) {
                         COLLECTION · KEY {meta.key}
                     </div>
                 </div>
-                {isActive
-                    ? <StatusPip intent="ok">ACTIVE</StatusPip>
-                    : <StatusPip intent="off">INACTIVE</StatusPip>}
+                {isActive ? (
+                    <StatusPip intent="ok">ACTIVE</StatusPip>
+                ) : (
+                    <StatusPip intent="off">INACTIVE</StatusPip>
+                )}
             </div>
 
             <div className={styles.section}>
@@ -156,23 +158,18 @@ export function ThemeDetail({ theme, isActive }: ThemeDetailProps) {
                             </CodeToken>
                         </div>
                         <div>
-                            <CodeToken color={syntax.keyword.default}>export function</CodeToken>
-                            {" "}
+                            <CodeToken color={syntax.keyword.default}>export function</CodeToken>{" "}
                             <CodeToken color={syntax.func.default}>apply</CodeToken>(theme:{" "}
                             <CodeToken color={syntax.type.default}>Theme</CodeToken>) {"{"}
                         </div>
                         <div>
-                            &nbsp;&nbsp;<CodeToken color={syntax.keyword.default}>const</CodeToken>
-                            {" "}
+                            &nbsp;&nbsp;<CodeToken color={syntax.keyword.default}>const</CodeToken>{" "}
                             path = <CodeToken color={syntax.func.default}>expand</CodeToken>(
-                            <CodeToken color={syntax.string.default}>
-                                "~/.config/ghostty"
-                            </CodeToken>
+                            <CodeToken color={syntax.string.default}>"~/.config/ghostty"</CodeToken>
                             );
                         </div>
                         <div>
-                            &nbsp;&nbsp;<CodeToken color={syntax.keyword.default}>return</CodeToken>
-                            {" "}
+                            &nbsp;&nbsp;<CodeToken color={syntax.keyword.default}>return</CodeToken>{" "}
                             <CodeToken color={syntax.func.default}>write</CodeToken>(path,{" "}
                             <CodeToken color={syntax.func.default}>render</CodeToken>(theme));
                         </div>
@@ -211,7 +208,7 @@ function getAccentBands(theme: Theme.Definition): ColorBand[] {
         const entries = [accents.a10, accents.a20, accents.a30, accents.a40];
 
         return entries.flatMap((color, i) =>
-            color ? [{ label: `ACCENT · ${String(i + 1).padStart(2, "0")}`, color }] : []
+            color ? [{ label: `ACCENT · ${String(i + 1).padStart(2, "0")}`, color }] : [],
         );
     }
 

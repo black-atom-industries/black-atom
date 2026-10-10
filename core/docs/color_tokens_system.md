@@ -42,19 +42,19 @@ This 12-color gradient system creates a full spectrum from darkest (d10) to brig
 ### Range Guidelines
 
 - **Dark range (d10-d40)**:
-  - In dark themes: Used for backgrounds, panels, and UI containers
-  - In light themes: Used for text, borders, and accents
-  - d10 is typically the darkest background in dark themes
+    - In dark themes: Used for backgrounds, panels, and UI containers
+    - In light themes: Used for text, borders, and accents
+    - d10 is typically the darkest background in dark themes
 
 - **Middle range (m10-m40)**:
-  - Used for mid-tone elements like inactive UI, borders, and secondary content
-  - Provides transition colors between dark and light ranges
-  - Often contains subtle color tinting to establish theme identity
+    - Used for mid-tone elements like inactive UI, borders, and secondary content
+    - Provides transition colors between dark and light ranges
+    - Often contains subtle color tinting to establish theme identity
 
 - **Light range (l10-l40)**:
-  - In dark themes: Used for text, icons, and highlights
-  - In light themes: Used for backgrounds, panels, and UI containers
-  - l40 is typically the brightest background in light themes
+    - In dark themes: Used for text, icons, and highlights
+    - In light themes: Used for backgrounds, panels, and UI containers
+    - l40 is typically the brightest background in light themes
 
 ## UI Component
 
@@ -96,14 +96,14 @@ interface UITheme {
 ### UI Pattern Guidelines
 
 - Dark themes typically use:
-  - Dark range (d10-d40) for backgrounds
-  - Light range (l10-l40) for text
-  - Middle range (m10-m40) for borders and inactive elements
+    - Dark range (d10-d40) for backgrounds
+    - Light range (l10-l40) for text
+    - Middle range (m10-m40) for borders and inactive elements
 
 - Light themes typically use:
-  - Light range (l10-l40) for backgrounds
-  - Dark range (d10-d40) for text
-  - Middle range (m10-m40) for borders and inactive elements
+    - Light range (l10-l40) for backgrounds
+    - Dark range (d10-d40) for text
+    - Middle range (m10-m40) for borders and inactive elements
 
 ## Syntax Component
 
@@ -186,9 +186,9 @@ When creating a new theme, follow these steps to ensure compatibility with the t
 
 1. **Choose a collection** (or create a new one)
 2. **Define your primaries spectrum** (d10-d40, m10-m40, l10-l40)
-   - Start with the darkest (d10) and lightest (l40) colors
-   - Fill in gradients for a smooth progression
-   - Ensure adequate contrast between ranges
+    - Start with the darkest (d10) and lightest (l40) colors
+    - Fill in gradients for a smooth progression
+    - Ensure adequate contrast between ranges
 3. **Create your terminal palette** to complement your primaries
 4. **Import or create UI components** that map primaries to semantic UI elements
 5. **Import or create syntax components** that map primaries to syntax highlighting

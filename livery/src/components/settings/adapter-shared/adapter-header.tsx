@@ -14,9 +14,13 @@ type Props = {
 
 /** Adapter name + enable toggle + status pip. CONFIG_PATH lives in the
     field grid below, not duplicated here. */
-export function AdapterHeader(
-    { appName, appConfig, detected, onToggleEnabled, verifyPathResult }: Props,
-) {
+export function AdapterHeader({
+    appName,
+    appConfig,
+    detected,
+    onToggleEnabled,
+    verifyPathResult,
+}: Props) {
     const enabled = appConfig.enabled !== false;
     const fault = verifyFaultLabel(verifyPathResult);
 
@@ -27,13 +31,11 @@ export function AdapterHeader(
             {fault && <span className={styles.pathFault}>{fault}</span>}
             <span className={styles.headerSpacer} />
             {detected && !enabled && <StatusPip intent="warn">FOUND</StatusPip>}
-            {enabled && fault
-                ? <StatusPip intent="warn">CHECK</StatusPip>
-                : (
-                    <StatusPip intent={enabled ? "ok" : "off"}>
-                        {enabled ? "OK" : "DISABLED"}
-                    </StatusPip>
-                )}
+            {enabled && fault ? (
+                <StatusPip intent="warn">CHECK</StatusPip>
+            ) : (
+                <StatusPip intent={enabled ? "ok" : "off"}>{enabled ? "OK" : "DISABLED"}</StatusPip>
+            )}
         </div>
     );
 }

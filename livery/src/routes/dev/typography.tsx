@@ -35,26 +35,22 @@ function Component() {
                     colorscheme, Alacritty gets a TOML snippet, and Delta picks up a gitconfig block
                     — all from the same source of truth.
                 </Typo.P>
-                <Typo.Small>
-                    Last synced 2 minutes ago · 14 tools configured · 0 errors
-                </Typo.Small>
+                <Typo.Small>Last synced 2 minutes ago · 14 tools configured · 0 errors</Typo.Small>
             </section>
 
             <section>
                 <SectionLabel>Inline elements</SectionLabel>
                 <Typo.P>
-                    Run <Typo.InlineCode>livery apply black-atom-jpn-koyo-dark</Typo.InlineCode>
-                    {" "}
-                    to switch themes from the command line. Use the{" "}
-                    <Typo.Highlight>--dry-run</Typo.Highlight>{" "}
-                    flag to preview changes before writing to disk.
+                    Run <Typo.InlineCode>livery apply black-atom-jpn-koyo-dark</Typo.InlineCode> to
+                    switch themes from the command line. Use the{" "}
+                    <Typo.Highlight>--dry-run</Typo.Highlight> flag to preview changes before
+                    writing to disk.
                 </Typo.P>
                 <Typo.P>
-                    The <Typo.InlineCode>file_ops</Typo.InlineCode>{" "}
-                    module handles all filesystem writes through Tauri's scoped FS API. Direct
-                    access from the{" "}
-                    <Typo.Highlight>TypeScript layer is not permitted</Typo.Highlight>{" "}
-                    — all mutations flow through Rust commands.
+                    The <Typo.InlineCode>file_ops</Typo.InlineCode> module handles all filesystem
+                    writes through Tauri's scoped FS API. Direct access from the{" "}
+                    <Typo.Highlight>TypeScript layer is not permitted</Typo.Highlight> — all
+                    mutations flow through Rust commands.
                 </Typo.P>
             </section>
 
@@ -97,8 +93,8 @@ function Component() {
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     {typoColors.map((color) => (
                         <Typo.P key={color} color={color} style={{ margin: 0 }}>
-                            <Typo.Small color={color}>[{color}]</Typo.Small>{" "}
-                            The quick brown fox jumps over the lazy dog
+                            <Typo.Small color={color}>[{color}]</Typo.Small> The quick brown fox
+                            jumps over the lazy dog
                         </Typo.P>
                     ))}
                 </div>
@@ -108,8 +104,8 @@ function Component() {
                 <SectionLabel>Font families (3 voices)</SectionLabel>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     <Typo.P style={{ margin: 0, fontFamily: "var(--ba-font-display)" }}>
-                        <Typo.Small>[display]</Typo.Small>{" "}
-                        The quick brown fox jumps over the lazy dog
+                        <Typo.Small>[display]</Typo.Small> The quick brown fox jumps over the lazy
+                        dog
                     </Typo.P>
                     <Typo.P style={{ margin: 0, fontFamily: "var(--ba-font-body)" }}>
                         <Typo.Small>[body]</Typo.Small> The quick brown fox jumps over the lazy dog
@@ -124,16 +120,16 @@ function Component() {
                 <SectionLabel>Font weights (3 voices)</SectionLabel>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     <Typo.P style={{ margin: 0, fontWeight: "var(--ba-font-weight-regular)" }}>
-                        <Typo.Small>[regular · 400]</Typo.Small>{" "}
-                        The quick brown fox jumps over the lazy dog
+                        <Typo.Small>[regular · 400]</Typo.Small> The quick brown fox jumps over the
+                        lazy dog
                     </Typo.P>
                     <Typo.P style={{ margin: 0, fontWeight: "var(--ba-font-weight-medium)" }}>
-                        <Typo.Small>[medium · 500]</Typo.Small>{" "}
-                        The quick brown fox jumps over the lazy dog
+                        <Typo.Small>[medium · 500]</Typo.Small> The quick brown fox jumps over the
+                        lazy dog
                     </Typo.P>
                     <Typo.P style={{ margin: 0, fontWeight: "var(--ba-font-weight-bold)" }}>
-                        <Typo.Small>[bold · 700]</Typo.Small>{" "}
-                        The quick brown fox jumps over the lazy dog
+                        <Typo.Small>[bold · 700]</Typo.Small> The quick brown fox jumps over the
+                        lazy dog
                     </Typo.P>
                 </div>
             </section>
@@ -160,24 +156,20 @@ function Component() {
                 <SectionLabel>Line heights</SectionLabel>
                 <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                     <Typo.P style={{ margin: 0, lineHeight: "var(--ba-font-lineheight-tight)" }}>
-                        <Typo.Small>[tight · display]</Typo.Small>{" "}
-                        Livery applies your chosen theme across all configured developer tools
-                        simultaneously.
+                        <Typo.Small>[tight · display]</Typo.Small> Livery applies your chosen theme
+                        across all configured developer tools simultaneously.
                     </Typo.P>
                     <Typo.P style={{ margin: 0, lineHeight: "var(--ba-font-lineheight-ui)" }}>
-                        <Typo.Small>[ui · mono UI]</Typo.Small>{" "}
-                        Livery applies your chosen theme across all configured developer tools
-                        simultaneously.
+                        <Typo.Small>[ui · mono UI]</Typo.Small> Livery applies your chosen theme
+                        across all configured developer tools simultaneously.
                     </Typo.P>
                     <Typo.P style={{ margin: 0, lineHeight: "var(--ba-font-lineheight-body)" }}>
-                        <Typo.Small>[body · prose]</Typo.Small>{" "}
-                        Livery applies your chosen theme across all configured developer tools
-                        simultaneously.
+                        <Typo.Small>[body · prose]</Typo.Small> Livery applies your chosen theme
+                        across all configured developer tools simultaneously.
                     </Typo.P>
                     <Typo.P style={{ margin: 0, lineHeight: "var(--ba-font-lineheight-code)" }}>
-                        <Typo.Small>[code · previews]</Typo.Small>{" "}
-                        Livery applies your chosen theme across all configured developer tools
-                        simultaneously.
+                        <Typo.Small>[code · previews]</Typo.Small> Livery applies your chosen theme
+                        across all configured developer tools simultaneously.
                     </Typo.P>
                 </div>
             </section>
@@ -216,8 +208,7 @@ function Component() {
                 </Typo.Lead>
                 <Typo.P>
                     Koyo Dark uses deep burgundy and amber tones as its accent palette, with a muted
-                    charcoal base that keeps contrast comfortable for extended coding sessions. The
-                    {" "}
+                    charcoal base that keeps contrast comfortable for extended coding sessions. The{" "}
                     <Typo.InlineCode>fg-accent</Typo.InlineCode> token maps to{" "}
                     <Typo.InlineCode>#c4956a</Typo.InlineCode>, giving keywords and UI highlights a
                     distinctly warm character.
@@ -243,8 +234,8 @@ function Component() {
                 </Typo.P>
                 <Typo.P color="warn">
                     Neovim live reload timed out after 5 seconds. The socket at{" "}
-                    <Typo.InlineCode>/tmp/nvim.sock</Typo.InlineCode>{" "}
-                    may be stale. Try restarting your Neovim instance.
+                    <Typo.InlineCode>/tmp/nvim.sock</Typo.InlineCode> may be stale. Try restarting
+                    your Neovim instance.
                 </Typo.P>
                 <Typo.P color="positive">
                     Delta, Tmux, and macOS appearance updated successfully. All 3 tools are in sync
@@ -267,8 +258,8 @@ function Component() {
                         <Typo.InlineCode>livery/core/src/updaters/</Typo.InlineCode>
                     </li>
                     <li>
-                        Implement <Typo.InlineCode>Updater::apply()</Typo.InlineCode>{" "}
-                        to transform tokens into the tool's config format
+                        Implement <Typo.InlineCode>Updater::apply()</Typo.InlineCode> to transform
+                        tokens into the tool's config format
                     </li>
                     <li>
                         Register the updater in{" "}
@@ -280,11 +271,10 @@ function Component() {
                     </li>
                 </Typo.OrderedList>
                 <Typo.Blockquote>
-                    All file writes must go through the <Typo.InlineCode>file_ops</Typo.InlineCode>
-                    {" "}
-                    module. Never use <Typo.InlineCode>std::fs</Typo.InlineCode>{" "}
-                    directly — the scoped FS API ensures Livery can only touch paths the user has
-                    explicitly allowed.
+                    All file writes must go through the <Typo.InlineCode>file_ops</Typo.InlineCode>{" "}
+                    module. Never use <Typo.InlineCode>std::fs</Typo.InlineCode> directly — the
+                    scoped FS API ensures Livery can only touch paths the user has explicitly
+                    allowed.
                 </Typo.Blockquote>
                 <Typo.P>
                     <Typo.Small color="hint">
@@ -300,8 +290,8 @@ function Component() {
                 <Typo.Lead>Minium collection and consolidated updaters</Typo.Lead>
                 <Typo.P>
                     This release introduces the{" "}
-                    <Typo.Highlight>Minium theme collection</Typo.Highlight>{" "}
-                    contains four themes: Polymer and Viridian, each available in light and dark.
+                    <Typo.Highlight>Minium theme collection</Typo.Highlight> contains four themes:
+                    Polymer and Viridian, each available in light and dark.
                 </Typo.P>
                 <Typo.H4>What changed</Typo.H4>
                 <Typo.UnorderedList>
@@ -309,16 +299,16 @@ function Component() {
                         <Typo.Highlight>New:</Typo.Highlight> Minium collection with 4 themes
                     </li>
                     <li>
-                        <Typo.Highlight>New:</Typo.Highlight>{" "}
-                        Consolidated updater architecture — one pipeline, all tools
+                        <Typo.Highlight>New:</Typo.Highlight> Consolidated updater architecture —
+                        one pipeline, all tools
                     </li>
                     <li>
-                        <Typo.Highlight>Fixed:</Typo.Highlight>{" "}
-                        Neovim socket detection on Linux with XDG runtime dir
+                        <Typo.Highlight>Fixed:</Typo.Highlight> Neovim socket detection on Linux
+                        with XDG runtime dir
                     </li>
                     <li>
-                        <Typo.Highlight>Fixed:</Typo.Highlight>{" "}
-                        Delta config not applying when gitconfig uses includes
+                        <Typo.Highlight>Fixed:</Typo.Highlight> Delta config not applying when
+                        gitconfig uses includes
                     </li>
                 </Typo.UnorderedList>
                 <Typo.H4>Breaking changes</Typo.H4>
@@ -326,8 +316,8 @@ function Component() {
                     The <Typo.InlineCode>updaters.tool_configs</Typo.InlineCode> field in{" "}
                     <Typo.InlineCode>livery.toml</Typo.InlineCode> has been replaced by{" "}
                     <Typo.InlineCode>updaters.targets</Typo.InlineCode>. Run{" "}
-                    <Typo.InlineCode>livery migrate</Typo.InlineCode>{" "}
-                    to update your configuration automatically.
+                    <Typo.InlineCode>livery migrate</Typo.InlineCode> to update your configuration
+                    automatically.
                 </Typo.P>
                 <Typo.Small>Released 2026-03-15 · 847 downloads</Typo.Small>
             </section>
@@ -338,9 +328,7 @@ function Component() {
                 <Typo.Lead>
                     Most theme switchers change one tool. We wanted to change all of them at once.
                 </Typo.Lead>
-                <Typo.Small>
-                    Nik Böhmer · April 2026 · 6 min read
-                </Typo.Small>
+                <Typo.Small>Nik Böhmer · April 2026 · 6 min read</Typo.Small>
 
                 <Typo.H3>The problem with dotfiles</Typo.H3>
                 <Typo.P>
@@ -350,12 +338,11 @@ function Component() {
                     hoping nothing broke.
                 </Typo.P>
                 <Typo.P>
-                    The first version of Livery was a shell script. It read a JSON palette and ran
-                    {" "}
-                    <Typo.InlineCode>sed</Typo.InlineCode>{" "}
-                    replacements across config files. It worked until it didn't — one malformed
-                    regex and my <Typo.InlineCode>.tmux.conf</Typo.InlineCode>{" "}
-                    was gone. That was the moment I decided to build something real.
+                    The first version of Livery was a shell script. It read a JSON palette and ran{" "}
+                    <Typo.InlineCode>sed</Typo.InlineCode> replacements across config files. It
+                    worked until it didn't — one malformed regex and my{" "}
+                    <Typo.InlineCode>.tmux.conf</Typo.InlineCode> was gone. That was the moment I
+                    decided to build something real.
                 </Typo.P>
 
                 <Typo.Blockquote>
@@ -369,9 +356,9 @@ function Component() {
                     tokens. A token like <Typo.InlineCode>fg-accent</Typo.InlineCode> means{" "}
                     <Typo.Highlight>the primary accent foreground color</Typo.Highlight>, regardless
                     of whether it ends up as{" "}
-                    <Typo.InlineCode>vim.api.nvim_set_hl()</Typo.InlineCode>{" "}
-                    in Neovim or a TOML value in Alacritty. The theme defines the token values, and
-                    each updater knows how to translate them.
+                    <Typo.InlineCode>vim.api.nvim_set_hl()</Typo.InlineCode> in Neovim or a TOML
+                    value in Alacritty. The theme defines the token values, and each updater knows
+                    how to translate them.
                 </Typo.P>
                 <Typo.P>
                     This separation is what makes the system extensible. Adding a new tool means
@@ -381,11 +368,9 @@ function Component() {
                 <Typo.H3>The Rust boundary</Typo.H3>
                 <Typo.P>
                     Early on we made a decision that shaped everything:{" "}
-                    <Typo.Highlight>
-                        TypeScript orchestrates, Rust executes
-                    </Typo.Highlight>
-                    . The frontend decides which theme to apply and which tools to update. The
-                    backend handles every filesystem write, socket connection, and platform-specific
+                    <Typo.Highlight>TypeScript orchestrates, Rust executes</Typo.Highlight>. The
+                    frontend decides which theme to apply and which tools to update. The backend
+                    handles every filesystem write, socket connection, and platform-specific
                     operation.
                 </Typo.P>
                 <Typo.P>
@@ -408,8 +393,7 @@ function Component() {
                     </li>
                     <li>
                         Platform paths are a minefield. macOS uses{" "}
-                        <Typo.InlineCode>~/Library/Application Support</Typo.InlineCode>, Linux uses
-                        {" "}
+                        <Typo.InlineCode>~/Library/Application Support</Typo.InlineCode>, Linux uses{" "}
                         <Typo.InlineCode>$XDG_CONFIG_HOME</Typo.InlineCode>, and some tools ignore
                         both conventions entirely
                     </li>

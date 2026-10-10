@@ -9,10 +9,7 @@ export interface DevState {
     env: Record<string, string>;
 }
 
-export async function launchDev(
-    statePath: string,
-    args: string[],
-): Promise<number> {
+export async function launchDev(statePath: string, args: string[]): Promise<number> {
     try {
         const state: DevState = JSON.parse(readFileSync(statePath, "utf8"));
         process.kill(state.owner, 0);

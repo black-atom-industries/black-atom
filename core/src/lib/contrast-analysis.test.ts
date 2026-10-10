@@ -111,7 +111,5 @@ test("analyzeThemeContrast throws on missing token", () => {
         },
     } as unknown as Theme.Definition;
 
-    assert.throws(
-        () => analyzeThemeContrast(incompleteTheme),
-    );
+    assert.throws(() => analyzeThemeContrast(incompleteTheme));
 });

@@ -60,16 +60,17 @@ function Component() {
         const normalizedQuery = query.trim().toLowerCase();
 
         return allGroups
-            .filter((group) =>
-                collectionFilter.size === 0 || collectionFilter.has(group.collectionKey)
+            .filter(
+                (group) => collectionFilter.size === 0 || collectionFilter.has(group.collectionKey),
             )
             .map((group) => ({
                 ...group,
                 themes: group.themes.filter((theme) => {
-                    const matchesQuery = normalizedQuery === "" ||
+                    const matchesQuery =
+                        normalizedQuery === "" ||
                         theme.meta.name.toLowerCase().includes(normalizedQuery);
-                    const matchesAppearance = appearanceFilter.size === 0 ||
-                        appearanceFilter.has(theme.meta.appearance);
+                    const matchesAppearance =
+                        appearanceFilter.size === 0 || appearanceFilter.has(theme.meta.appearance);
                     return matchesQuery && matchesAppearance;
                 }),
             }))
@@ -101,33 +102,36 @@ function Component() {
     // Filter mode: a state-driven cursor over the chips (rendered via the
     // Chip `focused` prop) — deliberately not DOM focus, which WebKit's
     // focus-visible heuristics render unreliably.
-    const filterChips = useMemo(() => [
-        {
-            label: "ALL",
-            isActive: collectionFilter.size === 0,
-            toggle: () => setCollectionFilter(new Set()),
-        },
-        ...collectionOrder.map((key) => ({
-            label: key.toUpperCase(),
-            isActive: collectionFilter.has(key),
-            toggle: () => setCollectionFilter((set) => toggleInSet(set, key)),
-        })),
-        {
-            label: "\u25d0 ALL",
-            isActive: appearanceFilter.size === 0,
-            toggle: () => setAppearanceFilter(new Set()),
-        },
-        {
-            label: "\u25cf DARK",
-            isActive: appearanceFilter.has("dark"),
-            toggle: () => setAppearanceFilter((set) => toggleInSet(set, "dark")),
-        },
-        {
-            label: "\u25cb LIGHT",
-            isActive: appearanceFilter.has("light"),
-            toggle: () => setAppearanceFilter((set) => toggleInSet(set, "light")),
-        },
-    ], [collectionFilter, appearanceFilter]);
+    const filterChips = useMemo(
+        () => [
+            {
+                label: "ALL",
+                isActive: collectionFilter.size === 0,
+                toggle: () => setCollectionFilter(new Set()),
+            },
+            ...collectionOrder.map((key) => ({
+                label: key.toUpperCase(),
+                isActive: collectionFilter.has(key),
+                toggle: () => setCollectionFilter((set) => toggleInSet(set, key)),
+            })),
+            {
+                label: "\u25d0 ALL",
+                isActive: appearanceFilter.size === 0,
+                toggle: () => setAppearanceFilter(new Set()),
+            },
+            {
+                label: "\u25cf DARK",
+                isActive: appearanceFilter.has("dark"),
+                toggle: () => setAppearanceFilter((set) => toggleInSet(set, "dark")),
+            },
+            {
+                label: "\u25cb LIGHT",
+                isActive: appearanceFilter.has("light"),
+                toggle: () => setAppearanceFilter((set) => toggleInSet(set, "light")),
+            },
+        ],
+        [collectionFilter, appearanceFilter],
+    );
     const collectionChips = filterChips.slice(0, collectionOrder.length + 1);
     const appearanceChips = filterChips.slice(collectionOrder.length + 1);
 
@@ -204,7 +208,9 @@ function Component() {
     useHotkey("Mod+,", () => navigate({ to: "/settings/adapters" }));
     useHotkey("Q", () => {
         // Only meaningful inside the Tauri shell; a plain browser has no window handle.
-        getCurrentWindow().close().catch(() => {});
+        getCurrentWindow()
+            .close()
+            .catch(() => {});
     });
     useHotkey("Escape", () => {
         if (railOpen) return;
@@ -231,9 +237,9 @@ function Component() {
             let applied = results.filter(themeWasApplied).length;
 
             if (config.query.data.system_appearance) {
-                const result = await commands.updateSystemAppearance(
-                    pickedEntry.meta.appearance,
-                ).catch((error) => commandErrorResult(SYSTEM_APPEARANCE_APP, error));
+                const result = await commands
+                    .updateSystemAppearance(pickedEntry.meta.appearance)
+                    .catch((error) => commandErrorResult(SYSTEM_APPEARANCE_APP, error));
                 appStore.setState((s) => ({
                     ...s,
                     updaterResults: [...s.updaterResults, result],
@@ -251,8 +257,8 @@ function Component() {
                     appStore.setState((s) => ({
                         ...s,
                         updaterResults: [
-                            ...s.updaterResults.filter((result) =>
-                                result.app !== ACTIVE_THEME_PERSISTENCE_APP
+                            ...s.updaterResults.filter(
+                                (result) => result.app !== ACTIVE_THEME_PERSISTENCE_APP,
                             ),
                             activeThemePersistenceError(error),
                         ],
@@ -277,8 +283,8 @@ function Component() {
     });
 
     const configSettled = !config.query.isPending;
-    const hasNoAdapters = configSettled &&
-        (config.query.isError || config.enabledApps.length === 0);
+    const hasNoAdapters =
+        configSettled && (config.query.isError || config.enabledApps.length === 0);
 
     if (hasNoAdapters) {
         return (

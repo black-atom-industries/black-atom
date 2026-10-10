@@ -10,7 +10,8 @@ test("SAVE SETTINGS writes the managed block and the config", async ({ page }) =
     writeFileSync(homePath(initLua), 'vim.g.mapleader = " "\n');
 
     await page.goto("/settings/adapters/nvim");
-    const row = page.locator("div")
+    const row = page
+        .locator("div")
         .filter({ has: page.getByText("ENDING_TILDES", { exact: true }) })
         .filter({ has: page.getByRole("switch") })
         .last();

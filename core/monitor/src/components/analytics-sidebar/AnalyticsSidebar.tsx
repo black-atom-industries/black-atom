@@ -12,7 +12,9 @@ export function AnalyticsSidebar({ analysis }: Props) {
             <PassRateSummary aa={analysis.passRate.aa} aaa={analysis.passRate.aaa} />
             <WorstPairCard pair={analysis.worstPair} />
             <div className={styles.divider} />
-            {analysis.categories.map((cat) => <ContrastCategory key={cat.name} category={cat} />)}
+            {analysis.categories.map((cat) => (
+                <ContrastCategory key={cat.name} category={cat} />
+            ))}
         </div>
     );
 }

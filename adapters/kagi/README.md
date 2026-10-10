@@ -27,18 +27,18 @@ landing page. Maps and the settings pages keep Kagi's own styling.
 
 1. Copy a theme. With [livery](../../livery), pick one interactively or name it:
 
-   ```bash
-   livery adapter kagi
-   livery adapter kagi black-atom-jpn-koyo
-   ```
+    ```bash
+    livery adapter kagi
+    livery adapter kagi black-atom-jpn-koyo
+    ```
 
-   Without livery, copy the file yourself:
+    Without livery, copy the file yourself:
 
-   ```bash
-   pbcopy < themes/jpn/black-atom-jpn-koyo.css
-   ```
+    ```bash
+    pbcopy < themes/jpn/black-atom-jpn-koyo.css
+    ```
 
-   Livery also asks for a preferred font, or takes `--font "<family>"`, and puts it first in both font stacks.
+    Livery also asks for a preferred font, or takes `--font "<family>"`, and puts it first in both font stacks.
 
 2. Open [Kagi's Custom CSS settings](https://kagi.com/settings/custom_css), turn on custom CSS,
    paste, and click **Save Changes**.

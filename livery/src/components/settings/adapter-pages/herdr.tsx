@@ -10,26 +10,24 @@ import styles from "./adapter-page.module.css";
 
 /** Herdr — merged provisioning. Livery reads the unpacked TOML fragment and replaces only the
  * marked theme block in config.toml on every switch. */
-export function HerdrSettings(
-    {
-        appConfig,
-        editableFields,
-        detected,
-        onToggleEnabled,
-        onFieldCommit,
-        firstFieldRef,
-        onPickPath,
-        onSetUp,
-        setUpResult,
-        onVerifyPath,
-        verifyPathResult,
-        linkable,
-        onLinkThemes,
-        linkThemesResult,
-        onTestApply,
-        testApplyResult,
-    }: AdapterPageProps,
-) {
+export function HerdrSettings({
+    appConfig,
+    editableFields,
+    detected,
+    onToggleEnabled,
+    onFieldCommit,
+    firstFieldRef,
+    onPickPath,
+    onSetUp,
+    setUpResult,
+    onVerifyPath,
+    verifyPathResult,
+    linkable,
+    onLinkThemes,
+    linkThemesResult,
+    onTestApply,
+    testApplyResult,
+}: AdapterPageProps) {
     return (
         <div className={styles.root}>
             <AdapterHeader

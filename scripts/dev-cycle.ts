@@ -2,12 +2,16 @@ import { createChangeBatcher } from "../core/src/tasks/adapters/change-batcher.t
 
 export function isCliInput(path: string): boolean {
     if (/(^|\/)(target|node_modules|\.git)\/|(~|\.sw[pox]|\.tmp)$/.test(path)) return false;
-    return path === "Cargo.toml" || path === "Cargo.lock" ||
+    return (
+        path === "Cargo.toml" ||
+        path === "Cargo.lock" ||
         /^livery\/(cli|core)\//.test(path) ||
-        /^adapters\/(delta|ghostty|herdr|kagi|lazygit|niri|obsidian|tmux|tuicr|waybar|wezterm|zed)\/themes(\/|$)/
-            .test(path) ||
+        /^adapters\/(delta|ghostty|herdr|kagi|lazygit|niri|obsidian|tmux|tuicr|waybar|wezterm|zed)\/themes(\/|$)/.test(
+            path,
+        ) ||
         /^adapters\/nvim\/(colors|lua)(\/|$)/.test(path) ||
-        /^adapters\/obsidian\/(theme\.css|manifest\.json)$/.test(path);
+        /^adapters\/obsidian\/(theme\.css|manifest\.json)$/.test(path)
+    );
 }
 
 interface DevCycleOptions {

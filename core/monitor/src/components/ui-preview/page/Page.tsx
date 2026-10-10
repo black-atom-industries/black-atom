@@ -6,5 +6,9 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Page({ children, ...rest }: Props) {
-    return <div className={styles.page} data-layout="Page" {...rest}>{children}</div>;
+    return (
+        <div className={styles.page} data-layout="Page" {...rest}>
+            {children}
+        </div>
+    );
 }

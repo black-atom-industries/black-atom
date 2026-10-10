@@ -9,10 +9,7 @@ const terminate = () => void processes.stop(143);
 process.on("SIGINT", interrupt);
 process.on("SIGTERM", terminate);
 try {
-    processes.startService([
-        process.execPath,
-        join(config.dir.core, "src/monitor-server.ts"),
-    ]);
+    processes.startService([process.execPath, join(config.dir.core, "src/monitor-server.ts")]);
     processes.startService(["npx", "vite"]);
     process.exitCode = await processes.finished;
 } finally {

@@ -31,7 +31,9 @@ export function EmptyState({ eyebrow, headline, body, onApply, onOpenSettings }:
                     </Button>
                 )}
                 {onOpenSettings && (
-                    <Button hotkey="s" onClick={onOpenSettings}>CHECK ADAPTERS</Button>
+                    <Button hotkey="s" onClick={onOpenSettings}>
+                        CHECK ADAPTERS
+                    </Button>
                 )}
             </div>
         </div>

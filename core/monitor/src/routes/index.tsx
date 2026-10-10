@@ -35,16 +35,12 @@ function Component() {
                 return (
                     <DashboardSection key={collectionKey}>
                         <CollectionLabel>
-                            {collectionKey} · {stats.themeCount} themes · {stats.darkCount} dark,
-                            {" "}
+                            {collectionKey} · {stats.themeCount} themes · {stats.darkCount} dark,{" "}
                             {stats.lightCount} light · avg {stats.avgContrast.toFixed(1)}:1
                         </CollectionLabel>
                         <DashboardCardGrid>
                             {collectionThemes.map((t) => (
-                                <ThemePreviewCard
-                                    key={t.meta.key}
-                                    theme={t}
-                                />
+                                <ThemePreviewCard key={t.meta.key} theme={t} />
                             ))}
                         </DashboardCardGrid>
                     </DashboardSection>

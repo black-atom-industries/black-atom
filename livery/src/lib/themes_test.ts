@@ -6,22 +6,19 @@ import { formatCollectionTitle, getGroupedThemes, pickRandomOtherTheme } from ".
 import expectedCatalog from "../../core/tests/fixtures/catalog.json" with { type: "json" };
 
 test("Livery exposes the exact embedded catalog metadata and all seven groups", () => {
-    const actual = Object.values(themeCatalog).map(({ meta }) => ({
-        key: meta.key,
-        collection_key: meta.collection.key,
-        appearance: meta.appearance,
-        label: meta.label,
-    })).sort((a, b) => a.key.localeCompare(b.key));
+    const actual = Object.values(themeCatalog)
+        .map(({ meta }) => ({
+            key: meta.key,
+            collection_key: meta.collection.key,
+            appearance: meta.appearance,
+            label: meta.label,
+        }))
+        .sort((a, b) => a.key.localeCompare(b.key));
     assert.deepEqual(actual, expectedCatalog);
-    assert.deepEqual(getGroupedThemes(themeCatalog).map((group) => group.collectionKey), [
-        "default",
-        "facility",
-        "terra",
-        "jpn",
-        "clay",
-        "minium",
-        "mono",
-    ]);
+    assert.deepEqual(
+        getGroupedThemes(themeCatalog).map((group) => group.collectionKey),
+        ["default", "facility", "terra", "jpn", "clay", "minium", "mono"],
+    );
 });
 
 test("formatCollectionTitle collapses a label that merely echoes the key", () => {

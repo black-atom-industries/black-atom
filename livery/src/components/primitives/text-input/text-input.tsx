@@ -45,35 +45,31 @@ type Props = VariantProps<typeof textInputVariants> & {
  *
  * Spec: docs/design-system/reference/components/forms/TextInput.jsx
  */
-export function TextInput(
-    {
-        label,
-        value,
-        placeholder,
-        optional,
-        note,
-        editing,
-        hint,
-        disabled,
-        onChange,
-        onFocus,
-        onBlur,
-        onKeyDown,
-        inputRef,
-        className,
-    }: Props,
-) {
+export function TextInput({
+    label,
+    value,
+    placeholder,
+    optional,
+    note,
+    editing,
+    hint,
+    disabled,
+    onChange,
+    onFocus,
+    onBlur,
+    onKeyDown,
+    inputRef,
+    className,
+}: Props) {
     return (
         <div data-component="text-input" className={styles.root}>
-            {label
-                ? (
-                    <span className={styles.label}>
-                        {label}
-                        {optional ? <span className={styles.optional}>· OPTIONAL</span> : null}
-                        {note ? <span className={styles.optional}>· {note}</span> : null}
-                    </span>
-                )
-                : null}
+            {label ? (
+                <span className={styles.label}>
+                    {label}
+                    {optional ? <span className={styles.optional}>· OPTIONAL</span> : null}
+                    {note ? <span className={styles.optional}>· {note}</span> : null}
+                </span>
+            ) : null}
             <span className={textInputVariants({ editing, className })}>
                 <input
                     ref={inputRef}

@@ -34,13 +34,15 @@ export function oklch(l: number, c: number, h: number): HexColor {
  * tint({ color: '#ff0000', with: '#000000', amount: 0.1 }) // 10% red on black
  * tint({ color: '#ff0000', with: '#000000', amount: 0.5 }) // 50% red on black
  */
-export function tint(
-    { color, with: baseColor = "#000000", amount = 0.25 }: {
-        color: string;
-        with?: string;
-        amount?: number;
-    },
-): HexColor {
+export function tint({
+    color,
+    with: baseColor = "#000000",
+    amount = 0.25,
+}: {
+    color: string;
+    with?: string;
+    amount?: number;
+}): HexColor {
     // Neutralize the base's chroma and lock its hue to the tint color.
     // This prevents hue interpolation artifacts when mixing warm tints
     // onto cool bases (or vice versa), which would otherwise pass through

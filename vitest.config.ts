@@ -7,11 +7,6 @@ export default defineConfig({
     },
     test: {
         include: ["**/*{_test,.test}.{ts,tsx}"],
-        exclude: [
-            "**/node_modules/**",
-            "**/.claude/**",
-            "livery/e2e/**",
-            "target/**",
-        ],
+        exclude: ["**/node_modules/**", "**/.claude/**", "livery/e2e/**", "target/**"],
     },
 });

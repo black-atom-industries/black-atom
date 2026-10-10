@@ -34,10 +34,7 @@ export const Route = createRootRoute({
     component: Component,
     validateSearch: zodValidator(rootSearchSchema),
     search: {
-        middlewares: [
-            stripSearchParams(rootSearchDefaults),
-            retainSearchParams(["themeKey"]),
-        ],
+        middlewares: [stripSearchParams(rootSearchDefaults), retainSearchParams(["themeKey"])],
     },
 });
 
@@ -52,7 +49,7 @@ function Component() {
     const { data: themes } = useThemes();
     const { data: theme } = useTheme(themeKey);
 
-    const cssVars = useMemo(() => theme ? themeToCssVars(theme) : {}, [theme]);
+    const cssVars = useMemo(() => (theme ? themeToCssVars(theme) : {}), [theme]);
 
     // Sync CSS vars to :root so portals (rendered outside AppLayout) can access them
     useEffect(() => {
@@ -68,12 +65,9 @@ function Component() {
     }, [cssVars]);
 
     const activeRoute = location.pathname;
-    const isPreviewPage = !!matchRoute({ to: "/preview/ui" }) ||
-        !!matchRoute({ to: "/preview/syntax" });
-    const contrastAnalysis = useMemo(
-        () => theme ? analyzeThemeContrast(theme) : null,
-        [theme],
-    );
+    const isPreviewPage =
+        !!matchRoute({ to: "/preview/ui" }) || !!matchRoute({ to: "/preview/syntax" });
+    const contrastAnalysis = useMemo(() => (theme ? analyzeThemeContrast(theme) : null), [theme]);
 
     const themeLabel = theme ? `${theme.meta.collection.label} · ${theme.meta.name}` : "";
 
@@ -86,13 +80,16 @@ function Component() {
                     navigate({
                         to: location.pathname,
                         search: { themeKey: key },
-                    })}
+                    })
+                }
             />
             <AppLayout
                 style={cssVars}
-                leftSidebar={isPreviewPage && contrastAnalysis
-                    ? <AnalyticsSidebar analysis={contrastAnalysis} />
-                    : undefined}
+                leftSidebar={
+                    isPreviewPage && contrastAnalysis ? (
+                        <AnalyticsSidebar analysis={contrastAnalysis} />
+                    ) : undefined
+                }
                 topBar={
                     <TopNav
                         activeRoute={activeRoute}

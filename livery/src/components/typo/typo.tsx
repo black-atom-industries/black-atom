@@ -2,33 +2,40 @@ import type { ReactNode } from "react";
 
 import classes from "./typo.module.css";
 
-type Props =
-    & { children: ReactNode; color?: TypoColor }
-    & Omit<React.ComponentProps<"p">, "color" | "children">;
+type Props = { children: ReactNode; color?: TypoColor } & Omit<
+    React.ComponentProps<"p">,
+    "color" | "children"
+>;
 
-type HeadingProps =
-    & { children: ReactNode; color?: TypoColor }
-    & Omit<React.ComponentProps<"h1">, "color" | "children">;
+type HeadingProps = { children: ReactNode; color?: TypoColor } & Omit<
+    React.ComponentProps<"h1">,
+    "color" | "children"
+>;
 
-type CodeProps =
-    & { children: ReactNode; color?: TypoColor }
-    & Omit<React.ComponentProps<"code">, "color" | "children">;
+type CodeProps = { children: ReactNode; color?: TypoColor } & Omit<
+    React.ComponentProps<"code">,
+    "color" | "children"
+>;
 
-type MarkProps =
-    & { children: ReactNode; color?: TypoColor }
-    & Omit<React.ComponentProps<"mark">, "color" | "children">;
+type MarkProps = { children: ReactNode; color?: TypoColor } & Omit<
+    React.ComponentProps<"mark">,
+    "color" | "children"
+>;
 
-type ListProps =
-    & { children: ReactNode; color?: TypoColor }
-    & Omit<React.ComponentProps<"ol">, "color" | "children">;
+type ListProps = { children: ReactNode; color?: TypoColor } & Omit<
+    React.ComponentProps<"ol">,
+    "color" | "children"
+>;
 
-type BQProps =
-    & { children: ReactNode; color?: TypoColor }
-    & Omit<React.ComponentProps<"blockquote">, "color" | "children">;
+type BQProps = { children: ReactNode; color?: TypoColor } & Omit<
+    React.ComponentProps<"blockquote">,
+    "color" | "children"
+>;
 
-type SmallProps =
-    & { children: ReactNode; color?: TypoColor }
-    & Omit<React.ComponentProps<"small">, "color" | "children">;
+type SmallProps = { children: ReactNode; color?: TypoColor } & Omit<
+    React.ComponentProps<"small">,
+    "color" | "children"
+>;
 
 function H1({ children, color = "default", ...rest }: HeadingProps) {
     return (
@@ -202,8 +209,8 @@ export const typoColors = [
     "info",
 ] as const;
 
-export type TypoColor = typeof typoColors[number];
+export type TypoColor = (typeof typoColors)[number];
 
 /** Font families available in the typography system (for documentation / dev). */
 export const typoFonts = ["heading", "body", "mono"] as const;
-export type TypoFont = typeof typoFonts[number];
+export type TypoFont = (typeof typoFonts)[number];

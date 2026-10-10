@@ -30,11 +30,7 @@ export async function discoverAdapters(adaptersDir: string): Promise<string[]> {
             if (entry.name.startsWith(".")) continue;
 
             // Check if black-atom-adapter.json exists
-            const adapterFilePath = join(
-                adaptersDir,
-                entry.name,
-                "black-atom-adapter.json",
-            );
+            const adapterFilePath = join(adaptersDir, entry.name, "black-atom-adapter.json");
             try {
                 await stat(adapterFilePath);
 
@@ -48,9 +44,7 @@ export async function discoverAdapters(adaptersDir: string): Promise<string[]> {
                 }
             } catch (error) {
                 if (isNotFound(error)) continue;
-                throw new Error(
-                    `Cannot read adapter config ${adapterFilePath}: ${error}`,
-                );
+                throw new Error(`Cannot read adapter config ${adapterFilePath}: ${error}`);
             }
         }
     } catch (error) {

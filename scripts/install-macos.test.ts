@@ -43,12 +43,15 @@ test("build failure leaves installed artifacts untouched", async () => {
         const cliDestination = join(root, "livery");
         await writeFile(appDestination, "old app");
         await writeFile(cliDestination, "old cli");
-        await assert.rejects(() =>
-            installMacos({
-                appDestination,
-                cliDestination,
-                buildArtifacts: () => Promise.reject(new Error("build failed")),
-            }), /build failed/);
+        await assert.rejects(
+            () =>
+                installMacos({
+                    appDestination,
+                    cliDestination,
+                    buildArtifacts: () => Promise.reject(new Error("build failed")),
+                }),
+            /build failed/,
+        );
         assert.equal(await readFile(appDestination, "utf8"), "old app");
         assert.equal(await readFile(cliDestination, "utf8"), "old cli");
     } finally {
@@ -60,13 +63,16 @@ test("CLI installation failure reports app partial success", async () => {
     const root = await mkdtemp(join(tmpdir(), "black-atom-test-"));
     try {
         await mkdir(join(root, "bundle/macos/livery.app"), { recursive: true });
-        await assert.rejects(() =>
-            installMacos({
-                artifactRoot: root,
-                appDestination: join(root, "installed.app"),
-                cliDestination: join(root, "bin/livery"),
-                buildArtifacts: () => Promise.resolve(),
-            }), /App installed.*CLI installation failed/);
+        await assert.rejects(
+            () =>
+                installMacos({
+                    artifactRoot: root,
+                    appDestination: join(root, "installed.app"),
+                    cliDestination: join(root, "bin/livery"),
+                    buildArtifacts: () => Promise.resolve(),
+                }),
+            /App installed.*CLI installation failed/,
+        );
         assert.equal((await stat(join(root, "installed.app"))).isDirectory(), true);
     } finally {
         await rm(root, { recursive: true, force: true });

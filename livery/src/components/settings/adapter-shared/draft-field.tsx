@@ -25,9 +25,16 @@ type Props = {
  * to the route's Escape handler. A second Escape (field is clean, focus
  * left the input) reaches the route, which navigates back.
  */
-export function DraftField(
-    { label, value, optional, note, onCommit, inputRef, pathKind, onPickPath }: Props,
-) {
+export function DraftField({
+    label,
+    value,
+    optional,
+    note,
+    onCommit,
+    inputRef,
+    pathKind,
+    onPickPath,
+}: Props) {
     const [draft, setDraft] = useState(value);
     const [focused, setFocused] = useState(false);
     const [picking, setPicking] = useState(false);
@@ -92,17 +99,11 @@ export function DraftField(
                 }}
                 inputRef={inputRef}
             />
-            {pathKind && onPickPath
-                ? (
-                    <Button
-                        intent="secondary"
-                        onClick={() => void pickPath()}
-                        disabled={picking}
-                    >
-                        {picking ? "OPENING…" : "USE FINDER"}
-                    </Button>
-                )
-                : null}
+            {pathKind && onPickPath ? (
+                <Button intent="secondary" onClick={() => void pickPath()} disabled={picking}>
+                    {picking ? "OPENING…" : "USE FINDER"}
+                </Button>
+            ) : null}
         </div>
     );
 }

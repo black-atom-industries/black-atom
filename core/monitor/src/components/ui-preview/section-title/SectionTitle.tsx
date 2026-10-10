@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function SectionTitle({ children }: Props) {
-    return <h2 className={styles.sectionTitle} data-component="SectionTitle">{children}</h2>;
+    return (
+        <h2 className={styles.sectionTitle} data-component="SectionTitle">
+            {children}
+        </h2>
+    );
 }

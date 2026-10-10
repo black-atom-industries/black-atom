@@ -9,17 +9,12 @@ import { createAdapterConfigSchema } from "../../lib/validate-adapter.ts";
 import { themeKeys } from "../../themes/catalog.ts";
 import { runCommand } from "./utils.ts";
 
-async function runPostGenerate(
-    adapterDir: string,
-    adapter: string,
-): Promise<void> {
+async function runPostGenerate(adapterDir: string, adapter: string): Promise<void> {
     const configPath = join(adapterDir, config.adapterFileName);
     if (!existsSync(configPath)) return;
 
     const adapterConfigSchema = createAdapterConfigSchema(themeKeys);
-    const adapterConfig = adapterConfigSchema.parse(
-        JSON.parse(await readFile(configPath, "utf8")),
-    );
+    const adapterConfig = adapterConfigSchema.parse(JSON.parse(await readFile(configPath, "utf8")));
 
     if (adapterConfig.postGenerate) {
         log.info(`Running postGenerate for ${adapter}...`);
@@ -30,11 +25,7 @@ async function runPostGenerate(
 
 async function runGenerate(adapterDir: string): Promise<void> {
     const coreDir = config.dir.core;
-    await runCommand([
-        process.execPath,
-        `${coreDir}/src/cli/index.ts`,
-        "generate",
-    ], {
+    await runCommand([process.execPath, `${coreDir}/src/cli/index.ts`, "generate"], {
         cwd: adapterDir,
     });
 }
@@ -42,9 +33,7 @@ async function runGenerate(adapterDir: string): Promise<void> {
 /**
  * Generate themes for all adapters
  */
-export async function generateAllAdapters({
-    logErrors = false,
-}: { logErrors?: boolean } = {}) {
+export async function generateAllAdapters({ logErrors = false }: { logErrors?: boolean } = {}) {
     const results: { adapter: string; error?: string }[] = [];
     const adapters = await getAdapters();
     const adaptersDir = config.dir.adapters;

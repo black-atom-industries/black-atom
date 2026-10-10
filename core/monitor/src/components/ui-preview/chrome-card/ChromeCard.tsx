@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function ChromeCard({ children }: Props) {
-    return <div className={styles.card} data-component="ChromeCard">{children}</div>;
+    return (
+        <div className={styles.card} data-component="ChromeCard">
+            {children}
+        </div>
+    );
 }

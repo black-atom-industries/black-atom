@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function ButtonGroup({ children }: Props) {
-    return <div className={styles.buttonGroup} data-layout="ButtonGroup">{children}</div>;
+    return (
+        <div className={styles.buttonGroup} data-layout="ButtonGroup">
+            {children}
+        </div>
+    );
 }

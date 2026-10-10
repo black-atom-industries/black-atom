@@ -23,9 +23,7 @@ export const adapterStatusRowVariants = cva({
     },
 });
 
-export type AdapterRowStatus = NonNullable<
-    VariantProps<typeof adapterStatusRowVariants>["status"]
->;
+export type AdapterRowStatus = NonNullable<VariantProps<typeof adapterStatusRowVariants>["status"]>;
 
 type Props = {
     /** Adapter key, lowercased, e.g. "ghostty", "nvim". */
@@ -96,11 +94,13 @@ export function AdapterStatusRow({
                         {name}
                         {status === "running" ? " ▶" : ""}
                     </span>
-                    {status === "error"
-                        ? <span className={styles.tag}>ERR</span>
-                        : status === "warn"
-                        ? <span className={styles.tag}>DEGRADED</span>
-                        : <span className={styles.duration}>{duration}</span>}
+                    {status === "error" ? (
+                        <span className={styles.tag}>ERR</span>
+                    ) : status === "warn" ? (
+                        <span className={styles.tag}>DEGRADED</span>
+                    ) : (
+                        <span className={styles.duration}>{duration}</span>
+                    )}
                 </div>
                 {status === "warn" && message && <span className={styles.reason}>{message}</span>}
             </div>
@@ -110,7 +110,11 @@ export function AdapterStatusRow({
                     {(path || code) && (
                         <div className={styles.detailRows}>
                             {path && <KVRow label="PATH">{path}</KVRow>}
-                            {code && <KVRow label="CODE" intent="negative">{code}</KVRow>}
+                            {code && (
+                                <KVRow label="CODE" intent="negative">
+                                    {code}
+                                </KVRow>
+                            )}
                         </div>
                     )}
                     {onRetry && (

@@ -10,15 +10,21 @@ export function CssSnippet() {
             <span style={s("punctuation-special")}>:</span>
             <span style={s("func-builtin")}>root</span>
             <span style={s("punctuation-bracket")}>{" {"}</span>
-            {"\n"}{"  "}<span style={s("property-default")}>--color-primary</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>--color-primary</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("string-default")}>#1a1a2e</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"  "}<span style={s("property-default")}>--spacing-md</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>--spacing-md</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("number-default")}>1rem</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"  "}<span style={s("property-default")}>--radius</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>--radius</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("number-default")}>0.5rem</span>
             <span style={s("punctuation-delimiter")}>;</span>
@@ -28,18 +34,24 @@ export function CssSnippet() {
             <span style={s("punctuation-delimiter")}>.</span>
             <span style={s("variable-default")}>container</span>
             <span style={s("punctuation-bracket")}>{" {"}</span>
-            {"\n"}{"  "}<span style={s("property-default")}>display</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>display</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("keyword-default")}>grid</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"  "}<span style={s("property-default")}>gap</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>gap</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("func-default")}>var</span>
             <span style={s("punctuation-bracket")}>(</span>
             <span style={s("property-default")}>--spacing-md</span>
             <span style={s("punctuation-bracket")}>)</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"  "}<span style={s("property-default")}>padding</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>padding</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("func-default")}>calc</span>
             <span style={s("punctuation-bracket")}>(</span>
@@ -48,18 +60,24 @@ export function CssSnippet() {
             <span style={s("number-default")}>1.5</span>
             <span style={s("punctuation-bracket")}>)</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"  "}<span style={s("property-default")}>border-radius</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>border-radius</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("func-default")}>var</span>
             <span style={s("punctuation-bracket")}>(</span>
             <span style={s("property-default")}>--radius</span>
             <span style={s("punctuation-bracket")}>)</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"  "}<span style={s("property-default")}>background</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>background</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("func-default")}>color-mix</span>
             <span style={s("punctuation-bracket")}>(</span>
-            {"\n"}{"    "}<span style={s("keyword-default")}>in</span>{" "}
+            {"\n"}
+            {"    "}
+            <span style={s("keyword-default")}>in</span>{" "}
             <span style={s("variable-default")}>oklch</span>
             <span style={s("punctuation-delimiter")}>,</span>{" "}
             <span style={s("func-default")}>var</span>
@@ -68,10 +86,16 @@ export function CssSnippet() {
             <span style={s("punctuation-bracket")}>)</span>{" "}
             <span style={s("number-default")}>80%</span>
             <span style={s("punctuation-delimiter")}>,</span>
-            {"\n"}{"    "}<span style={s("keyword-default")}>transparent</span>
-            {"\n"}{"  "}<span style={s("punctuation-bracket")}>)</span>
+            {"\n"}
+            {"    "}
+            <span style={s("keyword-default")}>transparent</span>
+            {"\n"}
+            {"  "}
+            <span style={s("punctuation-bracket")}>)</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"  "}<span style={s("property-default")}>transition</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>transition</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("variable-default")}>opacity</span>{" "}
             <span style={s("number-default")}>200ms</span>{" "}
@@ -85,7 +109,9 @@ export function CssSnippet() {
             <span style={s("punctuation-delimiter")}>:</span>
             <span style={s("func-builtin")}>hover</span>
             <span style={s("punctuation-bracket")}>{" {"}</span>
-            {"\n"}{"  "}<span style={s("property-default")}>opacity</span>
+            {"\n"}
+            {"  "}
+            <span style={s("property-default")}>opacity</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("number-default")}>0.9</span>
             <span style={s("punctuation-delimiter")}>;</span>
@@ -99,10 +125,14 @@ export function CssSnippet() {
             <span style={s("number-default")}>768px</span>
             <span style={s("punctuation-bracket")}>)</span>
             <span style={s("punctuation-bracket")}>{" {"}</span>
-            {"\n"}{"  "}<span style={s("punctuation-delimiter")}>.</span>
+            {"\n"}
+            {"  "}
+            <span style={s("punctuation-delimiter")}>.</span>
             <span style={s("variable-default")}>container</span>
             <span style={s("punctuation-bracket")}>{" {"}</span>
-            {"\n"}{"    "}<span style={s("property-default")}>grid-template-columns</span>
+            {"\n"}
+            {"    "}
+            <span style={s("property-default")}>grid-template-columns</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("func-default")}>repeat</span>
             <span style={s("punctuation-bracket")}>(</span>
@@ -111,11 +141,15 @@ export function CssSnippet() {
             <span style={s("number-default")}>1fr</span>
             <span style={s("punctuation-bracket")}>)</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"    "}<span style={s("property-default")}>max-width</span>
+            {"\n"}
+            {"    "}
+            <span style={s("property-default")}>max-width</span>
             <span style={s("punctuation-delimiter")}>:</span>{" "}
             <span style={s("number-default")}>1200px</span>
             <span style={s("punctuation-delimiter")}>;</span>
-            {"\n"}{"  "}<span style={s("punctuation-bracket")}>{"}"}</span>
+            {"\n"}
+            {"  "}
+            <span style={s("punctuation-bracket")}>{"}"}</span>
             {"\n"}
             <span style={s("punctuation-bracket")}>{"}"}</span>
         </CodeBlock>

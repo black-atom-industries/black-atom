@@ -4,9 +4,7 @@ import type * as Theme from "../../types/theme.ts";
  * Default collection dark syntax - teal (keywords/types/functions) + amber (strings/numbers)
  * a10/a20 = teal accents, a30/a40 = amber accents
  */
-export default function (
-    { primaries, feedback, accents }: Theme.CreatorContext,
-): Theme.Syntax {
+export default function ({ primaries, feedback, accents }: Theme.CreatorContext): Theme.Syntax {
     const memberColor = primaries.m30;
 
     return {

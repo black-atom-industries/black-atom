@@ -22,8 +22,14 @@ test("themeToCustomProperties does not emit derived tokens (borders, focus)", ()
 
     // Borders and focus derive from fg tokens via color-mix in the static
     // layer — emitting them would break automatic re-tinting.
-    assert.deepEqual(emitted.filter((name) => name.includes("border")), []);
-    assert.deepEqual(emitted.filter((name) => name.includes("focus")), []);
+    assert.deepEqual(
+        emitted.filter((name) => name.includes("border")),
+        [],
+    );
+    assert.deepEqual(
+        emitted.filter((name) => name.includes("focus")),
+        [],
+    );
 });
 
 test("themeToStyleSheet emits a :root block with color-scheme and declarations", () => {

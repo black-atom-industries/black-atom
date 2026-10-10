@@ -48,9 +48,16 @@ type Props = {
  * failure (usually a SETTINGS_PATH pointing nowhere) leaves nothing dirty to
  * re-trigger it, and retrying would otherwise be impossible.
  */
-export function NvimSettingsPanel(
-    { settings, dirty, saving, resultMessage, resultFailed, onChange, onSave, onReset }: Props,
-) {
+export function NvimSettingsPanel({
+    settings,
+    dirty,
+    saving,
+    resultMessage,
+    resultFailed,
+    onChange,
+    onSave,
+    onReset,
+}: Props) {
     const { styles: s } = settings;
 
     function setStyles(patch: Partial<NvimSettings["styles"]>) {
@@ -104,7 +111,8 @@ export function NvimSettingsPanel(
                                 ...s.diagnostics,
                                 undercurl: !s.diagnostics.undercurl,
                             },
-                        })}
+                        })
+                    }
                 />
                 <ToggleRow
                     label="DIAGNOSTICS.BACKGROUND"
@@ -116,7 +124,8 @@ export function NvimSettingsPanel(
                                 ...s.diagnostics,
                                 background: !s.diagnostics.background,
                             },
-                        })}
+                        })
+                    }
                 />
             </div>
 
@@ -173,14 +182,17 @@ export function NvimSettingsPanel(
     );
 }
 
-function ToggleRow(
-    { label, note, on, onChange }: {
-        label: string;
-        note: string;
-        on: boolean;
-        onChange: () => void;
-    },
-) {
+function ToggleRow({
+    label,
+    note,
+    on,
+    onChange,
+}: {
+    label: string;
+    note: string;
+    on: boolean;
+    onChange: () => void;
+}) {
     return (
         <div className={styles.row}>
             <Toggle on={on} onChange={onChange} />
@@ -192,13 +204,15 @@ function ToggleRow(
     );
 }
 
-function GridRow(
-    { group, style, onToggle }: {
-        group: keyof NvimSyntax;
-        style: NvimStyle;
-        onToggle: (flag: keyof NvimStyle) => void;
-    },
-) {
+function GridRow({
+    group,
+    style,
+    onToggle,
+}: {
+    group: keyof NvimSyntax;
+    style: NvimStyle;
+    onToggle: (flag: keyof NvimStyle) => void;
+}) {
     return (
         <>
             <span className={styles.gridLabel}>{group.toUpperCase()}</span>

@@ -16,20 +16,13 @@ export async function copyToVault(): Promise<void> {
     const dest = join(vault, ".obsidian/themes/Black Atom Development");
     await mkdir(dest, { recursive: true });
     await copyFile(join(adapterDir, "theme.css"), join(dest, "theme.css"));
-    const manifest = JSON.parse(
-        await readFile(join(adapterDir, "manifest.json"), "utf8"),
-    );
+    const manifest = JSON.parse(await readFile(join(adapterDir, "manifest.json"), "utf8"));
     manifest.name = "Black Atom Development";
-    await writeFile(
-        join(dest, "manifest.json"),
-        JSON.stringify(manifest, null, 2) + "\n",
-    );
+    await writeFile(join(dest, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
     console.log(`Copied Obsidian theme to ${dest}`);
 }
 
-async function readEnvFile(
-    path: string,
-): Promise<Record<string, string | undefined>> {
+async function readEnvFile(path: string): Promise<Record<string, string | undefined>> {
     try {
         return parseEnv(await readFile(path, "utf8"));
     } catch (error) {

@@ -17,8 +17,6 @@ export async function runCommand(
         const errorMessage = error instanceof Error ? error.message : String(error);
 
         // Explicitly rethrow the error to propagate it
-        throw new Error(
-            `Failed to run command ${command.join(" ")}: ${errorMessage}`,
-        );
+        throw new Error(`Failed to run command ${command.join(" ")}: ${errorMessage}`);
     }
 }

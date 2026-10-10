@@ -14,12 +14,14 @@ function GeneralRoute() {
     function toggleSystemAppearance() {
         const data = config.query.data;
         if (!data) return;
-        void config.saveLatest((latest) => ({
-            ...latest,
-            system_appearance: !latest.system_appearance,
-        })).catch((error) => {
-            console.error("Could not save system appearance", error);
-        });
+        void config
+            .saveLatest((latest) => ({
+                ...latest,
+                system_appearance: !latest.system_appearance,
+            }))
+            .catch((error) => {
+                console.error("Could not save system appearance", error);
+            });
     }
 
     useHotkey("Space", toggleSystemAppearance);

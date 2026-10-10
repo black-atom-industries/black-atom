@@ -30,7 +30,8 @@ export function AppHeader({ product = "LIVERY", version, context, className }: P
         >
             <div className={styles.wordmarkRow}>
                 <span className={styles.wordmark}>
-                    BLACK AT<span className={styles.dot} aria-hidden="true" />M {product}
+                    BLACK AT
+                    <span className={styles.dot} aria-hidden="true" />M {product}
                 </span>
                 {version ? <span className={styles.version}>V{version}</span> : null}
                 {import.meta.env.DEV ? <Badge>Dev</Badge> : null}

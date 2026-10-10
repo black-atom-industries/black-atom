@@ -30,11 +30,7 @@ const args = process.argv.slice(2).filter((a) => a !== "--capture");
 const themeName = args[0] || "";
 const capture = process.argv.includes("--capture");
 
-const cmd = [
-    testScript,
-    ...(themeName ? [themeName] : []),
-    ...(capture ? ["--capture"] : []),
-];
+const cmd = [testScript, ...(themeName ? [themeName] : []), ...(capture ? ["--capture"] : [])];
 
 function exec([command, ...args]: string[], stdio: "inherit" | "ignore"): Promise<number> {
     return new Promise((resolve) => {
@@ -54,41 +50,34 @@ async function run() {
  */
 async function reloadGhostty() {
     // Try SIGUSR2 signal (Ghostty 1.2.0+)
-    if (await exec(["pkill", "-SIGUSR2", "ghostty"], "ignore") === 0) return;
+    if ((await exec(["pkill", "-SIGUSR2", "ghostty"], "ignore")) === 0) return;
 
     // Fallback: AppleScript on macOS
     if (process.platform === "darwin") {
-        await exec([
-            "osascript",
-            "-e",
-            `tell application "System Events"
+        await exec(
+            [
+                "osascript",
+                "-e",
+                `tell application "System Events"
                 tell process "Ghostty"
                     try
                         click menu item "Reload Configuration" of menu "Ghostty" of menu bar 1
                     end try
                 end tell
             end tell`,
-        ], "ignore");
+            ],
+            "ignore",
+        );
     }
 }
 
 console.log(`Watching ${ghosttyThemesDir} for generated config changes...\n`);
-console.log(
-    `┌──────────────────────────────────────────────────────────────────┐`,
-);
-console.log(
-    `│                                                                  │`,
-);
-console.log(
-    `│  Watches generated Ghostty .conf files (not theme sources).      │`,
-);
+console.log(`┌──────────────────────────────────────────────────────────────────┐`);
+console.log(`│                                                                  │`);
+console.log(`│  Watches generated Ghostty .conf files (not theme sources).      │`);
 console.log(`│  Run dev separately to trigger generation.              │`);
-console.log(
-    `│                                                                  │`,
-);
-console.log(
-    `└──────────────────────────────────────────────────────────────────┘`,
-);
+console.log(`│                                                                  │`);
+console.log(`└──────────────────────────────────────────────────────────────────┘`);
 console.log(`\nPress Ctrl+C to stop.\n`);
 
 await run();

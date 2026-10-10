@@ -20,9 +20,9 @@ Generated files live at `themes/<collection>/<theme-key>.toml` and `themes/<coll
 
 1. Add a `theme` line to `~/.config/tuicr/config.toml`. Any value works, livery rewrites it:
 
-   ```toml
-   theme = "dark"
-   ```
+    ```toml
+    theme = "dark"
+    ```
 
 2. Open Livery settings, enable the tuicr adapter, and run SET UP. It links every theme into
    `~/.config/tuicr/themes/`.

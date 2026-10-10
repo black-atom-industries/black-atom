@@ -137,9 +137,11 @@ function normalizeHue(hue: number): number {
 /**
  * Generates complementary color (180° opposite)
  */
-function getComplementary(
-    color: { l: number; c: number; h: number },
-): { l: number; c: number; h: number } {
+function getComplementary(color: { l: number; c: number; h: number }): {
+    l: number;
+    c: number;
+    h: number;
+} {
     return {
         l: color.l,
         c: color.c,
@@ -150,9 +152,11 @@ function getComplementary(
 /**
  * Generates analogous colors (±30°)
  */
-function getAnalogous(
-    color: { l: number; c: number; h: number },
-): Array<{ l: number; c: number; h: number }> {
+function getAnalogous(color: {
+    l: number;
+    c: number;
+    h: number;
+}): Array<{ l: number; c: number; h: number }> {
     return [
         { l: color.l, c: color.c, h: normalizeHue(color.h - 30) },
         color,
@@ -169,8 +173,7 @@ function analyzePalette(
 ): PaletteExtractionResult {
     const totalPixels = colors.reduce((sum, c) => sum + c.pixelCount, 0);
     const avgLightness = colors.reduce((sum, c) => sum + c.oklch.l * c.pixelCount, 0) / totalPixels;
-    const avgChroma = colors.reduce((sum, c) => sum + c.oklch.c * c.pixelCount, 0) /
-        totalPixels;
+    const avgChroma = colors.reduce((sum, c) => sum + c.oklch.c * c.pixelCount, 0) / totalPixels;
 
     let suggestedAppearance: "dark" | "light" | "both";
     if (appearance === "auto") {
@@ -181,9 +184,9 @@ function analyzePalette(
         suggestedAppearance = appearance;
     }
 
-    const vibrantColors = colors.filter((c) => c.oklch.c > 0.08).sort((a, b) =>
-        b.oklch.c - a.oklch.c
-    );
+    const vibrantColors = colors
+        .filter((c) => c.oklch.c > 0.08)
+        .sort((a, b) => b.oklch.c - a.oklch.c);
     const mostVibrant = vibrantColors[0] || colors[0];
     const mostCommon = colors[0];
 
@@ -315,17 +318,18 @@ export function generatePrimariesFromSuggestion(
     const { hue, chromaRange } = suggestion.primaries;
     const [minChroma, maxChroma] = chromaRange;
 
-    const lightnessRanges = appearance === "dark"
-        ? {
-            d: [0.199, 0.225, 0.252, 0.288],
-            m: [0.450, 0.550, 0.650, 0.750],
-            l: [0.835, 0.885, 0.935, 0.985],
-        }
-        : {
-            d: [0.985, 0.935, 0.885, 0.835],
-            m: [0.750, 0.650, 0.550, 0.450],
-            l: [0.288, 0.252, 0.225, 0.199],
-        };
+    const lightnessRanges =
+        appearance === "dark"
+            ? {
+                  d: [0.199, 0.225, 0.252, 0.288],
+                  m: [0.45, 0.55, 0.65, 0.75],
+                  l: [0.835, 0.885, 0.935, 0.985],
+              }
+            : {
+                  d: [0.985, 0.935, 0.885, 0.835],
+                  m: [0.75, 0.65, 0.55, 0.45],
+                  l: [0.288, 0.252, 0.225, 0.199],
+              };
 
     const chromaProgression = (index: number, total: number) => {
         const progress = index / (total - 1);
@@ -339,48 +343,20 @@ export function generatePrimariesFromSuggestion(
     const lines: string[] = [];
     lines.push("const primaries: Theme.Primaries = {");
 
-    lines.push(
-        "    d10: " + formatOklch(lightnessRanges.d[0], minChroma, hue) + ",",
-    );
-    lines.push(
-        "    d20: " + formatOklch(lightnessRanges.d[1], minChroma, hue) + ",",
-    );
-    lines.push(
-        "    d30: " + formatOklch(lightnessRanges.d[2], minChroma, hue) + ",",
-    );
-    lines.push(
-        "    d40: " + formatOklch(lightnessRanges.d[3], minChroma, hue) + ",",
-    );
+    lines.push("    d10: " + formatOklch(lightnessRanges.d[0], minChroma, hue) + ",");
+    lines.push("    d20: " + formatOklch(lightnessRanges.d[1], minChroma, hue) + ",");
+    lines.push("    d30: " + formatOklch(lightnessRanges.d[2], minChroma, hue) + ",");
+    lines.push("    d40: " + formatOklch(lightnessRanges.d[3], minChroma, hue) + ",");
     lines.push("");
-    lines.push(
-        "    m10: " +
-            formatOklch(lightnessRanges.m[0], chromaProgression(0, 4), hue) + ",",
-    );
-    lines.push(
-        "    m20: " +
-            formatOklch(lightnessRanges.m[1], chromaProgression(1, 4), hue) + ",",
-    );
-    lines.push(
-        "    m30: " +
-            formatOklch(lightnessRanges.m[2], chromaProgression(2, 4), hue) + ",",
-    );
-    lines.push(
-        "    m40: " +
-            formatOklch(lightnessRanges.m[3], chromaProgression(3, 4), hue) + ",",
-    );
+    lines.push("    m10: " + formatOklch(lightnessRanges.m[0], chromaProgression(0, 4), hue) + ",");
+    lines.push("    m20: " + formatOklch(lightnessRanges.m[1], chromaProgression(1, 4), hue) + ",");
+    lines.push("    m30: " + formatOklch(lightnessRanges.m[2], chromaProgression(2, 4), hue) + ",");
+    lines.push("    m40: " + formatOklch(lightnessRanges.m[3], chromaProgression(3, 4), hue) + ",");
     lines.push("");
-    lines.push(
-        "    l10: " + formatOklch(lightnessRanges.l[0], minChroma, hue) + ",",
-    );
-    lines.push(
-        "    l20: " + formatOklch(lightnessRanges.l[1], minChroma, hue) + ",",
-    );
-    lines.push(
-        "    l30: " + formatOklch(lightnessRanges.l[2], minChroma, hue) + ",",
-    );
-    lines.push(
-        "    l40: " + formatOklch(lightnessRanges.l[3], minChroma, hue) + ",",
-    );
+    lines.push("    l10: " + formatOklch(lightnessRanges.l[0], minChroma, hue) + ",");
+    lines.push("    l20: " + formatOklch(lightnessRanges.l[1], minChroma, hue) + ",");
+    lines.push("    l30: " + formatOklch(lightnessRanges.l[2], minChroma, hue) + ",");
+    lines.push("    l40: " + formatOklch(lightnessRanges.l[3], minChroma, hue) + ",");
     lines.push("};");
 
     return lines.join("\n");
@@ -395,9 +371,9 @@ export function formatPaletteResult(result: PaletteExtractionResult): string {
 
     lines.push("Image Analysis:");
     lines.push(
-        `  Average Lightness: ${
-            metadata.avgLightness.toFixed(2)
-        } (suggests ${metadata.suggestedAppearance} theme)`,
+        `  Average Lightness: ${metadata.avgLightness.toFixed(
+            2,
+        )} (suggests ${metadata.suggestedAppearance} theme)`,
     );
     lines.push(`  Average Chroma: ${metadata.avgChroma.toFixed(2)}`);
     lines.push(`  Dominant Colors: ${dominantColors.length} unique colors`);
@@ -410,15 +386,15 @@ export function formatPaletteResult(result: PaletteExtractionResult): string {
         lines.push(`${i + 1}. ${sug.name}`);
         lines.push(`   ${sug.description}`);
         lines.push(
-            `   Accent: oklch(${sug.accent.l.toFixed(2)}, ${sug.accent.c.toFixed(2)}, ${
-                sug.accent.h.toFixed(0)
-            }) = ${accentHex}`,
+            `   Accent: oklch(${sug.accent.l.toFixed(2)}, ${sug.accent.c.toFixed(2)}, ${sug.accent.h.toFixed(
+                0,
+            )}) = ${accentHex}`,
         );
         lines.push(`   Base Hue: ${sug.primaries.hue.toFixed(0)}°`);
         lines.push(
-            `   Chroma Range: ${sug.primaries.chromaRange[0].toFixed(3)}-${
-                sug.primaries.chromaRange[1].toFixed(3)
-            }`,
+            `   Chroma Range: ${sug.primaries.chromaRange[0].toFixed(3)}-${sug.primaries.chromaRange[1].toFixed(
+                3,
+            )}`,
         );
         lines.push(`   ${sug.primaries.reasoning}`);
         lines.push("");

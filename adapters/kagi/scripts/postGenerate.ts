@@ -36,8 +36,8 @@ for (const collection of await readdir("fragments", { withFileTypes: true })) {
         for (const file of [light, dark]) {
             if (file) fragments.push((await readFile(file, "utf8")).trimEnd());
         }
-        const labels = fragments.map((fragment) =>
-            fragment.match(/^\/\* (.+) for Kagi \*\//)?.[1] ?? name
+        const labels = fragments.map(
+            (fragment) => fragment.match(/^\/\* (.+) for Kagi \*\//)?.[1] ?? name,
         );
         const header = [
             "/*",

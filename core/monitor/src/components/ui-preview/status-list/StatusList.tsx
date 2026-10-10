@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function StatusList({ children }: Props) {
-    return <div className={styles.statusList} data-component="StatusList">{children}</div>;
+    return (
+        <div className={styles.statusList} data-component="StatusList">
+            {children}
+        </div>
+    );
 }

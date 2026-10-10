@@ -6,36 +6,34 @@ import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
 /** nvim — linked provisioning, patches a colorscheme line via regex. */
-export function NvimSettings(
-    {
-        appConfig,
-        editableFields,
-        detected,
-        onToggleEnabled,
-        onFieldCommit,
-        firstFieldRef,
-        onPickPath,
-        onSetUp,
-        setUpResult,
-        onVerifyPath,
-        verifyPathResult,
-        linkable,
-        onLinkThemes,
-        linkThemesResult,
-        onTestApply,
-        testApplyResult,
-        onWriteNvimSettings,
-        writingNvimSettings,
-        nvimSettingsResult,
-    }: AdapterPageProps,
-) {
+export function NvimSettings({
+    appConfig,
+    editableFields,
+    detected,
+    onToggleEnabled,
+    onFieldCommit,
+    firstFieldRef,
+    onPickPath,
+    onSetUp,
+    setUpResult,
+    onVerifyPath,
+    verifyPathResult,
+    linkable,
+    onLinkThemes,
+    linkThemesResult,
+    onTestApply,
+    testApplyResult,
+    onWriteNvimSettings,
+    writingNvimSettings,
+    nvimSettingsResult,
+}: AdapterPageProps) {
     // The adapters route remounts this page on every adapter switch, so the
     // draft starts from the saved settings each time it appears.
     const saved = appConfig.settings ?? null;
     const [draft, setDraft] = useState<NvimPluginSettings | null>(saved);
     const settings = draft ?? saved;
-    const dirty = settings !== null && saved !== null &&
-        JSON.stringify(settings) !== JSON.stringify(saved);
+    const dirty =
+        settings !== null && saved !== null && JSON.stringify(settings) !== JSON.stringify(saved);
 
     return (
         <div className={styles.root}>
@@ -84,13 +82,13 @@ export function NvimSettings(
                         onCommit={(value) => onFieldCommit("replace_template", value)}
                     />
                 )}
-                {(editableFields.has("match_pattern") || editableFields.has("replace_template")) &&
-                    (
-                        <p className={styles.fieldGridNote}>
-                            Template variables: {"{themeKey}"} · {"{themesPath}"} ·{" "}
-                            {"{collectionKey}"} · {"{appearance}"}
-                        </p>
-                    )}
+                {(editableFields.has("match_pattern") ||
+                    editableFields.has("replace_template")) && (
+                    <p className={styles.fieldGridNote}>
+                        Template variables: {"{themeKey}"} · {"{themesPath}"} · {"{collectionKey}"}{" "}
+                        · {"{appearance}"}
+                    </p>
+                )}
             </div>
             <ActionRow
                 onSetUp={onSetUp}

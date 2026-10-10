@@ -9,16 +9,16 @@ import createUi from "./create-ui-dark.ts";
 export default defineThemeColors({
     primaries: {
         // Dark range - icy deep blues
-        d10: oklch(0.16, 0.010, 260),
-        d20: oklch(0.20, 0.015, 258),
+        d10: oklch(0.16, 0.01, 260),
+        d20: oklch(0.2, 0.015, 258),
         d30: oklch(0.25, 0.025, 255),
-        d40: oklch(0.30, 0.035, 252),
+        d40: oklch(0.3, 0.035, 252),
 
         // Mid range - cold steel blues
         m10: oklch(0.44, 0.045, 250),
-        m20: oklch(0.50, 0.05, 248),
+        m20: oklch(0.5, 0.05, 248),
         m30: oklch(0.55, 0.045, 250),
-        m40: oklch(0.60, 0.04, 252),
+        m40: oklch(0.6, 0.04, 252),
 
         // Light range - icy whites with blue tint
         l10: oklch(0.84, 0.025, 255),
@@ -27,7 +27,7 @@ export default defineThemeColors({
         l40: oklch(0.96, 0.01, 260),
     },
     accents: {
-        a10: oklch(0.80, 0.14, 65),
+        a10: oklch(0.8, 0.14, 65),
         a20: oklch(0.72, 0.14, 45),
     },
     palette: ({ primaries, accents }) =>
@@ -37,7 +37,7 @@ export default defineThemeColors({
             red: oklch(0.75, 0.09, 285),
 
             // Icy teal - green shifted cold
-            darkGreen: oklch(0.70, 0.06, 220),
+            darkGreen: oklch(0.7, 0.06, 220),
             green: oklch(0.78, 0.07, 215),
 
             // Warm amber - lamplight in the cold
@@ -46,7 +46,7 @@ export default defineThemeColors({
 
             // Signature blue - slightly more present
             darkBlue: oklch(0.68, 0.09, 255),
-            blue: oklch(0.76, 0.10, 250),
+            blue: oklch(0.76, 0.1, 250),
 
             // Cold purple
             darkMagenta: oklch(0.68, 0.07, 300),
@@ -54,7 +54,7 @@ export default defineThemeColors({
 
             // Ice cyan - frost accent
             darkCyan: oklch(0.72, 0.08, 210),
-            cyan: oklch(0.80, 0.09, 205),
+            cyan: oklch(0.8, 0.09, 205),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,

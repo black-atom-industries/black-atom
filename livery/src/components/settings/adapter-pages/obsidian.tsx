@@ -10,25 +10,23 @@ import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
 /** Obsidian uses linked provisioning for each configured config folder. */
-export function ObsidianSettings(
-    {
-        appConfig,
-        detected,
-        onToggleEnabled,
-        onAddConfigFolder,
-        onRemoveConfigFolder,
-        configFoldersSaving,
-        onSetUp,
-        setUpResult,
-        onVerifyPath,
-        verifyPathResult,
-        linkable,
-        onLinkThemes,
-        linkThemesResult,
-        onTestApply,
-        testApplyResult,
-    }: AdapterPageProps,
-) {
+export function ObsidianSettings({
+    appConfig,
+    detected,
+    onToggleEnabled,
+    onAddConfigFolder,
+    onRemoveConfigFolder,
+    configFoldersSaving,
+    onSetUp,
+    setUpResult,
+    onVerifyPath,
+    verifyPathResult,
+    linkable,
+    onLinkThemes,
+    linkThemesResult,
+    onTestApply,
+    testApplyResult,
+}: AdapterPageProps) {
     return (
         <div className={styles.root}>
             <AdapterHeader

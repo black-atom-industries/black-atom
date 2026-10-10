@@ -37,29 +37,35 @@ type Props = VariantProps<typeof promptVariants> & {
  *
  * Spec: docs/design-system/reference/components/forms/Prompt.jsx
  */
-export function Prompt(
-    { value, placeholder, count, focused, onChange, onSubmit, inputRef, className }: Props,
-) {
+export function Prompt({
+    value,
+    placeholder,
+    count,
+    focused,
+    onChange,
+    onSubmit,
+    inputRef,
+    className,
+}: Props) {
     const [hasFocus, setHasFocus] = useState(false);
     const showCaret = hasFocus || focused === true;
     const text = value ?? "";
 
     return (
-        <div
-            data-component="prompt"
-            className={promptVariants({ focused: showCaret, className })}
-        >
+        <div data-component="prompt" className={promptVariants({ focused: showCaret, className })}>
             <span className={styles.glyph}>»</span>
             <span className={showCaret ? styles.typing : styles.typingIdle}>
                 <input
                     ref={inputRef}
                     className={styles.input}
-                    style={showCaret
-                        ? { width: `calc(${text.length}ch + 1px)`, flex: "none" }
-                        : undefined}
+                    style={
+                        showCaret
+                            ? { width: `calc(${text.length}ch + 1px)`, flex: "none" }
+                            : undefined
+                    }
                     type="text"
                     value={text}
-                    placeholder={showCaret ? "" : placeholder ?? "search theme names — /"}
+                    placeholder={showCaret ? "" : (placeholder ?? "search theme names — /")}
                     onChange={onChange ? (e) => onChange(e.target.value) : undefined}
                     onFocus={() => setHasFocus(true)}
                     onBlur={() => setHasFocus(false)}

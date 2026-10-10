@@ -50,10 +50,7 @@
         "clay": {
             "template": "./themes/collection.template.toml",
             "output": "./themes/clay",
-            "themes": [
-                "black-atom-clay-dark",
-                "black-atom-clay-light"
-            ]
+            "themes": ["black-atom-clay-dark", "black-atom-clay-light"]
         },
         "minium": {
             "template": "./themes/collection.template.toml",

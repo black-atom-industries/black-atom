@@ -10,9 +10,7 @@ const devBridgeToken = process.env.LIVERY_DEV_BRIDGE_TOKEN ?? "";
 
 export default defineConfig({
     define: {
-        "import.meta.env.VITE_LIVERY_DEV_BRIDGE_TOKEN": JSON.stringify(
-            devBridgeToken,
-        ),
+        "import.meta.env.VITE_LIVERY_DEV_BRIDGE_TOKEN": JSON.stringify(devBridgeToken),
     },
     clearScreen: false,
     resolve: {

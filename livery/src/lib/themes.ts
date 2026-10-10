@@ -27,8 +27,8 @@ export function formatCollectionTitle(key: string, label: string): string {
 
 /** Group themes by collection in display order. Sorts themes within each group by name. */
 export function getGroupedThemes(themeCatalog: Theme.DefinitionMap): ThemeGroup[] {
-    const themes = Object.values(themeCatalog).filter((theme): theme is Theme.Definition =>
-        theme !== undefined
+    const themes = Object.values(themeCatalog).filter(
+        (theme): theme is Theme.Definition => theme !== undefined,
     );
 
     const grouped = themes.reduce((acc, theme) => {

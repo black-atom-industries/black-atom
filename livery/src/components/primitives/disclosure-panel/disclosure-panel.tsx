@@ -36,9 +36,14 @@ type Props = {
  *
  * Spec: docs/design-system/reference/components/containers/DisclosurePanel.jsx
  */
-export function DisclosurePanel(
-    { expanded = false, header, leading, children, onToggle, className }: Props,
-) {
+export function DisclosurePanel({
+    expanded = false,
+    header,
+    leading,
+    children,
+    onToggle,
+    className,
+}: Props) {
     return (
         <div
             data-component="disclosure-panel"

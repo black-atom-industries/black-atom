@@ -138,9 +138,7 @@ test("mergeUpdateResults overlays updates onto matching app entries", () => {
         { app: "tmux", status: "error", message: "failed", duration_ms: null },
         { app: "ghostty", status: "done", duration_ms: 5 },
     ];
-    const updates: UpdateResult[] = [
-        { app: "tmux", status: "done", duration_ms: 8 },
-    ];
+    const updates: UpdateResult[] = [{ app: "tmux", status: "done", duration_ms: 8 }];
     const merged = mergeUpdateResults(results, updates);
     assert.deepEqual(merged, [
         { app: "nvim", status: "done", duration_ms: 10 },

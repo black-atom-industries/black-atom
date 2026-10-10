@@ -48,7 +48,10 @@ test("external skips link", async () => {
     const outcome = await setUpAdapter("delta", "external", "~/.config/delta/config.ini", deps);
 
     assert.deepEqual(calls, ["enable:delta", "verify:delta"]);
-    assert.deepEqual(outcome.steps.map((s) => s.step), ["enable", "verify"]);
+    assert.deepEqual(
+        outcome.steps.map((s) => s.step),
+        ["enable", "verify"],
+    );
 });
 
 test("merged reads the unpacked files directly and never links", async () => {
@@ -97,9 +100,7 @@ test("failed enable aborts the chain", async () => {
     assert.deepEqual(calls, []);
     const byStep = Object.fromEntries(outcome.steps.map((s) => [s.step, s]));
     assert.deepEqual(byStep.enable.status, "error");
-    assert(
-        outcome.steps.filter((s) => s.step !== "enable").every((s) => s.status === "skipped"),
-    );
+    assert(outcome.steps.filter((s) => s.step !== "enable").every((s) => s.status === "skipped"));
     assert.deepEqual(outcome.verify, null);
 });
 

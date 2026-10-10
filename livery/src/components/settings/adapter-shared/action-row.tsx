@@ -24,25 +24,24 @@ type Props = {
 
 /** One action per row: what it does, the actuator, and — once run — a
     result line naming what happened. */
-export function ActionRow(
-    {
-        onSetUp,
-        setUpResult,
-        onVerifyPath,
-        verifyPathResult,
-        linkable,
-        onLinkThemes,
-        linkThemesResult,
-        onTestApply,
-        testApplyResult,
-    }: Props,
-) {
+export function ActionRow({
+    onSetUp,
+    setUpResult,
+    onVerifyPath,
+    verifyPathResult,
+    linkable,
+    onLinkThemes,
+    linkThemesResult,
+    onTestApply,
+    testApplyResult,
+}: Props) {
     const settingUp = setUpRunning(setUpResult);
     const verifyRunning = verifyPathResult?.status === "running";
     const linkRunning = linkThemesResult?.status === "running";
     // Disabled through the whole probe-then-revert window, not just the
     // initial apply — clicking again mid-revert would race the two calls.
-    const testRunning = testApplyResult?.status === "running" ||
+    const testRunning =
+        testApplyResult?.status === "running" ||
         testApplyResult?.status === "ok" ||
         testApplyResult?.status === "reverting";
 
@@ -104,10 +103,8 @@ function ActionEntry({ description, button, result }: ActionEntryProps) {
                 <p className={styles.actionDescription}>{description}</p>
                 <div className={styles.actionButtonSlot}>{button}</div>
             </div>
-            {
-                /* Fixed height, always rendered — a result line appearing or
-                disappearing must never reflow the rows around it. */
-            }
+            {/* Fixed height, always rendered — a result line appearing or
+                disappearing must never reflow the rows around it. */}
             <div className={styles.resultSlot}>{result}</div>
         </div>
     );
@@ -159,9 +156,11 @@ function SetUpResult({ result }: { result?: SetUpOutcome }) {
 
     return (
         <ResultLine
-            intent={linkDetails && configFolderDetailsNeedWarning(result.link?.config_folders)
-                ? "warn"
-                : "ok"}
+            intent={
+                linkDetails && configFolderDetailsNeedWarning(result.link?.config_folders)
+                    ? "warn"
+                    : "ok"
+            }
         >
             {ran.map(stepLabel).join(" · ")}
             {linkDetails ? ` · ${linkDetails}` : ""}
@@ -185,9 +184,11 @@ function LinkThemesResultLine({ result }: { result?: LinkThemesRowResult }) {
 
     return (
         <ResultLine
-            intent={result.message || configFolderDetailsNeedWarning(result.config_folders)
-                ? "warn"
-                : "ok"}
+            intent={
+                result.message || configFolderDetailsNeedWarning(result.config_folders)
+                    ? "warn"
+                    : "ok"
+            }
         >
             {result.linked} linked{result.pruned > 0 ? ` · ${result.pruned} pruned` : ""}
             {result.message ? ` · ${result.message}` : ""}
@@ -208,9 +209,12 @@ function VerifyPathResultLine({ result }: { result?: VerifyPathResult }) {
     }
 
     const fault = verifyFaultLabel(result);
-    const details = result.config_folders?.map((config_folder) =>
-        `${config_folder.config_folder}: ${config_folder.exists ? "exists" : "not found"}`
-    ).join(" · ");
+    const details = result.config_folders
+        ?.map(
+            (config_folder) =>
+                `${config_folder.config_folder}: ${config_folder.exists ? "exists" : "not found"}`,
+        )
+        .join(" · ");
     if (fault) {
         return (
             <ResultLine intent="warn">
@@ -249,9 +253,11 @@ function TestApplyResultLine({ result }: { result?: TestApplyResult }) {
     const details = formatConfigFolderDetails(result.config_folders);
     return (
         <ResultLine
-            intent={result.message || configFolderDetailsNeedWarning(result.config_folders)
-                ? "warn"
-                : "ok"}
+            intent={
+                result.message || configFolderDetailsNeedWarning(result.config_folders)
+                    ? "warn"
+                    : "ok"
+            }
         >
             Applied {result.testedThemeLabel}
             {duration ? ` ${duration}` : ""}, reverting shortly
@@ -264,38 +270,44 @@ function TestApplyResultLine({ result }: { result?: TestApplyResult }) {
 function configFolderDetailsNeedWarning(
     config_folders:
         | {
-            config_folder: string;
-            status: string;
-            message?: string | null;
-            reload_warning?: string | null;
-        }[]
+              config_folder: string;
+              status: string;
+              message?: string | null;
+              reload_warning?: string | null;
+          }[]
         | null
         | undefined,
 ): boolean {
-    return config_folders?.some((config_folder) =>
-        config_folder.status !== "done" || Boolean(config_folder.message) ||
-        Boolean(config_folder.reload_warning)
-    ) ?? false;
+    return (
+        config_folders?.some(
+            (config_folder) =>
+                config_folder.status !== "done" ||
+                Boolean(config_folder.message) ||
+                Boolean(config_folder.reload_warning),
+        ) ?? false
+    );
 }
 
 function formatConfigFolderDetails(
     config_folders:
         | {
-            config_folder: string;
-            status: string;
-            message?: string | null;
-            reload_warning?: string | null;
-        }[]
+              config_folder: string;
+              status: string;
+              message?: string | null;
+              reload_warning?: string | null;
+          }[]
         | null
         | undefined,
 ): string | null {
     if (!config_folders?.length) return null;
-    return config_folders.map((config_folder) => {
-        const note = [config_folder.message, config_folder.reload_warning].filter(Boolean).join(
-            ": ",
-        );
-        return `${config_folder.config_folder}: ${config_folder.status}${note ? ` (${note})` : ""}`;
-    }).join(" · ");
+    return config_folders
+        .map((config_folder) => {
+            const note = [config_folder.message, config_folder.reload_warning]
+                .filter(Boolean)
+                .join(": ");
+            return `${config_folder.config_folder}: ${config_folder.status}${note ? ` (${note})` : ""}`;
+        })
+        .join(" · ");
 }
 
 type ResultLineProps = {
@@ -311,13 +323,15 @@ function ResultLine({ intent, children }: ResultLineProps) {
         <p className={styles.resultLine}>
             <StatusPip intent={pipIntent} />
             <span
-                className={intent === "ok"
-                    ? styles.resultOk
-                    : intent === "running"
-                    ? styles.resultRunning
-                    : intent === "warn"
-                    ? styles.resultWarn
-                    : styles.resultError}
+                className={
+                    intent === "ok"
+                        ? styles.resultOk
+                        : intent === "running"
+                          ? styles.resultRunning
+                          : intent === "warn"
+                            ? styles.resultWarn
+                            : styles.resultError
+                }
             >
                 {children}
             </span>

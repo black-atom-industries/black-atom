@@ -4,26 +4,24 @@ import styles from "./adapter-page.module.css";
 
 /** zed — linked provisioning, patches the JSONC settings theme key(s)
     structurally; no regex fields to offer. */
-export function ZedSettings(
-    {
-        appConfig,
-        editableFields,
-        detected,
-        onToggleEnabled,
-        onFieldCommit,
-        firstFieldRef,
-        onPickPath,
-        onSetUp,
-        setUpResult,
-        onVerifyPath,
-        verifyPathResult,
-        linkable,
-        onLinkThemes,
-        linkThemesResult,
-        onTestApply,
-        testApplyResult,
-    }: AdapterPageProps,
-) {
+export function ZedSettings({
+    appConfig,
+    editableFields,
+    detected,
+    onToggleEnabled,
+    onFieldCommit,
+    firstFieldRef,
+    onPickPath,
+    onSetUp,
+    setUpResult,
+    onVerifyPath,
+    verifyPathResult,
+    linkable,
+    onLinkThemes,
+    linkThemesResult,
+    onTestApply,
+    testApplyResult,
+}: AdapterPageProps) {
     return (
         <div className={styles.root}>
             <AdapterHeader

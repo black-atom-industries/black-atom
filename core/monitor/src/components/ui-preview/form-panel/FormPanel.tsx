@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function FormPanel({ children }: Props) {
-    return <div className={styles.formPanel} data-component="FormPanel">{children}</div>;
+    return (
+        <div className={styles.formPanel} data-component="FormPanel">
+            {children}
+        </div>
+    );
 }

@@ -6,6 +6,9 @@ interface Props {
 }
 
 export function CollectionLabel({ children }: Props) {
-    return <div className={styles.collectionLabel} data-component="CollectionLabel">{children}
-    </div>;
+    return (
+        <div className={styles.collectionLabel} data-component="CollectionLabel">
+            {children}
+        </div>
+    );
 }

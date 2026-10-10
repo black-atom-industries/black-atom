@@ -101,10 +101,10 @@ function SettingsRoute() {
 
     const detectedApps = detections
         ? new Set(
-            (Object.entries(detections) as [AppName, boolean][])
-                .filter(([, found]) => found)
-                .map(([name]) => name),
-        )
+              (Object.entries(detections) as [AppName, boolean][])
+                  .filter(([, found]) => found)
+                  .map(([name]) => name),
+          )
         : null;
 
     async function autoDetectApps() {
@@ -137,9 +137,10 @@ function SettingsRoute() {
         const provisioningClass = provisioningByApp[appName];
         if (!current || !provisioningClass) return;
 
-        let configPath = appName === "obsidian"
-            ? current.apps[appName]?.config_folders?.[0] ?? ""
-            : current.apps[appName]?.config_path ?? "";
+        let configPath =
+            appName === "obsidian"
+                ? (current.apps[appName]?.config_folders?.[0] ?? "")
+                : (current.apps[appName]?.config_path ?? "");
         if (appName === "obsidian") {
             const discovered = detectedConfigFolders.obsidian ?? [];
             if (discovered.length > 0) {
@@ -201,19 +202,20 @@ function SettingsRoute() {
         setLinkThemesResults((prev) => ({ ...prev, [appName]: { status: "running" } }));
         try {
             const result = await commands.linkAppThemes(appName);
-            const next: LinkThemesRowResult = result.status === "done"
-                ? {
-                    status: "ok",
-                    linked: result.linked ?? 0,
-                    pruned: result.pruned ?? 0,
-                    message: result.message ?? null,
-                    config_folders: result.config_folders ?? null,
-                }
-                : {
-                    status: "error",
-                    message: result.message ?? "Unknown error",
-                    config_folders: result.config_folders ?? null,
-                };
+            const next: LinkThemesRowResult =
+                result.status === "done"
+                    ? {
+                          status: "ok",
+                          linked: result.linked ?? 0,
+                          pruned: result.pruned ?? 0,
+                          message: result.message ?? null,
+                          config_folders: result.config_folders ?? null,
+                      }
+                    : {
+                          status: "error",
+                          message: result.message ?? "Unknown error",
+                          config_folders: result.config_folders ?? null,
+                      };
             setLinkThemesResults((prev) => ({ ...prev, [appName]: next }));
             appStatus.query.refetch();
         } catch (error) {
@@ -230,31 +232,35 @@ function SettingsRoute() {
 
     function toggleAppEnabled(appName: AppName) {
         if (!data) return;
-        void config.saveLatest((latest) => ({
-            ...latest,
-            apps: {
-                ...latest.apps,
-                [appName]: {
-                    ...latest.apps[appName],
-                    enabled: latest.apps[appName].enabled === false,
+        void config
+            .saveLatest((latest) => ({
+                ...latest,
+                apps: {
+                    ...latest.apps,
+                    [appName]: {
+                        ...latest.apps[appName],
+                        enabled: latest.apps[appName].enabled === false,
+                    },
                 },
-            },
-        })).catch((error) => {
-            console.error("Could not save adapter enabled state", error);
-        });
+            }))
+            .catch((error) => {
+                console.error("Could not save adapter enabled state", error);
+            });
     }
 
     function commitAdapterField(appName: AppName, field: AdapterField, value: string) {
         if (!data) return;
-        void config.saveLatest((latest) => ({
-            ...latest,
-            apps: {
-                ...latest.apps,
-                [appName]: { ...latest.apps[appName], [field]: value },
-            },
-        })).catch((error) => {
-            console.error("Could not save adapter field", error);
-        });
+        void config
+            .saveLatest((latest) => ({
+                ...latest,
+                apps: {
+                    ...latest.apps,
+                    [appName]: { ...latest.apps[appName], [field]: value },
+                },
+            }))
+            .catch((error) => {
+                console.error("Could not save adapter field", error);
+            });
     }
 
     function queueConfigFolderSave(change: (config_folders: string[]) => string[]) {
@@ -289,7 +295,7 @@ function SettingsRoute() {
                 ? selected
                 : `${selected}${separator}.obsidian`;
             queueConfigFolderSave((current) =>
-                current.includes(configFolder) ? current : [...current, configFolder]
+                current.includes(configFolder) ? current : [...current, configFolder],
             );
         });
     }
@@ -326,7 +332,8 @@ function SettingsRoute() {
                     ...prev,
                     [appName]: {
                         status: "error",
-                        message: result.message ??
+                        message:
+                            result.message ??
                             (result.status === "skipped" ? "Adapter skipped" : "Unknown error"),
                         config_folders: result.config_folders ?? null,
                     },
@@ -373,14 +380,15 @@ function SettingsRoute() {
         setVerifyPathResults((prev) => ({ ...prev, [appName]: { status: "running" } }));
         try {
             const result = await commands.verifyAppPath(appName);
-            const next: VerifyPathResult = result.message != null
-                ? { status: "unverifiable", message: result.message }
-                : {
-                    status: "verified",
-                    exists: result.exists,
-                    patternMatches: result.pattern_matches,
-                    config_folders: result.config_folders,
-                };
+            const next: VerifyPathResult =
+                result.message != null
+                    ? { status: "unverifiable", message: result.message }
+                    : {
+                          status: "verified",
+                          exists: result.exists,
+                          patternMatches: result.pattern_matches,
+                          config_folders: result.config_folders,
+                      };
             setVerifyPathResults((prev) => ({ ...prev, [appName]: next }));
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
@@ -405,10 +413,13 @@ function SettingsRoute() {
     function moveAdapterSelection(delta: number) {
         if (appEntries.length === 0) return;
         const currentIndex = selectedApp
-            ? Math.max(0, appEntries.findIndex(([name]) => name === selectedApp))
+            ? Math.max(
+                  0,
+                  appEntries.findIndex(([name]) => name === selectedApp),
+              )
             : delta > 0
-            ? -1
-            : appEntries.length;
+              ? -1
+              : appEntries.length;
         const nextIndex = Math.min(Math.max(0, appEntries.length - 1), currentIndex + delta);
         const entry = appEntries[nextIndex];
         if (entry) {

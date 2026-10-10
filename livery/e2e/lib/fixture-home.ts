@@ -15,7 +15,8 @@ export type Scenario = (typeof scenarios)[number];
  */
 export function resetFixtureHome(scenario: Scenario) {
     const home = fixture.home;
-    const isDisposable = basename(home).startsWith(FIXTURE_HOME_PREFIX) &&
+    const isDisposable =
+        basename(home).startsWith(FIXTURE_HOME_PREFIX) &&
         realpathSync(dirname(home)) === realpathSync(tmpdir());
     if (!isDisposable) {
         throw new Error(`Refusing to reset ${home}: not a livery-e2e temp directory`);

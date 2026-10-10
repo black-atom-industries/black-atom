@@ -25,8 +25,10 @@ export function activeThemePersistenceError(error: unknown): UpdateResult {
 
 /** A done result or a config patch that only failed to reload live. */
 export function themeWasApplied(result: UpdateResult): boolean {
-    return result.status === "done" ||
-        (result.status === "skipped" && result.message?.startsWith("Config patched;") === true);
+    return (
+        result.status === "done" ||
+        (result.status === "skipped" && result.message?.startsWith("Config patched;") === true)
+    );
 }
 
 export type ProgressStatus = "idle" | "running" | "done" | "error";
@@ -98,10 +100,10 @@ export function summarizeApply(results: UpdateResult[]): ApplySummary {
     const kind: ApplySummaryKind = inFlight
         ? "running"
         : errorCount > 0
-        ? "error"
-        : degradedCount > 0
-        ? "degraded"
-        : "clean";
+          ? "error"
+          : degradedCount > 0
+            ? "degraded"
+            : "clean";
 
     const totalDurationMs = results.reduce<number | null>((sum, r) => {
         if (r.duration_ms != null) return (sum ?? 0) + r.duration_ms;

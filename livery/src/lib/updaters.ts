@@ -19,11 +19,10 @@ export interface UpdaterEntry {
 }
 
 /** Filter apps that are enabled in the config. Enabled defaults to true if omitted. */
-export function getEnabledApps(
-    apps: Partial<Record<AppName, AppConfig>>,
-): [AppName, AppConfig][] {
-    return (Object.entries(apps) as [AppName, AppConfig][])
-        .filter(([_name, app]) => app && app.enabled !== false);
+export function getEnabledApps(apps: Partial<Record<AppName, AppConfig>>): [AppName, AppConfig][] {
+    return (Object.entries(apps) as [AppName, AppConfig][]).filter(
+        ([_name, app]) => app && app.enabled !== false,
+    );
 }
 
 /** Build runnable updaters from enabled apps and theme metadata. */

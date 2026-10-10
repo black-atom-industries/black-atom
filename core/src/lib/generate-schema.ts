@@ -18,75 +18,72 @@ function generateSchema() {
     const collectionProperties: Record<string, unknown> = {};
     for (const collectionKey of collections) {
         collectionProperties[collectionKey] = {
-            "$ref": "#/$defs/collectionConfig",
+            $ref: "#/$defs/collectionConfig",
         };
     }
 
     const schema = {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "title": "Black Atom Adapter Configuration",
-        "description": "Configuration schema for Black Atom theme adapters",
-        "type": "object",
-        "properties": {
-            "$schema": {
-                "type": "string",
-                "description": "The JSON Schema URL",
+        $schema: "http://json-schema.org/draft-07/schema#",
+        title: "Black Atom Adapter Configuration",
+        description: "Configuration schema for Black Atom theme adapters",
+        type: "object",
+        properties: {
+            $schema: {
+                type: "string",
+                description: "The JSON Schema URL",
             },
-            "enabled": {
-                "type": "boolean",
-                "description": "Whether this adapter is active and should be processed",
-                "default": true,
+            enabled: {
+                type: "boolean",
+                description: "Whether this adapter is active and should be processed",
+                default: true,
             },
-            "postGenerate": {
-                "type": "string",
-                "description": "Command run in the adapter directory after generation",
+            postGenerate: {
+                type: "string",
+                description: "Command run in the adapter directory after generation",
             },
-            "collections": {
-                "type": "object",
-                "properties": collectionProperties,
-                "additionalProperties": false,
-                "minProperties": 1,
+            collections: {
+                type: "object",
+                properties: collectionProperties,
+                additionalProperties: false,
+                minProperties: 1,
             },
         },
-        "required": ["$schema", "collections"],
-        "additionalProperties": false,
-        "$defs": {
-            "collectionConfig": {
-                "type": "object",
-                "properties": {
-                    "template": {
-                        "oneOf": [
-                            { "type": "string" },
-                            { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        required: ["$schema", "collections"],
+        additionalProperties: false,
+        $defs: {
+            collectionConfig: {
+                type: "object",
+                properties: {
+                    template: {
+                        oneOf: [
+                            { type: "string" },
+                            { type: "array", items: { type: "string" }, minItems: 1 },
                         ],
-                        "description":
+                        description:
                             "Path to the collection template file, or several templates that each render one file per theme",
                     },
-                    "output": {
-                        "type": "string",
-                        "description":
+                    output: {
+                        type: "string",
+                        description:
                             "Directory the generated files are written to, relative to the adapter root; defaults to the template's directory",
                     },
-                    "themes": {
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "description": "Theme key from the core theme definitions",
+                    themes: {
+                        type: "array",
+                        items: {
+                            type: "string",
+                            description: "Theme key from the core theme definitions",
                         },
-                        "minItems": 1,
+                        minItems: 1,
                     },
                 },
-                "required": ["template", "themes"],
-                "additionalProperties": false,
+                required: ["template", "themes"],
+                additionalProperties: false,
             },
         },
     };
 
     // Write the schema to adapter.schema.json
-    writeFileSync(
-        "adapter.schema.json",
-        JSON.stringify(schema, null, 2),
-    );
+    writeFileSync("adapter.schema.json", JSON.stringify(schema, null, 2));
 
     log.success("Schema generated successfully!");
 }

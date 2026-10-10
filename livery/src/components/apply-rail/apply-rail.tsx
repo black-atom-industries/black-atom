@@ -77,35 +77,38 @@ export function ApplyRail({
     const { kind, okCount, errorCount, degradedCount, completedCount, total, totalDurationMs } =
         summary;
 
-    const statusLine = mode === "idle"
-        ? "READY"
-        : kind === "running"
-        ? `APPLYING ${themeName}`
-        : kind === "clean"
-        ? `■ APPLIED — ${themeName}`
-        : kind === "degraded"
-        ? `■ APPLIED · ${degradedCount} DEGRADED`
-        : "■ APPLIED WITH ERRORS";
+    const statusLine =
+        mode === "idle"
+            ? "READY"
+            : kind === "running"
+              ? `APPLYING ${themeName}`
+              : kind === "clean"
+                ? `■ APPLIED — ${themeName}`
+                : kind === "degraded"
+                  ? `■ APPLIED · ${degradedCount} DEGRADED`
+                  : "■ APPLIED WITH ERRORS";
 
-    const counterLeft = mode === "idle" || kind === "running"
-        ? `${completedCount}/${total}`
-        : `${okCount + degradedCount}/${total} OK`;
+    const counterLeft =
+        mode === "idle" || kind === "running"
+            ? `${completedCount}/${total}`
+            : `${okCount + degradedCount}/${total} OK`;
 
-    const counterRight = kind === "error"
-        ? `${errorCount} ERROR`
-        : totalDurationMs != null
-        ? `${totalDurationMs} MS`
-        : "";
+    const counterRight =
+        kind === "error"
+            ? `${errorCount} ERROR`
+            : totalDurationMs != null
+              ? `${totalDurationMs} MS`
+              : "";
 
-    const progressValue = mode !== "idle" && total > 0
-        ? Math.round((completedCount / total) * 100)
-        : 0;
+    const progressValue =
+        mode !== "idle" && total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
-    const vocabulary = mode !== "active"
-        ? "⏎ APPLY"
-        : kind === "clean"
-        ? "esc BACK · auto in 1.2s"
-        : `j/k ROWS · ⏎ ${expandedApp ? "COLLAPSE" : "DETAILS"} · r RETRY · esc BACK`;
+    const vocabulary =
+        mode !== "active"
+            ? "⏎ APPLY"
+            : kind === "clean"
+              ? "esc BACK · auto in 1.2s"
+              : `j/k ROWS · ⏎ ${expandedApp ? "COLLAPSE" : "DETAILS"} · r RETRY · esc BACK`;
 
     return (
         <div
@@ -126,10 +129,8 @@ export function ApplyRail({
                     </div>
                 )}
             </div>
-            {
-                /* data-live scopes the resolve/blink animations to a running pass —
-                rows never flash on mount or in settled/idle display. */
-            }
+            {/* data-live scopes the resolve/blink animations to a running pass —
+                rows never flash on mount or in settled/idle display. */}
             <div className={styles.rows} data-live={mode === "active"}>
                 {results.map((result, index) => (
                     <AdapterStatusRow

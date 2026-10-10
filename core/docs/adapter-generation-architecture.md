@@ -44,10 +44,10 @@ flowchart TD
 
 At the repo root:
 
-| Task                                     | Purpose                                                           |
-| ---------------------------------------- | ----------------------------------------------------------------- |
+| Task                              | Purpose                                                           |
+| --------------------------------- | ----------------------------------------------------------------- |
 | `node core/src/tasks/generate.ts` | Regenerate every adapter once                                     |
-| `npm run dev`                          | Watch core and every adapter's templates, regenerate, and reapply |
+| `npm run dev`                     | Watch core and every adapter's templates, regenerate, and reapply |
 
 Inside a single adapter directory (`adapters/<name>/`):
 

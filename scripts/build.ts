@@ -19,15 +19,13 @@ export async function run(args: string[], cwd = repoRoot) {
     if (code !== 0) throw new Error(`${args.join(" ")} failed (${code})`);
 }
 
-export async function build(
-    {
-        appOnly = false,
-        bundles = process.platform === "darwin" ? "app" : undefined,
-    }: {
-        appOnly?: boolean;
-        bundles?: string;
-    } = {},
-) {
+export async function build({
+    appOnly = false,
+    bundles = process.platform === "darwin" ? "app" : undefined,
+}: {
+    appOnly?: boolean;
+    bundles?: string;
+} = {}) {
     await run([process.execPath, "core/src/tasks/generate.ts"]);
     await run(
         ["npx", "tauri", "build", ...(bundles ? ["--bundles", bundles] : [])],

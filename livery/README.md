@@ -83,7 +83,7 @@ current one.
 
 ## Origin of name
 
-[Livery](https://en.wikipedia.org/wiki/Livery_(aircraft)) is the paint scheme of
+[Livery](<https://en.wikipedia.org/wiki/Livery_(aircraft)>) is the paint scheme of
 an aircraft, its visual identity.
 
 ## License

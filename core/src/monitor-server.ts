@@ -24,7 +24,10 @@ async function loadThemeMap(): Promise<Theme.DefinitionMap> {
     return JSON.parse(stdout);
 }
 
-function json(res: ServerResponse, { data, status = 200 }: { data: unknown; status?: number }): void {
+function json(
+    res: ServerResponse,
+    { data, status = 200 }: { data: unknown; status?: number },
+): void {
     res.writeHead(status, {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -50,7 +53,8 @@ export function startPreviewServer() {
         let debounce: ReturnType<typeof setTimeout> | undefined;
 
         watch(config.dir.themes, { recursive: true }, (_event, filename) => {
-            if (!filename?.endsWith(".ts") || !existsSync(join(config.dir.themes, filename))) return;
+            if (!filename?.endsWith(".ts") || !existsSync(join(config.dir.themes, filename)))
+                return;
 
             clearTimeout(debounce);
             debounce = setTimeout(async () => {
@@ -77,15 +81,12 @@ export function startPreviewServer() {
                 res.writeHead(200, {
                     "Content-Type": "text/event-stream",
                     "Cache-Control": "no-cache",
-                    "Connection": "keep-alive",
+                    Connection: "keep-alive",
                     "Access-Control-Allow-Origin": "*",
                 });
                 sseClients.add(res);
 
-                const intervalId = setInterval(
-                    () => res.write(": heartbeat\n\n"),
-                    15_000,
-                );
+                const intervalId = setInterval(() => res.write(": heartbeat\n\n"), 15_000);
 
                 req.on("close", () => {
                     clearInterval(intervalId);
@@ -109,7 +110,10 @@ export function startPreviewServer() {
                     const key = match[1] as Theme.Key;
                     const theme = themeMap![key];
                     if (!theme) {
-                        return json(res, { data: { error: `Theme not found: ${key}` }, status: 404 });
+                        return json(res, {
+                            data: { error: `Theme not found: ${key}` },
+                            status: 404,
+                        });
                     }
                     return json(res, { data: theme });
                 }
@@ -119,10 +123,7 @@ export function startPreviewServer() {
         }
     });
 
-    server.listen(
-        PORT,
-        () => console.log(`Preview API on http://localhost:${PORT}`),
-    );
+    server.listen(PORT, () => console.log(`Preview API on http://localhost:${PORT}`));
 
     return server;
 }

@@ -8,15 +8,15 @@ import createFeedback from "./create-feedback-dark.ts";
 
 export default defineThemeColors({
     primaries: {
-        d10: oklch(0.300, 0.055, 250),
+        d10: oklch(0.3, 0.055, 250),
         d20: oklch(0.325, 0.055, 250),
-        d30: oklch(0.350, 0.055, 250),
+        d30: oklch(0.35, 0.055, 250),
         d40: oklch(0.375, 0.055, 250),
 
-        m10: oklch(0.550, 0.075, 250),
-        m20: oklch(0.600, 0.075, 250),
-        m30: oklch(0.650, 0.075, 250),
-        m40: oklch(0.750, 0.075, 250),
+        m10: oklch(0.55, 0.075, 250),
+        m20: oklch(0.6, 0.075, 250),
+        m30: oklch(0.65, 0.075, 250),
+        m40: oklch(0.75, 0.075, 250),
 
         l10: oklch(0.835, 0.015, 250),
         l20: oklch(0.885, 0.015, 250),
@@ -24,29 +24,29 @@ export default defineThemeColors({
         l40: oklch(0.985, 0.005, 250),
     },
     accents: {
-        a10: oklch(0.80, 0.150, 72.00),
+        a10: oklch(0.8, 0.15, 72.0),
         a20: oklch(0.75, 0.125, 255.0),
-        a30: oklch(0.70, 0.175, 30.00),
+        a30: oklch(0.7, 0.175, 30.0),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
-            darkRed: oklch(0.60, 0.175, 30),
+            darkRed: oklch(0.6, 0.175, 30),
             red: accents.a30!,
 
             darkGreen: oklch(0.65, 0.125, 150),
             green: oklch(0.75, 0.125, 150),
 
-            darkYellow: oklch(0.70, 0.150, 72),
+            darkYellow: oklch(0.7, 0.15, 72),
             yellow: accents.a10,
 
             darkBlue: oklch(0.65, 0.125, 255),
             blue: accents.a20,
 
-            darkMagenta: oklch(0.60, 0.150, 350),
-            magenta: oklch(0.70, 0.150, 350),
+            darkMagenta: oklch(0.6, 0.15, 350),
+            magenta: oklch(0.7, 0.15, 350),
 
-            darkCyan: oklch(0.65, 0.100, 200),
-            cyan: oklch(0.75, 0.100, 200),
+            darkCyan: oklch(0.65, 0.1, 200),
+            cyan: oklch(0.75, 0.1, 200),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,

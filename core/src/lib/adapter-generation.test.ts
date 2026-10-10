@@ -33,9 +33,7 @@ const adapterNames = [
     "zed",
 ];
 const collectionKeys = [
-    ...new Set(
-        Object.values(themeCatalog).map((theme) => theme.meta.collection.key),
-    ),
+    ...new Set(Object.values(themeCatalog).map((theme) => theme.meta.collection.key)),
 ].sort();
 
 test("all adapters contain exactly the catalog outputs and regenerate identically", async () => {
@@ -45,9 +43,7 @@ test("all adapters contain exactly the catalog outputs and regenerate identicall
     const schema = createAdapterConfigSchema(themeKeys);
     for (const adapter of adapterNames) {
         const adapterDir = join(adaptersDir, adapter);
-        const raw = JSON.parse(
-            await readFile(join(adapterDir, "black-atom-adapter.json"), "utf8"),
-        );
+        const raw = JSON.parse(await readFile(join(adapterDir, "black-atom-adapter.json"), "utf8"));
         assert.deepEqual(Object.keys(raw.collections).sort(), collectionKeys, adapter);
         const config = schema.parse(raw);
         const expected = [];
@@ -57,12 +53,12 @@ test("all adapters contain exactly the catalog outputs and regenerate identicall
             const collections = Object.fromEntries(
                 Object.entries(config.collections).map(([key, collection]) => {
                     if (!collection) throw new Error(`Missing collection: ${key}`);
-                    const template = [collection.template].flat().map((path) =>
-                        join(adapterDir, path)
-                    );
+                    const template = [collection.template]
+                        .flat()
+                        .map((path) => join(adapterDir, path));
                     for (const theme of collection.themes) {
-                        const definition = Object.values(themeCatalog).find((item) =>
-                            item.meta.key === theme
+                        const definition = Object.values(themeCatalog).find(
+                            (item) => item.meta.key === theme,
                         );
                         assert.deepEqual(definition?.meta.collection.key, key);
                     }
@@ -75,7 +71,8 @@ test("all adapters contain exactly the catalog outputs and regenerate identicall
                 for (const theme of collection.themes) {
                     keys.push(theme);
                     for (const template of [collection.template].flat()) {
-                        const name = basename(template).replace(".template.", ".")
+                        const name = basename(template)
+                            .replace(".template.", ".")
                             .replace("collection", theme);
                         const output = join(collection.output ?? dirname(template), name);
                         expected.push(output);
@@ -90,9 +87,7 @@ test("all adapters contain exactly the catalog outputs and regenerate identicall
             }
             assert.deepEqual(keys.sort(), [...themeKeys].sort(), adapter);
             const actual = [];
-            const outputDirs = new Set(
-                expected.map((output) => join(adapterDir, dirname(output))),
-            );
+            const outputDirs = new Set(expected.map((output) => join(adapterDir, dirname(output))));
             for (const dir of outputDirs) {
                 for await (const entry of walkFiles(dir)) {
                     if (entry.name.startsWith("black-atom-")) {
@@ -125,8 +120,9 @@ test("adapter schema and selection lists match the catalog", async () => {
     const types = await readFile(join(adaptersDir, "nvim/lua/black-atom/types.lua"), "utf8");
     const aliases = types.split("---@alias BlackAtom.Theme.Collection.Key");
     const themeAliases = [...aliases[0].matchAll(/---\| "([^"]+)"/g)].map((match) => match[1]);
-    const collectionAliases = [...aliases[1].split("---@class")[0].matchAll(/---\| "([^"]+)"/g)]
-        .map((match) => match[1]);
+    const collectionAliases = [
+        ...aliases[1].split("---@class")[0].matchAll(/---\| "([^"]+)"/g),
+    ].map((match) => match[1]);
     assert.deepEqual(themeAliases.sort(), [...themeKeys].sort());
     assert.deepEqual(collectionAliases.sort(), collectionKeys);
     const variants = await readFile(
@@ -136,7 +132,8 @@ test("adapter schema and selection lists match the catalog", async () => {
     const options = [...variants.matchAll(/value: (black-atom-[\w-]+)/g)].map((match) => match[1]);
     assert.deepEqual(options.sort(), [...themeKeys].sort());
     const css = await readFile(join(adaptersDir, "obsidian/theme.css"), "utf8");
-    const selectors = [...css.matchAll(/\.theme-(?:dark|light)\.(black-atom-[\w-]+)\s*\{/g)]
-        .map((match) => match[1]);
+    const selectors = [...css.matchAll(/\.theme-(?:dark|light)\.(black-atom-[\w-]+)\s*\{/g)].map(
+        (match) => match[1],
+    );
     assert.deepEqual(selectors.sort(), [...themeKeys].sort());
 });

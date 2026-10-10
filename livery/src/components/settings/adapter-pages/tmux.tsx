@@ -10,26 +10,24 @@ import styles from "./adapter-page.module.css";
 
 /** tmux — linked provisioning, source-file points at the managed themes
     dir; the active theme is selected via a regex-patched line. */
-export function TmuxSettings(
-    {
-        appConfig,
-        editableFields,
-        detected,
-        onToggleEnabled,
-        onFieldCommit,
-        firstFieldRef,
-        onPickPath,
-        onSetUp,
-        setUpResult,
-        onVerifyPath,
-        verifyPathResult,
-        linkable,
-        onLinkThemes,
-        linkThemesResult,
-        onTestApply,
-        testApplyResult,
-    }: AdapterPageProps,
-) {
+export function TmuxSettings({
+    appConfig,
+    editableFields,
+    detected,
+    onToggleEnabled,
+    onFieldCommit,
+    firstFieldRef,
+    onPickPath,
+    onSetUp,
+    setUpResult,
+    onVerifyPath,
+    verifyPathResult,
+    linkable,
+    onLinkThemes,
+    linkThemesResult,
+    onTestApply,
+    testApplyResult,
+}: AdapterPageProps) {
     return (
         <div className={styles.root}>
             <AdapterHeader
@@ -78,13 +76,13 @@ export function TmuxSettings(
                         onCommit={(value) => onFieldCommit("replace_template", value)}
                     />
                 )}
-                {(editableFields.has("match_pattern") || editableFields.has("replace_template")) &&
-                    (
-                        <p className={styles.fieldGridNote}>
-                            Template variables: {"{themeKey}"} · {"{themesPath}"} ·{" "}
-                            {"{collectionKey}"} · {"{appearance}"}
-                        </p>
-                    )}
+                {(editableFields.has("match_pattern") ||
+                    editableFields.has("replace_template")) && (
+                    <p className={styles.fieldGridNote}>
+                        Template variables: {"{themeKey}"} · {"{themesPath}"} · {"{collectionKey}"}{" "}
+                        · {"{appearance}"}
+                    </p>
+                )}
             </div>
             <ActionRow
                 onSetUp={onSetUp}

@@ -34,7 +34,7 @@ This adapter generates CSS files containing GTK color definitions using `@define
     @ba-fg-warn /* Warning */
     @ba-fg-info /* Info */
     /* Palette colors */
-    @ba-red, @ba-green, @ba-yellow, @ba-blue, @ba-magenta, @ba-cyan
+    @ba-red, @ba-green, @ba-yellow, @ba-blue, @ba-magenta, @ba-cyan;
 ```
 
 ## Installation

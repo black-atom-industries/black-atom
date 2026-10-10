@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function Section({ children }: Props) {
-    return <section className={styles.section} data-layout="Section">{children}</section>;
+    return (
+        <section className={styles.section} data-layout="Section">
+            {children}
+        </section>
+    );
 }

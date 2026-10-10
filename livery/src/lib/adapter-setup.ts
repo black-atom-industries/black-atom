@@ -60,9 +60,10 @@ export async function setUpAdapter(
     if (!configPath.trim()) {
         return {
             steps: [],
-            blocked: app === "obsidian"
-                ? "Add at least one Obsidian config folder first"
-                : "Set CONFIG_PATH first — livery cannot guess it",
+            blocked:
+                app === "obsidian"
+                    ? "Add at least one Obsidian config folder first"
+                    : "Set CONFIG_PATH first — livery cannot guess it",
             link: null,
             verify: null,
         };

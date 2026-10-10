@@ -13,12 +13,7 @@ export function ColorTokenGroup({ label, tokens, swatchType = "background" }: Pr
         <ExampleSection label={label} data-partial="ColorTokenGroup">
             <SwatchGrid>
                 {tokens.map(([name, color]) => (
-                    <ColorSwatch
-                        key={name}
-                        color={color}
-                        label={name}
-                        type={swatchType}
-                    />
+                    <ColorSwatch key={name} color={color} label={name} type={swatchType} />
                 ))}
             </SwatchGrid>
         </ExampleSection>

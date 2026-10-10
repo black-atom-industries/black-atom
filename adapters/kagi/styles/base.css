@@ -2,8 +2,12 @@
 
 /* Knobs */
 html[class] {
-    --ba-font: "TX-02 Condensed", "Berkeley Mono Condensed", "TX-02", "Berkeley Mono", "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    --ba-font-heading: "TX-02 Condensed", "Berkeley Mono Condensed", "TX-02", "Berkeley Mono", "Kode Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --ba-font:
+        "TX-02 Condensed", "Berkeley Mono Condensed", "TX-02", "Berkeley Mono", "IBM Plex Mono",
+        ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --ba-font-heading:
+        "TX-02 Condensed", "Berkeley Mono Condensed", "TX-02", "Berkeley Mono", "Kode Mono",
+        ui-monospace, "SF Mono", Menlo, Consolas, monospace;
     --ba-case: uppercase;
     --ba-border-width: 3px;
     --ba-border-width-thin: 2px;
@@ -367,7 +371,13 @@ body {
 }
 
 /* Links */
-.wikipediaResult a:not([data-wiki-article*="redlink=1"], .wiki-image a, .wiki-social a, .wikipediaFullPageLink a),
+.wikipediaResult
+    a:not(
+        [data-wiki-article*="redlink=1"],
+        .wiki-image a,
+        .wiki-social a,
+        .wikipediaFullPageLink a
+    ),
 #amenities_widget .amenities_title a,
 .__sri-rating-stars .info .reviews a,
 .qa-container-box .reference-links a {
@@ -380,14 +390,26 @@ body {
     text-decoration-skip-ink: none;
 }
 
-.wikipediaResult a:not([data-wiki-article*="redlink=1"], .wiki-image a, .wiki-social a, .wikipediaFullPageLink a):visited,
+.wikipediaResult
+    a:not(
+        [data-wiki-article*="redlink=1"],
+        .wiki-image a,
+        .wiki-social a,
+        .wikipediaFullPageLink a
+    ):visited,
 #amenities_widget .amenities_title a:visited,
 .__sri-rating-stars .info .reviews a:visited,
 .qa-container-box .reference-links a:visited {
     text-decoration-color: var(--ba-fg-subtle);
 }
 
-.wikipediaResult a:not([data-wiki-article*="redlink=1"], .wiki-image a, .wiki-social a, .wikipediaFullPageLink a):hover,
+.wikipediaResult
+    a:not(
+        [data-wiki-article*="redlink=1"],
+        .wiki-image a,
+        .wiki-social a,
+        .wikipediaFullPageLink a
+    ):hover,
 #amenities_widget .amenities_title a:hover,
 .__sri-rating-stars .info .reviews a:hover,
 .qa-container-box .reference-links a:hover {

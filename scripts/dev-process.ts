@@ -16,19 +16,14 @@ export function startDevProcess(
             console.error(`${command[0]}: ${error.message}`);
             resolve(1);
         });
-        child.once(
-            "exit",
-            (code, signal) => resolve(code ?? (signal === "SIGINT" ? 130 : 1)),
-        );
+        child.once("exit", (code, signal) => resolve(code ?? (signal === "SIGINT" ? 130 : 1)));
     });
     function signalGroup(signal: NodeJS.Signals) {
         if (child.pid === undefined) return;
         try {
             process.kill(-child.pid, signal);
         } catch (error) {
-            if (
-                !(error instanceof Error && "code" in error && error.code === "ESRCH")
-            ) throw error;
+            if (!(error instanceof Error && "code" in error && error.code === "ESRCH")) throw error;
         }
     }
     return {
@@ -42,9 +37,11 @@ export function startDevProcess(
     };
 }
 
-export function createDevProcesses(
-    options: { cwd: string; env?: Record<string, string>; stopGraceMs?: number },
-) {
+export function createDevProcesses(options: {
+    cwd: string;
+    env?: Record<string, string>;
+    stopGraceMs?: number;
+}) {
     const children = new Set<ReturnType<typeof startDevProcess>>();
     const finished = Promise.withResolvers<number>();
     let stopping = false;

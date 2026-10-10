@@ -6,5 +6,9 @@ interface Props {
 }
 
 export function ChromeLayout({ children }: Props) {
-    return <div className={styles.chromeLayout} data-component="ChromeLayout">{children}</div>;
+    return (
+        <div className={styles.chromeLayout} data-component="ChromeLayout">
+            {children}
+        </div>
+    );
 }

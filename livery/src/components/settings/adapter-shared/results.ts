@@ -14,12 +14,12 @@ import type { SetUpOutcome } from "../../../lib/adapter-setup.ts";
 export type TestApplyResult =
     | { status: "running" }
     | {
-        status: "ok";
-        durationMs: number | null;
-        testedThemeLabel: string;
-        message?: string | null;
-        config_folders?: ConfigFolderOutcome[] | null;
-    }
+          status: "ok";
+          durationMs: number | null;
+          testedThemeLabel: string;
+          message?: string | null;
+          config_folders?: ConfigFolderOutcome[] | null;
+      }
     | { status: "reverting" }
     | { status: "error"; message: string; config_folders?: ConfigFolderOutcome[] | null };
 
@@ -27,11 +27,11 @@ export type TestApplyResult =
 export type VerifyPathResult =
     | { status: "running" }
     | {
-        status: "verified";
-        exists: boolean;
-        patternMatches: boolean | null;
-        config_folders?: ConfigFolderPathVerification[] | null;
-    }
+          status: "verified";
+          exists: boolean;
+          patternMatches: boolean | null;
+          config_folders?: ConfigFolderPathVerification[] | null;
+      }
     | { status: "unverifiable"; message: string };
 
 export function findConfigFolderVerification(
@@ -39,8 +39,8 @@ export function findConfigFolderVerification(
     configuredConfigFolder: string,
 ): ConfigFolderPathVerification | undefined {
     if (result?.status !== "verified") return undefined;
-    return result.config_folders?.find(({ config_folder }) =>
-        config_folder === configuredConfigFolder
+    return result.config_folders?.find(
+        ({ config_folder }) => config_folder === configuredConfigFolder,
     );
 }
 
@@ -48,12 +48,12 @@ export function findConfigFolderVerification(
 export type LinkThemesRowResult =
     | { status: "running" }
     | {
-        status: "ok";
-        linked: number;
-        pruned: number;
-        message?: string | null;
-        config_folders?: ConfigFolderLinkOutcome[] | null;
-    }
+          status: "ok";
+          linked: number;
+          pruned: number;
+          message?: string | null;
+          config_folders?: ConfigFolderLinkOutcome[] | null;
+      }
     | { status: "error"; message: string; config_folders?: ConfigFolderLinkOutcome[] | null };
 
 /** The qualifier a verify fault puts on the row, or null when all clear. */
@@ -69,6 +69,8 @@ export function verifyFaultLabel(result?: VerifyPathResult): string | null {
 /** True while any SET UP chain step is still pending or running. */
 export function setUpRunning(outcome?: SetUpOutcome): boolean {
     if (!outcome || outcome.blocked) return false;
-    return outcome.steps.length > 0 &&
-        outcome.steps.some((s) => s.status === "pending" || s.status === "running");
+    return (
+        outcome.steps.length > 0 &&
+        outcome.steps.some((s) => s.status === "pending" || s.status === "running")
+    );
 }

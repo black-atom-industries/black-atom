@@ -51,14 +51,12 @@ export function Dialog({
                         <span className={styles.hint}>{hint}</span>
                     </div>
                     <div className={styles.body}>{children}</div>
-                    {(footerLeft || footerRight)
-                        ? (
-                            <div className={styles.footer}>
-                                <span>{footerLeft}</span>
-                                <span>{footerRight}</span>
-                            </div>
-                        )
-                        : null}
+                    {footerLeft || footerRight ? (
+                        <div className={styles.footer}>
+                            <span>{footerLeft}</span>
+                            <span>{footerRight}</span>
+                        </div>
+                    ) : null}
                 </BaseDialog.Popup>
             </BaseDialog.Portal>
         </BaseDialog.Root>

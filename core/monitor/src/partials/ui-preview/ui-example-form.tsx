@@ -10,9 +10,15 @@ export function UiExampleForm() {
             <FormPanel>
                 <FormInput placeholder="Input field" readOnly />
                 <ButtonGroup>
-                    <Button variant="primary" type="button">Primary</Button>
-                    <Button variant="secondary" type="button">Secondary</Button>
-                    <Button variant="secondary" type="button" disabled>Disabled</Button>
+                    <Button variant="primary" type="button">
+                        Primary
+                    </Button>
+                    <Button variant="secondary" type="button">
+                        Secondary
+                    </Button>
+                    <Button variant="secondary" type="button" disabled>
+                        Disabled
+                    </Button>
                 </ButtonGroup>
             </FormPanel>
         </ExampleSection>

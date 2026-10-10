@@ -8,24 +8,20 @@ import { isGenerationInput } from "./watch.ts";
 import { copyToVault } from "./obsidian.ts";
 
 test("generation inputs include sources and Obsidian styles, excluding generated output", () => {
-    for (
-        const path of [
-            "obsidian/styles/ui/editor.css",
-            "obsidian/styles/ui/a.settings.yaml",
-            "ghostty/themes/default/collection.template",
-        ]
-    ) {
+    for (const path of [
+        "obsidian/styles/ui/editor.css",
+        "obsidian/styles/ui/a.settings.yaml",
+        "ghostty/themes/default/collection.template",
+    ]) {
         const actual = path.endsWith(".template") ? path + ".conf" : path;
         assert.deepEqual(isGenerationInput(join(config.dir.adapters, actual)), true);
     }
     assert.deepEqual(isGenerationInput(join(config.dir.themes, "default.ts")), true);
-    for (
-        const path of [
-            "ghostty/themes/default/generated.conf",
-            "obsidian/theme.css",
-            "obsidian/styles/editor.css.tmp",
-        ]
-    ) {
+    for (const path of [
+        "ghostty/themes/default/generated.conf",
+        "obsidian/theme.css",
+        "obsidian/styles/editor.css.tmp",
+    ]) {
         assert.deepEqual(isGenerationInput(join(config.dir.adapters, path)), false);
     }
 });
@@ -63,9 +59,9 @@ test("development generation skips disabled templates and rejects malformed conf
     const script = join(adapter, "postGenerate.ts");
     await writeFile(
         script,
-        `import { writeFileSync } from "node:fs";\nwriteFileSync(${
-            JSON.stringify(marker)
-        }, "generated");`,
+        `import { writeFileSync } from "node:fs";\nwriteFileSync(${JSON.stringify(
+            marker,
+        )}, "generated");`,
     );
     const adapterConfig = {
         $schema: "schema.json",

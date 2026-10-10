@@ -81,97 +81,97 @@ groups (one per LSP `CompletionItemKind`) in `lsp.lua`.
 This theme supports the following plugins:
 
 - [arrow.nvim](https://github.com/otavioschwanck/arrow.nvim)
-  - 4 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 4 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [blink.cmp](https://github.com/saghen/blink.cmp)
-  - 8 Highlight(s)
-  - Last updated: 2025-02-16
-  - Last commit: revert: rename `syn` variables to `syntax`
+    - 8 Highlight(s)
+    - Last updated: 2025-02-16
+    - Last commit: revert: rename `syn` variables to `syntax`
 - [codediff.nvim](https://github.com/esmuellert/codediff.nvim)
-  - 31 Highlight(s)
-  - Last updated: 2026-03-31
-  - Last commit: feat(highlights/plugins): add codediff.nvim support
+    - 31 Highlight(s)
+    - Last updated: 2026-03-31
+    - Last commit: feat(highlights/plugins): add codediff.nvim support
 - [diffview.nvim](https://github.com/sindrets/diffview.nvim)
-  - 24 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 24 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [edgy.nvim](https://github.com/folke/edgy.nvim)
-  - 5 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 5 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [flash.nvim](https://github.com/folke/flash.nvim)
-  - 6 Highlight(s)
-  - Last updated: 2025-02-16
-  - Last commit: revert(themes): restore full parameter names
+    - 6 Highlight(s)
+    - Last updated: 2025-02-16
+    - Last commit: revert(themes): restore full parameter names
 - [flux.nvim](https://github.com/nikbrunner/flux.nvim)
-  - 13 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 13 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [fyler.nvim](https://github.com/A7Lavinraj/fyler.nvim)
-  - 30 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 30 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [fzf-lua](https://github.com/ibhagwan/fzf-lua)
-  - 7 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 7 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
-  - 9 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 9 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [glance.nvim](https://github.com/DNLHC/glance.nvim)
-  - 28 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 28 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
-  - 2 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 2 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [mini.nvim](https://github.com/echasnovski/mini.nvim)
-  - 178 Highlight(s)
-  - Last updated: 2026-06-06
-  - Last commit: feat(highlights/plugins): add MiniCmdline highlight groups
+    - 178 Highlight(s)
+    - Last updated: 2026-06-06
+    - Last commit: feat(highlights/plugins): add MiniCmdline highlight groups
 - [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)
-  - 13 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 13 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
-  - 12 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 12 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [nvim-navbuddy](https://github.com/SmiteshP/nvim-navbuddy)
-  - 8 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 8 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua)
-  - 4 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 4 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context)
-  - 2 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 2 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [obsidian.nvim](https://github.com/obsidian-nvim/obsidian.nvim)
-  - 11 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 11 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)
-  - 69 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 69 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-  - 6 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 6 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [which-key.nvim](https://github.com/folke/which-key.nvim)
-  - 5 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 5 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 - [yazi.nvim](https://github.com/mikavilpas/yazi.nvim)
-  - 1 Highlight(s)
-  - Last updated: 2026-06-05
-  - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - 1 Highlight(s)
+    - Last updated: 2026-06-05
+    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
 
 </details>
 
@@ -180,7 +180,7 @@ This theme supports the following plugins:
 ### Roadmap
 
 - [ ] Minimize default highlight assignments
-  - The default assignment and links should be used as far as possible
+    - The default assignment and links should be used as far as possible
 - [ ] Make API stable
 - [ ] Dediated Black Atom Colorscheme Picker
 
@@ -219,13 +219,13 @@ Theme files are generated from templates through the Black Atom core CLI. You ne
 
 1. Edit the template in `templates/collection.template.lua` (one template, all collections)
 2. Generate theme files:
-   ```bash
-   node ../../core/src/cli/index.ts generate
-   ```
+    ```bash
+    node ../../core/src/cli/index.ts generate
+    ```
 3. Or use watch mode for live regeneration:
-   ```bash
-   node ../../core/src/cli/index.ts generate --watch
-   ```
+    ```bash
+    node ../../core/src/cli/index.ts generate --watch
+    ```
 
 ## License
 

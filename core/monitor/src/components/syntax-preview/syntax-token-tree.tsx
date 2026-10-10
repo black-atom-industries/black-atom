@@ -28,10 +28,12 @@ function renderGroup(name: string, group: SyntaxGroup[string]) {
 
     const entries = Object.entries(group as Record<string, unknown>);
 
-    const firstColor = entries.find(([, v]) => isHexColor(v))?.[1] as string ??
+    const firstColor =
+        (entries.find(([, v]) => isHexColor(v))?.[1] as string) ??
         Object.values(
-            entries.find(([, v]) => typeof v === "object")?.[1] as Record<string, string> ?? {},
-        )[0] ?? "#888";
+            (entries.find(([, v]) => typeof v === "object")?.[1] as Record<string, string>) ?? {},
+        )[0] ??
+        "#888";
 
     return (
         <div className={styles.leafGroup} key={name}>

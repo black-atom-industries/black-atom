@@ -34,16 +34,19 @@ export function ThemeList({ groups, selectedIndex, activeThemeKey, onSelect }: T
                             appearance={theme.meta.appearance === "dark" ? "D" : "L"}
                             leading={isActive ? <Badge size="mini">ACTIVE</Badge> : null}
                             onClick={() => onSelect(index)}
-                            rootRef={isSelected
-                                ? (el) => el?.scrollIntoView({ block: "nearest" })
-                                : undefined}
+                            rootRef={
+                                isSelected
+                                    ? (el) => el?.scrollIntoView({ block: "nearest" })
+                                    : undefined
+                            }
                         />
                     );
                 });
 
-                const label = `${
-                    formatCollectionTitle(group.collectionKey, group.label)
-                } (${group.themes.length})`;
+                const label = `${formatCollectionTitle(
+                    group.collectionKey,
+                    group.label,
+                )} (${group.themes.length})`;
 
                 return (
                     <div key={group.collectionKey} className={styles.group}>

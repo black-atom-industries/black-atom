@@ -37,9 +37,7 @@ export function RadioGroup({ options, value, name, onChange, className }: Props)
     const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-    const disabledIndexes = new Set(
-        options.flatMap((opt, i) => (opt.disabled ? [i] : [])),
-    );
+    const disabledIndexes = new Set(options.flatMap((opt, i) => (opt.disabled ? [i] : [])));
 
     function selectIndex(index: number) {
         const option = options[index];
@@ -83,7 +81,8 @@ export function RadioGroup({ options, value, name, onChange, className }: Props)
                         onKeyDown={(e) => handleKeyDown(e, i)}
                         onFocus={() => setFocusedIndex(i)}
                         onBlur={() =>
-                            setFocusedIndex((current) => (current === i ? null : current))}
+                            setFocusedIndex((current) => (current === i ? null : current))
+                        }
                         aria-label={opt.label}
                     />
                     <Chip

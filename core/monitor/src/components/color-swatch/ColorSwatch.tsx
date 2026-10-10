@@ -24,20 +24,17 @@ export function ColorSwatch({ color, label, type = "background" }: Props) {
             onClick={handleClick}
             title="Click to copy"
         >
-            {type === "background"
-                ? (
-                    <div
-                        className={styles.colorBg}
-                        style={{ background: color }}
-                    />
-                )
-                : (
-                    <div className={styles.colorFg} style={{ color }}>
-                        Aa
-                    </div>
-                )}
+            {type === "background" ? (
+                <div className={styles.colorBg} style={{ background: color }} />
+            ) : (
+                <div className={styles.colorFg} style={{ color }}>
+                    Aa
+                </div>
+            )}
             <span className={styles.label}>{copied ? "copied!" : label}</span>
-            <span className={styles.colorText} style={{ color }}>{color}</span>
+            <span className={styles.colorText} style={{ color }}>
+                {color}
+            </span>
             <span className={styles.hex}>{color}</span>
         </div>
     );

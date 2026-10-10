@@ -6,11 +6,13 @@ test("matches Obsidian verification by configured folder identity", () => {
         status: "verified" as const,
         exists: true,
         patternMatches: null,
-        config_folders: [{
-            config_folder: "~/Notes/.obsidian",
-            path: "/Users/nik/Notes/.obsidian",
-            exists: true,
-        }],
+        config_folders: [
+            {
+                config_folder: "~/Notes/.obsidian",
+                path: "/Users/nik/Notes/.obsidian",
+                exists: true,
+            },
+        ],
     };
 
     assert.deepEqual(

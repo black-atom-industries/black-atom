@@ -16,12 +16,7 @@ interface Props {
     lightestPrimary: string;
 }
 
-export function StatsRow({
-    contrast,
-    paletteColors,
-    darkestPrimary,
-    lightestPrimary,
-}: Props) {
+export function StatsRow({ contrast, paletteColors, darkestPrimary, lightestPrimary }: Props) {
     return (
         <StatsRowLayout data-partial="StatsRow">
             <StatCard label="Contrast (fg/bg)">

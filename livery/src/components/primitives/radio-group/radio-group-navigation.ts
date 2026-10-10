@@ -18,7 +18,7 @@ export const RADIO_GROUP_NAVIGATION_KEYS = [
     "End",
 ] as const;
 
-export type RadioGroupNavigationKey = typeof RADIO_GROUP_NAVIGATION_KEYS[number];
+export type RadioGroupNavigationKey = (typeof RADIO_GROUP_NAVIGATION_KEYS)[number];
 
 export function isRadioGroupNavigationKey(key: string): key is RadioGroupNavigationKey {
     return (RADIO_GROUP_NAVIGATION_KEYS as readonly string[]).includes(key);

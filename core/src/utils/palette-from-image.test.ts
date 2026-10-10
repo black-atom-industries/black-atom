@@ -50,10 +50,7 @@ test("extractPaletteFromImage - valid image", async () => {
     assert.exists(result.metadata);
     assert.deepEqual(typeof result.metadata.avgLightness, "number");
     assert.deepEqual(typeof result.metadata.avgChroma, "number");
-    assert.deepEqual(
-        ["dark", "light", "both"].includes(result.metadata.suggestedAppearance),
-        true,
-    );
+    assert.deepEqual(["dark", "light", "both"].includes(result.metadata.suggestedAppearance), true);
 });
 
 test("extractPaletteFromImage - image not found", async () => {

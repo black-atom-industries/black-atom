@@ -45,10 +45,7 @@
         },
         "clay": {
             "template": "./themes/clay/collection.template.json",
-            "themes": [
-                "black-atom-clay-dark",
-                "black-atom-clay-light"
-            ]
+            "themes": ["black-atom-clay-dark", "black-atom-clay-light"]
         },
         "minium": {
             "template": "./themes/minium/collection.template.json",

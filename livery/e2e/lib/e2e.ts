@@ -38,7 +38,8 @@ export async function pickTheme(page: Page, collection: string, name: string): P
 
 /** A settings text field, located by its uppercase label. */
 export function settingsField(page: Page, label: string): Locator {
-    return page.locator("[data-component='text-input']").filter({ hasText: label }).locator(
-        "input",
-    );
+    return page
+        .locator("[data-component='text-input']")
+        .filter({ hasText: label })
+        .locator("input");
 }

@@ -14,28 +14,28 @@ export function isGenerationInput(path: string): boolean {
     if (path.startsWith(config.dir.themes + "/")) return path.endsWith(".ts");
     const adapterPath = relative(config.dir.adapters, path);
     if (adapterPath.startsWith("../")) return false;
-    return adapterPath.includes(".template.") ||
+    return (
+        adapterPath.includes(".template.") ||
         adapterPath.endsWith("/black-atom-adapter.json") ||
-        adapterPath.startsWith("obsidian/styles/");
+        adapterPath.startsWith("obsidian/styles/")
+    );
 }
 
 export async function generateDevelopment(paths?: string[]): Promise<void> {
-    const all = !paths ||
-        paths.some((path) => path.startsWith(config.dir.themes + "/"));
+    const all = !paths || paths.some((path) => path.startsWith(config.dir.themes + "/"));
     const enabledAdapters = new Set(await getAdapters());
     const adapters = new Set(
-        paths?.filter(isGenerationInput).map((path) =>
-            relative(config.dir.adapters, path).split("/")[0]
-        ).filter((adapter) => enabledAdapters.has(adapter)),
+        paths
+            ?.filter(isGenerationInput)
+            .map((path) => relative(config.dir.adapters, path).split("/")[0])
+            .filter((adapter) => enabledAdapters.has(adapter)),
     );
     const results = all
         ? await generateAllAdapters()
         : await Promise.all([...adapters].map(generateSingleAdapter));
     const errors = results.filter((result) => result.error);
     if (errors.length) {
-        throw new Error(
-            errors.map((result) => `${result.adapter}: ${result.error}`).join("\n"),
-        );
+        throw new Error(errors.map((result) => `${result.adapter}: ${result.error}`).join("\n"));
     }
     if ((all && enabledAdapters.has("obsidian")) || adapters.has("obsidian")) {
         await copyToVault();
@@ -57,11 +57,9 @@ export async function watch(): Promise<void> {
             if (!filename) return;
             const path = join(dir, filename);
             if (isGenerationInput(path)) batcher.schedule(path);
-        })
+        }),
     );
-    console.log(
-        "Watching theme sources, adapter templates, and Obsidian styles.",
-    );
+    console.log("Watching theme sources, adapter templates, and Obsidian styles.");
     const { promise: stopped, resolve: stop } = Promise.withResolvers<void>();
     process.once("SIGINT", stop);
     process.once("SIGTERM", stop);

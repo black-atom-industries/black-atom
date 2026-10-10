@@ -16,9 +16,7 @@ const themeMap = {
     "black-atom-jpn-koyo-dark": testTheme,
 } satisfies Theme.DefinitionMap;
 
-async function withTempAdapterDir(
-    run: (adapterDir: string) => Promise<void>,
-): Promise<void> {
+async function withTempAdapterDir(run: (adapterDir: string) => Promise<void>): Promise<void> {
     const adapterDir = await mkdtemp(join(tmpdir(), "black-atom-test-"));
     const originalCwd = process.cwd();
     try {

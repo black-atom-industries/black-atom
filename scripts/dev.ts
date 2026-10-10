@@ -38,10 +38,9 @@ async function cliFingerprint(): Promise<string> {
     const hash = createHash("sha256");
     async function visit(path: string) {
         if ((await stat(path)).isDirectory()) {
-            const entries = (await readdir(path, { withFileTypes: true })).sort((
-                a,
-                b,
-            ) => a.name.localeCompare(b.name));
+            const entries = (await readdir(path, { withFileTypes: true })).sort((a, b) =>
+                a.name.localeCompare(b.name),
+            );
             for (const entry of entries) {
                 if (!["target", "node_modules", ".git"].includes(entry.name)) {
                     await visit(join(path, entry.name));
@@ -54,15 +53,7 @@ async function cliFingerprint(): Promise<string> {
             hash.update(content);
         }
     }
-    for (
-        const path of [
-            "Cargo.toml",
-            "Cargo.lock",
-            "livery/cli",
-            "livery/core",
-            "adapters",
-        ]
-    ) {
+    for (const path of ["Cargo.toml", "Cargo.lock", "livery/cli", "livery/core", "adapters"]) {
         await visit(join(root, path));
     }
     return hash.digest("hex");
@@ -116,7 +107,7 @@ function onChange(directory: string) {
 }
 const watchers = [
     ...["core/src/themes", "adapters", "livery/cli", "livery/core"].map((path) =>
-        watch(join(root, path), { recursive: true }, onChange(join(root, path)))
+        watch(join(root, path), { recursive: true }, onChange(join(root, path))),
     ),
     watch(root, onChange(root)),
 ];

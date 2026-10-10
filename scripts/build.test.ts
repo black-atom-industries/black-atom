@@ -14,12 +14,15 @@ test("release commands share the installer target despite inherited CARGO_TARGET
     try {
         for (const cwd of [repoRoot, new URL("livery/", repoRoot)]) {
             const output = `${fixture}/target-directory`;
-            await run([
-                process.execPath,
-                "-e",
-                'require("node:fs").writeFileSync(process.argv[1], process.env.CARGO_TARGET_DIR);',
-                output,
-            ], cwd);
+            await run(
+                [
+                    process.execPath,
+                    "-e",
+                    'require("node:fs").writeFileSync(process.argv[1], process.env.CARGO_TARGET_DIR);',
+                    output,
+                ],
+                cwd,
+            );
             assert.equal(
                 await readFile(output, "utf8"),
                 fileURLToPath(new URL("target/", repoRoot)),

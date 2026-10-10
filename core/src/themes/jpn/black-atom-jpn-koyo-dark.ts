@@ -8,20 +8,20 @@ import createUi from "./create-ui-dark.ts";
 
 export default defineThemeColors({
     primaries: {
-        d10: oklch(0.20, 0.036, 315.74),
+        d10: oklch(0.2, 0.036, 315.74),
         d20: oklch(0.24, 0.034, 315.84),
         d30: oklch(0.32, 0.035, 316.52),
         d40: oklch(0.38, 0.036, 315.08),
 
         m10: oklch(0.45, 0.042, 300),
         m20: oklch(0.55, 0.046, 300),
-        m30: oklch(0.60, 0.050, 75),
-        m40: oklch(0.70, 0.050, 75),
+        m30: oklch(0.6, 0.05, 75),
+        m40: oklch(0.7, 0.05, 75),
 
-        l10: oklch(0.800, 0.050, 75),
-        l20: oklch(0.850, 0.050, 75),
-        l30: oklch(0.875, 0.050, 75),
-        l40: oklch(0.925, 0.050, 75),
+        l10: oklch(0.8, 0.05, 75),
+        l20: oklch(0.85, 0.05, 75),
+        l30: oklch(0.875, 0.05, 75),
+        l40: oklch(0.925, 0.05, 75),
     },
     accents: {
         a10: oklch(0.75, 0.15, 75),

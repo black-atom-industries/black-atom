@@ -108,7 +108,9 @@ function Page() {
                     <Button intent="ghost">Dismiss</Button>
                     <Button hotkey="r">Retry Failed</Button>
                     <Button disabled>Unavailable</Button>
-                    <Button intent="primary" disabled>Unavailable</Button>
+                    <Button intent="primary" disabled>
+                        Unavailable
+                    </Button>
                 </div>
             </section>
 
@@ -151,11 +153,7 @@ function Page() {
                     Swatch — the one sanctioned home of saturated color
                 </h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                    <Swatch
-                        variant="band"
-                        color="#C46A5A"
-                        label="ACCENT · BURGUNDY"
-                    />
+                    <Swatch variant="band" color="#C46A5A" label="ACCENT · BURGUNDY" />
                     <Swatch
                         variant="band"
                         color="#8FA36B"
@@ -163,7 +161,9 @@ function Page() {
                         tag="DERIVED FROM PALETTE.RED"
                     />
                     <div style={{ display: "flex", gap: 2, maxWidth: 420 }}>
-                        {KOYO_DARK_PALETTE.map((c) => <Swatch key={c} color={c} />)}
+                        {KOYO_DARK_PALETTE.map((c) => (
+                            <Swatch key={c} color={c} />
+                        ))}
                     </div>
                     <Swatch variant="pips" colors={KOYO_DARK_PALETTE} />
                 </div>
@@ -192,9 +192,15 @@ function Page() {
                     }}
                 >
                     <KVRow label="COLLECTION">JPN</KVRow>
-                    <KVRow label="STATUS" intent="positive">■ SYNCED · 8/8</KVRow>
-                    <KVRow label="DRIFT" intent="warn">2 FILES</KVRow>
-                    <KVRow label="LAST APPLY" intent="negative">FAILED</KVRow>
+                    <KVRow label="STATUS" intent="positive">
+                        ■ SYNCED · 8/8
+                    </KVRow>
+                    <KVRow label="DRIFT" intent="warn">
+                        2 FILES
+                    </KVRow>
+                    <KVRow label="LAST APPLY" intent="negative">
+                        FAILED
+                    </KVRow>
                 </div>
             </section>
 
@@ -288,9 +294,11 @@ function Page() {
                         maxWidth: 420,
                     }}
                 >
-                    {(Object.keys(PROGRESS_FIXTURES) as (keyof typeof PROGRESS_FIXTURES)[]).map((
-                        key,
-                    ) => <ProgressBar key={key} results={PROGRESS_FIXTURES[key]} />)}
+                    {(Object.keys(PROGRESS_FIXTURES) as (keyof typeof PROGRESS_FIXTURES)[]).map(
+                        (key) => (
+                            <ProgressBar key={key} results={PROGRESS_FIXTURES[key]} />
+                        ),
+                    )}
                 </div>
             </section>
 
@@ -337,12 +345,7 @@ function Page() {
                 </h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 420 }}>
                     <Prompt placeholder="search theme names — /" />
-                    <Prompt
-                        value={promptValue}
-                        onChange={setPromptValue}
-                        count="2/24"
-                        focused
-                    />
+                    <Prompt value={promptValue} onChange={setPromptValue} count="2/24" focused />
                 </div>
             </section>
 
@@ -362,10 +365,7 @@ function Page() {
                 </h2>
                 <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
                     <div style={{ flex: 1, minWidth: 220 }}>
-                        <TextInput
-                            label="CONFIG_PATH"
-                            value="~/.config/ghostty/config"
-                        />
+                        <TextInput label="CONFIG_PATH" value="~/.config/ghostty/config" />
                     </div>
                     <div style={{ flex: 1, minWidth: 220 }}>
                         <TextInput
@@ -384,11 +384,7 @@ function Page() {
                         />
                     </div>
                     <div style={{ flex: 1, minWidth: 220 }}>
-                        <TextInput
-                            label="LOCKED_PATH"
-                            value="/usr/local/etc/locked"
-                            disabled
-                        />
+                        <TextInput label="LOCKED_PATH" value="/usr/local/etc/locked" disabled />
                     </div>
                 </div>
             </section>
@@ -470,7 +466,9 @@ function Page() {
                     <Chip>JPN</Chip>
                     <Chip active>ALL</Chip>
                     <Chip hotkey="3">JPN</Chip>
-                    <Chip active focused hotkey="4">TERRA</Chip>
+                    <Chip active focused hotkey="4">
+                        TERRA
+                    </Chip>
                 </div>
             </section>
         </div>

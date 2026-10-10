@@ -48,8 +48,8 @@ validated against `core/adapter.schema.json`:
                 "black-atom-jpn-koyo-yoru",
                 "black-atom-jpn-koyo-hiru",
                 "black-atom-jpn-tsuki-yoru",
-                "black-atom-jpn-murasaki-yoru"
-            ]
+                "black-atom-jpn-murasaki-yoru",
+            ],
         },
         "stations": {
             "template": "./themes/stations/collection.template.json",
@@ -57,11 +57,11 @@ validated against `core/adapter.schema.json`:
                 "black-atom-stations-engineering",
                 "black-atom-stations-operations",
                 "black-atom-stations-medical",
-                "black-atom-stations-research"
-            ]
-        }
+                "black-atom-stations-research",
+            ],
+        },
         // ... other collections
-    }
+    },
 }
 ```
 
