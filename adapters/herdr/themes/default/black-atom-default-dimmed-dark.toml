@@ -21,33 +21,4 @@ blue = "#00b9c3"
 teal = "#4ec983"
 mauve = "#7faaff"
 peach = "#7b8187"
-
-[ui.sidebar.spaces]
-row_gap = 1
-rows = [
-  [
-    "state_icon",
-    { token = "workspace", bold = true, fg = "#4ec983" },
-  ],
-  [
-    "branch",
-    "git_status",
-  ],
-]
-
-[ui.sidebar.agents]
-row_gap = 1
-rows = [
-  [
-    { token = "$parent", bold = true, dim = false, fg = "#4ec983" },
-  ],
-  [
-    { token = "workspace", bold = false, dim = true },
-  ],
-  [
-    "state_icon",
-    "state_text",
-    "agent",
-  ],
-]
 # END BLACK ATOM LIVERY THEME
