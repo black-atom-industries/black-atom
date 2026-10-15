@@ -2,6 +2,38 @@
 
 ## [0.11.0](https://github.com/black-atom-industries/black-atom/compare/v0.10.0...v0.11.0) (2026-10-15)
 
+### Highlights
+
+#### Claude Code
+
+A new adapter generates a Claude Code custom theme for every Black Atom theme. Prompt rows, docked plugin panes, diffs,
+and status text take the theme's own colors, so light themes lose the gray slab that Claude Code's ANSI themes paint from
+the terminal palette. Livery writes the active theme to `themes/black-atom.json` in each Claude Code config folder, and
+Claude Code picks up every switch while it runs. Select the theme once, in `/theme` or in `settings.json`:
+
+```json
+{
+    "theme": "custom:black-atom"
+}
+```
+
+Livery never writes `settings.json`, so a settings file tracked in a dotfiles repo never changes.
+
+#### More than one config folder
+
+`livery setup` finds every `~/.claude*` folder that holds a `settings.json`, so a second profile run with
+`CLAUDE_CONFIG_DIR=~/.claude-work` gets themed too. It lists what it found for Claude Code and Obsidian, asks whether
+the list is complete, and takes any missing folder by path. The settings page shows the same list with add and remove
+for both apps. Setup and apply print one status per app, with the details in a Notes section below the list.
+
+#### Refreshed themes
+
+Facility moves toward slate, with less saturated mid tones. Minium Polymer gets warmer neutrals, and its keywords turn
+orange.
+
+#### Important fixes
+
+The Herdr theme sets colors only. Facility themes used to change Herdr's sidebar layout as well.
 
 ### Features
 
