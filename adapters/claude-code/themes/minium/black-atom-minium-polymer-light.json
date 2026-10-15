@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Minium ∷ Polymer Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#1d1d1d",
+        "inverseText": "#cecac2",
+        "inactive": "#4b4745",
+        "subtle": "#7e7974",
+        "suggestion": "#00a3e9",
+        "claude": "#fd4200",
+        "permission": "#00a3e9",
+        "promptBorder": "#7e7974",
+        "success": "#819e00",
+        "error": "#f14d4c",
+        "warning": "#cd7b00",
+        "diffAdded": "#cfd8bc",
+        "diffRemoved": "#f3c7c3",
+        "userMessageBackground": "#cecac2",
+        "userMessageBackgroundHover": "#cecac2",
+        "composerSidebarBackground": "#cecac2",
+        "bashMessageBackgroundColor": "#cecac2",
+        "memoryBackgroundColor": "#cecac2",
+        "selectionBg": "#c8c3be"
+    }
+}

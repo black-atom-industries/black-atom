@@ -18,6 +18,7 @@ async function* walkFiles(directory: string) {
     }
 }
 const adapterNames = [
+    "claude-code",
     "delta",
     "ghostty",
     "herdr",

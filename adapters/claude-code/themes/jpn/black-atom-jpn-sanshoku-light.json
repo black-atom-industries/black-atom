@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — JPN ∷ Sanshoku Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#0f212d",
+        "inverseText": "#c3cfd4",
+        "inactive": "#617683",
+        "subtle": "#7b919d",
+        "suggestion": "#457ea1",
+        "claude": "#cc8f00",
+        "permission": "#457ea1",
+        "promptBorder": "#7b919d",
+        "success": "#429c5a",
+        "error": "#db5241",
+        "warning": "#cc8f00",
+        "diffAdded": "#adc1b0",
+        "diffRemoved": "#d6b1ab",
+        "userMessageBackground": "#b4c3c9",
+        "userMessageBackgroundHover": "#b4c3c9",
+        "composerSidebarBackground": "#b4c3c9",
+        "bashMessageBackgroundColor": "#b4c3c9",
+        "memoryBackgroundColor": "#b4c3c9",
+        "selectionBg": "#b4c3c9"
+    }
+}

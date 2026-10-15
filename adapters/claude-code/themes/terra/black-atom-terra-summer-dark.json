@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — TERRA ∷ Summer Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#dfcbaa",
+        "inverseText": "#001b1a",
+        "inactive": "#94a585",
+        "subtle": "#71886c",
+        "suggestion": "#89a88e",
+        "claude": "#bcb067",
+        "permission": "#89a88e",
+        "promptBorder": "#71886c",
+        "success": "#96a85e",
+        "error": "#c88f7b",
+        "warning": "#bcb067",
+        "diffAdded": "#3f452d",
+        "diffRemoved": "#503d36",
+        "userMessageBackground": "#001113",
+        "userMessageBackgroundHover": "#092520",
+        "composerSidebarBackground": "#001113",
+        "bashMessageBackgroundColor": "#001113",
+        "memoryBackgroundColor": "#001113",
+        "selectionBg": "#2a433a"
+    }
+}

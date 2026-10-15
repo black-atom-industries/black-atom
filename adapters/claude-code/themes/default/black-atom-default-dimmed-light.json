@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Dimmed Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#0e1217",
+        "inverseText": "#cbd2d9",
+        "inactive": "#43484e",
+        "subtle": "#646a70",
+        "suggestion": "#1c989e",
+        "claude": "#19b168",
+        "permission": "#1c989e",
+        "promptBorder": "#646a70",
+        "success": "#11a22f",
+        "error": "#fb80aa",
+        "warning": "#f29520",
+        "diffAdded": "#d6e7d6",
+        "diffRemoved": "#f6e2e7",
+        "userMessageBackground": "#cbd2d9",
+        "userMessageBackgroundHover": "#b8bec5",
+        "composerSidebarBackground": "#cbd2d9",
+        "bashMessageBackgroundColor": "#cbd2d9",
+        "memoryBackgroundColor": "#cbd2d9",
+        "selectionBg": "#b8bec5"
+    }
+}

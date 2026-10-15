@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — TERRA ∷ Spring Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#d6d0c2",
+        "inverseText": "#212523",
+        "inactive": "#82978c",
+        "subtle": "#677e72",
+        "suggestion": "#99b9e6",
+        "claude": "#d1a762",
+        "permission": "#99b9e6",
+        "promptBorder": "#677e72",
+        "success": "#92d49a",
+        "error": "#ba6e5f",
+        "warning": "#d1a762",
+        "diffAdded": "#4b614d",
+        "diffRemoved": "#593d38",
+        "userMessageBackground": "#1d201f",
+        "userMessageBackgroundHover": "#272c2a",
+        "composerSidebarBackground": "#1d201f",
+        "bashMessageBackgroundColor": "#1d201f",
+        "memoryBackgroundColor": "#1d201f",
+        "selectionBg": "#313634"
+    }
+}

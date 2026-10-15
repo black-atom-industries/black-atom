@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Clay ∷ Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#322e22",
+        "inverseText": "#ebe5cf",
+        "inactive": "#5d553f",
+        "subtle": "#79715a",
+        "suggestion": "#00a3e9",
+        "claude": "#e76b3e",
+        "permission": "#00a3e9",
+        "promptBorder": "#79715a",
+        "success": "#819e00",
+        "error": "#f14d4c",
+        "warning": "#cd7b00",
+        "diffAdded": "#d9e3c6",
+        "diffRemoved": "#fed2cd",
+        "userMessageBackground": "#ebe5cf",
+        "userMessageBackgroundHover": "#ebe5cf",
+        "composerSidebarBackground": "#ebe5cf",
+        "bashMessageBackgroundColor": "#ebe5cf",
+        "memoryBackgroundColor": "#ebe5cf",
+        "selectionBg": "#ddd8c2"
+    }
+}

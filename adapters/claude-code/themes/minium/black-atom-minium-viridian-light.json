@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Minium ∷ Viridian Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#194034",
+        "inverseText": "#c2dfd4",
+        "inactive": "#3a816a",
+        "subtle": "#6fb59d",
+        "suggestion": "#00a3e9",
+        "claude": "#e95e00",
+        "permission": "#00a3e9",
+        "promptBorder": "#6fb59d",
+        "success": "#819e00",
+        "error": "#f14d4c",
+        "warning": "#cd7b00",
+        "diffAdded": "#d9e2c5",
+        "diffRemoved": "#fdd1cc",
+        "userMessageBackground": "#c2dfd4",
+        "userMessageBackgroundHover": "#c2dfd4",
+        "composerSidebarBackground": "#c2dfd4",
+        "bashMessageBackgroundColor": "#c2dfd4",
+        "memoryBackgroundColor": "#c2dfd4",
+        "selectionBg": "#aed5c6"
+    }
+}

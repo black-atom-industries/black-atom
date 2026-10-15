@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#0e1217",
+        "inverseText": "#c8ced5",
+        "inactive": "#43484e",
+        "subtle": "#646a70",
+        "suggestion": "#1c989e",
+        "claude": "#19b168",
+        "permission": "#1c989e",
+        "promptBorder": "#646a70",
+        "success": "#11a22f",
+        "error": "#fb80aa",
+        "warning": "#f29520",
+        "diffAdded": "#deeedd",
+        "diffRemoved": "#fee9ee",
+        "userMessageBackground": "#c8ced5",
+        "userMessageBackgroundHover": "#a8afb5",
+        "composerSidebarBackground": "#c8ced5",
+        "bashMessageBackgroundColor": "#c8ced5",
+        "memoryBackgroundColor": "#c8ced5",
+        "selectionBg": "#a8afb5"
+    }
+}

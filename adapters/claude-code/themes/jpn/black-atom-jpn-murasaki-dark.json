@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — JPN ∷ Murasaki Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#d4bfd6",
+        "inverseText": "#351b23",
+        "inactive": "#946996",
+        "subtle": "#865f88",
+        "suggestion": "#8cb6c5",
+        "claude": "#dca23a",
+        "permission": "#8cb6c5",
+        "promptBorder": "#865f88",
+        "success": "#80bda2",
+        "error": "#ff857b",
+        "warning": "#dca23a",
+        "diffAdded": "#485c53",
+        "diffRemoved": "#754a45",
+        "userMessageBackground": "#250d15",
+        "userMessageBackgroundHover": "#452a32",
+        "composerSidebarBackground": "#250d15",
+        "bashMessageBackgroundColor": "#250d15",
+        "memoryBackgroundColor": "#250d15",
+        "selectionBg": "#5b3e47"
+    }
+}

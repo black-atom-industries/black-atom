@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — TERRA ∷ Fall Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#422617",
+        "inverseText": "#f8ddc7",
+        "inactive": "#815137",
+        "subtle": "#9b6a4f",
+        "suggestion": "#956d57",
+        "claude": "#d9710b",
+        "permission": "#956d57",
+        "promptBorder": "#9b6a4f",
+        "success": "#6d7e57",
+        "error": "#bf4d3f",
+        "warning": "#d9710b",
+        "diffAdded": "#cacfc4",
+        "diffRemoved": "#e4c4bf",
+        "userMessageBackground": "#eeceb6",
+        "userMessageBackgroundHover": "#e3bfa4",
+        "composerSidebarBackground": "#eeceb6",
+        "bashMessageBackgroundColor": "#eeceb6",
+        "memoryBackgroundColor": "#eeceb6",
+        "selectionBg": "#ffe6d2"
+    }
+}

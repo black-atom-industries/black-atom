@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Minium ∷ Viridian Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#dcf1e9",
+        "inverseText": "#194034",
+        "inactive": "#6fb59d",
+        "subtle": "#569c85",
+        "suggestion": "#79b5cc",
+        "claude": "#ed9562",
+        "permission": "#79b5cc",
+        "promptBorder": "#569c85",
+        "success": "#a9ba78",
+        "error": "#dd7577",
+        "warning": "#d6b174",
+        "diffAdded": "#5c624b",
+        "diffRemoved": "#704a4a",
+        "userMessageBackground": "#12352a",
+        "userMessageBackgroundHover": "#204c3e",
+        "composerSidebarBackground": "#12352a",
+        "bashMessageBackgroundColor": "#12352a",
+        "memoryBackgroundColor": "#12352a",
+        "selectionBg": "#215848"
+    }
+}

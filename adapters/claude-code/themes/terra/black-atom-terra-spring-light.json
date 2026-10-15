@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — TERRA ∷ Spring Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#385547",
+        "inverseText": "#d4dcd8",
+        "inactive": "#55816a",
+        "subtle": "#62937a",
+        "suggestion": "#588dc1",
+        "claude": "#e49f1a",
+        "permission": "#588dc1",
+        "promptBorder": "#62937a",
+        "success": "#11b066",
+        "error": "#dd7e5d",
+        "warning": "#e49f1a",
+        "diffAdded": "#bfdbc7",
+        "diffRemoved": "#e8cec5",
+        "userMessageBackground": "#c7d1cc",
+        "userMessageBackgroundHover": "#b9c6bf",
+        "composerSidebarBackground": "#c7d1cc",
+        "bashMessageBackgroundColor": "#c7d1cc",
+        "memoryBackgroundColor": "#c7d1cc",
+        "selectionBg": "#e2eae6"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Facility ∷ Dimmed Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#dae4e7",
+        "inverseText": "#1c2022",
+        "inactive": "#a7b4b6",
+        "subtle": "#8e9b9c",
+        "suggestion": "#cfd9dc",
+        "claude": "#ddfa5f",
+        "permission": "#cfd9dc",
+        "promptBorder": "#8e9b9c",
+        "success": "#96e497",
+        "error": "#ffa9d2",
+        "warning": "#ddfa5f",
+        "diffAdded": "#4c674c",
+        "diffRemoved": "#705260",
+        "userMessageBackground": "#131718",
+        "userMessageBackgroundHover": "#252a2c",
+        "composerSidebarBackground": "#131718",
+        "bashMessageBackgroundColor": "#131718",
+        "memoryBackgroundColor": "#131718",
+        "selectionBg": "#33393c"
+    }
+}

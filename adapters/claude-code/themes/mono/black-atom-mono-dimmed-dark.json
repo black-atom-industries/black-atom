@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Mono ∷ Dimmed Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#dedede",
+        "inverseText": "#161616",
+        "inactive": "#8c8c8c",
+        "subtle": "#7a7a7a",
+        "suggestion": "#79b5cc",
+        "claude": "#d2b5bd",
+        "permission": "#79b5cc",
+        "promptBorder": "#7a7a7a",
+        "success": "#a9ba78",
+        "error": "#dd7577",
+        "warning": "#d6b174",
+        "diffAdded": "#424832",
+        "diffRemoved": "#543131",
+        "userMessageBackground": "#090909",
+        "userMessageBackgroundHover": "#242424",
+        "composerSidebarBackground": "#090909",
+        "bashMessageBackgroundColor": "#090909",
+        "memoryBackgroundColor": "#090909",
+        "selectionBg": "#2e2e2e"
+    }
+}

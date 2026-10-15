@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — TERRA ∷ Fall Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#eac5b1",
+        "inverseText": "#241710",
+        "inactive": "#c59174",
+        "subtle": "#b58266",
+        "suggestion": "#d08c62",
+        "claude": "#d68c00",
+        "permission": "#d08c62",
+        "promptBorder": "#b58266",
+        "success": "#95a483",
+        "error": "#e87a69",
+        "warning": "#d68c00",
+        "diffAdded": "#42473b",
+        "diffRemoved": "#5f3933",
+        "userMessageBackground": "#1b0e08",
+        "userMessageBackgroundHover": "#2e2119",
+        "composerSidebarBackground": "#1b0e08",
+        "bashMessageBackgroundColor": "#1b0e08",
+        "memoryBackgroundColor": "#1b0e08",
+        "selectionBg": "#382a23"
+    }
+}

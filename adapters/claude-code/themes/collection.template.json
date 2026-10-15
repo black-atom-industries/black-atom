@@ -1,0 +1,25 @@
+{
+    "name": "<%= theme.meta.label %>",
+    "base": "<%= theme.meta.appearance %>-ansi",
+    "overrides": {
+        "text": "<%= theme.ui.fg.default %>",
+        "inverseText": "<%= theme.ui.fg.contrast %>",
+        "inactive": "<%= theme.ui.fg.subtle %>",
+        "subtle": "<%= theme.ui.fg.disabled %>",
+        "suggestion": "<%= theme.ui.fg.info %>",
+        "claude": "<%= theme.ui.fg.accent %>",
+        "permission": "<%= theme.ui.fg.info %>",
+        "promptBorder": "<%= theme.ui.fg.disabled %>",
+        "success": "<%= theme.ui.fg.positive %>",
+        "error": "<%= theme.ui.fg.negative %>",
+        "warning": "<%= theme.ui.fg.warn %>",
+        "diffAdded": "<%= theme.ui.bg.add %>",
+        "diffRemoved": "<%= theme.ui.bg.delete %>",
+        "userMessageBackground": "<%= theme.ui.bg.panel %>",
+        "userMessageBackgroundHover": "<%= theme.ui.bg.hover %>",
+        "composerSidebarBackground": "<%= theme.ui.bg.panel %>",
+        "bashMessageBackgroundColor": "<%= theme.ui.bg.panel %>",
+        "memoryBackgroundColor": "<%= theme.ui.bg.panel %>",
+        "selectionBg": "<%= theme.ui.bg.selection %>"
+    }
+}

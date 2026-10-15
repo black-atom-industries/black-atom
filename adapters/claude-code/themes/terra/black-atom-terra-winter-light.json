@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — TERRA ∷ Winter Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#1e2a37",
+        "inverseText": "#ebeff5",
+        "inactive": "#4f667c",
+        "subtle": "#647d97",
+        "suggestion": "#3578b8",
+        "claude": "#fa9916",
+        "permission": "#3578b8",
+        "promptBorder": "#647d97",
+        "success": "#208295",
+        "error": "#6e6ab2",
+        "warning": "#fa9916",
+        "diffAdded": "#c7dbe0",
+        "diffRemoved": "#d4d4e8",
+        "userMessageBackground": "#dfe5ef",
+        "userMessageBackgroundHover": "#cfd8e5",
+        "composerSidebarBackground": "#dfe5ef",
+        "bashMessageBackgroundColor": "#dfe5ef",
+        "memoryBackgroundColor": "#dfe5ef",
+        "selectionBg": "#f6f9fc"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — Mono ∷ Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#181614",
+        "inverseText": "#f1eeeb",
+        "inactive": "#8e8c89",
+        "subtle": "#b3b0ae",
+        "suggestion": "#00a3e9",
+        "claude": "#2e2e2e",
+        "permission": "#00a3e9",
+        "promptBorder": "#b3b0ae",
+        "success": "#819e00",
+        "error": "#f14d4c",
+        "warning": "#cd7b00",
+        "diffAdded": "#dee7ca",
+        "diffRemoved": "#ffd6d1",
+        "userMessageBackground": "#f1eeeb",
+        "userMessageBackgroundHover": "#f1eeeb",
+        "composerSidebarBackground": "#f1eeeb",
+        "bashMessageBackgroundColor": "#f1eeeb",
+        "memoryBackgroundColor": "#f1eeeb",
+        "selectionBg": "#e0ddda"
+    }
+}

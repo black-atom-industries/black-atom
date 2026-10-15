@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — JPN ∷ Koyo Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#3a2e3b",
+        "inverseText": "#fef2e1",
+        "inactive": "#b19b7c",
+        "subtle": "#d1ba9b",
+        "suggestion": "#9e77dc",
+        "claude": "#ed9a00",
+        "permission": "#9e77dc",
+        "promptBorder": "#d1ba9b",
+        "success": "#3aa85b",
+        "error": "#f5345e",
+        "warning": "#ed9a00",
+        "diffAdded": "#c9e2cd",
+        "diffRemoved": "#fccbcd",
+        "userMessageBackground": "#f8e7d0",
+        "userMessageBackgroundHover": "#f8e7d0",
+        "composerSidebarBackground": "#f8e7d0",
+        "bashMessageBackgroundColor": "#f8e7d0",
+        "memoryBackgroundColor": "#f8e7d0",
+        "selectionBg": "#f8e7d0"
+    }
+}

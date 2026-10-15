@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — JPN ∷ Tsuki Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#e6e6e6",
+        "inverseText": "#1c1c1c",
+        "inactive": "#9d9daf",
+        "subtle": "#828299",
+        "suggestion": "#a1b0cf",
+        "claude": "#eab899",
+        "permission": "#a1b0cf",
+        "promptBorder": "#828299",
+        "success": "#90b99f",
+        "error": "#f591b2",
+        "warning": "#eab899",
+        "diffAdded": "#47554c",
+        "diffRemoved": "#6b4853",
+        "userMessageBackground": "#0f0f0f",
+        "userMessageBackgroundHover": "#282828",
+        "composerSidebarBackground": "#0f0f0f",
+        "bashMessageBackgroundColor": "#0f0f0f",
+        "memoryBackgroundColor": "#0f0f0f",
+        "selectionBg": "#373737"
+    }
+}
