@@ -303,13 +303,13 @@ fn cli_end_to_end() {
         assert!(
             setup_output
                 .lines()
-                .any(|line| line.contains(folder) && line.contains("link=done")),
+                .any(|line| line.contains(folder) && line.contains("linked")),
             "setup must report link outcome for {folder}:\n{setup_output}"
         );
         assert!(
             setup_output
                 .lines()
-                .any(|line| line.contains(folder) && line.contains("verify=ok")),
+                .any(|line| line.trim_end().ends_with(folder)),
             "setup must report verification outcome for {folder}:\n{setup_output}"
         );
     }

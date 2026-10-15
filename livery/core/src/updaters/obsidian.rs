@@ -26,7 +26,10 @@ where
         "light" => "moonstone",
         other => return UpdateResult::error(app_str, format!("Unknown appearance: {other}")),
     };
-    let folders = crate::config::io::configured_config_folders(app_config);
+    let folders = crate::config::io::configured_config_folders(
+        crate::config::types::AppName::Obsidian,
+        app_config,
+    );
     if folders.is_empty() {
         return UpdateResult::error(app_str, "No Obsidian config folders configured");
     }
@@ -152,10 +155,14 @@ fn update_config_folder(
     }
 
     let reload_warning = if duplicate_basename {
-        Some(
-            "Vault basename is shared; reload skipped because the CLI selector is ambiguous"
-                .to_string(),
-        )
+        let vault = Path::new(folder)
+            .parent()
+            .and_then(Path::file_name)
+            .map(|name| name.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        Some(format!(
+            "Reload skipped: more than one vault is named \"{vault}\""
+        ))
     } else {
         live_reload(&config_folder)
     };

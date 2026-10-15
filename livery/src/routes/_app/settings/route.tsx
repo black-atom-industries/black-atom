@@ -29,6 +29,7 @@ import { homeDir, sep } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { setUpAdapter, type SetUpOutcome } from "../../../lib/adapter-setup.ts";
+import { usesConfigFolders } from "../../../lib/config-folders.ts";
 import { SettingsContext, type SettingsContextValue } from "./-settings-context.ts";
 import styles from "./route.module.css";
 
@@ -137,15 +138,15 @@ function SettingsRoute() {
         const provisioningClass = provisioningByApp[appName];
         if (!current || !provisioningClass) return;
 
-        let configPath =
-            appName === "obsidian"
-                ? (current.apps[appName]?.config_folders?.[0] ?? "")
-                : (current.apps[appName]?.config_path ?? "");
-        if (appName === "obsidian") {
-            const discovered = detectedConfigFolders.obsidian ?? [];
+        const configuredByFolders = usesConfigFolders(current.apps[appName]);
+        let configPath = configuredByFolders
+            ? (current.apps[appName]?.config_folders?.[0] ?? "")
+            : (current.apps[appName]?.config_path ?? "");
+        if (configuredByFolders) {
+            const discovered = detectedConfigFolders[appName] ?? [];
             if (discovered.length > 0) {
                 const result = await config.saveLatest((latest) => {
-                    const currentFolders = latest.apps.obsidian.config_folders ?? [];
+                    const currentFolders = latest.apps[appName].config_folders ?? [];
                     const folders = [...currentFolders];
                     for (const folder of discovered) {
                         if (!folders.includes(folder)) folders.push(folder);
@@ -154,8 +155,8 @@ function SettingsRoute() {
                         ...latest,
                         apps: {
                             ...latest.apps,
-                            obsidian: {
-                                ...latest.apps.obsidian,
+                            [appName]: {
+                                ...latest.apps[appName],
                                 config_folders: folders,
                                 config_path: null,
                             },
@@ -263,22 +264,25 @@ function SettingsRoute() {
             });
     }
 
-    function queueConfigFolderSave(change: (config_folders: string[]) => string[]) {
+    function queueConfigFolderSave(
+        appName: AppName,
+        change: (config_folders: string[]) => string[],
+    ) {
         configFolderSavePending.current += 1;
         setConfigFoldersSaving(true);
         const save = config.saveLatest((latest) => {
-            const current = latest.apps.obsidian.config_folders ?? [];
+            const current = latest.apps[appName].config_folders ?? [];
             const nextConfigFolders = change(current);
             return {
                 ...latest,
                 apps: {
                     ...latest.apps,
-                    obsidian: { ...latest.apps.obsidian, config_folders: nextConfigFolders },
+                    [appName]: { ...latest.apps[appName], config_folders: nextConfigFolders },
                 },
             };
         });
         save.catch((error) => {
-            console.error("Could not save Obsidian config_folders", error);
+            console.error(`Could not save ${appName} config_folders`, error);
         }).finally(() => {
             configFolderSavePending.current -= 1;
             if (configFolderSavePending.current === 0) setConfigFoldersSaving(false);
@@ -286,23 +290,27 @@ function SettingsRoute() {
     }
 
     function addConfigFolder(appName: AppName) {
-        if (appName !== "obsidian") return;
+        if (!usesConfigFolders(config.query.data?.apps[appName])) return;
         pickPath("directory").then((selected) => {
             if (!selected) return;
             const separator = sep();
             const name = selected.split(separator).at(-1) ?? "";
-            const configFolder = name.startsWith(".")
-                ? selected
-                : `${selected}${separator}.obsidian`;
-            queueConfigFolderSave((current) =>
+            // Picking an Obsidian vault selects its default `.obsidian` config folder.
+            const configFolder =
+                appName === "obsidian" && !name.startsWith(".")
+                    ? `${selected}${separator}.obsidian`
+                    : selected;
+            queueConfigFolderSave(appName, (current) =>
                 current.includes(configFolder) ? current : [...current, configFolder],
             );
         });
     }
 
     function removeConfigFolder(appName: AppName, config_folder: string) {
-        if (appName !== "obsidian") return;
-        queueConfigFolderSave((current) => current.filter((item) => item !== config_folder));
+        if (!usesConfigFolders(config.query.data?.apps[appName])) return;
+        queueConfigFolderSave(appName, (current) =>
+            current.filter((item) => item !== config_folder),
+        );
     }
 
     /**

@@ -108,15 +108,16 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 > The full per-adapter setup contracts live in [ADAPTERS.md](ADAPTERS.md).
 
-| Term                   | Definition                                                                                                                                                              | Aliases to avoid               |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **Theme Provisioning** | The classification of who consumes livery's managed theme files for an adapter — External, Linked, or Merged                                                            | Adapter type, integration mode |
-| **External**           | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching                                                         | Unmanaged, manual              |
-| **Linked**             | Livery symlinks the managed theme files into a location the app itself reads; switching selects one via a pointer in the app's config, which setup may need to add once | Symlinked, placed              |
-| **Merged**             | The app cannot read external theme files, so on every switch livery reads the unpacked theme file and writes its values directly into the app's config                  | Inline, embedded               |
-| **Managed Themes Dir** | `$XDG_DATA_HOME/black-atom/themes/<adapter>/` — where the themes bundled in the binary unpack; the single source Linked placements point at and Merged reads from       | Theme cache, staging dir       |
-| **Setup Precondition** | A one-time manual prerequisite livery cannot automate — the Obsidian configuration folders to manage                                                                    | Requirement, dependency        |
-| **Switch Pointer**     | The line or property in an app's config that selects the active theme — the thing MatchPattern finds and ReplaceTemplate rewrites                                       | Theme line, theme setting      |
+| Term                   | Definition                                                                                                                                                                                           | Aliases to avoid               |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Theme Provisioning** | The classification of who consumes livery's managed theme files for an adapter — External, Linked, or Merged                                                                                         | Adapter type, integration mode |
+| **External**           | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching                                                                                      | Unmanaged, manual              |
+| **Linked**             | Livery symlinks the managed theme files into a location the app itself reads; switching selects one via a pointer in the app's config, which setup may need to add once                              | Symlinked, placed              |
+| **Merged**             | The app cannot read the managed theme files where they are, so on every switch livery reads the unpacked theme file and writes it into the app's config or a theme file the app reads                | Inline, embedded               |
+| **Managed Themes Dir** | `$XDG_DATA_HOME/black-atom/themes/<adapter>/` — where the themes bundled in the binary unpack; the single source Linked placements point at and Merged reads from                                    | Theme cache, staging dir       |
+| **Config Folder**      | A directory that holds one copy of an app's configuration, for apps livery configures by a list of them instead of one config file — Obsidian (`.obsidian`), Claude Code (`.claude`, `.claude-work`) | Vault, profile                 |
+| **Setup Precondition** | A one-time manual prerequisite livery cannot automate — a Config Folder discovery missed, or a Switch Pointer the app sets itself                                                                    | Requirement, dependency        |
+| **Switch Pointer**     | The line or property in an app's config that selects the active theme — the thing MatchPattern finds and ReplaceTemplate rewrites                                                                    | Theme line, theme setting      |
 
 ## Theme Application
 

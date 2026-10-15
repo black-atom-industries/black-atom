@@ -114,6 +114,19 @@ impl Default for Config {
             },
         );
         apps.insert(
+            AppName::ClaudeCode,
+            AppConfig {
+                enabled: false,
+                config_folders: Some(Vec::new()),
+                config_path: None,
+                themes_path: Some(themes_path("claude-code")),
+                match_pattern: None,
+                replace_template: None,
+                settings_path: None,
+                settings: None,
+            },
+        );
+        apps.insert(
             AppName::Obsidian,
             AppConfig {
                 enabled: false,

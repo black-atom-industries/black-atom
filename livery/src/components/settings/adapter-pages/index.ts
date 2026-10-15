@@ -9,6 +9,7 @@ import { TmuxSettings } from "./tmux.tsx";
 import { ZedSettings } from "./zed.tsx";
 import { LazygitSettings } from "./lazygit.tsx";
 import { HerdrSettings } from "./herdr.tsx";
+import { ClaudeCodeSettings } from "./claude-code.tsx";
 import { ObsidianSettings } from "./obsidian.tsx";
 import { TuicrSettings } from "./tuicr.tsx";
 
@@ -25,6 +26,7 @@ export const adapterSettingsPages: Record<AppName, (props: AdapterPageProps) => 
     zed: ZedSettings,
     lazygit: LazygitSettings,
     herdr: HerdrSettings,
+    "claude-code": ClaudeCodeSettings,
     obsidian: ObsidianSettings,
     tuicr: TuicrSettings,
 };

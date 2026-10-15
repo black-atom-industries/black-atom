@@ -17,6 +17,8 @@ pub enum AppName {
     Herdr,
     Obsidian,
     Tuicr,
+    #[serde(rename = "claude-code")]
+    ClaudeCode,
     #[serde(rename = "helm-tmux")]
     HelmTmux,
 }
@@ -34,6 +36,7 @@ impl AppName {
             AppName::Herdr,
             AppName::Obsidian,
             AppName::Tuicr,
+            AppName::ClaudeCode,
             AppName::HelmTmux,
         ]
     }
@@ -49,6 +52,7 @@ impl AppName {
             AppName::Herdr => "herdr",
             AppName::Obsidian => "obsidian",
             AppName::Tuicr => "tuicr",
+            AppName::ClaudeCode => "claude-code",
             AppName::HelmTmux => "helm-tmux",
         }
     }
@@ -162,11 +166,11 @@ impl Default for NvimSettings {
 pub struct AppConfig {
     #[serde(default = "default_true")]
     pub enabled: bool,
-    /// Generic adapter config file. Obsidian leaves this empty and stores
-    /// configuration folders instead.
+    /// Generic adapter config file. Apps configured by config folders leave this
+    /// empty and store config folders instead.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub config_path: Option<String>,
-    /// Obsidian configuration folders, such as `~/Notes/.obsidian`.
+    /// Config folders, such as `~/Notes/.obsidian` or `~/.claude`.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub config_folders: Option<Vec<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]

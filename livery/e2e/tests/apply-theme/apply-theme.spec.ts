@@ -40,6 +40,9 @@ test("writes the theme into every enabled adapter", async ({ page }) => {
     const lazygit = readHomeFile("~/.config/lazygit/config.yml");
     expect(lazygit).toContain("showIcons: true");
     expect(lazygit).toContain("activeBorderColor");
+
+    const claudeCode = readHomeFile("~/.claude/themes/black-atom.json");
+    expect(claudeCode).toContain(`"name": "${dimmedLight.zedLabel}"`);
 });
 
 test("leaves disabled adapters untouched", async ({ page }) => {

@@ -15,6 +15,11 @@
             "enabled": true,
             "config_path": "~/.config/lazygit/config.yml",
             "themes_path": "~/.local/share/black-atom/themes/lazygit"
+        },
+        "claude-code": {
+            "enabled": true,
+            "config_folders": ["~/.claude"],
+            "themes_path": "~/.local/share/black-atom/themes/claude-code"
         }
     }
 }

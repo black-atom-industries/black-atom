@@ -1,5 +1,5 @@
 use livery_core::config::types::{AppName, Config};
-use livery_core::themes::registry::ThemeProvisioning;
+use livery_core::themes::registry::{config_folder_marker, ThemeProvisioning};
 use livery_core::themes::{catalog, commands as themes, detect, unpack};
 use livery_core::updaters::{self, ThemeContext, UpdateResult, UpdateStatus};
 
@@ -59,7 +59,7 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
     }
 
     let mut failed = 0;
-    let mut notes = Vec::new();
+    let mut notes = Notes::default();
     let mut applied = 0;
     std::thread::scope(|scope| {
         let (sender, receiver) = std::sync::mpsc::channel();
@@ -103,29 +103,12 @@ pub fn apply(theme_key: &str) -> Result<(), String> {
             if theme_was_applied(&result) {
                 applied += 1;
             }
-            let inline_message = match result.message {
-                Some(message) if result.status == UpdateStatus::Done => {
-                    notes.push(format!("{label}: {message}"));
-                    None
-                }
-                message => message,
-            };
-            println!(
-                "  {label:<10} {}{}",
-                result.status.as_str(),
-                inline_message
-                    .map(|message| format!(" — {message}"))
-                    .unwrap_or_default()
-            );
+            println!("  {label:<11} {}", update_label(&result));
+            notes.add_update(label, &result);
         }
     });
 
-    if !notes.is_empty() {
-        println!();
-        for note in &notes {
-            println!("  {note}");
-        }
-    }
+    notes.print();
 
     // One updater landing is enough to change what the user is looking at,
     // so the record follows the machine rather than the exit code. A run that
@@ -171,7 +154,7 @@ pub fn status() -> Result<(), String> {
         let verification = block_on(updaters::verify_app_path(app));
 
         println!(
-            "{:<10} {:<9} {:<8} linked={:<5} config={}",
+            "{:<11} {:<9} {:<8} linked={:<5} config={}",
             app.as_str(),
             if enabled { "enabled" } else { "disabled" },
             provisioning_label(app_status.provisioning),
@@ -185,7 +168,24 @@ pub fn status() -> Result<(), String> {
 pub fn setup(yes: bool) -> Result<(), String> {
     unpacked()?;
 
-    let detections = block_on(detect::detect_apps());
+    let mut detections = block_on(detect::detect_apps());
+    let found_count = detections
+        .iter()
+        .filter(|detection| detection.found)
+        .count();
+    if found_count > 0 {
+        println!("Found {found_count} app(s):");
+        for detection in detections.iter().filter(|detection| detection.found) {
+            let path = match &detection.config_folders {
+                Some(folders) => folders.join(", "),
+                None => detection.config_path.clone(),
+            };
+            println!("  {:<11} {}", detection.app.as_str(), path);
+        }
+    }
+    if !yes {
+        complete_config_folders(&mut detections)?;
+    }
     let found: Vec<AppName> = detections
         .iter()
         .filter(|detection| detection.found)
@@ -195,20 +195,6 @@ pub fn setup(yes: bool) -> Result<(), String> {
     if found.is_empty() {
         println!("No app config files were found.");
         return Ok(());
-    }
-
-    println!("Found {} app(s):", found.len());
-    for detection in detections.iter().filter(|detection| detection.found) {
-        let path = if detection.app == AppName::Obsidian {
-            detection
-                .config_folders
-                .as_deref()
-                .unwrap_or_default()
-                .join(", ")
-        } else {
-            detection.config_path.clone()
-        };
-        println!("  {:<10} {}", detection.app.as_str(), path);
     }
 
     if !confirm("Enable these apps?", yes)? {
@@ -222,7 +208,7 @@ pub fn setup(yes: bool) -> Result<(), String> {
     for app in &found {
         if let Some(app_config) = config.apps.get_mut(app) {
             app_config.enabled = true;
-            if *app == AppName::Obsidian {
+            if config_folder_marker(*app).is_some() {
                 let discovered = detections
                     .iter()
                     .find(|detection| detection.app == *app)
@@ -255,24 +241,35 @@ pub fn setup(yes: bool) -> Result<(), String> {
     let link_themes = !linked.is_empty() && confirm("Link their theme files?", yes)?;
 
     if link_themes {
+        let mut notes = Notes::default();
         for app in &linked {
             let result = block_on(themes::link_app_themes(*app));
-            print_link_result(&result);
+            print_link_result(&result, &mut notes);
             if result.status == UpdateStatus::Error {
                 failures.push(format!("{} link failed", app.as_str()));
             }
         }
+        notes.print();
     }
 
     if confirm("Verify their config paths?", yes)? {
+        let mut notes = Notes::default();
         for app in &found {
             let verification = block_on(updaters::verify_app_path(*app));
-            println!("  {:<10} {}", app.as_str(), config_label(&verification));
+            let label = match &verification.message {
+                Some(message) => {
+                    notes.add(app.as_str(), message.clone());
+                    "error".to_string()
+                }
+                None => config_label(&verification),
+            };
+            println!("  {:<11} {label}", app.as_str());
             print_verification_folders(&verification);
             if let Some(message) = &verification.message {
                 failures.push(format!("{} verification failed: {message}", app.as_str()));
             }
         }
+        notes.print();
     }
 
     if !failures.is_empty() {
@@ -291,6 +288,81 @@ pub fn setup(yes: bool) -> Result<(), String> {
     // reading of something livery did, rather than an assumption.
     println!();
     apply(&choose_setup_theme(yes)?)
+}
+
+/// Ask whether each app's discovered config folders are complete, and take the missing ones by
+/// hand. A folder counts once it holds the app's marker file.
+fn complete_config_folders(detections: &mut [detect::AppDetection]) -> Result<(), String> {
+    use std::io::IsTerminal;
+
+    if !std::io::stdin().is_terminal() {
+        return Ok(());
+    }
+    for detection in detections.iter_mut() {
+        let Some(marker) = config_folder_marker(detection.app) else {
+            continue;
+        };
+        let app = detection.app.as_str();
+        let discovered = detection.config_folders.as_deref().unwrap_or_default();
+        let complete = if discovered.is_empty() {
+            !ask(&format!("No {app} config folders found. Add one?"), false)?
+        } else {
+            ask(&format!("Are these all the {app} config folders?"), true)?
+        };
+        if complete {
+            continue;
+        }
+        loop {
+            let folder = match inquire::Text::new(&format!("{app} config folder"))
+                .with_help_message(&format!(
+                    "A directory that holds {marker}. Leave empty to finish."
+                ))
+                .prompt()
+            {
+                Ok(folder) => folder.trim().to_string(),
+                Err(
+                    inquire::InquireError::OperationCanceled
+                    | inquire::InquireError::OperationInterrupted,
+                ) => break,
+                Err(e) => return Err(format!("no config folder read: {e}")),
+            };
+            if folder.is_empty() {
+                break;
+            }
+            let expanded = shellexpand::tilde(folder.trim_end_matches('/')).to_string();
+            if !std::path::Path::new(&expanded).is_absolute() {
+                println!("  {folder} is not an absolute or ~/ path; not added.");
+                continue;
+            }
+            if !std::path::Path::new(&expanded).join(marker).is_file() {
+                println!("  {folder} has no {marker}; not added.");
+                continue;
+            }
+            let folders = detection.config_folders.get_or_insert_with(Vec::new);
+            let known = folders
+                .iter()
+                .any(|known| shellexpand::tilde(known.trim_end_matches('/')) == expanded);
+            if !known {
+                println!("  added {}", home_relative(&expanded));
+                folders.push(expanded);
+            }
+            detection.found = true;
+        }
+    }
+    Ok(())
+}
+
+fn ask(message: &str, default: bool) -> Result<bool, String> {
+    match inquire::Confirm::new(message)
+        .with_default(default)
+        .prompt()
+    {
+        Ok(answer) => Ok(answer),
+        Err(
+            inquire::InquireError::OperationCanceled | inquire::InquireError::OperationInterrupted,
+        ) => Ok(default),
+        Err(e) => Err(format!("prompt cancelled: {e}")),
+    }
 }
 
 /// The theme setup applies as its last step. `--yes` has to stay
@@ -330,7 +402,7 @@ fn report(label: &str, result: &updaters::UpdateResult) -> Result<(), String> {
     if result.status == UpdateStatus::Error {
         return Err(format!("{label} {}{detail}", result.status.as_str()));
     }
-    println!("{label:<10} {}{detail}", result.status.as_str());
+    println!("{label:<11} {}{detail}", result.status.as_str());
     Ok(())
 }
 
@@ -534,45 +606,130 @@ fn provisioning_label(provisioning: ThemeProvisioning) -> &'static str {
     }
 }
 
-fn print_link_result(result: &themes::LinkThemesResult) {
-    println!(
-        "  {:<10} {}{}",
-        result.app,
-        result.status.as_str(),
-        result
-            .message
-            .as_ref()
-            .map(|message| format!(" — {message}"))
-            .unwrap_or_default()
-    );
-    if let Some(folders) = &result.config_folders {
-        for folder in folders {
-            println!(
-                "    {:<30} link={} linked={} pruned={}{}",
-                folder.config_folder,
-                folder.status.as_str(),
-                folder.linked,
-                folder.pruned,
-                folder
-                    .message
-                    .as_ref()
-                    .map(|message| format!(" — {message}"))
-                    .unwrap_or_default()
+fn print_link_result(result: &themes::LinkThemesResult, notes: &mut Notes) {
+    println!("  {:<11} {}", result.app, result.status.as_str());
+    if let Some(message) = &result.message {
+        notes.add(&result.app, message.clone());
+    }
+    for folder in result.config_folders.iter().flatten() {
+        let pruned = if folder.pruned > 0 {
+            format!(", {} pruned", folder.pruned)
+        } else {
+            String::new()
+        };
+        println!(
+            "    {:<40} {} linked{pruned}",
+            home_relative(&folder.config_folder),
+            folder.linked
+        );
+        if let Some(message) = &folder.message {
+            notes.add(
+                &result.app,
+                format!("{}: {message}", home_relative(&folder.config_folder)),
             );
         }
     }
 }
 
 fn print_verification_folders(verification: &updaters::AppPathVerification) {
-    if let Some(folders) = &verification.config_folders {
-        for folder in folders {
-            println!(
-                "    {:<30} verify={} ({})",
-                folder.config_folder,
-                if folder.exists { "ok" } else { "missing" },
-                folder.path,
-            );
+    for folder in verification.config_folders.iter().flatten() {
+        let config_folder = home_relative(&folder.config_folder);
+        if folder.exists {
+            println!("    {config_folder}");
+        } else {
+            let marker = std::path::Path::new(&folder.path)
+                .file_name()
+                .map(|name| name.to_string_lossy().into_owned())
+                .unwrap_or_default();
+            println!("    {config_folder:<40} missing {marker}");
         }
+    }
+}
+
+/// The row status of an apply. A theme that landed with caveats says so; the caveats themselves
+/// go to the notes.
+fn update_label(result: &UpdateResult) -> &'static str {
+    let reload_skipped = result
+        .config_folders
+        .iter()
+        .flatten()
+        .any(|folder| folder.reload_warning.is_some());
+    match &result.status {
+        UpdateStatus::Done if reload_skipped => "reload skipped",
+        UpdateStatus::Skipped if theme_was_applied(result) => "partial",
+        status => status.as_str(),
+    }
+}
+
+/// Details printed under a checklist, grouped by adapter in first-seen order, without repeats.
+#[derive(Default)]
+struct Notes(Vec<(String, Vec<String>)>);
+
+impl Notes {
+    fn add(&mut self, app: &str, note: String) {
+        let index = match self.0.iter().position(|(name, _)| name == app) {
+            Some(index) => index,
+            None => {
+                self.0.push((app.to_string(), Vec::new()));
+                self.0.len() - 1
+            }
+        };
+        let notes = &mut self.0[index].1;
+        if !notes.contains(&note) {
+            notes.push(note);
+        }
+    }
+
+    /// Per-folder details replace the summary message they were folded into.
+    fn add_update(&mut self, app: &str, result: &UpdateResult) {
+        let mut folder_notes = false;
+        for folder in result.config_folders.iter().flatten() {
+            if let Some(message) = &folder.message {
+                self.add(
+                    app,
+                    format!("{}: {message}", home_relative(&folder.config_folder)),
+                );
+                folder_notes = true;
+            }
+            if let Some(warning) = &folder.reload_warning {
+                self.add(app, warning.clone());
+                folder_notes = true;
+            }
+        }
+        if folder_notes {
+            return;
+        }
+        if let Some(message) = &result.message {
+            let message = message.strip_prefix("Config patched; ").unwrap_or(message);
+            self.add(app, message.to_string());
+        }
+    }
+
+    fn print(&self) {
+        if self.0.is_empty() {
+            return;
+        }
+        println!();
+        println!("Notes");
+        for (app, notes) in &self.0 {
+            println!("  {app}");
+            for note in notes {
+                println!("    - {note}");
+            }
+        }
+    }
+}
+
+/// A path under the home directory, shown as `~/…`.
+fn home_relative(path: &str) -> String {
+    match std::env::var("HOME") {
+        Ok(home) if !home.trim_end_matches('/').is_empty() => {
+            match path.strip_prefix(home.trim_end_matches('/')) {
+                Some(rest) if rest.is_empty() || rest.starts_with('/') => format!("~{rest}"),
+                _ => path.to_string(),
+            }
+        }
+        _ => path.to_string(),
     }
 }
 

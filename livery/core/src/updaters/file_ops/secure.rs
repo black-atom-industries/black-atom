@@ -5,24 +5,30 @@ use std::path::{Path, PathBuf};
 /// Returning the canonical path lets atomic writers update a symlink target without replacing the
 /// symlink itself.
 pub(super) fn resolve_home_file(path: &str) -> Result<(String, PathBuf), String> {
-    let home = dirs::home_dir().ok_or("Cannot determine home directory")?;
-    let home = home.canonicalize().unwrap_or(home);
     let expanded = shellexpand::tilde(path).to_string();
-    let resolved = PathBuf::from(&expanded)
-        .canonicalize()
-        .map_err(|e| format!("Cannot resolve path {expanded}: {e}"))?;
-
-    if !resolved.starts_with(&home) {
-        return Err(format!(
-            "Path outside home directory is not allowed: {expanded}"
-        ));
-    }
+    let resolved = ensure_under_home(Path::new(&expanded), &expanded)?;
 
     if !resolved.is_file() {
         return Err(format!("Path is not a file: {expanded}"));
     }
 
     Ok((expanded, resolved))
+}
+
+/// Canonicalize an existing path and ensure its real target stays under the user's home
+/// directory. `display_path` names the path the caller was given in the error.
+pub(super) fn ensure_under_home(existing: &Path, display_path: &str) -> Result<PathBuf, String> {
+    let home = dirs::home_dir().ok_or("Cannot determine home directory")?;
+    let home = home.canonicalize().unwrap_or(home);
+    let resolved = existing
+        .canonicalize()
+        .map_err(|e| format!("Cannot resolve path {}: {e}", existing.display()))?;
+    if !resolved.starts_with(&home) {
+        return Err(format!(
+            "Path outside home directory is not allowed: {display_path}"
+        ));
+    }
+    Ok(resolved)
 }
 
 /// Atomically replace an existing file using a temp file in the same directory.

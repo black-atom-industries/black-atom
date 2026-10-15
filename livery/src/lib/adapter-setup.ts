@@ -47,8 +47,8 @@ function stepsFor(provisioning: ThemeProvisioning): SetUpStep[] {
  * into the location they read; Merged adapters have the theme's content
  * written into their own config instead, so they only enable and verify;
  * External adapters bring their own theme files. A failed enable aborts;
- * verify always runs last so the row ends in a truthful state. Obsidian
- * requires at least one configured config_folder before the chain can start.
+ * verify always runs last so the row ends in a truthful state. Apps configured
+ * by config folders require at least one before the chain can start.
  */
 export async function setUpAdapter(
     app: AppName,
@@ -60,10 +60,7 @@ export async function setUpAdapter(
     if (!configPath.trim()) {
         return {
             steps: [],
-            blocked:
-                app === "obsidian"
-                    ? "Add at least one Obsidian config folder first"
-                    : "Set CONFIG_PATH first — livery cannot guess it",
+            blocked: "Set CONFIG_PATH or add a config folder first — livery cannot guess it",
             link: null,
             verify: null,
         };

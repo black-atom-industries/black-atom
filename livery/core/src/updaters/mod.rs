@@ -1,3 +1,4 @@
+mod claude_code;
 pub mod file_ops;
 mod ghostty;
 mod herdr;
@@ -215,6 +216,7 @@ pub fn dispatch_update(
         AppName::Tuicr => patch_text_updater(app_str, app_config, ctx),
         AppName::Lazygit => lazygit::update(app_str, app_config, ctx),
         AppName::Herdr => herdr::update(app_str, app_config, ctx),
+        AppName::ClaudeCode => claude_code::update(app_str, app_config, ctx),
         AppName::Zed => zed::update(app_str, app_config, ctx),
         AppName::Obsidian => obsidian::update(app_str, app_config, ctx),
     }
@@ -260,18 +262,18 @@ pub async fn verify_app_path(app: AppName) -> AppPathVerification {
         };
     };
 
-    if app == AppName::Obsidian {
-        let configured_folders = config_io::configured_config_folders(app_config);
+    if let Some(marker) = crate::themes::registry::config_folder_marker(app) {
+        let configured_folders = config_io::configured_config_folders(app, app_config);
         let config_folders = configured_folders
             .iter()
             .map(|folder| {
                 let config_folder =
                     std::path::PathBuf::from(shellexpand::tilde(folder).to_string());
-                let appearance = config_folder.join("appearance.json");
+                let marker_path = config_folder.join(marker);
                 ConfigFolderPathVerification {
                     config_folder: folder.to_string(),
-                    path: appearance.to_string_lossy().into_owned(),
-                    exists: appearance.is_file(),
+                    path: marker_path.to_string_lossy().into_owned(),
+                    exists: marker_path.is_file(),
                 }
             })
             .collect::<Vec<_>>();

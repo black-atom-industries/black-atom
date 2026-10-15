@@ -9,11 +9,11 @@ themes directory** (`$XDG_DATA_HOME/black-atom/themes/<adapter>/`, falling back 
 `~/.local/share`). What happens next depends on one question — **who consumes those files** — and
 every adapter falls into exactly one class:
 
-| Class        | Adapters                                         | Definition                                                                                                                                                                |
-| ------------ | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **External** | helm-tmux                                        | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching.                                                          |
-| **Linked**   | ghostty, zed, tmux, delta, obsidian, nvim, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once. |
-| **Merged**   | lazygit, herdr                                   | The app cannot read external theme files, so on every switch livery reads the managed theme and writes its values directly into the app's config.                         |
+| Class        | Adapters                                         | Definition                                                                                                                                                                       |
+| ------------ | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **External** | helm-tmux                                        | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching.                                                                 |
+| **Linked**   | ghostty, zed, tmux, delta, obsidian, nvim, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once.        |
+| **Merged**   | lazygit, herdr, claude-code                      | The app cannot read the managed theme files where they are, so on every switch livery reads the managed theme and writes it into the app's config or a theme file the app reads. |
 
 Two per-adapter properties are deliberately **not** classes:
 
@@ -111,6 +111,25 @@ verify — always ending with verification, so the row reflects the true state.
   apply.
 - **Precondition:** existing `[theme]` / `[theme.custom]` tables must be wrapped in
   `# BEGIN BLACK ATOM LIVERY THEME` and `# END BLACK ATOM LIVERY THEME` markers before first apply.
+
+### claude-code — Merged
+
+- **Files:** consumed by livery itself — on every switch it copies
+  `<managed>/claude-code/<collection>/<themeKey>.json` to `themes/black-atom.json` in each
+  configured config folder. A config folder is a Claude Code config directory such as `~/.claude`
+  or a `CLAUDE_CONFIG_DIR` profile like `~/.claude-work`. The folder is used as configured, so a
+  `settings.json` symlinked into a dotfiles repo leaves the theme file in the config folder.
+- **Discovery:** setup finds every `~/.claude*` directory that holds a `settings.json`. Add any
+  other folder by hand in the settings page or when `livery setup` asks.
+- **Switch pointer:** `"theme": "custom:black-atom"` in each folder's `settings.json`. The theme
+  name is fixed, so the pointer never changes and livery never writes `settings.json`. Livery
+  writes the theme file even without the pointer and reports the apply as degraded; selecting the
+  Black Atom theme in `/theme` then sets the pointer.
+- **Reload:** none needed — Claude Code watches its `themes/` dir. If that dir did not exist when
+  Claude Code started, it picks up the theme after one restart.
+- **Precondition:** select the Black Atom theme in `/theme` once per config folder after the
+  first apply. That sets the switch pointer. Every config folder must hold a `settings.json`;
+  livery writes no theme into a folder without one.
 
 ### nvim — Linked
 

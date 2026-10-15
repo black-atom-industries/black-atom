@@ -16,6 +16,7 @@ path = "src/main.rs"
 livery_core = { path = "../core" }
 clap = { version = "4", features = ["derive"] }
 inquire = "0.7"
+shellexpand = "3"
 tokio = { version = "1", features = ["rt"] }
 
 [target.'cfg(unix)'.dependencies]

@@ -37,7 +37,7 @@ Vite listens on `1520` and the bridge on `1522`, configurable through `LIVERY_E2
 Vite server keeps its dependency cache in `e2e/.vite`.
 
 Scenarios enable only adapters whose updaters stay inside the fixture home: zed, delta, lazygit,
-and tuicr for setup. `system_appearance` is `false`. Ghostty (signals running instances), tmux,
+claude-code, and tuicr for setup. `system_appearance` is `false`. Ghostty (signals running instances), tmux,
 nvim, herdr (talk to running apps) and Obsidian stay disabled and are never applied. The nvim
 settings page only writes its managed block into the fixture `init.lua`.
 

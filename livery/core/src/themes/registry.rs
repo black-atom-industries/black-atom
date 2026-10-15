@@ -6,8 +6,9 @@ use crate::config::types::AppName;
 ///   compiled binary, or the user), so livery only performs switching.
 /// - `Linked`: livery symlinks the unpacked theme files into a location the app
 ///   itself reads; switching selects one via a pointer in the app's config.
-/// - `Merged`: the app cannot read external theme files, so on every switch
-///   livery reads the unpacked theme file and writes its values into the config.
+/// - `Merged`: the app cannot read the managed theme files where they are, so on every switch
+///   livery reads the unpacked theme file and writes it into the app's config or a theme file
+///   the app reads.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, specta::Type)]
 #[serde(rename_all = "lowercase")]
 pub enum ThemeProvisioning {
@@ -26,7 +27,25 @@ pub fn provisioning(app: AppName) -> ThemeProvisioning {
         | AppName::Obsidian
         | AppName::Nvim
         | AppName::Tuicr => ThemeProvisioning::Linked,
-        AppName::Lazygit | AppName::Herdr => ThemeProvisioning::Merged,
+        AppName::Lazygit | AppName::Herdr | AppName::ClaudeCode => ThemeProvisioning::Merged,
+    }
+}
+
+/// The file that marks a directory as one of the app's config folders, for apps
+/// configured by a list of config folders instead of a single `config_path`.
+pub fn config_folder_marker(app: AppName) -> Option<&'static str> {
+    match app {
+        AppName::Obsidian => Some("appearance.json"),
+        AppName::ClaudeCode => Some("settings.json"),
+        AppName::Nvim
+        | AppName::Tmux
+        | AppName::Ghostty
+        | AppName::Zed
+        | AppName::Delta
+        | AppName::Lazygit
+        | AppName::Herdr
+        | AppName::Tuicr
+        | AppName::HelmTmux => None,
     }
 }
 
@@ -60,7 +79,7 @@ pub fn linked_placement(app: AppName) -> Option<LinkedPlacement> {
         AppName::Tuicr => Some(LinkedPlacement::FlatByExtensions(&[".toml", ".tmTheme"])),
         AppName::Obsidian => Some(LinkedPlacement::ConfigFolderThemeDir),
         AppName::Nvim => Some(LinkedPlacement::PackDir),
-        AppName::HelmTmux | AppName::Lazygit | AppName::Herdr => None,
+        AppName::HelmTmux | AppName::Lazygit | AppName::Herdr | AppName::ClaudeCode => None,
     }
 }
 
@@ -85,7 +104,8 @@ pub enum AdapterEditableField {
 /// nvim/ghostty/tmux have dedicated updaters; delta, helm, and tuicr route
 /// through the shared `patch_text_updater`, so all six read pattern+template. zed
 /// patches structurally (JSONC) from `config_path`; obsidian patches each
-/// configured Obsidian config folder. tmux, delta, lazygit, and herdr additionally point
+/// configured Obsidian config folder, and claude-code writes into each configured Claude Code
+/// config folder. tmux, delta, lazygit, herdr, and claude-code additionally point
 /// `themes_path` at the managed themes dir.
 /// nvim additionally writes its managed Lua settings block into `settings_path`.
 pub fn editable_fields(app: AppName) -> Vec<AdapterEditableField> {
@@ -101,6 +121,7 @@ pub fn editable_fields(app: AppName) -> Vec<AdapterEditableField> {
         AppName::Zed => vec![ConfigPath],
         AppName::Obsidian => vec![],
         AppName::Lazygit | AppName::Herdr => vec![ConfigPath, ThemesPath],
+        AppName::ClaudeCode => vec![ThemesPath],
     }
 }
 
@@ -151,6 +172,7 @@ mod tests {
             editable_fields(AppName::Herdr),
             vec![ConfigPath, ThemesPath]
         );
+        assert_eq!(editable_fields(AppName::ClaudeCode), vec![ThemesPath]);
     }
 
     #[test]

@@ -6,7 +6,7 @@ export function isCliInput(path: string): boolean {
         path === "Cargo.toml" ||
         path === "Cargo.lock" ||
         /^livery\/(cli|core)\//.test(path) ||
-        /^adapters\/(delta|ghostty|herdr|kagi|lazygit|niri|obsidian|tmux|tuicr|waybar|wezterm|zed)\/themes(\/|$)/.test(
+        /^adapters\/(claude-code|delta|ghostty|herdr|kagi|lazygit|niri|obsidian|tmux|tuicr|waybar|wezterm|zed)\/themes(\/|$)/.test(
             path,
         ) ||
         /^adapters\/nvim\/(colors|lua)(\/|$)/.test(path) ||

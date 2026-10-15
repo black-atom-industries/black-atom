@@ -14,6 +14,7 @@ use include_dir::{include_dir, Dir};
 /// tree is what a user's own tooling reads.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Adapter {
+    ClaudeCode,
     Delta,
     Ghostty,
     Herdr,
@@ -30,7 +31,8 @@ pub enum Adapter {
 }
 
 impl Adapter {
-    pub const ALL: [Adapter; 13] = [
+    pub const ALL: [Adapter; 14] = [
+        Adapter::ClaudeCode,
         Adapter::Delta,
         Adapter::Ghostty,
         Adapter::Herdr,
@@ -50,6 +52,7 @@ impl Adapter {
     /// the monorepo.
     pub fn dir_name(self) -> &'static str {
         match self {
+            Adapter::ClaudeCode => "claude-code",
             Adapter::Delta => "delta",
             Adapter::Ghostty => "ghostty",
             Adapter::Herdr => "herdr",
@@ -75,6 +78,7 @@ impl crate::config::types::AppName {
         match self {
             AppName::Delta => Some(Adapter::Delta),
             AppName::Ghostty => Some(Adapter::Ghostty),
+            AppName::ClaudeCode => Some(Adapter::ClaudeCode),
             AppName::Herdr => Some(Adapter::Herdr),
             AppName::Lazygit => Some(Adapter::Lazygit),
             AppName::Nvim => Some(Adapter::Nvim),
@@ -87,6 +91,7 @@ impl crate::config::types::AppName {
     }
 }
 
+static CLAUDE_CODE: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/claude-code/themes");
 static DELTA: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/delta/themes");
 static GHOSTTY: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/ghostty/themes");
 static HERDR: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/herdr/themes");
@@ -115,6 +120,7 @@ pub const OBSIDIAN_MANIFEST_JSON: &str =
 /// prefix is `""` for adapters whose `themes/` dir maps onto the adapter dir.
 pub fn embedded(adapter: Adapter) -> Vec<(&'static str, &'static Dir<'static>)> {
     match adapter {
+        Adapter::ClaudeCode => vec![("", &CLAUDE_CODE)],
         Adapter::Delta => vec![("", &DELTA)],
         Adapter::Ghostty => vec![("", &GHOSTTY)],
         Adapter::Herdr => vec![("", &HERDR)],

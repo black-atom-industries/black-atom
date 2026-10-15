@@ -1,7 +1,10 @@
 use serde::Serialize;
 use specta::Type;
 
+use std::collections::BTreeMap;
+
 use crate::config::types::{AppName, Config};
+use crate::themes::registry::config_folder_marker;
 
 /// One adapter's detection outcome — backs the settings AUTO-DETECT action.
 #[derive(Debug, Serialize, Type)]
@@ -9,7 +12,7 @@ pub struct AppDetection {
     pub app: AppName,
     /// The expanded path that was checked (empty = nothing to check).
     pub config_path: String,
-    /// Obsidian configuration folders discovered from its global registry.
+    /// Configured and discovered config folders, for apps configured by config folders.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub config_folders: Option<Vec<String>>,
     pub found: bool,
@@ -18,37 +21,47 @@ pub struct AppDetection {
 pub async fn detect_apps() -> Vec<AppDetection> {
     let mut config = crate::config::io::read_config_from_disk();
     crate::config::io::expand_app_paths(&mut config);
-    let discovered = crate::config::io::discovered_obsidian_config_folders();
+    let discovered = AppName::all()
+        .iter()
+        .map(|app| (*app, crate::config::io::discovered_config_folders(*app)))
+        .collect();
     detect_apps_inner(&config, &discovered)
 }
 
-/// Obsidian is configured by configuration folders rather than a single config file.
-fn detect_apps_inner(config: &Config, discovered_obsidian_folders: &[String]) -> Vec<AppDetection> {
+/// Apps with a config folder marker are configured by config folders rather than a single
+/// config file.
+fn detect_apps_inner(
+    config: &Config,
+    discovered_folders: &BTreeMap<AppName, Vec<String>>,
+) -> Vec<AppDetection> {
     AppName::all()
         .iter()
         .filter_map(|app| {
             let app_config = config.apps.get(app)?;
             let config_path = app_config.config_path.clone().unwrap_or_default();
-            let (config_folders, found) = if *app == AppName::Obsidian {
-                let mut folders = crate::config::io::configured_config_folders(app_config);
-                folders.extend(discovered_obsidian_folders.iter().cloned());
-                let folders = crate::config::io::configured_config_folders(
-                    &crate::config::types::AppConfig {
-                        config_folders: Some(folders),
-                        ..app_config.clone()
-                    },
-                );
-                let found = folders.iter().any(|folder| {
-                    std::path::PathBuf::from(shellexpand::tilde(folder).to_string())
-                        .join("appearance.json")
-                        .is_file()
-                });
-                (Some(folders), found)
-            } else {
-                (
+            let (config_folders, found) = match config_folder_marker(*app) {
+                Some(marker) => {
+                    let mut folders =
+                        crate::config::io::configured_config_folders(*app, app_config);
+                    folders.extend(discovered_folders.get(app).into_iter().flatten().cloned());
+                    let folders = crate::config::io::configured_config_folders(
+                        *app,
+                        &crate::config::types::AppConfig {
+                            config_folders: Some(folders),
+                            ..app_config.clone()
+                        },
+                    );
+                    let found = folders.iter().any(|folder| {
+                        std::path::PathBuf::from(shellexpand::tilde(folder).to_string())
+                            .join(marker)
+                            .is_file()
+                    });
+                    (Some(folders), found)
+                }
+                None => (
                     None,
                     !config_path.is_empty() && std::path::Path::new(&config_path).is_file(),
-                )
+                ),
             };
             Some(AppDetection {
                 app: *app,
@@ -81,7 +94,7 @@ mod tests {
             };
         }
 
-        let detections = detect_apps_inner(&config, &[]);
+        let detections = detect_apps_inner(&config, &BTreeMap::new());
         assert_eq!(detections.len(), AppName::all().len());
         for detection in detections {
             match detection.app {
@@ -105,7 +118,7 @@ mod tests {
         obsidian.config_path = None;
         obsidian.config_folders = Some(vec![root.path().to_string_lossy().into_owned()]);
 
-        let detection = detect_apps_inner(&config, &[])
+        let detection = detect_apps_inner(&config, &BTreeMap::new())
             .into_iter()
             .find(|detection| detection.app == AppName::Obsidian)
             .unwrap();
@@ -127,6 +140,8 @@ mod tests {
             app_config.config_path = Some(root.path().to_string_lossy().to_string());
         }
 
-        assert!(detect_apps_inner(&config, &[]).iter().all(|d| !d.found));
+        assert!(detect_apps_inner(&config, &BTreeMap::new())
+            .iter()
+            .all(|d| !d.found));
     }
 }

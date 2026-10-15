@@ -121,12 +121,12 @@ export type AdapterEditableField = "config_path" | "themes_path" | "match_patter
 "settings_path"
 export type AppConfig = { enabled?: boolean; 
 /**
- * Generic adapter config file. Obsidian leaves this empty and stores
- * configuration folders instead.
+ * Generic adapter config file. Apps configured by config folders leave this
+ * empty and store config folders instead.
  */
 config_path?: string | null; 
 /**
- * Obsidian configuration folders, such as `~/Notes/.obsidian`.
+ * Config folders, such as `~/Notes/.obsidian` or `~/.claude`.
  */
 config_folders?: string[] | null; themes_path?: string | null; match_pattern?: string | null; replace_template?: string | null; 
 /**
@@ -146,13 +146,13 @@ export type AppDetection = { app: AppName;
  */
 config_path: string; 
 /**
- * Obsidian configuration folders discovered from its global registry.
+ * Configured and discovered config folders, for apps configured by config folders.
  */
 config_folders?: string[] | null; found: boolean }
 /**
  * Supported app names. TypeScript bindings are auto-generated via tauri-specta.
  */
-export type AppName = "nvim" | "tmux" | "ghostty" | "zed" | "delta" | "lazygit" | "herdr" | "obsidian" | "tuicr" | "helm-tmux"
+export type AppName = "nvim" | "tmux" | "ghostty" | "zed" | "delta" | "lazygit" | "herdr" | "obsidian" | "tuicr" | "claude-code" | "helm-tmux"
 /**
  * Result of `verify_app_path` — backs the settings screen's [ VERIFY PATH ].
  */
@@ -245,8 +245,9 @@ export type ThemeContext = { theme_key: string; appearance: string; collection_k
  * compiled binary, or the user), so livery only performs switching.
  * - `Linked`: livery symlinks the unpacked theme files into a location the app
  * itself reads; switching selects one via a pointer in the app's config.
- * - `Merged`: the app cannot read external theme files, so on every switch
- * livery reads the unpacked theme file and writes its values into the config.
+ * - `Merged`: the app cannot read the managed theme files where they are, so on every switch
+ * livery reads the unpacked theme file and writes it into the app's config or a theme file
+ * the app reads.
  */
 export type ThemeProvisioning = "external" | "linked" | "merged"
 export type UpdateResult = { app: string; status: UpdateStatus; message?: string | null; 

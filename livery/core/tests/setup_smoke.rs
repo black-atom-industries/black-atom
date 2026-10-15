@@ -116,6 +116,10 @@ fn setup_chain_end_to_end() {
         &home.join(".config/herdr/config.toml"),
         "# BEGIN BLACK ATOM LIVERY THEME\n[theme]\nname = \"terminal\"\n# END BLACK ATOM LIVERY THEME\n",
     );
+    write_file(
+        &home.join(".claude/settings.json"),
+        "{\"theme\": \"custom:black-atom\"}\n",
+    );
     let config_folder = home.join("config_folder/.obsidian");
     let appearance = config_folder.join("appearance.json");
     write_file(&appearance, "{\"cssTheme\":\"Black Atom\"}\n");
@@ -125,7 +129,7 @@ fn setup_chain_end_to_end() {
     let managed_root = paths::themes_root();
     let report = unpack::ensure_unpacked().unwrap();
     assert!(report.unpacked, "first run must write the embedded themes");
-    assert_eq!(report.adapters, 13);
+    assert_eq!(report.adapters, 14);
     assert!(report.files > 200, "unpacked only {} files", report.files);
 
     for (adapter, file) in [
@@ -145,6 +149,7 @@ fn setup_chain_end_to_end() {
         ("tuicr", "default/black-atom-default-dark.toml"),
         ("lazygit", "default/black-atom-default-dark.yml"),
         ("kagi", "default/black-atom-default.css"),
+        ("claude-code", "default/black-atom-default-dark.json"),
     ] {
         let path = managed_root.join(adapter).join(file);
         assert!(path.is_file(), "missing unpacked file: {}", path.display());
@@ -194,11 +199,24 @@ fn setup_chain_end_to_end() {
         .map(|d| d.app.as_str())
         .collect();
     found.sort_unstable();
-    assert_eq!(found, ["ghostty", "herdr", "tmux", "zed"], "detected apps");
+    assert_eq!(
+        found,
+        ["claude-code", "ghostty", "herdr", "tmux", "zed"],
+        "detected apps"
+    );
     let obsidian = detections
         .iter()
         .find(|d| d.app == AppName::Obsidian)
         .unwrap();
+    let claude_code_detection = detections
+        .iter()
+        .find(|d| d.app == AppName::ClaudeCode)
+        .unwrap();
+    assert_eq!(
+        claude_code_detection.config_folders.as_deref(),
+        Some([home.join(".claude").to_string_lossy().into_owned()].as_slice()),
+        "claude-code discovers ~/.claude"
+    );
     assert!(
         !obsidian.found && obsidian.config_path.is_empty(),
         "obsidian must not auto-detect without a configured config folder"
@@ -209,6 +227,10 @@ fn setup_chain_end_to_end() {
         match app {
             AppName::Ghostty | AppName::Zed | AppName::Tmux | AppName::Lazygit | AppName::Herdr => {
                 app_config.enabled = true;
+            }
+            AppName::ClaudeCode => {
+                app_config.enabled = true;
+                app_config.config_folders = claude_code_detection.config_folders.clone();
             }
             AppName::Obsidian => {
                 app_config.enabled = true;
@@ -265,7 +287,7 @@ fn setup_chain_end_to_end() {
         .is_file());
     assert!(pack_link.join("lua/black-atom/init.lua").is_file());
     // Merged adapters consume the managed dir directly — linking is a skip.
-    for app in [AppName::Lazygit, AppName::Herdr] {
+    for app in [AppName::Lazygit, AppName::Herdr, AppName::ClaudeCode] {
         let link = block_on(themes::link_app_themes(app));
         assert!(matches!(link.status, UpdateStatus::Skipped));
     }
@@ -321,6 +343,13 @@ fn setup_chain_end_to_end() {
     let herdr = block_on(livery_core::updaters::verify_app_path(AppName::Herdr));
     assert!(herdr.exists);
     assert_eq!(herdr.pattern_matches, None, "herdr patches a managed block");
+
+    let claude_code = block_on(livery_core::updaters::verify_app_path(AppName::ClaudeCode));
+    assert!(claude_code.exists);
+    assert_eq!(
+        claude_code.config_folders.map(|folders| folders.len()),
+        Some(1)
+    );
 
     let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
     assert!(!nvim.exists, "no nvim config was planted");

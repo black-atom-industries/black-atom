@@ -1,5 +1,6 @@
 fn main() {
     for path in [
+        "claude-code/themes",
         "delta/themes",
         "ghostty/themes",
         "herdr/themes",

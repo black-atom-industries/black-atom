@@ -1,3 +1,4 @@
+pub mod file;
 pub mod jsonc;
 pub mod managed_block;
 mod secure;

@@ -2408,6 +2408,7 @@ dependencies = [
  "libc",
  "livery_core",
  "serde_json",
+ "shellexpand",
  "tempfile",
  "tokio",
 ]

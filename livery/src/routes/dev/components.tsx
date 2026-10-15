@@ -50,6 +50,11 @@ const SETTINGS_ADAPTERS_FIXTURE: Config = {
             themes_path: "~/.local/share/black-atom/themes/herdr",
         },
         tuicr: { enabled: true, config_path: "~/.config/tuicr/config.toml" },
+        "claude-code": {
+            enabled: true,
+            config_folders: ["~/.claude", "~/.claude-work"],
+            themes_path: "~/.local/share/black-atom/themes/claude-code",
+        },
         "helm-tmux": { enabled: true, config_path: "~/.config/black-atom/helm-tmux/config.yml" },
     },
 };
@@ -65,6 +70,7 @@ const SETTINGS_EDITABLE_FIELDS: Record<AppName, AdapterEditableField[]> = {
     obsidian: [],
     herdr: ["config_path", "themes_path"],
     tuicr: ["config_path", "match_pattern", "replace_template"],
+    "claude-code": ["themes_path"],
 };
 
 const APPLY_RAIL_FIXTURES: Record<string, UpdateResult[]> = {

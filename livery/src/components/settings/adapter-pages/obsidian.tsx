@@ -2,10 +2,9 @@ import {
     ActionRow,
     AdapterHeader,
     ClassDefinition,
-    findConfigFolderVerification,
     PrerequisiteNote,
 } from "../adapter-shared/index.ts";
-import { Button } from "../../primitives/button/button.tsx";
+import { ConfigFolderList } from "./config-folder-list.tsx";
 import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
@@ -37,43 +36,13 @@ export function ObsidianSettings({
                 verifyPathResult={verifyPathResult}
             />
             <div className={styles.fieldGrid}>
-                <div className={styles.fieldGridNote}>
-                    CONFIG FOLDERS · {appConfig.config_folders?.length ?? 0} CONFIGURED
-                </div>
-                {(appConfig.config_folders ?? []).map((config_folder) => {
-                    const verification = findConfigFolderVerification(
-                        verifyPathResult,
-                        config_folder,
-                    );
-                    return (
-                        <div className={styles.configFolderRow} key={config_folder}>
-                            <span className={styles.configFolderPath}>
-                                {config_folder}
-                                {verification && (
-                                    <small>
-                                        · {verification.exists ? "VERIFIED" : "NOT FOUND"}
-                                    </small>
-                                )}
-                            </span>
-                            <Button
-                                className={styles.configFolderRemove}
-                                intent="ghost"
-                                onClick={() => onRemoveConfigFolder?.(config_folder)}
-                                disabled={configFoldersSaving}
-                            >
-                                REMOVE
-                            </Button>
-                        </div>
-                    );
-                })}
-                <Button
-                    className={styles.configFolderAdd}
-                    intent="secondary"
-                    onClick={onAddConfigFolder}
-                    disabled={configFoldersSaving}
-                >
-                    {configFoldersSaving ? "SAVING…" : "+ ADD CONFIG FOLDER"}
-                </Button>
+                <ConfigFolderList
+                    configFolders={appConfig.config_folders ?? []}
+                    onAddConfigFolder={onAddConfigFolder}
+                    onRemoveConfigFolder={onRemoveConfigFolder}
+                    configFoldersSaving={configFoldersSaving}
+                    verifyPathResult={verifyPathResult}
+                />
             </div>
             <ActionRow
                 onSetUp={onSetUp}

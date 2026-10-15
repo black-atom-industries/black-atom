@@ -185,19 +185,50 @@ pub fn discovered_obsidian_config_folders() -> Vec<String> {
         .unwrap_or_default()
 }
 
-/// Return configured Obsidian configuration folders in their normalized,
-/// portable form. Filesystem consumers expand each returned identity at the
-/// point where they access a file.
-pub fn configured_config_folders(app_config: &AppConfig) -> Vec<String> {
+/// Claude Code config folders in `home`: directories named `.claude*` that hold a
+/// `settings.json`. `CLAUDE_CONFIG_DIR` profiles such as `~/.claude-work` live here too.
+pub fn claude_config_folders_in(home: &Path) -> Vec<String> {
+    let Ok(entries) = fs::read_dir(home) else {
+        return Vec::new();
+    };
+    let mut folders: Vec<String> = entries
+        .filter_map(Result::ok)
+        .filter(|entry| entry.file_name().to_string_lossy().starts_with(".claude"))
+        .map(|entry| entry.path())
+        .filter(|path| path.join("settings.json").is_file())
+        .map(|path| path.to_string_lossy().into_owned())
+        .collect();
+    folders.sort();
+    normalize_config_folders(folders)
+}
+
+/// Discover an app's config folders where the app records or keeps them.
+pub fn discovered_config_folders(app: AppName) -> Vec<String> {
+    match app {
+        AppName::Obsidian => discovered_obsidian_config_folders(),
+        AppName::ClaudeCode => dirs::home_dir()
+            .map(|home| claude_config_folders_in(&home))
+            .unwrap_or_default(),
+        _ => Vec::new(),
+    }
+}
+
+/// Return an app's configured config folders in their normalized, portable
+/// form. Filesystem consumers expand each returned identity at the point where
+/// they access a file.
+pub fn configured_config_folders(app: AppName, app_config: &AppConfig) -> Vec<String> {
     if let Some(folders) = app_config.config_folders.as_ref() {
         return normalize_config_folders(folders.iter().cloned());
     }
 
+    let Some(marker) = crate::themes::registry::config_folder_marker(app) else {
+        return Vec::new();
+    };
     let Some(config_path) = app_config.config_path.as_deref() else {
         return Vec::new();
     };
     let expanded_path = PathBuf::from(shellexpand::tilde(config_path).to_string());
-    if expanded_path.file_name().and_then(|name| name.to_str()) != Some("appearance.json") {
+    if expanded_path.file_name().and_then(|name| name.to_str()) != Some(marker) {
         return Vec::new();
     }
     Path::new(config_path)
@@ -255,7 +286,7 @@ fn normalize_config_folder(folder: &str) -> String {
 /// migrated on read to the include pointer.
 const LEGACY_DELTA_MATCH_PATTERN: &str = r"features\s*=\s*black-atom-(dark|light)";
 
-/// Normalize legacy Obsidian and delta fields and persist the new schema before callers
+/// Normalize legacy config-folder and delta fields and persist the new schema before callers
 /// receive the config. The change is written only when the in-memory schema
 /// actually changes, so a second read is a no-op.
 fn normalize_config(config: &mut Config, path: &Path) {
@@ -266,25 +297,31 @@ fn normalize_config(config: &mut Config, path: &Path) {
         changed = true;
     }
 
-    if let Some(obsidian) = config.apps.get_mut(&AppName::Obsidian) {
-        let had_folders = obsidian.config_folders.is_some();
-        let original_folders = obsidian.config_folders.take().unwrap_or_default();
+    for (app, app_config) in config.apps.iter_mut() {
+        let Some(marker) = crate::themes::registry::config_folder_marker(*app) else {
+            continue;
+        };
+        let had_folders = app_config.config_folders.is_some();
+        let original_folders = app_config.config_folders.take().unwrap_or_default();
         let mut folders = original_folders.clone();
-        let legacy_path = std::mem::take(&mut obsidian.config_path);
+        let legacy_path = std::mem::take(&mut app_config.config_path);
         if let Some(legacy_path) = legacy_path {
             let legacy = PathBuf::from(shellexpand::tilde(&legacy_path).to_string());
-            if legacy.file_name().and_then(|name| name.to_str()) == Some("appearance.json") {
+            if legacy.file_name().and_then(|name| name.to_str()) == Some(marker) {
                 if let Some(folder) = legacy.parent() {
                     folders.push(folder.to_string_lossy().into_owned());
                 }
             } else {
-                log::warn!("Cannot migrate Obsidian config_path '{legacy_path}'; expected a config folder's appearance.json");
+                log::warn!(
+                    "Cannot migrate {} config_path '{legacy_path}'; expected a config folder's {marker}",
+                    app.as_str()
+                );
             }
             changed = true;
         }
         folders = normalize_config_folders(folders);
         changed |= !had_folders || folders != original_folders;
-        obsidian.config_folders = Some(folders);
+        app_config.config_folders = Some(folders);
     }
 
     if let Some(delta) = config.apps.get_mut(&AppName::Delta) {
@@ -341,8 +378,8 @@ pub fn ensure_config_exists() {
     }
 }
 
-/// Expand tilde in config_path before backend filesystem operations. Obsidian
-/// config-folder identities stay portable; their filesystem consumers expand
+/// Expand tilde in config_path before backend filesystem operations.
+/// Config-folder identities stay portable; their filesystem consumers expand
 /// them locally so results can retain the stored identity.
 ///
 /// themes_path is deliberately NOT expanded here: it feeds the {themesPath}
@@ -381,20 +418,22 @@ pub fn collapse_app_paths(config: &mut Config) {
             }
         }
     }
-    if let Some(obsidian) = config.apps.get_mut(&AppName::Obsidian) {
-        if let Some(legacy_path) = obsidian.config_path.take() {
+    for (app, app_config) in config.apps.iter_mut() {
+        let Some(marker) = crate::themes::registry::config_folder_marker(*app) else {
+            continue;
+        };
+        if let Some(legacy_path) = app_config.config_path.take() {
             let legacy = PathBuf::from(shellexpand::tilde(&legacy_path).to_string());
-            if legacy.file_name().and_then(|name| name.to_str()) == Some("appearance.json") {
+            if legacy.file_name().and_then(|name| name.to_str()) == Some(marker) {
                 if let Some(folder) = legacy.parent() {
-                    let folders = obsidian.config_folders.get_or_insert_with(Vec::new);
+                    let folders = app_config.config_folders.get_or_insert_with(Vec::new);
                     folders.push(folder.to_string_lossy().into_owned());
                 }
             }
         }
-        if let Some(folders) = obsidian.config_folders.as_mut() {
+        if let Some(folders) = app_config.config_folders.as_mut() {
             *folders = normalize_config_folders(std::mem::take(folders));
         }
-        obsidian.config_path = None;
     }
 }
 
@@ -588,6 +627,35 @@ mod tests {
     }
 
     #[test]
+    fn claude_config_folders_are_dot_claude_dirs_with_settings() {
+        let dir = tempfile::TempDir::new().unwrap();
+        for (name, settings) in [
+            (".claude", true),
+            (".claude-work", true),
+            (".claude-swap-backup", false),
+            (".config", true),
+        ] {
+            let folder = dir.path().join(name);
+            fs::create_dir_all(&folder).unwrap();
+            if settings {
+                fs::write(folder.join("settings.json"), "{}\n").unwrap();
+            }
+        }
+        fs::write(dir.path().join(".claude.json"), "{}\n").unwrap();
+
+        assert_eq!(
+            claude_config_folders_in(dir.path()),
+            vec![
+                dir.path().join(".claude").to_string_lossy().into_owned(),
+                dir.path()
+                    .join(".claude-work")
+                    .to_string_lossy()
+                    .into_owned(),
+            ]
+        );
+    }
+
+    #[test]
     fn obsidian_registry_returns_default_folders_and_ignores_bad_entries() {
         let dir = tempfile::TempDir::new().unwrap();
         let valid = dir.path().join("valid-vault");
@@ -629,7 +697,7 @@ mod tests {
         };
 
         assert_eq!(
-            configured_config_folders(&config),
+            configured_config_folders(AppName::Obsidian, &config),
             vec!["~/Notes/.obsidian"]
         );
     }

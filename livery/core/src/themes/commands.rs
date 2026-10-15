@@ -75,7 +75,7 @@ fn configured_themes_dirs(app: AppName) -> Option<Vec<std::path::PathBuf>> {
     crate::config::io::expand_app_paths(&mut config);
     let app_config = config.apps.get(&app)?;
     if app == AppName::Obsidian {
-        let folders = crate::config::io::configured_config_folders(app_config);
+        let folders = crate::config::io::configured_config_folders(app, app_config);
         return Some(
             folders
                 .iter()
@@ -251,7 +251,7 @@ fn link_obsidian_config_folders(app_str: &str) -> LinkThemesResult {
             pruned: None,
         };
     };
-    let folders = crate::config::io::configured_config_folders(app_config);
+    let folders = crate::config::io::configured_config_folders(AppName::Obsidian, app_config);
     if folders.is_empty() {
         return LinkThemesResult {
             app: app_str.to_string(),

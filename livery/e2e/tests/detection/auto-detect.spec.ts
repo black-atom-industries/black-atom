@@ -4,7 +4,7 @@ test("AUTO-DETECT finds the adapters whose config files exist", async ({ page })
     await page.goto("/settings/adapters");
     await page.getByRole("button", { name: "AUTO-DETECT" }).click();
 
-    await expect(page.getByText(/^4 OF \d+ FOUND$/)).toBeVisible();
+    await expect(page.getByText(/^5 OF \d+ FOUND$/)).toBeVisible();
 });
 
 test("a found but disabled adapter is flagged in the sidebar", async ({ page }) => {

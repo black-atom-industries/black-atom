@@ -8,7 +8,7 @@ test("s opens settings from the theme list, Escape walks back", async ({ page })
     await expect(page.getByRole("button", { name: "AUTO-DETECT" })).toBeVisible();
 
     await page.keyboard.press("Enter");
-    await expect(page).toHaveURL(/\/settings\/adapters\/delta$/);
+    await expect(page).toHaveURL(/\/settings\/adapters\/claude-code$/);
     await expect(page.getByRole("switch")).toBeVisible();
 
     await page.keyboard.press("Escape");
