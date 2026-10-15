@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.11.0](https://github.com/black-atom-industries/black-atom/compare/v0.10.0...v0.11.0) (2026-10-15)
+
+
+### Features
+
+* **claude-code:** add claude-code adapter [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([3e22d87](https://github.com/black-atom-industries/black-atom/commit/3e22d87e42fba15523bf80d60fcc42813985797a))
+* **core:** cool Facility toward slate and desaturate its mids [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([112b52d](https://github.com/black-atom-industries/black-atom/commit/112b52d2ed539f4ff3aba6a77ae7078796476192))
+* **core:** warm Minium Polymer's neutrals and key keywords to orange [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([0faf8a1](https://github.com/black-atom-industries/black-atom/commit/0faf8a1864cf89c8a0a4a45b52b1605b966f3288))
+* **livery:** apply claude-code themes to every config folder [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([775dc71](https://github.com/black-atom-industries/black-atom/commit/775dc7199ca86ab1f02267b45f86ebfa0775cc70))
+
+
+### Bug Fixes
+
+* **herdr:** limit the theme to colors [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([102f75a](https://github.com/black-atom-industries/black-atom/commit/102f75a368a9c623add29a8338294e0c828ff75a))
+* report a launcher once when the search path repeats its directory [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([01ce68d](https://github.com/black-atom-industries/black-atom/commit/01ce68d837fb7c83219a8e07117472720981059c))
+
 ## [0.10.0](https://github.com/black-atom-industries/black-atom/compare/v0.9.0...v0.10.0) (2026-10-10)
 
 ### Highlights
