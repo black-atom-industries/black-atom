@@ -10,33 +10,33 @@
 html[class],
 html.theme_light[class],
 html.theme_calm_blue[class] {
-  --ba-bg: #dbdbdb;
-  --ba-bg-panel: #cacacc;
-  --ba-bg-active: #ebebeb;
-  --ba-bg-hover: #cacacc;
-  --ba-bg-selection: #c4c4c4;
+  --ba-bg: #dfdad2;
+  --ba-bg-panel: #cecac2;
+  --ba-bg-active: #f1eae0;
+  --ba-bg-hover: #cecac2;
+  --ba-bg-selection: #c8c3be;
   --ba-fg: #1d1d1d;
-  --ba-fg-subtle: #46474c;
-  --ba-fg-accent: #f55d12;
-  --ba-fg-disabled: #757b80;
+  --ba-fg-subtle: #4b4745;
+  --ba-fg-accent: #fd4200;
+  --ba-fg-disabled: #7e7974;
   --ba-fg-negative: #f14d4c;
   --ba-fg-positive: #819e00;
   --ba-fg-info: #00a3e9;
-  --ba-syntax-comment: #5b6168;
-  --ba-syntax-comment-doc: #5b6168;
+  --ba-syntax-comment: #645f5e;
+  --ba-syntax-comment-doc: #645f5e;
   --ba-syntax-keyword: #18171f;
   --ba-syntax-import: #0f0f11;
-  --ba-syntax-string: #5b6168;
+  --ba-syntax-string: #645f5e;
   --ba-syntax-string-doc: #18171f;
-  --ba-syntax-string-escape: #f55d12;
-  --ba-syntax-string-regexp: #f55d12;
+  --ba-syntax-string-escape: #fd4200;
+  --ba-syntax-string-regexp: #fd4200;
   --ba-syntax-number: #404040;
   --ba-syntax-constant: #1d1d1d;
-  --ba-syntax-function: #f55d12;
+  --ba-syntax-function: #fd4200;
   --ba-syntax-builtin: #18171f;
   --ba-syntax-type: #0f0f11;
   --ba-syntax-variable: #252728;
-  --ba-syntax-property: #46474c;
+  --ba-syntax-property: #4b4745;
   --ba-syntax-module: #252728;
   --ba-syntax-attribute: #18171f;
   --ba-syntax-tag: #18171f;

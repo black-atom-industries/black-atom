@@ -4,60 +4,60 @@ name = "Black Atom — Minium ∷ Polymer Light"
 
 [colors]
 foreground = "#1d1d1d"
-background = "#dbdbdb"
-cursor_bg = "#f55d12"
-cursor_border = "#f55d12"
-cursor_fg = "#dbdbdb"
-selection_bg = "#c4c4c4"
+background = "#dfdad2"
+cursor_bg = "#fd4200"
+cursor_border = "#fd4200"
+cursor_fg = "#dfdad2"
+selection_bg = "#c8c3be"
 selection_fg = "#1d1d1d"
-split = "#f55d12"
+split = "#fd4200"
 compose_cursor = "#f14d4c"
-scrollbar_thumb = "#46474c"
+scrollbar_thumb = "#4b4745"
 
 ansi = [
   "#404040", # black
-  "#939d9f", # dark_red
-  "#757b80", # dark_green
+  "#a09a95", # dark_red
+  "#7e7974", # dark_green
   "#18171f", # dark_yellow
-  "#939d9f", # dark_blue
-  "#757b80", # dark_magenta
-  "#939d9f", # dark_cyan
-  "#939d9f" # light_gray
+  "#a09a95", # dark_blue
+  "#7e7974", # dark_magenta
+  "#a09a95", # dark_cyan
+  "#a09a95" # light_gray
 ]
 
 brights = [
-  "#46474c", # gray
-  "#939d9f", # red
-  "#757b80", # green
-  "#f55d12", # yellow
-  "#939d9f", # blue
-  "#757b80", # magenta
-  "#939d9f", # cyan
-  "#939d9f" # white
+  "#4b4745", # gray
+  "#a09a95", # red
+  "#7e7974", # green
+  "#fd4200", # yellow
+  "#a09a95", # blue
+  "#7e7974", # magenta
+  "#a09a95", # cyan
+  "#a09a95" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#cacacc"
-background = "#dbdbdb"
+inactive_tab_edge = "#cecac2"
+background = "#dfdad2"
 
 [colors.tab_bar.active_tab]
-fg_color = "#cacacc"
-bg_color = "#f55d12"
+fg_color = "#cecac2"
+bg_color = "#fd4200"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#cacacc"
-bg_color = "#c4c4c4"
+fg_color = "#cecac2"
+bg_color = "#c8c3be"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#cacacc"
-bg_color = "#cacacc"
+fg_color = "#cecac2"
+bg_color = "#cecac2"
 
 [colors.tab_bar.new_tab]
-fg_color = "#cacacc"
+fg_color = "#cecac2"
 bg_color = "#819e00"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#cacacc"
-bg_color = "#cacacc"
+fg_color = "#cecac2"
+bg_color = "#cecac2"
 intensity = "Bold"
