@@ -541,7 +541,7 @@ test("abandoned launchers are reported only for dead owners and removed on reque
         const dead = spawnSync("true").pid;
         const state = JSON.parse(await readFile(session.statePath, "utf8"));
         await writeFile(session.statePath, JSON.stringify({ ...state, owner: dead }));
-        const [abandoned, ...rest] = findAbandonedLaunchers(bin);
+        const [abandoned, ...rest] = findAbandonedLaunchers(`${bin}:${bin}/`);
         assert.deepEqual(rest, []);
         assert.equal(abandoned.command, command);
         assert.equal(abandoned.directory, session.directory);

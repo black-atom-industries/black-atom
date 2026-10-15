@@ -111,6 +111,7 @@ export function findAbandonedLaunchers(searchPath: string): AbandonedLauncher[] 
     const abandoned: AbandonedLauncher[] = [];
     for (const directory of searchPath.split(":")) {
         const command = join(directory || process.cwd(), "livery-dev");
+        if (abandoned.some((launcher) => launcher.command === command)) continue;
         try {
             if (!lstatSync(command).isSymbolicLink()) continue;
             const session = linkedSessionDirectory(command);
