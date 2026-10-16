@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/black-atom-industries/black-atom/compare/v0.11.0...v0.11.1) (2026-10-16)
+
+
+### Documentation
+
+* state the Node version the install is tested on [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([1f3d99a](https://github.com/black-atom-industries/black-atom/commit/1f3d99a6d4e85bf4c8bced0b1fc7830ce0b2338f))
+
 ## [0.11.0](https://github.com/black-atom-industries/black-atom/compare/v0.10.0...v0.11.0) (2026-10-15)
 
 ### Highlights
