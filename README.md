@@ -5,7 +5,7 @@ show up in the terminal, the editor, and the rest of the desktop. Livery switche
 
 ## Install
 
-On macOS, build and install the livery app and the `livery` command from a clone, with [Node.js](https://nodejs.org/) 22.18+, 24.11+, or 26+ and
+On macOS, build and install the livery app and the `livery` command from a clone, with [Node.js](https://nodejs.org/) 24.11+ and
 [Rust](https://rustup.rs) installed:
 
 ```bash
