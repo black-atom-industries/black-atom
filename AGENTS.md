@@ -22,11 +22,13 @@ Agent executions and automated tests must run livery, `tauri dev`, `livery apply
 updaters with a temporary fixture `$HOME` and XDG directories. Updaters write to config files.
 User-started development inherits the user's normal environment and existing configuration.
 
-Trust the real mise config before swapping `$HOME`. Under a fixture home, mise reads it as an
-untrusted project config and every shimmed tool fails.
+Trust the real mise config and point Playwright at the real browser cache before swapping `$HOME`.
+Under a fixture home, mise reads its config as an untrusted project config and every shimmed tool
+fails, and Playwright finds no browsers.
 
 ```bash
 export MISE_TRUSTED_CONFIG_PATHS="$HOME/.config/mise"
+export PLAYWRIGHT_BROWSERS_PATH="$HOME/Library/Caches/ms-playwright"
 export HOME="$(realpath "$(mktemp -d)")"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
