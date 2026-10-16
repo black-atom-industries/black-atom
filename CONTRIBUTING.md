@@ -42,10 +42,11 @@ On macOS, the root build produces the `.app` bundle and CLI.
 
 ## Git hooks
 
-Vite+ manages the hooks. Point Git at them once per clone:
+Vite+ manages the hooks. Point Git at them and apply the repository's Git config once per clone:
 
 ```bash
 npm run install:hooks # runs `vp config`
+npm run git:config    # sets pull.rebase true and merge.ff only
 ```
 
 Pre-commit (`.vite-hooks/pre-commit`) runs `vp staged` on the staged files: `vp fmt --check` for formatted file types,

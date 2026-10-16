@@ -29,7 +29,8 @@
         "verify": "npm run build:ui && npm run check:ts && npm run check:rust && npm run test:ts && npm run test:rust",
         "fmt": "vp fmt",
         "lint": "vp lint",
-        "install:hooks": "vp config"
+        "install:hooks": "vp config",
+        "git:config": "git config pull.rebase true && git config merge.ff only"
     },
     "devDependencies": {
         "@types/node": "^24",
