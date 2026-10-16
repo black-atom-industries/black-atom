@@ -113,7 +113,7 @@ const cycle = createDevCycle({
             await processes.run([binary, "reapply"]);
         } catch (error) {
             console.error(
-                `Development reapply failed: ${error instanceof Error ? error.message : error}`,
+                `Development reapply failed: ${error instanceof Error ? error.message : String(error)}`,
             );
         }
     },

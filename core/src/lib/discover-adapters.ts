@@ -44,11 +44,11 @@ export async function discoverAdapters(adaptersDir: string): Promise<string[]> {
                 }
             } catch (error) {
                 if (isNotFound(error)) continue;
-                throw new Error(`Cannot read adapter config ${adapterFilePath}: ${error}`);
+                throw new Error(`Cannot read adapter config ${adapterFilePath}: ${String(error)}`);
             }
         }
     } catch (error) {
-        throw new Error(`Failed to discover adapters: ${error}`);
+        throw new Error(`Failed to discover adapters: ${String(error)}`);
     }
 
     return adapters.sort(); // Sort alphabetically for consistency

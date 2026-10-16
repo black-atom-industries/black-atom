@@ -27,7 +27,7 @@ export async function launchDev(statePath: string, args: string[]): Promise<numb
         });
     } catch (error) {
         console.error(
-            `livery-dev is unavailable: ${error instanceof Error ? error.message : error}`,
+            `livery-dev is unavailable: ${error instanceof Error ? error.message : String(error)}`,
         );
         return 1;
     }

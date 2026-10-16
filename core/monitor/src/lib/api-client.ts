@@ -8,8 +8,9 @@ export class ApiError extends Error {
     }
 }
 
-interface RequestOptions extends Omit<RequestInit, "body"> {
+interface RequestOptions extends Omit<RequestInit, "body" | "headers"> {
     body?: unknown;
+    headers?: Record<string, string>;
 }
 
 export async function apiClient<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {

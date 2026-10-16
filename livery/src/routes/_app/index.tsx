@@ -279,7 +279,7 @@ function Component() {
             setPickedIndex(0);
             return;
         }
-        handleApplyTheme();
+        void handleApplyTheme();
     });
 
     const configSettled = !config.query.isPending;

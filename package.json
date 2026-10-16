@@ -19,7 +19,7 @@
         "eval:skills": "cd .agents && claude plugin eval . --allow-tools Bash Edit Write --scaffold --trust-plugin --no-publish -j 4 --max-cost-usd 25 --judge-model sonnet",
         "build:ui": "npm run generate && vp build livery",
         "check": "npm run build:ui && npm run check:ts && npm run check:rust",
-        "check:ts": "tsc -p tsconfig.json && tsc -p core/monitor && tsc -p livery && vp lint && vp fmt --check",
+        "check:ts": "tsc -p tsconfig.json && tsc -p core/monitor && tsc -p livery && vp lint --max-warnings=0 && vp fmt --check",
         "check:rust": "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
         "test": "npm run build:ui && npm run test:ts && npm run test:rust",
         "test:ts": "vp test run",

@@ -10,11 +10,10 @@ interface Props {
 export function ColorSwatch({ color, label, type = "background" }: Props) {
     const [copied, setCopied] = useState(false);
 
-    function handleClick() {
-        navigator.clipboard.writeText(color).then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 1200);
-        });
+    async function handleClick() {
+        await navigator.clipboard.writeText(color);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1200);
     }
 
     return (

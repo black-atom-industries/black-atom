@@ -46,7 +46,7 @@ export async function installMacos({
             console.log(`Installed CLI: ${cliDestination}`);
         } catch (error) {
             throw new Error(
-                `App installed at ${appDestination}; CLI installation failed: ${error}`,
+                `App installed at ${appDestination}; CLI installation failed: ${String(error)}`,
             );
         }
     }

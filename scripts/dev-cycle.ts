@@ -51,7 +51,7 @@ export function createDevCycle(options: DevCycleOptions) {
             if (current === revision && !stopped) options.state("ready");
         } catch (error) {
             if (current === revision && !stopped) {
-                options.state(`failed: ${error instanceof Error ? error.message : error}`);
+                options.state(`failed: ${error instanceof Error ? error.message : String(error)}`);
             }
         }
     }, options.debounceMs ?? 300);

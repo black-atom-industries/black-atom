@@ -70,7 +70,7 @@ export function startPreviewServer() {
         });
     }
 
-    watchThemes();
+    void watchThemes();
 
     const server = createServer(async (req, res) => {
         const path = new URL(req.url ?? "/", "http://localhost").pathname;

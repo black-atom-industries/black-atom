@@ -1,6 +1,6 @@
 export interface ChangeBatcher {
     schedule(path: string): void;
-    flush(): Promise<void>;
+    flush: () => Promise<void>;
     cancel(): void;
 }
 

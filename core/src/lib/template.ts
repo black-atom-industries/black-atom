@@ -92,6 +92,7 @@ async function processCollectionTemplates(
                                 const varPath = match[1].trim();
                                 // Simple check: try to access the property path and see if it throws or returns undefined
                                 try {
+                                    // oxlint-disable-next-line typescript/no-implied-eval -- evaluates the template's own expression to name the undefined variable
                                     const checkFunction = new Function(
                                         "theme",
                                         `try { return ${varPath}; } catch { return undefined; }`,

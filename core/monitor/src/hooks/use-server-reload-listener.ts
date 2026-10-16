@@ -9,7 +9,7 @@ export function useServerReloadListener() {
 
         source.onmessage = (event) => {
             if (event.data === "reload") {
-                queryClient.invalidateQueries();
+                void queryClient.invalidateQueries();
             }
         };
 

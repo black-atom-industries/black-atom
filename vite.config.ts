@@ -47,6 +47,9 @@ export default defineConfig({
         ],
     },
     lint: {
+        options: {
+            typeAware: true,
+        },
         plugins: ["typescript"],
         env: {
             browser: true,

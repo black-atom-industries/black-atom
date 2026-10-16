@@ -196,7 +196,7 @@ function SettingsRoute() {
         // not cross-populate the VERIFY PATH / LINK THEMES rows below, which
         // only reflect a direct run of those actions.
         setSetUpResults((prev) => ({ ...prev, [appName]: outcome }));
-        appStatus.query.refetch();
+        await appStatus.query.refetch();
     }
 
     async function linkAppThemes(appName: AppName) {
@@ -218,7 +218,7 @@ function SettingsRoute() {
                           config_folders: result.config_folders ?? null,
                       };
             setLinkThemesResults((prev) => ({ ...prev, [appName]: next }));
-            appStatus.query.refetch();
+            await appStatus.query.refetch();
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             setLinkThemesResults((prev) => ({
@@ -289,21 +289,20 @@ function SettingsRoute() {
         });
     }
 
-    function addConfigFolder(appName: AppName) {
+    async function addConfigFolder(appName: AppName) {
         if (!usesConfigFolders(config.query.data?.apps[appName])) return;
-        pickPath("directory").then((selected) => {
-            if (!selected) return;
-            const separator = sep();
-            const name = selected.split(separator).at(-1) ?? "";
-            // Picking an Obsidian vault selects its default `.obsidian` config folder.
-            const configFolder =
-                appName === "obsidian" && !name.startsWith(".")
-                    ? `${selected}${separator}.obsidian`
-                    : selected;
-            queueConfigFolderSave(appName, (current) =>
-                current.includes(configFolder) ? current : [...current, configFolder],
-            );
-        });
+        const selected = await pickPath("directory");
+        if (!selected) return;
+        const separator = sep();
+        const name = selected.split(separator).at(-1) ?? "";
+        // Picking an Obsidian vault selects its default `.obsidian` config folder.
+        const configFolder =
+            appName === "obsidian" && !name.startsWith(".")
+                ? `${selected}${separator}.obsidian`
+                : selected;
+        queueConfigFolderSave(appName, (current) =>
+            current.includes(configFolder) ? current : [...current, configFolder],
+        );
     }
 
     function removeConfigFolder(appName: AppName, config_folder: string) {
@@ -411,9 +410,9 @@ function SettingsRoute() {
         cycle — it's the back/exit affordance, not a settings section). */
     function moveRootCursor(delta: number) {
         if (onGeneral && delta > 0) {
-            navigate({ to: "/settings/adapters" });
+            void navigate({ to: "/settings/adapters" });
         } else if (onAdaptersSection && delta < 0) {
-            navigate({ to: "/settings/general" });
+            void navigate({ to: "/settings/general" });
         }
     }
 
@@ -431,7 +430,7 @@ function SettingsRoute() {
         const nextIndex = Math.min(Math.max(0, appEntries.length - 1), currentIndex + delta);
         const entry = appEntries[nextIndex];
         if (entry) {
-            navigate({
+            void navigate({
                 to: "/settings/adapters/$adapter",
                 params: { adapter: entry[0] },
                 replace: true,
@@ -457,7 +456,7 @@ function SettingsRoute() {
             return;
         }
         if (onAdaptersSection && appEntries.length > 0) {
-            navigate({
+            void navigate({
                 to: "/settings/adapters/$adapter",
                 params: { adapter: appEntries[0][0] },
             });
@@ -475,10 +474,10 @@ function SettingsRoute() {
      */
     function handleEscape() {
         if (navLevel === "detail") {
-            navigate({ to: "/settings/adapters" });
+            void navigate({ to: "/settings/adapters" });
             return;
         }
-        navigate({ to: "/" });
+        void navigate({ to: "/" });
     }
 
     /** nvim's plugin options: one backend write for config + Lua block. */
