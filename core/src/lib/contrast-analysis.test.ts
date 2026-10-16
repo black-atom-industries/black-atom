@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { analyzeThemeContrast, INTENDED_PAIRINGS } from "./contrast-analysis.ts";
 import type * as Theme from "../types/theme.ts";
 

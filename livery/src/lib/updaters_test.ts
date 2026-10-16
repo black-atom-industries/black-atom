@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { applyTheme, createUpdaters, getEnabledApps } from "./updaters.ts";
 import type { AppConfig, AppName } from "../bindings.ts";
 import type * as Theme from "@black-atom/core";

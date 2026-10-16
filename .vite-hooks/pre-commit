@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+set -e
+
+if [ ! -x node_modules/.bin/vp ]; then
+    echo "node_modules is missing: run npm ci" >&2
+    exit 1
+fi
+
+PATH="$PWD/node_modules/.bin:$PATH"
+exec vp staged --hide-unstaged --fail-on-changes --revert

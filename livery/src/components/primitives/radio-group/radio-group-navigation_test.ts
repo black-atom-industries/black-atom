@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { getNextRadioGroupIndex } from "./radio-group-navigation.ts";
 
 test("ArrowRight moves to the next index", () => {

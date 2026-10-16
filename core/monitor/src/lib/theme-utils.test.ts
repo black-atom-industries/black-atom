@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { groupByCollection } from "./theme-utils.ts";
 import type * as Theme from "@core/types/theme.ts";
 import { themeCatalog } from "@core/themes/catalog.ts";

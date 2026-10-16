@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { createChangeBatcher } from "./change-batcher.ts";
 
 test("change batcher coalesces pending paths", async () => {

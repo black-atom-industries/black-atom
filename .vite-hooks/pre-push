@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+set -e
+
+npm run verify
+
+if ! git rev-parse --verify --quiet origin/main >/dev/null; then
+    npm run test:e2e
+elif git diff --name-only origin/main...HEAD | grep -qE '^(livery/|core/src/|adapters/[^/]+/themes/)'; then
+    npm run test:e2e
+fi

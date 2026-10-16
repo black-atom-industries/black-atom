@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { collectionStats, orgStats, themeContrast } from "./stats.ts";
 
 const darkTheme = {

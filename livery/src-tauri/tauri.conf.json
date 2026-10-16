@@ -7,8 +7,8 @@
     "build": {
         "frontendDist": "../dist",
         "devUrl": "http://localhost:1420",
-        "beforeDevCommand": "npx vite --port 1420",
-        "beforeBuildCommand": "npx vite build"
+        "beforeDevCommand": "npx vp dev --port 1420",
+        "beforeBuildCommand": "npx vp build"
     },
     "app": {
         "windows": [

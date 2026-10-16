@@ -19,6 +19,6 @@
         "core/tests",
         "scripts",
         "adapters/*/scripts",
-        "vitest.config.ts"
+        "vite.config.ts"
     ]
 }

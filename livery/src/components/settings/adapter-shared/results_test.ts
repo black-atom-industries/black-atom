@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { findConfigFolderVerification } from "./results.ts";
 
 test("matches Obsidian verification by configured folder identity", () => {

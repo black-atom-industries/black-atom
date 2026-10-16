@@ -29,3 +29,5 @@ HANDOFF-*.md
 /adapters/nvim/Session.vim
 /PLAN.md
 .agents/evals/results/
+.vitest/
+.vite-hooks/_/

@@ -42,23 +42,20 @@ On macOS, the root build produces the `.app` bundle and CLI.
 
 ## Git hooks
 
-Install the standalone [Lefthook](https://lefthook.dev/installation/) binary, then enable hooks explicitly:
+Vite+ manages the hooks. Point Git at them once per clone:
 
 ```bash
-brew install lefthook # macOS; other platforms: see the installation link
-npm run install:hooks
+npm run install:hooks # runs `vp config`
 ```
 
-Pre-commit checks formatting (oxfmt) and lint (ESLint) on staged files, respecting their ignore lists,
-plus workspace Rust formatting when Rust files are staged. Checks are read-only;
-use `npm run fmt` and `cargo fmt` to format explicitly.
+Pre-commit (`.vite-hooks/pre-commit`) runs `vp staged` on the staged files: `vp fmt --check` for formatted file types,
+`vp lint` for JavaScript and TypeScript, and `cargo fmt --check` when Rust files are staged. The checks are read-only, so
+a commit that would change a file is blocked. Unstaged changes are hidden while the checks run. Use `npm run fmt` and
+`cargo fmt` to format explicitly.
 
-Pre-push runs `npm run verify`, which runs `check` and `test` with their shared steps once,
-one after another. Lefthook skips this job when its
-push-file detection returns no files. These tasks generate files and build the frontend.
-Review generated changes. Hooks check the current checkout, not snapshots of other refs being pushed. Lefthook temporarily hides and restores unstaged portions of partially
-staged files during commit checks. This is not a full checkout snapshot: workspace Rust formatting
-also sees other unstaged files. CI runs the full check and test tasks independently.
+Pre-push (`.vite-hooks/pre-push`) runs `npm run verify`, then `npm run test:e2e` when the push touches `livery/`,
+`core/src/` or `adapters/*/themes/`. It runs the end-to-end suite whenever `origin/main` is unavailable. Hooks check the
+current checkout, not snapshots of other refs being pushed. CI runs the full check and test tasks independently.
 
 ## Releases
 

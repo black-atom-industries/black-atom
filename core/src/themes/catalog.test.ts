@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import type * as Theme from "../types/theme.ts";
 import defaultCollection from "./default/mod.ts";
 import { collectionOrder, themeCatalog } from "./catalog.ts";

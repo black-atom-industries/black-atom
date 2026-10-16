@@ -5,7 +5,7 @@ FILE="$(node -e 'let s = ""; process.stdin.on("data", (c) => (s += c)).on("end",
 [ -n "$FILE" ] || exit 0
 
 ROOT="$(git rev-parse --show-toplevel)"
-"$ROOT/node_modules/.bin/oxfmt" --no-error-on-unmatched-pattern "$FILE" >/dev/null 2>&1
+"$ROOT/node_modules/.bin/vp" fmt --no-error-on-unmatched-pattern "$FILE" >/dev/null 2>&1
 case "$FILE" in
     */livery/core/* | */livery/cli/* | */livery/src-tauri/*) cargo fmt --all 2>/dev/null ;;
 esac

@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { themeToCssVars } from "./theme-css-vars.ts";
 import type * as Theme from "@core/types/theme.ts";
 

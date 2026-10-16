@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import { themeCatalog } from "@black-atom/core";
 import { collectionOrder } from "@black-atom/core";
 import type * as Theme from "@black-atom/core";

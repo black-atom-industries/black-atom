@@ -1,4 +1,4 @@
-import { assert, test } from "vitest";
+import { assert, test } from "vite-plus/test";
 import type { AppPathVerification, LinkThemesResult } from "../bindings.ts";
 import { setUpAdapter, type SetUpDeps } from "./adapter-setup.ts";
 

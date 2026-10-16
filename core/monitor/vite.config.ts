@@ -1,5 +1,5 @@
 import { resolve } from "node:path";
-import { createLogger, defineConfig } from "vite";
+import { createLogger, defineConfig } from "vite-plus";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react-swc";
 
@@ -27,7 +27,7 @@ export default defineConfig({
         },
     },
     build: {
-        rollupOptions: {
+        rolldownOptions: {
             external: ["culori"],
         },
     },

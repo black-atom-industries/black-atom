@@ -8,7 +8,7 @@
         "build": "node ../core/src/tasks/generate.ts && tauri build",
         "test:perf-benchmark": "cd src-tauri && cargo run --bin perf-benchmark --release",
         "install:macos": "node ../scripts/install-macos.ts --app-only",
-        "dev:ui": "vite --port 1430 --open '/dev'"
+        "dev:ui": "vp dev --port 1430 --open '/dev'"
     },
     "dependencies": {
         "@base-ui/react": "^1.7.0",
@@ -30,15 +30,16 @@
         "clsx": "^2.1.1",
         "culori": "^4",
         "cva": "^1.0.0-beta.8",
-        "react": "^19.2.8",
-        "react-dom": "^19.2.8"
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0"
     },
     "devDependencies": {
         "@tanstack/router-plugin": "^1.168.32",
         "@tauri-apps/cli": "~2.12.0",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.4",
-        "@vitejs/plugin-react": "^4",
-        "vite": "^6.4.3"
+        "@vitejs/plugin-react": "^6",
+        "vite": "npm:@voidzero-dev/vite-plus-core@1.3.0",
+        "vite-plus": "1.3.0"
     }
 }

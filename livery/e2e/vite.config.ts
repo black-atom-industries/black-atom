@@ -1,4 +1,4 @@
-import { mergeConfig } from "vite";
+import { mergeConfig } from "vite-plus";
 import base from "../vite.config.ts";
 
 // A deps cache of its own: the developer's Vite server on the same sources

@@ -29,7 +29,7 @@ export default defineConfig({
         },
         {
             name: "vite",
-            command: `npx vite --config e2e/vite.config.ts --host 127.0.0.1 --port ${vitePort} --strictPort`,
+            command: `npx vp dev --config e2e/vite.config.ts --host 127.0.0.1 --port ${vitePort} --strictPort`,
             cwd: "..",
             url: baseURL,
             env: bridgeEnv,

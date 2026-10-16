@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { assert, expect, test as vitestTest } from "vitest";
+import { assert, expect, test as vitestTest } from "vite-plus/test";
 import { join } from "node:path";
 import {
     adjustPaletteSuggestion,

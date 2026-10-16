@@ -114,25 +114,25 @@ selection_fg = "#332733"
 
 # 16-color palette
 ansi = [
-  "#3f2f3f", # black
-  "#b46371", # dark_red
-  "#53ad82", # dark_green
-  "#ee9c6b", # dark_yellow
-  "#ad8593", # dark_blue
-  "#ef9d6c", # dark_magenta
-  "#68b19a", # dark_cyan
-  "#aaa7be", # light_gray
+    "#3f2f3f", # black
+    "#b46371", # dark_red
+    "#53ad82", # dark_green
+    "#ee9c6b", # dark_yellow
+    "#ad8593", # dark_blue
+    "#ef9d6c", # dark_magenta
+    "#68b19a", # dark_cyan
+    "#aaa7be", # light_gray
 ]
 
 brights = [
-  "#6e6a86", # gray
-  "#eb6f84", # red
-  "#7ab89b", # green
-  "#e9b162", # yellow
-  "#a095a8", # blue
-  "#ffb488", # magenta
-  "#8cc1b0", # cyan
-  "#e6cbb2", # white
+    "#6e6a86", # gray
+    "#eb6f84", # red
+    "#7ab89b", # green
+    "#e9b162", # yellow
+    "#a095a8", # blue
+    "#ffb488", # magenta
+    "#8cc1b0", # cyan
+    "#e6cbb2", # white
 ]
 
 # Tab bar colors
