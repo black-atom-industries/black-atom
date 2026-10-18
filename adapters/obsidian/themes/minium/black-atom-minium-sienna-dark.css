@@ -21,10 +21,10 @@
   /* Extended Colors */
   --color-red: #a09a95;
   --color-red-rgb: 160, 154, 149;
-  --color-orange: #f1eae0;
-  --color-orange-rgb: 241, 234, 224;
-  --color-yellow: #ff8465;
-  --color-yellow-rgb: 255, 132, 101;
+  --color-orange: #cba496;
+  --color-orange-rgb: 203, 164, 150;
+  --color-yellow: #ec785b;
+  --color-yellow-rgb: 236, 120, 91;
   --color-green: #7e7974;
   --color-green-rgb: 126, 121, 116;
   --color-cyan: #a09a95;
@@ -45,7 +45,7 @@
   --background-modifier-active-hover: #383434;
   --background-modifier-border: #383434;
   --background-modifier-border-hover: #383434;
-  --background-modifier-border-focus: #ff8465;
+  --background-modifier-border-focus: #ec785b;
   --background-modifier-error-rgb: 103, 66, 66;
   --background-modifier-error: #674242;
   --background-modifier-error-hover: #674242;
@@ -58,8 +58,8 @@
   --text-normal: #d9ccba;
   --text-muted: #7e7974;
   --text-faint: #645f5e;
-  --text-accent: #ff8465;
-  --text-accent-hover: #ff8465;
+  --text-accent: #ec785b;
+  --text-accent-hover: #ec785b;
   --text-on-accent: #2b2827;
   --text-on-accent-inverted: #d9ccba;
   --text-error: #dd7577;
@@ -71,50 +71,50 @@
   /* Interactive */
   --interactive-normal: #2b2827;
   --interactive-hover: #383434;
-  --interactive-accent: #ff8465;
-  --interactive-accent-hover: #ff8465;
+  --interactive-accent: #ec785b;
+  --interactive-accent-hover: #ec785b;
 
   /* Headings */
-  --h1-color: #ff8465;
-  --h2-color: #ff8465;
-  --h3-color: #ff8465;
+  --h1-color: #ec785b;
+  --h2-color: #ec785b;
+  --h3-color: #ec785b;
   --h4-color: #a09a95;
   --h5-color: #a09a95;
   --h6-color: #a09a95;
 
   /* Markup */
-  --bold-color: #ff8465;
-  --italic-color: #ff8465;
+  --bold-color: #ec785b;
+  --italic-color: #ec785b;
   --blockquote-border-color: #645f5e;
-  --link-color: #f1eae0;
-  --link-color-hover: #f1eae0;
-  --link-external-color: #f1eae0;
-  --link-external-color-hover: #f1eae0;
+  --link-color: #cba496;
+  --link-color-hover: #cba496;
+  --link-external-color: #cba496;
+  --link-external-color-hover: #cba496;
 
   /* Code / Syntax Highlighting */
   --code-normal: #c4b9aa;
   --code-comment: #7e7974;
-  --code-function: #ff8465;
-  --code-important: #ff8465;
-  --code-keyword: #ff8465;
+  --code-function: #ec785b;
+  --code-important: #ec785b;
+  --code-keyword: #ec785b;
   --code-operator: #d9ccba;
-  --code-property: #f1eae0;
+  --code-property: #cba496;
   --code-punctuation: #b9afa4;
-  --code-string: #83a7d6;
-  --code-tag: #83a7d6;
+  --code-string: #99b0ce;
+  --code-tag: #99b0ce;
   --code-value: #b9afa4;
   --code-background: #484443;
 
   /* Tags */
-  --tag-color: #ff8465;
-  --tag-color-hover: #ff8465;
+  --tag-color: #ec785b;
+  --tag-color-hover: #ec785b;
   --tag-background: #383434;
   --tag-background-hover: #383434;
 
   /* Graph */
   --graph-line: #383434;
-  --graph-node: #ff8465;
-  --graph-node-focused: #ff8465;
+  --graph-node: #ec785b;
+  --graph-node-focused: #ec785b;
   --graph-node-tag: #a09a95;
   --graph-node-attachment: #7e7974;
 
@@ -129,6 +129,6 @@
   --nav-item-background-selected: #484443;
   --nav-item-color: #d9ccba;
   --nav-item-color-hover: #d9ccba;
-  --nav-item-color-active: #ff8465;
+  --nav-item-color-active: #ec785b;
   --nav-item-color-selected: #d9ccba;
 }

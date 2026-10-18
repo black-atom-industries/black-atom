@@ -11,7 +11,7 @@
 /* Foreground colors */
 @define-color ba-fg-default #d9ccba;
 @define-color ba-fg-subtle #7e7974;
-@define-color ba-fg-accent #ff8465;
+@define-color ba-fg-accent #ec785b;
 @define-color ba-fg-disabled #645f5e;
 @define-color ba-fg-contrast #2b2827;
 
@@ -24,7 +24,7 @@
 /* Palette colors */
 @define-color ba-red #a09a95;
 @define-color ba-green #7e7974;
-@define-color ba-yellow #ff8465;
+@define-color ba-yellow #ec785b;
 @define-color ba-blue #a09a95;
 @define-color ba-magenta #7e7974;
 @define-color ba-cyan #a09a95;

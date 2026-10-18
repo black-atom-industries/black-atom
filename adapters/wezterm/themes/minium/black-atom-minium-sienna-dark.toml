@@ -5,12 +5,12 @@ name = "Black Atom — Minium ∷ Sienna Dark"
 [colors]
 foreground = "#d9ccba"
 background = "#2b2827"
-cursor_bg = "#ff8465"
-cursor_border = "#ff8465"
+cursor_bg = "#ec785b"
+cursor_border = "#ec785b"
 cursor_fg = "#2b2827"
 selection_bg = "#484443"
 selection_fg = "#d9ccba"
-split = "#ff8465"
+split = "#ec785b"
 compose_cursor = "#dd7577"
 scrollbar_thumb = "#7e7974"
 
@@ -18,7 +18,7 @@ ansi = [
   "#484443", # black
   "#a09a95", # dark_red
   "#7e7974", # dark_green
-  "#f1eae0", # dark_yellow
+  "#cba496", # dark_yellow
   "#a09a95", # dark_blue
   "#7e7974", # dark_magenta
   "#a09a95", # dark_cyan
@@ -29,7 +29,7 @@ brights = [
   "#4b4745", # gray
   "#a09a95", # red
   "#7e7974", # green
-  "#ff8465", # yellow
+  "#ec785b", # yellow
   "#a09a95", # blue
   "#7e7974", # magenta
   "#a09a95", # cyan
@@ -42,7 +42,7 @@ background = "#2b2827"
 
 [colors.tab_bar.active_tab]
 fg_color = "#2b2827"
-bg_color = "#ff8465"
+bg_color = "#ec785b"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]

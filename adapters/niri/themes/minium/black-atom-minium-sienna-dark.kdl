@@ -11,12 +11,12 @@ overview {
 
 layout {
     focus-ring {
-        active-color "#ff8465"
+        active-color "#ec785b"
         inactive-color "#7e7974"
     }
 
     border {
-        active-color "#ff8465"
+        active-color "#ec785b"
         inactive-color "#7e7974"
         urgent-color "#a09a95"
     }

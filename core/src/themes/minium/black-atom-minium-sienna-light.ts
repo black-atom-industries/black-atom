@@ -8,26 +8,26 @@ import createFeedback from "./create-feedback-light.ts";
 
 export default defineThemeColors({
     primaries: {
-        d10: oklch(0.17, 0.005, 35),
-        d20: oklch(0.23, 0.005, 35),
-        d30: oklch(0.27, 0.005, 35),
-        d40: oklch(0.37, 0.005, 0),
+        d10: oklch(0.3, 0.005, 0),
+        d20: oklch(0.35, 0.005, 0),
+        d30: oklch(0.4, 0.005, 0),
+        d40: oklch(0.45, 0.005, 0),
 
-        m10: oklch(0.4, 0.006, 40),
-        m20: oklch(0.49, 0.006, 40),
-        m30: oklch(0.58, 0.01, 67),
-        m40: oklch(0.69, 0.01, 67),
+        m10: oklch(0.5, 0.006, 40),
+        m20: oklch(0.6, 0.006, 40),
+        m30: oklch(0.7, 0.01, 67),
+        m40: oklch(0.8, 0.01, 67),
 
-        l10: oklch(0.82, 0.009, 72),
-        l20: oklch(0.84, 0.012, 82),
-        l30: oklch(0.89, 0.012, 82),
-        l40: oklch(0.94, 0.016, 80),
+        l10: oklch(0.84, 0.025, 72),
+        l20: oklch(0.88, 0.025, 75),
+        l30: oklch(0.92, 0.025, 75),
+        l40: oklch(0.96, 0.025, 78),
     },
     accents: {
-        a10: oklch(0.655, 0.23, 35),
-        a20: oklch(0.21, 0.016, 291),
-        a30: oklch(0.17, 0.004, 286),
-        a40: oklch(0.52, 0.1, 255),
+        a10: oklch(0.65, 0.25, 35),
+        a20: oklch(0.55, 0.075, 0),
+        a30: oklch(0.65, 0.075, 25),
+        a40: oklch(0.65, 0.075, 255),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
