@@ -3,19 +3,19 @@ author = "Black Atom Industries"
 name = "Black Atom — Minium ∷ Polymer Light"
 
 [colors]
-foreground = "#1d1d1d"
+foreground = "#1f1c1b"
 background = "#dfdad2"
 cursor_bg = "#fd4200"
 cursor_border = "#fd4200"
 cursor_fg = "#dfdad2"
 selection_bg = "#c8c3be"
-selection_fg = "#1d1d1d"
+selection_fg = "#1f1c1b"
 split = "#fd4200"
 compose_cursor = "#f14d4c"
 scrollbar_thumb = "#4b4745"
 
 ansi = [
-  "#404040", # black
+  "#423f40", # black
   "#a09a95", # dark_red
   "#7e7974", # dark_green
   "#18171f", # dark_yellow

@@ -12,10 +12,10 @@ local theme = {
     colors = {
         none = "NONE",
         primaries = {
-            d10 = "#0f0f11",
-            d20 = "#1d1d1d",
-            d30 = "#252728",
-            d40 = "#404040",
+            d10 = "#110f0e",
+            d20 = "#1f1c1b",
+            d30 = "#292625",
+            d40 = "#423f40",
             m10 = "#4b4745",
             m20 = "#645f5e",
             m30 = "#7e7974",
@@ -26,7 +26,7 @@ local theme = {
             l40 = "#f1eae0",
         },
         palette = {
-            black = "#404040",
+            black = "#423f40",
             gray = "#4b4745",
             dark_red = "#a09a95",
             red = "#a09a95",
@@ -53,7 +53,7 @@ local theme = {
                 hover = "#cecac2",
                 selection = "#c8c3be",
                 search = "#c8c3be",
-                contrast = "#404040",
+                contrast = "#423f40",
                 negative = "#f3c7c3",
                 warn = "#e6d0bb",
                 info = "#c0daec",
@@ -64,7 +64,7 @@ local theme = {
                 modify = "#c0daec",
             },
             fg = {
-                default = "#1d1d1d",
+                default = "#1f1c1b",
                 subtle = "#4b4745",
                 accent = "#fd4200",
                 disabled = "#7e7974",
@@ -81,36 +81,36 @@ local theme = {
         },
         syntax = {
             variable = {
-                default = "#252728",
-                builtin = "#404040",
-                member = "#18171f",
-                parameter = "#18171f",
+                default = "#292625",
+                builtin = "#423f40",
+                member = "#4b4745",
+                parameter = "#4b4745",
             },
             property = {
                 default = "#4b4745",
             },
             string = {
-                default = "#645f5e",
-                doc = "#18171f",
+                default = "#3f6aa1",
+                doc = "#645f5e",
                 regexp = "#fd4200",
                 escape = "#fd4200",
             },
             constant = {
-                default = "#1d1d1d",
-                builtin = "#0f0f11",
+                default = "#1f1c1b",
+                builtin = "#3f6aa1",
             },
             module = {
-                default = "#252728",
+                default = "#292625",
             },
             boolean = {
-                default = "#4b4745",
+                default = "#3f6aa1",
             },
             number = {
-                default = "#404040",
+                default = "#3f6aa1",
             },
             type = {
-                default = "#0f0f11",
-                builtin = "#404040",
+                default = "#423f40",
+                builtin = "#4b4745",
             },
             attribute = {
                 default = "#18171f",
@@ -130,16 +130,16 @@ local theme = {
                 export = "#0f0f11",
             },
             operator = {
-                default = "#1d1d1d",
+                default = "#1f1c1b",
             },
             punctuation = {
-                default = "#404040",
-                delimiter = "#404040",
-                bracket = "#404040",
-                special = "#404040",
+                default = "#423f40",
+                delimiter = "#423f40",
+                bracket = "#423f40",
+                special = "#423f40",
             },
             comment = {
-                default = "#645f5e",
+                default = "#7e7974",
                 doc = "#645f5e",
                 todo = "#819e00",
                 error = "#f14d4c",
@@ -173,7 +173,7 @@ local theme = {
                 },
             },
             tag = {
-                default = "#18171f",
+                default = "#3f6aa1",
                 builtin = "#fd4200",
                 attribute = "#4b4745",
                 delimiter = "#7e7974",

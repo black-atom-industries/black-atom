@@ -1,19 +1,19 @@
 /* Black Atom — Minium ∷ Polymer Dark */
 
 /* Background colors */
-@define-color ba-bg-default #1d252d;
-@define-color ba-bg-panel #171e24;
-@define-color ba-bg-hover #29313a;
-@define-color ba-bg-active #29313a;
-@define-color ba-bg-selection #37414b;
+@define-color ba-bg-default #2b2827;
+@define-color ba-bg-panel #232120;
+@define-color ba-bg-hover #383434;
+@define-color ba-bg-active #383434;
+@define-color ba-bg-selection #484443;
 @define-color ba-bg-contrast #b9afa4;
 
 /* Foreground colors */
 @define-color ba-fg-default #d9ccba;
 @define-color ba-fg-subtle #7e7974;
-@define-color ba-fg-accent #ff8b37;
+@define-color ba-fg-accent #ff8465;
 @define-color ba-fg-disabled #645f5e;
-@define-color ba-fg-contrast #1d252d;
+@define-color ba-fg-contrast #2b2827;
 
 /* Feedback colors */
 @define-color ba-fg-negative #dd7577;
@@ -24,7 +24,7 @@
 /* Palette colors */
 @define-color ba-red #a09a95;
 @define-color ba-green #7e7974;
-@define-color ba-yellow #ff8b37;
+@define-color ba-yellow #ff8465;
 @define-color ba-blue #a09a95;
 @define-color ba-magenta #7e7974;
 @define-color ba-cyan #a09a95;

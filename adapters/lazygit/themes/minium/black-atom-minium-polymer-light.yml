@@ -21,7 +21,7 @@ gui:
     unstagedChangesColor:
       - "#f14d4c"
     defaultFgColor:
-      - "#1d1d1d"
+      - "#1f1c1b"
     searchingActiveBorderColor:
       - "#fd4200"
 

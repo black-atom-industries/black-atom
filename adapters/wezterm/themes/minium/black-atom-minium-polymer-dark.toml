@@ -4,18 +4,18 @@ name = "Black Atom — Minium ∷ Polymer Dark"
 
 [colors]
 foreground = "#d9ccba"
-background = "#1d252d"
-cursor_bg = "#ff8b37"
-cursor_border = "#ff8b37"
-cursor_fg = "#1d252d"
-selection_bg = "#37414b"
+background = "#2b2827"
+cursor_bg = "#ff8465"
+cursor_border = "#ff8465"
+cursor_fg = "#2b2827"
+selection_bg = "#484443"
 selection_fg = "#d9ccba"
-split = "#ff8b37"
+split = "#ff8465"
 compose_cursor = "#dd7577"
 scrollbar_thumb = "#7e7974"
 
 ansi = [
-  "#37414b", # black
+  "#484443", # black
   "#a09a95", # dark_red
   "#7e7974", # dark_green
   "#f1eae0", # dark_yellow
@@ -29,7 +29,7 @@ brights = [
   "#4b4745", # gray
   "#a09a95", # red
   "#7e7974", # green
-  "#ff8b37", # yellow
+  "#ff8465", # yellow
   "#a09a95", # blue
   "#7e7974", # magenta
   "#a09a95", # cyan
@@ -37,27 +37,27 @@ brights = [
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#171e24"
-background = "#1d252d"
+inactive_tab_edge = "#232120"
+background = "#2b2827"
 
 [colors.tab_bar.active_tab]
-fg_color = "#1d252d"
-bg_color = "#ff8b37"
+fg_color = "#2b2827"
+bg_color = "#ff8465"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#1d252d"
-bg_color = "#37414b"
+fg_color = "#2b2827"
+bg_color = "#484443"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#1d252d"
-bg_color = "#29313a"
+fg_color = "#2b2827"
+bg_color = "#383434"
 
 [colors.tab_bar.new_tab]
-fg_color = "#1d252d"
+fg_color = "#2b2827"
 bg_color = "#a9ba78"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#1d252d"
-bg_color = "#29313a"
+fg_color = "#2b2827"
+bg_color = "#383434"
 intensity = "Bold"

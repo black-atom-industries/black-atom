@@ -2,7 +2,7 @@
     "name": "Black Atom — Minium ∷ Polymer Light",
     "base": "light-ansi",
     "overrides": {
-        "text": "#1d1d1d",
+        "text": "#1f1c1b",
         "inverseText": "#cecac2",
         "inactive": "#4b4745",
         "subtle": "#7e7974",

@@ -6,10 +6,10 @@
 @define-color ba-bg-hover #cecac2;
 @define-color ba-bg-active #f1eae0;
 @define-color ba-bg-selection #c8c3be;
-@define-color ba-bg-contrast #404040;
+@define-color ba-bg-contrast #423f40;
 
 /* Foreground colors */
-@define-color ba-fg-default #1d1d1d;
+@define-color ba-fg-default #1f1c1b;
 @define-color ba-fg-subtle #4b4745;
 @define-color ba-fg-accent #fd4200;
 @define-color ba-fg-disabled #7e7974;
