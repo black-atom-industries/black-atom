@@ -382,6 +382,16 @@ body {
     color: var(--ba-bg) !important;
 }
 
+.__sri-title-box a:focus-visible,
+.__srgi-title a:focus-visible,
+.podcast_result .title a:focus-visible {
+    padding-inline: 0.25em;
+    margin-inline: -0.25em;
+    background: var(--ba-fg) !important;
+    color: var(--ba-bg) !important;
+    box-shadow: var(--ba-shadow-offset-small) var(--ba-shadow-offset-small) 0 var(--ba-fg-accent) !important;
+}
+
 .__srgi-title {
     font-weight: 700;
 }
