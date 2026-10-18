@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useHotkey } from "@tanstack/react-hotkeys";
 import { useConfig } from "../../../queries/use-config.ts";
 import { GeneralPanel } from "../../../components/settings/general-panel/index.ts";
 import packageJson from "../../../../package.json" with { type: "json" };
+import { useSettingsContext } from "./-settings-context.ts";
 
 export const Route = createFileRoute("/_app/settings/general")({
     component: GeneralRoute,
@@ -10,28 +10,14 @@ export const Route = createFileRoute("/_app/settings/general")({
 
 function GeneralRoute() {
     const config = useConfig();
-
-    function toggleSystemAppearance() {
-        const data = config.query.data;
-        if (!data) return;
-        void config
-            .saveLatest((latest) => ({
-                ...latest,
-                system_appearance: !latest.system_appearance,
-            }))
-            .catch((error) => {
-                console.error("Could not save system appearance", error);
-            });
-    }
-
-    useHotkey("Space", toggleSystemAppearance);
+    const { onToggleSystemAppearance } = useSettingsContext();
 
     if (!config.query.data) return null;
 
     return (
         <GeneralPanel
             followOsAppearance={config.query.data.system_appearance}
-            onToggleFollowOsAppearance={toggleSystemAppearance}
+            onToggleFollowOsAppearance={onToggleSystemAppearance}
             liveryVersion={packageJson.version}
             cursored
         />

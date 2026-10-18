@@ -45,6 +45,7 @@ export type SettingsContextValue = {
     onTestApply: (appName: AppName) => void;
 
     onToggleEnabled: (appName: AppName) => void;
+    onToggleSystemAppearance: () => void;
     onFieldCommit: (appName: AppName, field: AdapterField, value: string) => void;
     onAddConfigFolder: (appName: AppName) => void;
     onRemoveConfigFolder: (appName: AppName, config_folder: string) => void;

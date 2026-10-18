@@ -9,12 +9,20 @@ import {
     ACTIVE_THEME_PERSISTENCE_APP,
     activeThemePersistenceError,
     commandErrorResult,
+    getFailedUpdaters,
+    mergeUpdateResults,
+    summarizeApply,
     SYSTEM_APPEARANCE_APP,
     themeWasApplied,
 } from "../../lib/progress.ts";
 import { appStore } from "../../store/app.ts";
 import { commands } from "../../bindings.ts";
-import { applyTheme, createUpdaters, getEnabledApps } from "../../lib/updaters.ts";
+import {
+    applyTheme,
+    createUpdaters,
+    getEnabledApps,
+    type UpdateResult,
+} from "../../lib/updaters.ts";
 import { getGroupedThemes } from "../../lib/themes.ts";
 import { useConfig } from "../../queries/use-config.ts";
 import { useActiveTheme } from "../../queries/use-active-theme.ts";
@@ -24,6 +32,8 @@ import { App } from "../../components/layouts/app.ts";
 import { Prompt } from "../../components/primitives/prompt/prompt.tsx";
 import { Chip } from "../../components/primitives/chip/chip.tsx";
 import { EmptyState } from "../../components/empty-state/index.ts";
+import { ApplyRail } from "../../components/apply-rail/index.ts";
+import { useDisplayedTheme } from "./-use-displayed-theme.ts";
 import styles from "./index.module.css";
 
 export const Route = createFileRoute("/_app/")({
@@ -39,6 +49,9 @@ function Component() {
 
     const activeTheme = useActiveTheme();
     const phase = useStore(appStore, (s) => s.phase);
+    const updaterResults = useStore(appStore, (s) => s.updaterResults);
+    const applyingTheme = useStore(appStore, (s) => s.applyingTheme);
+    const displayedTheme = useDisplayedTheme();
 
     const [query, setQuery] = useState("");
     // Filter sets — empty set = no filter (ALL).
@@ -163,6 +176,71 @@ function Component() {
     // While the Apply Rail is open (phase != picking) its vocabulary owns
     // j/k, ⏎ and esc — the picking vocabulary goes inert until dismissal.
     const railOpen = phase !== "picking";
+    const summary = summarizeApply(updaterResults);
+
+    // The rail is permanently docked. Idle (nothing applied yet) previews
+    // the enabled adapters as pending rows — what an apply will touch.
+    const railMode = railOpen
+        ? ("active" as const)
+        : updaterResults.length > 0
+          ? ("settled" as const)
+          : ("idle" as const);
+    const idleRows = useMemo<UpdateResult[]>(
+        () =>
+            config.query.data
+                ? getEnabledApps(config.query.data.apps).map(([app]) => ({
+                      app,
+                      status: "pending",
+                      duration_ms: null,
+                  }))
+                : [],
+        [config.query.data],
+    );
+    const railResults = updaterResults.length > 0 ? updaterResults : idleRows;
+
+    // Rail cursor + expansion. The cursor follows the running row, then the
+    // first fault, until j/k takes over; a new apply pass resets both.
+    const [manualCursor, setManualCursor] = useState<number | null>(null);
+    const [expandedApp, setExpandedApp] = useState<UpdateResult["app"] | null>(null);
+    const [prevPhase, setPrevPhase] = useState(phase);
+    if (phase !== prevPhase) {
+        setPrevPhase(phase);
+        if (phase === "applying") {
+            setManualCursor(null);
+            setExpandedApp(null);
+        }
+    }
+
+    const runningIndex = updaterResults.findIndex((r) => r.status === "running");
+    const firstFaultIndex = updaterResults.findIndex(
+        (r) => r.status === "error" || (r.status === "skipped" && r.message),
+    );
+    const cursorIndex = manualCursor ?? (runningIndex !== -1 ? runningIndex : firstFaultIndex);
+    const cursorResult = cursorIndex >= 0 ? updaterResults[cursorIndex] : undefined;
+
+    const moveRailCursor = (delta: number) => {
+        if (updaterResults.length === 0) return;
+        const from = cursorIndex >= 0 ? cursorIndex : delta > 0 ? -1 : updaterResults.length;
+        setManualCursor(Math.max(0, Math.min(updaterResults.length - 1, from + delta)));
+    };
+
+    const toggleCursoredRow = (app?: UpdateResult["app"]) => {
+        const target = app ?? (cursorResult?.status === "error" ? cursorResult.app : undefined);
+        if (!target) return;
+        setExpandedApp((current) => (current === target ? null : target));
+    };
+
+    // The rail never hides — settling only hands the keyboard back to the
+    // picking list; the last results stay on display.
+    const settleRail = () => appStore.setState((s) => ({ ...s, phase: "picking" }));
+
+    // Clean success holds the ■ APPLIED beat, then settles itself —
+    // nothing to acknowledge. Faults never settle on a timer.
+    useEffect(() => {
+        if (phase !== "done" || summary.kind !== "clean") return;
+        const beat = setTimeout(settleRail, 1200);
+        return () => clearTimeout(beat);
+    }, [phase, summary.kind]);
 
     const moveUp = () => {
         if (railOpen) return;
@@ -182,8 +260,8 @@ function Component() {
     useHotkey("ArrowRight", () => !railOpen && inFilterMode && moveFilterCursor("right"));
 
     // Vim navigation
-    useHotkey("K", moveUp);
-    useHotkey("J", moveDown);
+    useHotkey("K", () => (railOpen ? moveRailCursor(-1) : moveUp()));
+    useHotkey("J", () => (railOpen ? moveRailCursor(1) : moveDown()));
     useHotkey("H", () => !railOpen && inFilterMode && moveFilterCursor("left"));
     useHotkey("L", () => !railOpen && inFilterMode && moveFilterCursor("right"));
     useHotkeySequence(["G", "G"], () => !railOpen && !inFilterMode && setPickedIndex(0));
@@ -213,7 +291,10 @@ function Component() {
             .catch(() => {});
     });
     useHotkey("Escape", () => {
-        if (railOpen) return;
+        if (railOpen) {
+            if (phase !== "applying") settleRail();
+            return;
+        }
         if (filterCursor !== null) setFilterCursor(null);
         else setQuery("");
     });
@@ -271,7 +352,10 @@ function Component() {
     };
 
     useHotkey("Enter", () => {
-        if (railOpen) return;
+        if (railOpen) {
+            toggleCursoredRow();
+            return;
+        }
         if (filterCursor !== null) {
             // Like the search bar: Enter hands key control back to the
             // list, cursor on the first match. Space toggles chips.
@@ -282,95 +366,203 @@ function Component() {
         void handleApplyTheme();
     });
 
+    const handleRetryFailed = async () => {
+        if (!config.query.data) return;
+
+        const failedApps = getFailedUpdaters(updaterResults);
+        if (failedApps.length === 0) return;
+
+        if (!applyingTheme) return;
+
+        const persistenceFailed = failedApps.includes(ACTIVE_THEME_PERSISTENCE_APP);
+        const appearanceFailed = failedApps.includes(SYSTEM_APPEARANCE_APP);
+        const enabledApps = getEnabledApps(config.query.data.apps).filter(([name]) =>
+            failedApps.includes(name),
+        );
+        if (!persistenceFailed && !appearanceFailed && enabledApps.length === 0) return;
+
+        const retryUpdaters = createUpdaters(enabledApps, applyingTheme.meta);
+
+        appStore.setState((s) => ({
+            ...s,
+            phase: "applying",
+            updaterResults: mergeUpdateResults(
+                s.updaterResults,
+                retryUpdaters.map((u) => ({ app: u.app, status: "pending", duration_ms: null })),
+            ),
+        }));
+
+        try {
+            const results =
+                enabledApps.length > 0
+                    ? await applyTheme(retryUpdaters, (partial) => {
+                          appStore.setState((s) => ({
+                              ...s,
+                              updaterResults: mergeUpdateResults(s.updaterResults, partial),
+                          }));
+                      })
+                    : [];
+            let applied = results.some(themeWasApplied);
+
+            if (appearanceFailed) {
+                const appearanceResult = await commands
+                    .updateSystemAppearance(applyingTheme.meta.appearance)
+                    .catch((error) => commandErrorResult(SYSTEM_APPEARANCE_APP, error));
+                appStore.setState((s) => ({
+                    ...s,
+                    updaterResults: [
+                        ...s.updaterResults.filter(
+                            (result) => result.app !== SYSTEM_APPEARANCE_APP,
+                        ),
+                        appearanceResult,
+                    ],
+                }));
+                applied ||= themeWasApplied(appearanceResult);
+            }
+
+            // A retry is where the record is most likely to be stale: it only
+            // runs after a failed pass, which left the previous theme recorded.
+            if (persistenceFailed || applied) {
+                try {
+                    await activeTheme.set.mutateAsync(applyingTheme.meta.key);
+                    appStore.setState((s) => ({
+                        ...s,
+                        updaterResults: s.updaterResults.filter(
+                            (result) => result.app !== ACTIVE_THEME_PERSISTENCE_APP,
+                        ),
+                    }));
+                } catch (error) {
+                    appStore.setState((s) => ({
+                        ...s,
+                        updaterResults: [
+                            ...s.updaterResults.filter(
+                                (result) => result.app !== ACTIVE_THEME_PERSISTENCE_APP,
+                            ),
+                            activeThemePersistenceError(error),
+                        ],
+                    }));
+                }
+            }
+        } finally {
+            appStore.setState((s) => ({ ...s, phase: "done" }));
+        }
+    };
+
+    useHotkey("R", handleRetryFailed);
+
+    const rail = (
+        <aside className={styles.rail}>
+            <ApplyRail
+                mode={railMode}
+                themeName={displayedTheme.meta.name.toUpperCase()}
+                results={railResults}
+                cursorApp={railMode === "active" ? (cursorResult?.app ?? null) : null}
+                expandedApp={expandedApp}
+                onToggleRow={toggleCursoredRow}
+                onRetryFailed={handleRetryFailed}
+            />
+        </aside>
+    );
+
     const configSettled = !config.query.isPending;
     const hasNoAdapters =
         configSettled && (config.query.isError || config.enabledApps.length === 0);
 
     if (hasNoAdapters) {
         return (
-            <EmptyState
-                eyebrow={`${allThemes.length} THEMES INDEXED · 0 APPLIED`}
-                headline="PICK A LIVERY, PAINT THE COCKPIT"
-                body="Select any theme with j/k and press ⏎ — Livery repaints every enabled tool in one pass. Nothing is written until you apply. No adapters are enabled yet — check settings."
-                onOpenSettings={() => navigate({ to: "/settings/adapters" })}
-            />
+            <div className={styles.screen}>
+                <div className={styles.picker}>
+                    <EmptyState
+                        eyebrow={`${allThemes.length} THEMES INDEXED · 0 APPLIED`}
+                        headline="PICK A LIVERY, PAINT THE COCKPIT"
+                        body="Select any theme with j/k and press ⏎ — Livery repaints every enabled tool in one pass. Nothing is written until you apply. No adapters are enabled yet — check settings."
+                        onOpenSettings={() => navigate({ to: "/settings/adapters" })}
+                    />
+                </div>
+                {rail}
+            </div>
         );
     }
 
     return (
-        <App.SplitPanel
-            rightFlush
-            left={
-                <>
-                    <div
-                        className={styles.prompt}
-                        onKeyDown={(event) => {
-                            // Input filtering keeps global hotkeys out of the
-                            // input — Escape inside it is handled here.
-                            if (event.key === "Escape") {
-                                setQuery("");
-                                promptInputRef.current?.blur();
-                            }
-                        }}
-                    >
-                        <Prompt
-                            value={query}
-                            inputRef={promptInputRef}
-                            onChange={(value) => {
-                                setQuery(value);
-                                setPickedIndex(0);
-                            }}
-                            onSubmit={() => {
-                                // Hand key control back to the list, cursor
-                                // on the first match.
-                                setPickedIndex(0);
-                                promptInputRef.current?.blur();
-                            }}
-                            count={`${themes.length}/${allThemes.length}`}
+        <div className={styles.screen}>
+            <div className={styles.picker}>
+                <App.SplitPanel
+                    rightFlush
+                    left={
+                        <>
+                            <div
+                                className={styles.prompt}
+                                onKeyDown={(event) => {
+                                    // Input filtering keeps global hotkeys out of the
+                                    // input — Escape inside it is handled here.
+                                    if (event.key === "Escape") {
+                                        setQuery("");
+                                        promptInputRef.current?.blur();
+                                    }
+                                }}
+                            >
+                                <Prompt
+                                    value={query}
+                                    inputRef={promptInputRef}
+                                    onChange={(value) => {
+                                        setQuery(value);
+                                        setPickedIndex(0);
+                                    }}
+                                    onSubmit={() => {
+                                        // Hand key control back to the list, cursor
+                                        // on the first match.
+                                        setPickedIndex(0);
+                                        promptInputRef.current?.blur();
+                                    }}
+                                    count={`${themes.length}/${allThemes.length}`}
+                                />
+                            </div>
+                            <div className={styles.chips}>
+                                <div className={styles.chipGroup}>
+                                    {collectionChips.map((chip, i) => (
+                                        <Chip
+                                            key={chip.label}
+                                            active={chip.isActive}
+                                            focused={filterCursor === i}
+                                            onClick={chip.toggle}
+                                        >
+                                            {chip.label}
+                                        </Chip>
+                                    ))}
+                                </div>
+                                <div className={styles.chipGroup}>
+                                    {appearanceChips.map((chip, i) => (
+                                        <Chip
+                                            key={chip.label}
+                                            active={chip.isActive}
+                                            focused={filterCursor === collectionChips.length + i}
+                                            onClick={chip.toggle}
+                                        >
+                                            {chip.label}
+                                        </Chip>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className={styles.list}>
+                                <ThemeList
+                                    groups={groups}
+                                    selectedIndex={clampedIndex}
+                                    activeThemeKey={activeTheme.theme?.meta.key ?? null}
+                                    onSelect={setPickedIndex}
+                                />
+                            </div>
+                        </>
+                    }
+                    right={
+                        <ThemeDetail
+                            theme={pickedEntry}
+                            isActive={pickedEntry?.meta.key === activeTheme.theme?.meta.key}
                         />
-                    </div>
-                    <div className={styles.chips}>
-                        <div className={styles.chipGroup}>
-                            {collectionChips.map((chip, i) => (
-                                <Chip
-                                    key={chip.label}
-                                    active={chip.isActive}
-                                    focused={filterCursor === i}
-                                    onClick={chip.toggle}
-                                >
-                                    {chip.label}
-                                </Chip>
-                            ))}
-                        </div>
-                        <div className={styles.chipGroup}>
-                            {appearanceChips.map((chip, i) => (
-                                <Chip
-                                    key={chip.label}
-                                    active={chip.isActive}
-                                    focused={filterCursor === collectionChips.length + i}
-                                    onClick={chip.toggle}
-                                >
-                                    {chip.label}
-                                </Chip>
-                            ))}
-                        </div>
-                    </div>
-                    <div className={styles.list}>
-                        <ThemeList
-                            groups={groups}
-                            selectedIndex={clampedIndex}
-                            activeThemeKey={activeTheme.theme?.meta.key ?? null}
-                            onSelect={setPickedIndex}
-                        />
-                    </div>
-                </>
-            }
-            right={
-                <ThemeDetail
-                    theme={pickedEntry}
-                    isActive={pickedEntry?.meta.key === activeTheme.theme?.meta.key}
+                    }
                 />
-            }
-        />
+            </div>
+            {rail}
+        </div>
     );
 }

@@ -249,6 +249,18 @@ function SettingsRoute() {
             });
     }
 
+    function toggleSystemAppearance() {
+        if (!data) return;
+        void config
+            .saveLatest((latest) => ({
+                ...latest,
+                system_appearance: !latest.system_appearance,
+            }))
+            .catch((error) => {
+                console.error("Could not save system appearance", error);
+            });
+    }
+
     function commitAdapterField(appName: AppName, field: AdapterField, value: string) {
         if (!data) return;
         void config
@@ -445,6 +457,7 @@ function SettingsRoute() {
 
     function toggleSelected() {
         if (navLevel === "detail" && selectedApp) toggleAppEnabled(selectedApp);
+        else if (onGeneral) toggleSystemAppearance();
     }
 
     /** Enter: on ADAPTERS at root, drill into the first adapter; on
@@ -548,6 +561,7 @@ function SettingsRoute() {
         testApplyResults,
         onTestApply: testApplyAdapter,
         onToggleEnabled: toggleAppEnabled,
+        onToggleSystemAppearance: toggleSystemAppearance,
         onFieldCommit: commitAdapterField,
         onAddConfigFolder: addConfigFolder,
         onRemoveConfigFolder: removeConfigFolder,

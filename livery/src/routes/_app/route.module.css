@@ -27,13 +27,6 @@
     min-width: 0;
 }
 
-/* Apply Rail slot — permanently docked, hard 1px left seam. */
-.rail {
-    flex-shrink: 0;
-    width: 280px;
-    border-left: var(--ba-border-subtle);
-}
-
 .footer {
     flex-shrink: 0;
     padding: var(--ba-size-2) var(--ba-size-6);
