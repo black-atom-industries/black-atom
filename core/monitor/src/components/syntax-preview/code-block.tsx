@@ -7,8 +7,8 @@ type Props = {
 
 export function CodeBlock({ children }: Props) {
     return (
-        <pre className={styles.codeBlock} data-component="CodeBlock">
-            <code>{children}</code>
-        </pre>
+        <code className={styles.codeBlock} data-component="CodeBlock">
+            {children}
+        </code>
     );
 }
