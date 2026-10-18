@@ -59,6 +59,10 @@ appearances:
 | `--ba-border-width-thin`   | pills, widgets, image frames           |
 | `--ba-shadow-offset`       | hard shadow of search bar and panels   |
 | `--ba-shadow-offset-small` | hard shadow of pills and widgets       |
+| `--ba-space-small`         | gaps between tabs and pills on mobile  |
+| `--ba-space`               | gaps between header rows, tabs, pills  |
+| `--ba-space-large`         | header insets and gaps around results  |
+| `--ba-content-width`       | width of the results column on desktop |
 
 Both font stacks prefer TX-02 or Berkeley Mono when either is installed. Without them, headings
 use [Kode Mono](https://fonts.google.com/specimen/Kode+Mono) and body text uses
