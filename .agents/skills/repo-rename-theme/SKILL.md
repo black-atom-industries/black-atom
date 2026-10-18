@@ -23,18 +23,20 @@ in one commit.
 
 4. If the renamed key is `DEFAULT_THEME_KEY` (in `core/src/themes/catalog.ts`), also update that
    constant and `livery/src/lib/themes_test.ts`. Otherwise skip this
-   step; renaming a non-default theme normally needs no livery change.
+   step.
 
 5. Update every adapter config in one pass:
    `grep -rl "black-atom-<collection>-<old>" adapters/*/black-atom-adapter.json` then edit each
    match, replacing the old key with the new one in the `themes` array.
 
-6. Search the rest of livery for a hardcoded reference to this specific key (most renames find
-   nothing here, since livery normally reads keys through `themeCatalog`):
-   `grep -rn "black-atom-<collection>-<old>" livery/src livery/src-tauri`. Fix any hit.
+6. Search the rest of livery for a hardcoded reference to this specific key. Livery reads keys
+   through `themeCatalog`, but the catalog fixture lists every key and tests may name one:
+   `grep -rn "black-atom-<collection>-<old>" livery/src livery/src-tauri livery/core`. Fix any hit.
+   The catalog fixture `livery/core/tests/fixtures/catalog.json` also holds the theme's `label`,
+   which the key grep misses; update it to the new `meta.name`.
 
 7. Delete the stale generated files rather than renaming them by hand:
-   `find adapters -name "black-atom-<collection>-<old>-*" -delete`. This catches every adapter's
+   `find adapters \( -name "black-atom-<collection>-<old>-*" -o -name "black-atom-<collection>-<old>.*" \) -delete`. This catches every adapter's
    generated output, e.g. `adapters/*/themes/<collection>/black-atom-<collection>-<old>-dark.<ext>`
    and nvim's `adapters/nvim/colors/black-atom-<collection>-<old>-dark.lua`.
 
