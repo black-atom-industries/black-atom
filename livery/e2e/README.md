@@ -32,8 +32,8 @@ home stays on disk after the run for inspection.
 Set `LIVERY_E2E_HOME` to reuse one fixture home across runs, for example to inspect it after a
 UI-mode session. It must still be a `livery-e2e-*` directory directly under the system temp dir.
 
-Vite listens on `1520` and the bridge on `1522`, configurable through `LIVERY_E2E_VITE_PORT` and
-`LIVERY_E2E_BRIDGE_PORT`, so a running `npm run dev` on `1420`/`1422` is never touched. The e2e
+Vite and the bridge listen on free ports picked per run, so parallel runs and a running
+`npm run dev` never collide. Set `LIVERY_E2E_VITE_PORT` and `LIVERY_E2E_BRIDGE_PORT` to fix them. The e2e
 Vite server keeps its dependency cache in `e2e/.vite`.
 
 Scenarios enable only adapters whose updaters stay inside the fixture home: zed, delta, lazygit,
