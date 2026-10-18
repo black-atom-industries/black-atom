@@ -1,19 +1,19 @@
 /* Black Atom — Minium ∷ Sienna Dark */
 
 /* Background colors */
-@define-color ba-bg-default #2b2827;
-@define-color ba-bg-panel #232120;
-@define-color ba-bg-hover #383434;
-@define-color ba-bg-active #383434;
-@define-color ba-bg-selection #484443;
+@define-color ba-bg-default #2e2726;
+@define-color ba-bg-panel #26201f;
+@define-color ba-bg-hover #3a3333;
+@define-color ba-bg-active #3a3333;
+@define-color ba-bg-selection #4a4342;
 @define-color ba-bg-contrast #b9afa4;
 
 /* Foreground colors */
 @define-color ba-fg-default #d9ccba;
-@define-color ba-fg-subtle #7e7974;
-@define-color ba-fg-accent #ec785b;
-@define-color ba-fg-disabled #645f5e;
-@define-color ba-fg-contrast #2b2827;
+@define-color ba-fg-subtle #857f7a;
+@define-color ba-fg-accent #ef9369;
+@define-color ba-fg-disabled #69615f;
+@define-color ba-fg-contrast #2e2726;
 
 /* Feedback colors */
 @define-color ba-fg-negative #dd7577;
@@ -22,9 +22,9 @@
 @define-color ba-fg-info #79b5cc;
 
 /* Palette colors */
-@define-color ba-red #a09a95;
-@define-color ba-green #7e7974;
-@define-color ba-yellow #ec785b;
-@define-color ba-blue #a09a95;
-@define-color ba-magenta #7e7974;
-@define-color ba-cyan #a09a95;
+@define-color ba-red #a39d98;
+@define-color ba-green #857f7a;
+@define-color ba-yellow #ef9369;
+@define-color ba-blue #a39d98;
+@define-color ba-magenta #857f7a;
+@define-color ba-cyan #a39d98;

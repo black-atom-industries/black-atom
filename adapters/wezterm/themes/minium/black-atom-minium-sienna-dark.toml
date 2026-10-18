@@ -4,60 +4,60 @@ name = "Black Atom — Minium ∷ Sienna Dark"
 
 [colors]
 foreground = "#d9ccba"
-background = "#2b2827"
-cursor_bg = "#ec785b"
-cursor_border = "#ec785b"
-cursor_fg = "#2b2827"
-selection_bg = "#484443"
+background = "#2e2726"
+cursor_bg = "#ef9369"
+cursor_border = "#ef9369"
+cursor_fg = "#2e2726"
+selection_bg = "#4a4342"
 selection_fg = "#d9ccba"
-split = "#ec785b"
+split = "#ef9369"
 compose_cursor = "#dd7577"
-scrollbar_thumb = "#7e7974"
+scrollbar_thumb = "#857f7a"
 
 ansi = [
-  "#484443", # black
-  "#a09a95", # dark_red
-  "#7e7974", # dark_green
-  "#cba496", # dark_yellow
-  "#a09a95", # dark_blue
-  "#7e7974", # dark_magenta
-  "#a09a95", # dark_cyan
-  "#a09a95" # light_gray
+  "#4a4342", # black
+  "#a39d98", # dark_red
+  "#857f7a", # dark_green
+  "#caa594", # dark_yellow
+  "#a39d98", # dark_blue
+  "#857f7a", # dark_magenta
+  "#a39d98", # dark_cyan
+  "#a39d98" # light_gray
 ]
 
 brights = [
-  "#4b4745", # gray
-  "#a09a95", # red
-  "#7e7974", # green
-  "#ec785b", # yellow
-  "#a09a95", # blue
-  "#7e7974", # magenta
-  "#a09a95", # cyan
-  "#a09a95" # white
+  "#5b5352", # gray
+  "#a39d98", # red
+  "#857f7a", # green
+  "#ef9369", # yellow
+  "#a39d98", # blue
+  "#857f7a", # magenta
+  "#a39d98", # cyan
+  "#a39d98" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#232120"
-background = "#2b2827"
+inactive_tab_edge = "#26201f"
+background = "#2e2726"
 
 [colors.tab_bar.active_tab]
-fg_color = "#2b2827"
-bg_color = "#ec785b"
+fg_color = "#2e2726"
+bg_color = "#ef9369"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#2b2827"
-bg_color = "#484443"
+fg_color = "#2e2726"
+bg_color = "#4a4342"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#2b2827"
-bg_color = "#383434"
+fg_color = "#2e2726"
+bg_color = "#3a3333"
 
 [colors.tab_bar.new_tab]
-fg_color = "#2b2827"
+fg_color = "#2e2726"
 bg_color = "#a9ba78"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#2b2827"
-bg_color = "#383434"
+fg_color = "#2e2726"
+bg_color = "#3a3333"
 intensity = "Bold"

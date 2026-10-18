@@ -4,60 +4,60 @@ name = "Black Atom — Minium ∷ Sienna Light"
 
 [colors]
 foreground = "#3d393a"
-background = "#efe3d3"
-cursor_bg = "#ff2e00"
-cursor_border = "#ff2e00"
-cursor_fg = "#efe3d3"
-selection_bg = "#d5c8b9"
+background = "#ece3da"
+cursor_bg = "#ff7b26"
+cursor_border = "#ff7b26"
+cursor_fg = "#ece3da"
+selection_bg = "#d2c9c1"
 selection_fg = "#3d393a"
-split = "#ff2e00"
+split = "#ff7b26"
 compose_cursor = "#f14d4c"
-scrollbar_thumb = "#666261"
+scrollbar_thumb = "#676261"
 
 ansi = [
   "#585455", # black
-  "#c2bdb7", # dark_red
-  "#a39d98", # dark_green
-  "#965f70", # dark_yellow
-  "#c2bdb7", # dark_blue
-  "#a39d98", # dark_magenta
-  "#c2bdb7", # dark_cyan
-  "#c2bdb7" # light_gray
+  "#c4bcb9", # dark_red
+  "#a49c9a", # dark_green
+  "#4a352b", # dark_yellow
+  "#c4bcb9", # dark_blue
+  "#a49c9a", # dark_magenta
+  "#c4bcb9", # dark_cyan
+  "#c4bcb9" # light_gray
 ]
 
 brights = [
-  "#666261", # gray
-  "#c2bdb7", # red
-  "#a39d98", # green
-  "#ff2e00", # yellow
-  "#c2bdb7", # blue
-  "#a39d98", # magenta
-  "#c2bdb7", # cyan
-  "#c2bdb7" # white
+  "#676261", # gray
+  "#c4bcb9", # red
+  "#a49c9a", # green
+  "#ff7b26", # yellow
+  "#c4bcb9", # blue
+  "#a49c9a", # magenta
+  "#c4bcb9", # cyan
+  "#c4bcb9" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#e1d6c6"
-background = "#efe3d3"
+inactive_tab_edge = "#dfd6cd"
+background = "#ece3da"
 
 [colors.tab_bar.active_tab]
-fg_color = "#e1d6c6"
-bg_color = "#ff2e00"
+fg_color = "#dfd6cd"
+bg_color = "#ff7b26"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#e1d6c6"
-bg_color = "#d5c8b9"
+fg_color = "#dfd6cd"
+bg_color = "#d2c9c1"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#e1d6c6"
-bg_color = "#e1d6c6"
+fg_color = "#dfd6cd"
+bg_color = "#dfd6cd"
 
 [colors.tab_bar.new_tab]
-fg_color = "#e1d6c6"
+fg_color = "#dfd6cd"
 bg_color = "#819e00"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#e1d6c6"
-bg_color = "#e1d6c6"
+fg_color = "#dfd6cd"
+bg_color = "#dfd6cd"
 intensity = "Bold"
