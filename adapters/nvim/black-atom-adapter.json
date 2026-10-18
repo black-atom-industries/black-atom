@@ -47,11 +47,6 @@
                 "black-atom-jpn-sanshoku-light"
             ]
         },
-        "clay": {
-            "template": "./templates/collection.template.lua",
-            "output": "./colors",
-            "themes": ["black-atom-clay-dark", "black-atom-clay-light"]
-        },
         "minium": {
             "template": "./templates/collection.template.lua",
             "output": "./colors",

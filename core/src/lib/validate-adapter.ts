@@ -19,7 +19,6 @@ export function createAdapterConfigSchema(themeKeys: readonly string[]) {
         jpn: collectionConfigSchema,
         facility: collectionConfigSchema,
         terra: collectionConfigSchema,
-        clay: collectionConfigSchema,
         minium: collectionConfigSchema,
         mono: collectionConfigSchema,
     };

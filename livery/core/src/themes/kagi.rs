@@ -80,7 +80,7 @@ mod tests {
     #[test]
     fn lists_every_file_sorted() {
         let names = names();
-        assert_eq!(names.len(), 17);
+        assert_eq!(names.len(), 16);
         let mut sorted = names.clone();
         sorted.sort_unstable();
         assert_eq!(names, sorted);

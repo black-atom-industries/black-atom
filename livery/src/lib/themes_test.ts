@@ -5,7 +5,7 @@ import type * as Theme from "@black-atom/core";
 import { formatCollectionTitle, getGroupedThemes, pickRandomOtherTheme } from "./themes.ts";
 import expectedCatalog from "../../core/tests/fixtures/catalog.json" with { type: "json" };
 
-test("Livery exposes the exact embedded catalog metadata and all seven groups", () => {
+test("Livery exposes the exact embedded catalog metadata and all six groups", () => {
     const actual = Object.values(themeCatalog)
         .map(({ meta }) => ({
             key: meta.key,
@@ -17,7 +17,7 @@ test("Livery exposes the exact embedded catalog metadata and all seven groups", 
     assert.deepEqual(actual, expectedCatalog);
     assert.deepEqual(
         getGroupedThemes(themeCatalog).map((group) => group.collectionKey),
-        ["default", "facility", "terra", "jpn", "clay", "minium", "mono"],
+        ["default", "facility", "terra", "jpn", "minium", "mono"],
     );
 });
 

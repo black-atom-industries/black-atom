@@ -86,16 +86,14 @@ fn header<'a>(contents: &'a str, field: &str) -> Option<&'a str> {
 mod tests {
     use super::*;
 
-    const COLLECTIONS: [&str; 7] = [
-        "clay", "default", "facility", "jpn", "minium", "mono", "terra",
-    ];
+    const COLLECTIONS: [&str; 6] = ["default", "facility", "jpn", "minium", "mono", "terra"];
 
     #[test]
     fn test_every_embedded_theme_parses_a_complete_entry() {
         let themes = themes();
         let expected: Vec<ThemeEntry> =
             serde_json::from_str(include_str!("../../tests/fixtures/catalog.json")).unwrap();
-        assert_eq!(themes.len(), 32);
+        assert_eq!(themes.len(), 30);
         assert_eq!(themes, expected);
         let collections: std::collections::BTreeSet<_> = themes
             .iter()

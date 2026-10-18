@@ -2,7 +2,6 @@ import type * as Theme from "../types/theme.ts";
 
 import defaultCollection from "./default/mod.ts";
 import jpnCollection from "./jpn/mod.ts";
-import clayCollection from "./clay/mod.ts";
 import miniumCollection from "./minium/mod.ts";
 import monoCollection from "./mono/mod.ts";
 import facilityCollection from "./facility/mod.ts";
@@ -13,7 +12,6 @@ const collections = [
     facilityCollection,
     terraCollection,
     jpnCollection,
-    clayCollection,
     miniumCollection,
     monoCollection,
 ] as const;
@@ -39,7 +37,6 @@ export const themeCatalog = {
     ...facilityCollection.themes,
     ...terraCollection.themes,
     ...jpnCollection.themes,
-    ...clayCollection.themes,
     ...miniumCollection.themes,
     ...monoCollection.themes,
 } as const satisfies Record<CatalogThemeKey, Theme.ThemeDefinition>;

@@ -21,12 +21,12 @@ how it is generated, **Livery** covers the app that applies themes to a machine.
 
 ## Collections
 
-The catalog contains 32 themes across seven collections.
+The catalog contains 30 themes across six collections.
 
 | Term               | Definition                                                                                                                                                                                      | Aliases to avoid               |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| **Collection**     | A named group of themes sharing a design concept and one set of palette, feedback, UI, and syntax creators in its directory; each theme file defines only colors (e.g., `jpn`, `terra`, `clay`) | Category, family, group        |
-| **Collection Key** | The string identifier for a collection: `"default"`, `"facility"`, `"terra"`, `"jpn"`, `"clay"`, `"minium"`, `"mono"`                                                                           | Collection name, collection ID |
+| **Collection**     | A named group of themes sharing a design concept and one set of palette, feedback, UI, and syntax creators in its directory; each theme file defines only colors (e.g., `jpn`, `terra`, `mono`) | Category, family, group        |
+| **Collection Key** | The string identifier for a collection: `"default"`, `"facility"`, `"terra"`, `"jpn"`, `"minium"`, `"mono"`                                                                                     | Collection name, collection ID |
 
 ## Color Groups
 

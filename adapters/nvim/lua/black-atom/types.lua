@@ -23,8 +23,6 @@
 ---| "black-atom-jpn-tsuki-dark"
 ---| "black-atom-jpn-sanshoku-dark"
 ---| "black-atom-jpn-sanshoku-light"
----| "black-atom-clay-dark"
----| "black-atom-clay-light"
 ---| "black-atom-minium-polymer-dark"
 ---| "black-atom-minium-polymer-light"
 ---| "black-atom-minium-viridian-dark"
@@ -39,7 +37,6 @@
 ---| "facility"
 ---| "terra"
 ---| "jpn"
----| "clay"
 ---| "minium"
 ---| "mono"
 

@@ -1,17 +1,5 @@
 [
     {
-        "key": "black-atom-clay-dark",
-        "collection_key": "clay",
-        "appearance": "dark",
-        "label": "Black Atom — Clay ∷ Dark"
-    },
-    {
-        "key": "black-atom-clay-light",
-        "collection_key": "clay",
-        "appearance": "light",
-        "label": "Black Atom — Clay ∷ Light"
-    },
-    {
         "key": "black-atom-default-dark",
         "collection_key": "default",
         "appearance": "dark",

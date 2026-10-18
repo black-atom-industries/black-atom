@@ -32,9 +32,6 @@
                 "jpn": {
                     "$ref": "#/$defs/collectionConfig"
                 },
-                "clay": {
-                    "$ref": "#/$defs/collectionConfig"
-                },
                 "minium": {
                     "$ref": "#/$defs/collectionConfig"
                 },

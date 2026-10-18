@@ -32,8 +32,6 @@ settings:
             value: black-atom-jpn-tsuki-dark
           - label: "JPN: Sanshoku Dark"
             value: black-atom-jpn-sanshoku-dark
-          - label: "Clay: Dark"
-            value: black-atom-clay-dark
           - label: "Minium: Polymer Dark"
             value: black-atom-minium-polymer-dark
           - label: "Minium: Viridian Dark"
@@ -69,8 +67,6 @@ settings:
             value: black-atom-jpn-koyo-light
           - label: "JPN: Sanshoku Light"
             value: black-atom-jpn-sanshoku-light
-          - label: "Clay: Light"
-            value: black-atom-clay-light
           - label: "Minium: Polymer Light"
             value: black-atom-minium-polymer-light
           - label: "Minium: Viridian Light"

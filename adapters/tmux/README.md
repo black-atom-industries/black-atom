@@ -13,7 +13,7 @@ node ../../core/src/cli/index.ts generate
 Then source your preferred theme in your `~/.tmux.conf`:
 
 ```bash
-source-file /path/to/black-atom/adapters/tmux/themes/clay/black-atom-clay-dark.conf
+source-file /path/to/black-atom/adapters/tmux/themes/minium/black-atom-minium-polymer-dark.conf
 ```
 
 ## Available Themes
@@ -41,7 +41,7 @@ The Black Atom tmux themes customize the following elements:
 Each collection has its own styling philosophy:
 
 - **JPN**: Balanced with unique accent colors
-- **Clay**, **Minium**, **Mono**: Minimal contrast, subtle indicators
+- **Minium**, **Mono**: Minimal contrast, subtle indicators
 - **Facility**: Bold, technical appearance
 - **Terra**: Natural, seasonal variations
 

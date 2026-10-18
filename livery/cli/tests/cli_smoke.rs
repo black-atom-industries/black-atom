@@ -210,7 +210,7 @@ fn cli_end_to_end() {
         .lines()
         .filter(|line| line.contains("black-atom-"))
         .count();
-    assert_eq!(theme_lines, 32);
+    assert_eq!(theme_lines, 30);
     assert!(
         listed.contains("JPN"),
         "collections are not grouped:\n{listed}"
