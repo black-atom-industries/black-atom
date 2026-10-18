@@ -291,7 +291,7 @@ function Component() {
                 <Typo.P>
                     This release introduces the{" "}
                     <Typo.Highlight>Minium theme collection</Typo.Highlight> contains four themes:
-                    Polymer and Viridian, each available in light and dark.
+                    Sienna and Viridian, each available in light and dark.
                 </Typo.P>
                 <Typo.H4>What changed</Typo.H4>
                 <Typo.UnorderedList>

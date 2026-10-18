@@ -84,16 +84,16 @@
         "label": "Black Atom — JPN ∷ Tsuki Dark"
     },
     {
-        "key": "black-atom-minium-polymer-dark",
+        "key": "black-atom-minium-sienna-dark",
         "collection_key": "minium",
         "appearance": "dark",
-        "label": "Black Atom — Minium ∷ Polymer Dark"
+        "label": "Black Atom — Minium ∷ Sienna Dark"
     },
     {
-        "key": "black-atom-minium-polymer-light",
+        "key": "black-atom-minium-sienna-light",
         "collection_key": "minium",
         "appearance": "light",
-        "label": "Black Atom — Minium ∷ Polymer Light"
+        "label": "Black Atom — Minium ∷ Sienna Light"
     },
     {
         "key": "black-atom-minium-viridian-dark",

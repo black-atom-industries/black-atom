@@ -20,7 +20,7 @@ fn stem<'a>(file: &'a File<'static>) -> &'a str {
         .unwrap_or_default()
 }
 
-/// File stems such as `black-atom-minium-polymer`, sorted.
+/// File stems such as `black-atom-minium-sienna`, sorted.
 pub fn names() -> Vec<&'static str> {
     let mut names: Vec<&str> = files().map(stem).collect();
     names.sort_unstable();
@@ -88,17 +88,17 @@ mod tests {
 
     #[test]
     fn resolves_a_pair_name() {
-        let css = css("black-atom-minium-polymer").unwrap();
-        assert!(css.contains("Minium ∷ Polymer Light"));
-        assert!(css.contains("Minium ∷ Polymer Dark"));
+        let css = css("black-atom-minium-sienna").unwrap();
+        assert!(css.contains("Minium ∷ Sienna Light"));
+        assert!(css.contains("Minium ∷ Sienna Dark"));
     }
 
     #[test]
     fn dark_and_light_keys_share_a_file() {
-        let dark = css("black-atom-minium-polymer-dark").unwrap();
-        let light = css("black-atom-minium-polymer-light").unwrap();
+        let dark = css("black-atom-minium-sienna-dark").unwrap();
+        let light = css("black-atom-minium-sienna-light").unwrap();
         assert_eq!(dark, light);
-        assert_eq!(dark, css("black-atom-minium-polymer").unwrap());
+        assert_eq!(dark, css("black-atom-minium-sienna").unwrap());
     }
 
     #[test]
@@ -120,7 +120,7 @@ mod tests {
 
     #[test]
     fn font_leads_both_stacks() {
-        let css = css("black-atom-minium-polymer").unwrap();
+        let css = css("black-atom-minium-sienna").unwrap();
         let out = with_font(css, "JetBrains Mono");
         assert!(stack(&out, "--ba-font: ").starts_with("\"JetBrains Mono\", "));
         assert!(stack(&out, "--ba-font-heading: ").starts_with("\"JetBrains Mono\", "));
@@ -128,7 +128,7 @@ mod tests {
 
     #[test]
     fn blank_font_changes_nothing() {
-        let css = css("black-atom-minium-polymer").unwrap();
+        let css = css("black-atom-minium-sienna").unwrap();
         assert_eq!(with_font(css, ""), css);
         assert_eq!(with_font(css, "  \t "), css);
         assert_eq!(with_font(css, "\"\""), css);
@@ -136,14 +136,14 @@ mod tests {
 
     #[test]
     fn font_quotes_are_stripped() {
-        let css = css("black-atom-minium-polymer").unwrap();
+        let css = css("black-atom-minium-sienna").unwrap();
         let out = with_font(css, " \"Fira Code\" ");
         assert!(stack(&out, "--ba-font: ").starts_with("\"Fira Code\", "));
     }
 
     #[test]
     fn a_listed_font_moves_to_the_front_once() {
-        let css = css("black-atom-minium-polymer").unwrap();
+        let css = css("black-atom-minium-sienna").unwrap();
         for font in ["TX-02 Condensed", "tx-02 condensed"] {
             let out = with_font(css, font);
             for property in ["--ba-font: ", "--ba-font-heading: "] {
@@ -163,7 +163,7 @@ mod tests {
 
     #[test]
     fn only_the_two_stacks_change() {
-        let css = css("black-atom-minium-polymer").unwrap();
+        let css = css("black-atom-minium-sienna").unwrap();
         let font = "JetBrains Mono";
         assert_eq!(with_font(css, font).len(), css.len() + 2 * (font.len() + 4));
     }

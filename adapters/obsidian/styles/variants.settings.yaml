@@ -32,8 +32,8 @@ settings:
             value: black-atom-jpn-tsuki-dark
           - label: "JPN: Sanshoku Dark"
             value: black-atom-jpn-sanshoku-dark
-          - label: "Minium: Polymer Dark"
-            value: black-atom-minium-polymer-dark
+          - label: "Minium: Sienna Dark"
+            value: black-atom-minium-sienna-dark
           - label: "Minium: Viridian Dark"
             value: black-atom-minium-viridian-dark
           - label: "Mono: Dark"
@@ -67,8 +67,8 @@ settings:
             value: black-atom-jpn-koyo-light
           - label: "JPN: Sanshoku Light"
             value: black-atom-jpn-sanshoku-light
-          - label: "Minium: Polymer Light"
-            value: black-atom-minium-polymer-light
+          - label: "Minium: Sienna Light"
+            value: black-atom-minium-sienna-light
           - label: "Minium: Viridian Light"
             value: black-atom-minium-viridian-light
           - label: "Mono: Light"

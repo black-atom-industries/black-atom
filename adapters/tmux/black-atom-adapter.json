@@ -46,8 +46,8 @@
         "minium": {
             "template": "./themes/minium/collection.template.conf",
             "themes": [
-                "black-atom-minium-polymer-dark",
-                "black-atom-minium-polymer-light",
+                "black-atom-minium-sienna-dark",
+                "black-atom-minium-sienna-light",
                 "black-atom-minium-viridian-dark",
                 "black-atom-minium-viridian-light"
             ]

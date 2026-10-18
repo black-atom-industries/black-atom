@@ -1,6 +1,6 @@
 /*
- * Black Atom — Minium ∷ Polymer Light
- * Black Atom — Minium ∷ Polymer Dark
+ * Black Atom — Minium ∷ Sienna Light
+ * Black Atom — Minium ∷ Sienna Dark
  *
  * Paste this whole file into https://kagi.com/settings/custom_css
  */
@@ -615,7 +615,7 @@ html[class] .codehilite {
     --ch-ni: var(--ba-syntax-tag);
 }
 
-/* Black Atom — Minium ∷ Polymer Light for Kagi */
+/* Black Atom — Minium ∷ Sienna Light for Kagi */
 
 /*
  * Alone, these colors paint every Kagi appearance. Next to a theme of the other
@@ -661,7 +661,7 @@ html.theme_calm_blue[class] {
   color-scheme: light;
 }
 
-/* Black Atom — Minium ∷ Polymer Dark for Kagi */
+/* Black Atom — Minium ∷ Sienna Dark for Kagi */
 
 /*
  * Alone, these colors paint every Kagi appearance. Next to a theme of the other

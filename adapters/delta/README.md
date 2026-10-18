@@ -15,7 +15,7 @@ settings win:
 
 ```ini
 [include]
-    path = /path/to/black-atom/adapters/delta/themes/minium/black-atom-minium-polymer-dark.gitconfig
+    path = /path/to/black-atom/adapters/delta/themes/minium/black-atom-minium-sienna-dark.gitconfig
 ```
 
 ## Available Themes

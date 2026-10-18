@@ -1,7 +1,7 @@
 local theme = {
     meta = {
-        key = "black-atom-minium-polymer-light",
-        label = "Black Atom — Minium ∷ Polymer Light",
+        key = "black-atom-minium-sienna-light",
+        label = "Black Atom — Minium ∷ Sienna Light",
         appearance = "light",
         status = "development",
         collection = {

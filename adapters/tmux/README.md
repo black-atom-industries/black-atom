@@ -13,7 +13,7 @@ node ../../core/src/cli/index.ts generate
 Then source your preferred theme in your `~/.tmux.conf`:
 
 ```bash
-source-file /path/to/black-atom/adapters/tmux/themes/minium/black-atom-minium-polymer-dark.conf
+source-file /path/to/black-atom/adapters/tmux/themes/minium/black-atom-minium-sienna-dark.conf
 ```
 
 ## Available Themes

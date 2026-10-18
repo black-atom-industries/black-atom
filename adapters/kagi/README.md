@@ -14,8 +14,8 @@ Every file in [`themes/`](themes/) is one complete Kagi custom CSS. It maps Blac
 Kagi's own CSS variables and adds a brutalist layer on top: square corners, hard offset shadows,
 thick rules between results, uppercase titles, and monospace fonts.
 
-A file holds both appearances of a theme, for example `themes/minium/black-atom-minium-polymer.css` holds Polymer Light
-and Polymer Dark, and `themes/default/black-atom-default-dimmed.css` holds Dimmed Light and Dimmed Dark. Kagi's
+A file holds both appearances of a theme, for example `themes/minium/black-atom-minium-sienna.css` holds Sienna Light
+and Sienna Dark, and `themes/default/black-atom-default-dimmed.css` holds Dimmed Light and Dimmed Dark. Kagi's
 appearance setting picks between them: Light and Calm Blue show the light theme, Dark and Moon Dark
 the dark one, and Auto follows the system color scheme. Themes that only come in dark, such as JPN
 Murasaki, show their dark colors in every appearance.
