@@ -39,7 +39,10 @@ description: Add a theme to an existing collection. Load when asked to create, d
 5. Add the theme key to every adapter that declares this collection: open each
    `adapters/<name>/black-atom-adapter.json` and append the key to that collection's `themes`
    array, keeping existing order. `grep -l '"<collection>"' adapters/*/black-atom-adapter.json` lists
-   them.
+   them. Three hand-kept lists also name every theme: add an entry to
+   `livery/core/tests/fixtures/catalog.json`, the theme alias in
+   `adapters/nvim/lua/black-atom/types.lua`, and an option in
+   `adapters/obsidian/styles/variants.settings.yaml`.
 
 6. Run `npm run generate` from the repo root. It regenerates every adapter that has a
    `black-atom-adapter.json` in the current tree.
