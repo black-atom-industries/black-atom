@@ -310,6 +310,26 @@ fn setup_chain_end_to_end() {
         );
     }
 
+    // A theme file generated after linking has no link yet: applying to a
+    // wired app syncs its links before the config names the theme.
+    let unlinked = home.join(".config/ghostty/themes/black-atom-jpn-koyo-dark.conf");
+    std::fs::remove_file(&unlinked).unwrap();
+    let applied = block_on(livery_core::updaters::update_app(
+        AppName::Ghostty,
+        livery_core::updaters::ThemeContext {
+            theme_key: "black-atom-jpn-koyo-dark".to_string(),
+            appearance: "dark".to_string(),
+            collection_key: "jpn".to_string(),
+            theme_label: None,
+        },
+    ));
+    assert!(
+        matches!(applied.status, UpdateStatus::Done),
+        "apply ghostty failed: {:?}",
+        applied.message
+    );
+    assert_managed_symlink(&unlinked, &managed_root);
+
     // Unwire two placements by hand: `linked` must follow the disk, not the
     // provisioning class it was just compared against.
     std::fs::remove_file(&pack_link).unwrap();

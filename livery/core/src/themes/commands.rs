@@ -42,7 +42,7 @@ pub async fn get_app_status() -> Result<Vec<AppStatus>, String> {
 
 /// Does this adapter's placement currently point into the managed themes
 /// dir? Reads the filesystem, never writes.
-fn is_linked(app: AppName) -> bool {
+pub(crate) fn is_linked(app: AppName) -> bool {
     let Some(placement) = registry::linked_placement(app) else {
         return false;
     };

@@ -149,6 +149,19 @@ pub async fn update_app(app: AppName, theme: ThemeContext) -> UpdateResult {
         return UpdateResult::skipped(app_str, "App is disabled");
     }
 
+    // Links are per file, so a theme generated after the app was wired has
+    // none until its links are synced again.
+    if crate::themes::commands::is_linked(app) {
+        let link = crate::themes::commands::link_app_themes(app).await;
+        if link.status == UpdateStatus::Error {
+            return UpdateResult::error(
+                app_str,
+                link.message
+                    .unwrap_or_else(|| "Failed to sync theme links".to_string()),
+            );
+        }
+    }
+
     let ctx = UpdateContext {
         theme_key: &theme.theme_key,
         appearance: &theme.appearance,
