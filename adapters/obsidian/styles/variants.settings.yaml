@@ -65,6 +65,8 @@ settings:
             value: black-atom-terra-winter-light
           - label: "JPN: Koyo Light"
             value: black-atom-jpn-koyo-light
+          - label: "JPN: Murasaki Light"
+            value: black-atom-jpn-murasaki-light
           - label: "JPN: Sanshoku Light"
             value: black-atom-jpn-sanshoku-light
           - label: "Minium: Sienna Light"

@@ -1,0 +1,29 @@
+# Black Atom — JPN ∷ Murasaki Light
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#97a941"
+      - bold
+    inactiveBorderColor:
+      - "#865f88"
+    optionsTextColor:
+      - "#4991a9"
+    selectedLineBgColor:
+      - "#ecdbed"
+    cherryPickedCommitBgColor:
+      - "#ecdbed"
+    cherryPickedCommitFgColor:
+      - "#97a941"
+    unstagedChangesColor:
+      - "#da534e"
+    defaultFgColor:
+      - "#452a32"
+    searchingActiveBorderColor:
+      - "#97a941"
+
+  authorColors:
+    "*": "#b8698d"

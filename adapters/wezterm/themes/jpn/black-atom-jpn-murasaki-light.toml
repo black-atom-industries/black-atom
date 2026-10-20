@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — JPN ∷ Murasaki Light"
+
+[colors]
+foreground = "#452a32"
+background = "#f4e9f5"
+cursor_bg = "#97a941"
+cursor_border = "#97a941"
+cursor_fg = "#f4e9f5"
+selection_bg = "#ecdbed"
+selection_fg = "#452a32"
+split = "#97a941"
+compose_cursor = "#da534e"
+scrollbar_thumb = "#865f88"
+
+ansi = [
+  "#694c54", # black
+  "#c13d33", # dark_red
+  "#1b855f", # dark_green
+  "#878d37", # dark_yellow
+  "#367b95", # dark_blue
+  "#906eb4", # dark_magenta
+  "#008585", # dark_cyan
+  "#b796b8" # light_gray
+]
+
+brights = [
+  "#6d4769", # gray
+  "#da534e", # red
+  "#349b76", # green
+  "#97a941", # yellow
+  "#4991a9", # blue
+  "#b8698d", # magenta
+  "#009a9a", # cyan
+  "#dec9e0" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#ecdbed"
+background = "#f4e9f5"
+
+[colors.tab_bar.active_tab]
+fg_color = "#f4e9f5"
+bg_color = "#97a941"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#f4e9f5"
+bg_color = "#b796b8"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#f4e9f5"
+bg_color = "#ecdbed"
+
+[colors.tab_bar.new_tab]
+fg_color = "#f4e9f5"
+bg_color = "#349b76"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#f4e9f5"
+bg_color = "#ecdbed"
+intensity = "Bold"

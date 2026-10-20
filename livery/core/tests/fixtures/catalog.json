@@ -66,6 +66,12 @@
         "label": "Black Atom — JPN ∷ Murasaki Dark"
     },
     {
+        "key": "black-atom-jpn-murasaki-light",
+        "collection_key": "jpn",
+        "appearance": "light",
+        "label": "Black Atom — JPN ∷ Murasaki Light"
+    },
+    {
         "key": "black-atom-jpn-sanshoku-dark",
         "collection_key": "jpn",
         "appearance": "dark",

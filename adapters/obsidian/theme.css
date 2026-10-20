@@ -66,6 +66,8 @@ settings:
             value: black-atom-terra-winter-light
           - label: "JPN: Koyo Light"
             value: black-atom-jpn-koyo-light
+          - label: "JPN: Murasaki Light"
+            value: black-atom-jpn-murasaki-light
           - label: "JPN: Sanshoku Light"
             value: black-atom-jpn-sanshoku-light
           - label: "Minium: Sienna Light"
@@ -1872,6 +1874,141 @@ settings:
   --nav-item-color-hover: #d4bfd6;
   --nav-item-color-active: #d0e08d;
   --nav-item-color-selected: #d4bfd6;
+}
+
+
+
+/* Black Atom — JPN ∷ Murasaki Light */
+.theme-light.black-atom-jpn-murasaki-light {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #f9f0f9;
+  --color-base-05: #f4e9f5;
+  --color-base-10: #ecdbed;
+  --color-base-20: #dec9e0;
+  --color-base-25: #b796b8;
+  --color-base-30: #865f88;
+  --color-base-35: #7d5178;
+  --color-base-40: #6d4769;
+  --color-base-50: #694c54;
+  --color-base-60: #553941;
+  --color-base-70: #452a32;
+  --color-base-100: #351b23;
+
+
+  /* Extended Colors */
+  --color-red: #da534e;
+  --color-red-rgb: 218, 83, 78;
+  --color-orange: #878d37;
+  --color-orange-rgb: 135, 141, 55;
+  --color-yellow: #97a941;
+  --color-yellow-rgb: 151, 169, 65;
+  --color-green: #349b76;
+  --color-green-rgb: 52, 155, 118;
+  --color-cyan: #009a9a;
+  --color-cyan-rgb: 0, 154, 154;
+  --color-blue: #4991a9;
+  --color-blue-rgb: 73, 145, 169;
+  --color-purple: #b8698d;
+  --color-purple-rgb: 184, 105, 141;
+  --color-pink: #906eb4;
+  --color-pink-rgb: 144, 110, 180;
+
+  /* Backgrounds */
+  --background-primary: #f4e9f5;
+  --background-primary-alt: #f9f0f9;
+  --background-secondary: #ecdbed;
+  --background-secondary-alt: #ecdbed;
+  --background-modifier-hover: #ecdbed;
+  --background-modifier-active-hover: #ecdbed;
+  --background-modifier-border: #f9f0f9;
+  --background-modifier-border-hover: #ecdbed;
+  --background-modifier-border-focus: #97a941;
+  --background-modifier-error-rgb: 238, 200, 196;
+  --background-modifier-error: #eec8c4;
+  --background-modifier-error-hover: #eec8c4;
+  --background-modifier-success-rgb: 195, 217, 206;
+  --background-modifier-success: #c3d9ce;
+  --background-modifier-message: #c5d6dc;
+  --background-modifier-form-field: #f4e9f5;
+
+  /* Text */
+  --text-normal: #452a32;
+  --text-muted: #865f88;
+  --text-faint: #b796b8;
+  --text-accent: #97a941;
+  --text-accent-hover: #97a941;
+  --text-on-accent: #f4e9f5;
+  --text-on-accent-inverted: #452a32;
+  --text-error: #da534e;
+  --text-warning: #97a941;
+  --text-success: #349b76;
+  --text-selection: #ecdbed;
+  --text-highlight-bg: #ecdbed;
+
+  /* Interactive */
+  --interactive-normal: #f4e9f5;
+  --interactive-hover: #ecdbed;
+  --interactive-accent: #97a941;
+  --interactive-accent-hover: #97a941;
+
+  /* Headings */
+  --h1-color: #97a941;
+  --h2-color: #97a941;
+  --h3-color: #97a941;
+  --h4-color: #6d4769;
+  --h5-color: #6d4769;
+  --h6-color: #6d4769;
+
+  /* Markup */
+  --bold-color: #97a941;
+  --italic-color: #97a941;
+  --blockquote-border-color: #349b76;
+  --link-color: #349b76;
+  --link-color-hover: #349b76;
+  --link-external-color: #349b76;
+  --link-external-color-hover: #349b76;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #4991a9;
+  --code-comment: #6d4769;
+  --code-function: #97a941;
+  --code-important: #b8698d;
+  --code-keyword: #b8698d;
+  --code-operator: #367b95;
+  --code-property: #4991a9;
+  --code-punctuation: #6d4769;
+  --code-string: #349b76;
+  --code-tag: #97a941;
+  --code-value: #367b95;
+  --code-background: #dec9e0;
+
+  /* Tags */
+  --tag-color: #97a941;
+  --tag-color-hover: #97a941;
+  --tag-background: #ecdbed;
+  --tag-background-hover: #f9f0f9;
+
+  /* Graph */
+  --graph-line: #f9f0f9;
+  --graph-node: #97a941;
+  --graph-node-focused: #97a941;
+  --graph-node-tag: #009a9a;
+  --graph-node-attachment: #349b76;
+
+  /* Scrollbar */
+  --scrollbar-bg: #f4e9f5;
+  --scrollbar-thumb-bg: #f9f0f9;
+  --scrollbar-active-thumb-bg: #865f88;
+
+  /* Nav */
+  --nav-item-background-hover: #ecdbed;
+  --nav-item-background-active: #f9f0f9;
+  --nav-item-background-selected: #ecdbed;
+  --nav-item-color: #452a32;
+  --nav-item-color-hover: #452a32;
+  --nav-item-color-active: #97a941;
+  --nav-item-color-selected: #452a32;
 }
 
 
