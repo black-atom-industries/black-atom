@@ -24,8 +24,8 @@ export default defineThemeColors({
         l40: oklch(0.906, 0.023, 323.62),
     },
     accents: {
-        a10: oklch(0.75, 0.135, 78.01),
-        a20: oklch(0.75, 0.135, 64.87),
+        a10: oklch(0.876, 0.108, 118),
+        a20: oklch(0.791, 0.082, 113),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {

@@ -4,131 +4,131 @@
 .theme-light.black-atom-minium-viridian-light {
   /* Foundation: Base Colors */
 
-  --color-base-00: #f1fbf7;
-  --color-base-05: #dcf1e9;
-  --color-base-10: #c2dfd4;
-  --color-base-20: #aed5c6;
-  --color-base-25: #88cfb6;
-  --color-base-30: #6fb59d;
-  --color-base-35: #569c85;
-  --color-base-40: #3a816a;
-  --color-base-50: #215848;
-  --color-base-60: #204c3e;
-  --color-base-70: #194034;
-  --color-base-100: #12352a;
+  --color-base-00: #f0fbf9;
+  --color-base-05: #daf1ed;
+  --color-base-10: #bfdfd9;
+  --color-base-20: #abd5cd;
+  --color-base-25: #80cfc2;
+  --color-base-30: #67b5a9;
+  --color-base-35: #4d9c91;
+  --color-base-40: #308176;
+  --color-base-50: #00564d;
+  --color-base-60: #194c45;
+  --color-base-70: #13403a;
+  --color-base-100: #0d3530;
 
 
   /* Extended Colors */
-  --color-red: #88cfb6;
-  --color-red-rgb: 136, 207, 182;
-  --color-orange: #e95e00;
-  --color-orange-rgb: 233, 94, 0;
-  --color-yellow: #e95e00;
-  --color-yellow-rgb: 233, 94, 0;
+  --color-red: #80cfc2;
+  --color-red-rgb: 128, 207, 194;
+  --color-orange: #ee560c;
+  --color-orange-rgb: 238, 86, 12;
+  --color-yellow: #ee560c;
+  --color-yellow-rgb: 238, 86, 12;
   --color-green: #00af44;
   --color-green-rgb: 0, 175, 68;
-  --color-cyan: #00b37c;
-  --color-cyan-rgb: 0, 179, 124;
-  --color-blue: #88cfb6;
-  --color-blue-rgb: 136, 207, 182;
+  --color-cyan: #00b39b;
+  --color-cyan-rgb: 0, 179, 155;
+  --color-blue: #80cfc2;
+  --color-blue-rgb: 128, 207, 194;
   --color-purple: #bb929a;
   --color-purple-rgb: 187, 146, 154;
   --color-pink: #ab838b;
   --color-pink-rgb: 171, 131, 139;
 
   /* Backgrounds */
-  --background-primary: #dcf1e9;
-  --background-primary-alt: #f1fbf7;
-  --background-secondary: #c2dfd4;
-  --background-secondary-alt: #c2dfd4;
-  --background-modifier-hover: #c2dfd4;
-  --background-modifier-active-hover: #c2dfd4;
-  --background-modifier-border: #f1fbf7;
-  --background-modifier-border-hover: #c2dfd4;
-  --background-modifier-border-focus: #e95e00;
+  --background-primary: #daf1ed;
+  --background-primary-alt: #f0fbf9;
+  --background-secondary: #bfdfd9;
+  --background-secondary-alt: #bfdfd9;
+  --background-modifier-hover: #bfdfd9;
+  --background-modifier-active-hover: #bfdfd9;
+  --background-modifier-border: #f0fbf9;
+  --background-modifier-border-hover: #bfdfd9;
+  --background-modifier-border-focus: #ee560c;
   --background-modifier-error-rgb: 253, 209, 204;
   --background-modifier-error: #fdd1cc;
   --background-modifier-error-hover: #fdd1cc;
   --background-modifier-success-rgb: 217, 226, 197;
   --background-modifier-success: #d9e2c5;
   --background-modifier-message: #c9e4f6;
-  --background-modifier-form-field: #dcf1e9;
+  --background-modifier-form-field: #daf1ed;
 
   /* Text */
-  --text-normal: #194034;
-  --text-muted: #3a816a;
-  --text-faint: #6fb59d;
-  --text-accent: #e95e00;
-  --text-accent-hover: #e95e00;
-  --text-on-accent: #c2dfd4;
-  --text-on-accent-inverted: #194034;
+  --text-normal: #13403a;
+  --text-muted: #308176;
+  --text-faint: #67b5a9;
+  --text-accent: #ee560c;
+  --text-accent-hover: #ee560c;
+  --text-on-accent: #bfdfd9;
+  --text-on-accent-inverted: #13403a;
   --text-error: #f14d4c;
   --text-warning: #cd7b00;
   --text-success: #819e00;
-  --text-selection: #aed5c6;
-  --text-highlight-bg: #aed5c6;
+  --text-selection: #abd5cd;
+  --text-highlight-bg: #abd5cd;
 
   /* Interactive */
-  --interactive-normal: #dcf1e9;
-  --interactive-hover: #c2dfd4;
-  --interactive-accent: #e95e00;
-  --interactive-accent-hover: #e95e00;
+  --interactive-normal: #daf1ed;
+  --interactive-hover: #bfdfd9;
+  --interactive-accent: #ee560c;
+  --interactive-accent-hover: #ee560c;
 
   /* Headings */
-  --h1-color: #e95e00;
-  --h2-color: #e95e00;
-  --h3-color: #e95e00;
-  --h4-color: #3a816a;
-  --h5-color: #3a816a;
-  --h6-color: #3a816a;
+  --h1-color: #ee560c;
+  --h2-color: #ee560c;
+  --h3-color: #ee560c;
+  --h4-color: #308176;
+  --h5-color: #308176;
+  --h6-color: #308176;
 
   /* Markup */
-  --bold-color: #e95e00;
-  --italic-color: #e95e00;
-  --blockquote-border-color: #6fb59d;
+  --bold-color: #ee560c;
+  --italic-color: #ee560c;
+  --blockquote-border-color: #67b5a9;
   --link-color: #00af44;
   --link-color-hover: #00af44;
   --link-external-color: #00af44;
   --link-external-color-hover: #00af44;
 
   /* Code / Syntax Highlighting */
-  --code-normal: #204c3e;
-  --code-comment: #569c85;
-  --code-function: #e95e00;
-  --code-important: #e95e00;
-  --code-keyword: #e95e00;
-  --code-operator: #194034;
-  --code-property: #3a816a;
-  --code-punctuation: #215848;
-  --code-string: #569c85;
+  --code-normal: #194c45;
+  --code-comment: #4d9c91;
+  --code-function: #ee560c;
+  --code-important: #ee560c;
+  --code-keyword: #ee560c;
+  --code-operator: #13403a;
+  --code-property: #308176;
+  --code-punctuation: #00564d;
+  --code-string: #4d9c91;
   --code-tag: #00af44;
-  --code-value: #194034;
-  --code-background: #aed5c6;
+  --code-value: #13403a;
+  --code-background: #abd5cd;
 
   /* Tags */
-  --tag-color: #e95e00;
-  --tag-color-hover: #e95e00;
-  --tag-background: #c2dfd4;
-  --tag-background-hover: #f1fbf7;
+  --tag-color: #ee560c;
+  --tag-color-hover: #ee560c;
+  --tag-background: #bfdfd9;
+  --tag-background-hover: #f0fbf9;
 
   /* Graph */
-  --graph-line: #f1fbf7;
-  --graph-node: #e95e00;
-  --graph-node-focused: #e95e00;
-  --graph-node-tag: #00b37c;
+  --graph-line: #f0fbf9;
+  --graph-node: #ee560c;
+  --graph-node-focused: #ee560c;
+  --graph-node-tag: #00b39b;
   --graph-node-attachment: #00af44;
 
   /* Scrollbar */
-  --scrollbar-bg: #dcf1e9;
-  --scrollbar-thumb-bg: #f1fbf7;
-  --scrollbar-active-thumb-bg: #3a816a;
+  --scrollbar-bg: #daf1ed;
+  --scrollbar-thumb-bg: #f0fbf9;
+  --scrollbar-active-thumb-bg: #308176;
 
   /* Nav */
-  --nav-item-background-hover: #c2dfd4;
-  --nav-item-background-active: #f1fbf7;
-  --nav-item-background-selected: #aed5c6;
-  --nav-item-color: #194034;
-  --nav-item-color-hover: #194034;
-  --nav-item-color-active: #e95e00;
-  --nav-item-color-selected: #194034;
+  --nav-item-background-hover: #bfdfd9;
+  --nav-item-background-active: #f0fbf9;
+  --nav-item-background-selected: #abd5cd;
+  --nav-item-color: #13403a;
+  --nav-item-color-hover: #13403a;
+  --nav-item-color-active: #ee560c;
+  --nav-item-color-selected: #13403a;
 }

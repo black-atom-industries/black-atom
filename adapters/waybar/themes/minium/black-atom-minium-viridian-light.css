@@ -1,19 +1,19 @@
 /* Black Atom — Minium ∷ Viridian Light */
 
 /* Background colors */
-@define-color ba-bg-default #dcf1e9;
-@define-color ba-bg-panel #c2dfd4;
-@define-color ba-bg-hover #c2dfd4;
-@define-color ba-bg-active #f1fbf7;
-@define-color ba-bg-selection #aed5c6;
-@define-color ba-bg-contrast #215848;
+@define-color ba-bg-default #daf1ed;
+@define-color ba-bg-panel #bfdfd9;
+@define-color ba-bg-hover #bfdfd9;
+@define-color ba-bg-active #f0fbf9;
+@define-color ba-bg-selection #abd5cd;
+@define-color ba-bg-contrast #00564d;
 
 /* Foreground colors */
-@define-color ba-fg-default #194034;
-@define-color ba-fg-subtle #3a816a;
-@define-color ba-fg-accent #e95e00;
-@define-color ba-fg-disabled #6fb59d;
-@define-color ba-fg-contrast #c2dfd4;
+@define-color ba-fg-default #13403a;
+@define-color ba-fg-subtle #308176;
+@define-color ba-fg-accent #ee560c;
+@define-color ba-fg-disabled #67b5a9;
+@define-color ba-fg-contrast #bfdfd9;
 
 /* Feedback colors */
 @define-color ba-fg-negative #f14d4c;
@@ -22,9 +22,9 @@
 @define-color ba-fg-info #00a3e9;
 
 /* Palette colors */
-@define-color ba-red #88cfb6;
+@define-color ba-red #80cfc2;
 @define-color ba-green #00af44;
-@define-color ba-yellow #e95e00;
-@define-color ba-blue #88cfb6;
+@define-color ba-yellow #ee560c;
+@define-color ba-blue #80cfc2;
 @define-color ba-magenta #bb929a;
-@define-color ba-cyan #00b37c;
+@define-color ba-cyan #00b39b;

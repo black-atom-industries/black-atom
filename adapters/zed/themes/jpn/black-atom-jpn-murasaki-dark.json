@@ -9,7 +9,7 @@
             "style": {
                 "border": "#452a32",
                 "border.variant": "#452a32",
-                "border.focused": "#dca23a",
+                "border.focused": "#d0e08d",
                 "border.selected": "#5b3e47",
                 "border.transparent": "#00000000",
                 "border.disabled": "#865f88",
@@ -31,12 +31,12 @@
                 "text.muted": "#946996",
                 "text.placeholder": "#865f88",
                 "text.disabled": "#865f88",
-                "text.accent": "#dca23a",
+                "text.accent": "#d0e08d",
                 "icon": "#d4bfd6",
                 "icon.muted": "#946996",
                 "icon.disabled": "#865f88",
                 "icon.placeholder": "#946996",
-                "icon.accent": "#dca23a",
+                "icon.accent": "#d0e08d",
                 "status_bar.background": "#250d15",
                 "title_bar.background": "#250d15",
                 "title_bar.inactive_background": "#250d15",
@@ -45,11 +45,11 @@
                 "tab.inactive_background": "#250d15",
                 "tab.active_background": "#351b23",
                 "search.match_background": "#5b3e4766",
-                "search.active_match_background": "#dca23a66",
+                "search.active_match_background": "#d0e08d66",
                 "panel.background": "#250d15",
-                "panel.focused_border": "#dca23a",
-                "pane.focused_border": "#dca23a",
-                "scrollbar.thumb.background": "#dca23a4c",
+                "panel.focused_border": "#d0e08d",
+                "pane.focused_border": "#d0e08d",
+                "scrollbar.thumb.background": "#d0e08d4c",
                 "scrollbar.thumb.hover_background": "#452a32",
                 "scrollbar.thumb.border": "#452a32",
                 "scrollbar.track.background": "#00000000",
@@ -66,7 +66,7 @@
                 "editor.invisible": "#865f88",
                 "editor.wrap_guide": "#865f880d",
                 "editor.active_wrap_guide": "#865f881a",
-                "editor.document_highlight.read_background": "#dca23a1a",
+                "editor.document_highlight.read_background": "#d0e08d1a",
                 "editor.document_highlight.write_background": "#5b3e4766",
                 "terminal.background": "#351b23",
                 "terminal.foreground": "#d4bfd6",
@@ -81,9 +81,9 @@
                 "terminal.ansi.green": "#80bda2",
                 "terminal.ansi.bright_green": "#80bda2",
                 "terminal.ansi.dim_green": "#72ad91",
-                "terminal.ansi.yellow": "#dca23a",
-                "terminal.ansi.bright_yellow": "#dca23a",
-                "terminal.ansi.dim_yellow": "#e89a47",
+                "terminal.ansi.yellow": "#d0e08d",
+                "terminal.ansi.bright_yellow": "#d0e08d",
+                "terminal.ansi.dim_yellow": "#bbc183",
                 "terminal.ansi.blue": "#8cb6c5",
                 "terminal.ansi.bright_blue": "#8cb6c5",
                 "terminal.ansi.dim_blue": "#7ea5b7",
@@ -96,7 +96,7 @@
                 "terminal.ansi.white": "#946996",
                 "terminal.ansi.bright_white": "#b796b8",
                 "terminal.ansi.dim_white": "#946996",
-                "link_text.hover": "#dca23a",
+                "link_text.hover": "#d0e08d",
                 "version_control.added": "#485c53",
                 "version_control.modified": "#4b5a5f",
                 "version_control.deleted": "#754a45",
@@ -104,9 +104,9 @@
                 "version_control.word_deleted": "#ff857bCC",
                 "version_control.conflict_marker.ours": "#80bda21a",
                 "version_control.conflict_marker.theirs": "#8cb6c51a",
-                "conflict": "#dca23a",
-                "conflict.background": "#6853331a",
-                "conflict.border": "#dca23a",
+                "conflict": "#d0e08d",
+                "conflict.background": "#63694d1a",
+                "conflict.border": "#d0e08d",
                 "created": "#80bda2",
                 "created.background": "#485c531a",
                 "created.border": "#80bda2",
@@ -119,9 +119,9 @@
                 "hidden": "#865f88",
                 "hidden.background": "#6d47691a",
                 "hidden.border": "#865f88",
-                "hint": "#e89a47",
-                "hint.background": "#6c51361a",
-                "hint.border": "#e89a47",
+                "hint": "#bbc183",
+                "hint.background": "#5b5e481a",
+                "hint.border": "#bbc183",
                 "ignored": "#865f88",
                 "ignored.background": "#6d47691a",
                 "ignored.border": "#865f88",
@@ -131,9 +131,9 @@
                 "modified": "#8cb6c5",
                 "modified.background": "#4b5a5f1a",
                 "modified.border": "#8cb6c5",
-                "predictive": "#e89a47",
-                "predictive.background": "#6c51361a",
-                "predictive.border": "#e89a47",
+                "predictive": "#bbc183",
+                "predictive.background": "#5b5e481a",
+                "predictive.border": "#bbc183",
                 "renamed": "#8cb6c5",
                 "renamed.background": "#4b5a5f1a",
                 "renamed.border": "#8cb6c5",
@@ -143,11 +143,11 @@
                 "unreachable": "#865f88",
                 "unreachable.background": "#6d47691a",
                 "unreachable.border": "#865f88",
-                "warning": "#dca23a",
-                "warning.background": "#6853331a",
-                "warning.border": "#dca23a",
+                "warning": "#d0e08d",
+                "warning.background": "#63694d1a",
+                "warning.border": "#d0e08d",
                 "vim.normal.background": "#250d15",
-                "vim.insert.background": "#dca23a",
+                "vim.insert.background": "#d0e08d",
                 "vim.visual.background": "#8cb6c5",
                 "vim.visual_line.background": "#8cb6c5",
                 "vim.visual_block.background": "#8cb6c5",
@@ -157,9 +157,9 @@
                 "vim.mode.text": "#d4bfd6",
                 "players": [
                     {
-                        "cursor": "#dca23a",
-                        "background": "#dca23a",
-                        "selection": "#dca23a3d"
+                        "cursor": "#d0e08d",
+                        "background": "#d0e08d",
+                        "selection": "#d0e08d3d"
                     },
                     {
                         "cursor": "#d49bb2",
@@ -167,9 +167,9 @@
                         "selection": "#d49bb23d"
                     },
                     {
-                        "cursor": "#dca23a",
-                        "background": "#dca23a",
-                        "selection": "#dca23a3d"
+                        "cursor": "#d0e08d",
+                        "background": "#d0e08d",
+                        "selection": "#d0e08d3d"
                     },
                     {
                         "cursor": "#72bdbc",
@@ -192,9 +192,9 @@
                         "selection": "#80bda23d"
                     },
                     {
-                        "cursor": "#dca23a",
-                        "background": "#dca23a",
-                        "selection": "#dca23a3d"
+                        "cursor": "#d0e08d",
+                        "background": "#d0e08d",
+                        "selection": "#d0e08d3d"
                     }
                 ],
                 "syntax": {
@@ -224,7 +224,7 @@
                         "font_weight": null
                     },
                     "constructor": {
-                        "color": "#dca23a",
+                        "color": "#d0e08d",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -234,12 +234,12 @@
                         "font_weight": null
                     },
                     "emphasis": {
-                        "color": "#dca23a",
+                        "color": "#d0e08d",
                         "font_style": "italic",
                         "font_weight": null
                     },
                     "emphasis.strong": {
-                        "color": "#dca23a",
+                        "color": "#d0e08d",
                         "font_style": null,
                         "font_weight": 700
                     },
@@ -249,12 +249,12 @@
                         "font_weight": null
                     },
                     "function": {
-                        "color": "#dca23a",
+                        "color": "#d0e08d",
                         "font_style": null,
                         "font_weight": null
                     },
                     "hint": {
-                        "color": "#e89a47",
+                        "color": "#bbc183",
                         "font_style": null,
                         "font_weight": 700
                     },
@@ -264,7 +264,7 @@
                         "font_weight": 700
                     },
                     "label": {
-                        "color": "#e89a47",
+                        "color": "#bbc183",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -294,7 +294,7 @@
                         "font_weight": null
                     },
                     "predictive": {
-                        "color": "#e89a47",
+                        "color": "#bbc183",
                         "font_style": "italic",
                         "font_weight": null
                     },
@@ -379,7 +379,7 @@
                         "font_weight": null
                     },
                     "tag": {
-                        "color": "#dca23a",
+                        "color": "#d0e08d",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -389,7 +389,7 @@
                         "font_weight": null
                     },
                     "title": {
-                        "color": "#dca23a",
+                        "color": "#d0e08d",
                         "font_style": null,
                         "font_weight": 700
                     },

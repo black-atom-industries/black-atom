@@ -21,10 +21,10 @@
   /* Extended Colors */
   --color-red: #ff857b;
   --color-red-rgb: 255, 133, 123;
-  --color-orange: #e89a47;
-  --color-orange-rgb: 232, 154, 71;
-  --color-yellow: #dca23a;
-  --color-yellow-rgb: 220, 162, 58;
+  --color-orange: #bbc183;
+  --color-orange-rgb: 187, 193, 131;
+  --color-yellow: #d0e08d;
+  --color-yellow-rgb: 208, 224, 141;
   --color-green: #80bda2;
   --color-green-rgb: 128, 189, 162;
   --color-cyan: #72bdbc;
@@ -45,7 +45,7 @@
   --background-modifier-active-hover: #452a32;
   --background-modifier-border: #452a32;
   --background-modifier-border-hover: #452a32;
-  --background-modifier-border-focus: #dca23a;
+  --background-modifier-border-focus: #d0e08d;
   --background-modifier-error-rgb: 117, 74, 69;
   --background-modifier-error: #754a45;
   --background-modifier-error-hover: #754a45;
@@ -58,12 +58,12 @@
   --text-normal: #d4bfd6;
   --text-muted: #946996;
   --text-faint: #865f88;
-  --text-accent: #dca23a;
-  --text-accent-hover: #dca23a;
+  --text-accent: #d0e08d;
+  --text-accent-hover: #d0e08d;
   --text-on-accent: #351b23;
   --text-on-accent-inverted: #d4bfd6;
   --text-error: #ff857b;
-  --text-warning: #dca23a;
+  --text-warning: #d0e08d;
   --text-success: #80bda2;
   --text-selection: #5b3e47;
   --text-highlight-bg: #5b3e47;
@@ -71,20 +71,20 @@
   /* Interactive */
   --interactive-normal: #351b23;
   --interactive-hover: #452a32;
-  --interactive-accent: #dca23a;
-  --interactive-accent-hover: #dca23a;
+  --interactive-accent: #d0e08d;
+  --interactive-accent-hover: #d0e08d;
 
   /* Headings */
-  --h1-color: #dca23a;
-  --h2-color: #dca23a;
-  --h3-color: #dca23a;
+  --h1-color: #d0e08d;
+  --h2-color: #d0e08d;
+  --h3-color: #d0e08d;
   --h4-color: #946996;
   --h5-color: #946996;
   --h6-color: #946996;
 
   /* Markup */
-  --bold-color: #dca23a;
-  --italic-color: #dca23a;
+  --bold-color: #d0e08d;
+  --italic-color: #d0e08d;
   --blockquote-border-color: #80bda2;
   --link-color: #80bda2;
   --link-color-hover: #80bda2;
@@ -94,27 +94,27 @@
   /* Code / Syntax Highlighting */
   --code-normal: #c9b1cb;
   --code-comment: #7d5178;
-  --code-function: #dca23a;
+  --code-function: #d0e08d;
   --code-important: #d49bb2;
   --code-keyword: #d49bb2;
   --code-operator: #7ea5b7;
   --code-property: #8cb6c5;
   --code-punctuation: #946996;
   --code-string: #80bda2;
-  --code-tag: #dca23a;
+  --code-tag: #d0e08d;
   --code-value: #7ea5b7;
   --code-background: #5b3e47;
 
   /* Tags */
-  --tag-color: #dca23a;
-  --tag-color-hover: #dca23a;
+  --tag-color: #d0e08d;
+  --tag-color-hover: #d0e08d;
   --tag-background: #452a32;
   --tag-background-hover: #452a32;
 
   /* Graph */
   --graph-line: #452a32;
-  --graph-node: #dca23a;
-  --graph-node-focused: #dca23a;
+  --graph-node: #d0e08d;
+  --graph-node-focused: #d0e08d;
   --graph-node-tag: #72bdbc;
   --graph-node-attachment: #80bda2;
 
@@ -129,6 +129,6 @@
   --nav-item-background-selected: #5b3e47;
   --nav-item-color: #d4bfd6;
   --nav-item-color-hover: #d4bfd6;
-  --nav-item-color-active: #dca23a;
+  --nav-item-color-active: #d0e08d;
   --nav-item-color-selected: #d4bfd6;
 }

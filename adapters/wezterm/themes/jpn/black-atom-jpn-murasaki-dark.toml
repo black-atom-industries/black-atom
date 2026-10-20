@@ -5,12 +5,12 @@ name = "Black Atom — JPN ∷ Murasaki Dark"
 [colors]
 foreground = "#d4bfd6"
 background = "#351b23"
-cursor_bg = "#dca23a"
-cursor_border = "#dca23a"
+cursor_bg = "#d0e08d"
+cursor_border = "#d0e08d"
 cursor_fg = "#351b23"
 selection_bg = "#5b3e47"
 selection_fg = "#d4bfd6"
-split = "#dca23a"
+split = "#d0e08d"
 compose_cursor = "#ff857b"
 scrollbar_thumb = "#946996"
 
@@ -18,7 +18,7 @@ ansi = [
   "#5b3e47", # black
   "#ed7668", # dark_red
   "#72ad91", # dark_green
-  "#e89a47", # dark_yellow
+  "#bbc183", # dark_yellow
   "#7ea5b7", # dark_blue
   "#b9a2d4", # dark_magenta
   "#62adac", # dark_cyan
@@ -29,7 +29,7 @@ brights = [
   "#7d5178", # gray
   "#ff857b", # red
   "#80bda2", # green
-  "#dca23a", # yellow
+  "#d0e08d", # yellow
   "#8cb6c5", # blue
   "#d49bb2", # magenta
   "#72bdbc", # cyan
@@ -42,7 +42,7 @@ background = "#351b23"
 
 [colors.tab_bar.active_tab]
 fg_color = "#351b23"
-bg_color = "#dca23a"
+bg_color = "#d0e08d"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]

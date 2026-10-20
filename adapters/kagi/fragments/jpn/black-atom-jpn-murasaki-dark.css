@@ -17,7 +17,7 @@ html.theme_moon_dark[class] {
   --ba-bg-selection: #5b3e47;
   --ba-fg: #d4bfd6;
   --ba-fg-subtle: #946996;
-  --ba-fg-accent: #dca23a;
+  --ba-fg-accent: #d0e08d;
   --ba-fg-disabled: #865f88;
   --ba-fg-negative: #ff857b;
   --ba-fg-positive: #80bda2;
@@ -32,14 +32,14 @@ html.theme_moon_dark[class] {
   --ba-syntax-string-regexp: #ff857b;
   --ba-syntax-number: #72ad91;
   --ba-syntax-constant: #7ea5b7;
-  --ba-syntax-function: #dca23a;
-  --ba-syntax-builtin: #dca23a;
+  --ba-syntax-function: #d0e08d;
+  --ba-syntax-builtin: #d0e08d;
   --ba-syntax-type: #72bdbc;
   --ba-syntax-variable: #c9b1cb;
   --ba-syntax-property: #8cb6c5;
   --ba-syntax-module: #7ea5b7;
-  --ba-syntax-attribute: #e89a47;
-  --ba-syntax-tag: #dca23a;
+  --ba-syntax-attribute: #bbc183;
+  --ba-syntax-tag: #d0e08d;
   --ba-syntax-operator: #7ea5b7;
   color-scheme: dark;
 }
@@ -54,7 +54,7 @@ html.theme_moon_dark[class] {
     --ba-bg-selection: #5b3e47;
     --ba-fg: #d4bfd6;
     --ba-fg-subtle: #946996;
-    --ba-fg-accent: #dca23a;
+    --ba-fg-accent: #d0e08d;
     --ba-fg-disabled: #865f88;
     --ba-fg-negative: #ff857b;
     --ba-fg-positive: #80bda2;
@@ -69,14 +69,14 @@ html.theme_moon_dark[class] {
     --ba-syntax-string-regexp: #ff857b;
     --ba-syntax-number: #72ad91;
     --ba-syntax-constant: #7ea5b7;
-    --ba-syntax-function: #dca23a;
-    --ba-syntax-builtin: #dca23a;
+    --ba-syntax-function: #d0e08d;
+    --ba-syntax-builtin: #d0e08d;
     --ba-syntax-type: #72bdbc;
     --ba-syntax-variable: #c9b1cb;
     --ba-syntax-property: #8cb6c5;
     --ba-syntax-module: #7ea5b7;
-    --ba-syntax-attribute: #e89a47;
-    --ba-syntax-tag: #dca23a;
+    --ba-syntax-attribute: #bbc183;
+    --ba-syntax-tag: #d0e08d;
     --ba-syntax-operator: #7ea5b7;
     color-scheme: dark;
   }

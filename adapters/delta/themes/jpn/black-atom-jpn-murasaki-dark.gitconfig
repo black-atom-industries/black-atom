@@ -17,7 +17,7 @@
     line-numbers-left-style = "#865f88"
     line-numbers-right-style = "#865f88"
 
-    file-style = "#dca23a" bold
+    file-style = "#d0e08d" bold
     file-decoration-style = "#865f88" ul
     hunk-header-decoration-style = "#865f88" box
     hunk-header-line-number-style = "#8cb6c5"
