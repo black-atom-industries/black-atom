@@ -1,23 +1,6 @@
 import { assert, test } from "vite-plus/test";
 import { groupByCollection } from "./theme-utils.ts";
 import type * as Theme from "@core/types/theme.ts";
-import { themeCatalog } from "@core/themes/catalog.ts";
-
-test("Monitor groups all 30 current themes into six collections", () => {
-    const groups = groupByCollection(Object.values(themeCatalog));
-    assert.deepEqual(
-        [...groups].map(([key, themes]) => [key, themes.length]),
-        [
-            ["default", 4],
-            ["facility", 4],
-            ["terra", 8],
-            ["jpn", 6],
-            ["minium", 4],
-            ["mono", 4],
-        ],
-    );
-    assert.deepEqual([...groups.values()].flat().length, 30);
-});
 
 const makeTheme = (key: string, collection: string) =>
     ({

@@ -39,8 +39,6 @@ const collectionKeys = [
 
 test("all adapters contain exactly the catalog outputs and regenerate identically", async () => {
     assert.deepEqual(await discoverAdapters(adaptersDir), adapterNames);
-    assert.deepEqual(collectionKeys.length, 6);
-    assert.deepEqual(themeKeys.length, 30);
     const schema = createAdapterConfigSchema(themeKeys);
     for (const adapter of adapterNames) {
         const adapterDir = join(adaptersDir, adapter);

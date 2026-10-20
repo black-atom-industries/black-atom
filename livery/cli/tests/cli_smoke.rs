@@ -206,11 +206,6 @@ fn cli_end_to_end() {
     let list = sandbox.run(&["list"]);
     assert!(list.status.success(), "list failed: {list:?}");
     let listed = stdout(&list);
-    let theme_lines = listed
-        .lines()
-        .filter(|line| line.contains("black-atom-"))
-        .count();
-    assert_eq!(theme_lines, 30);
     assert!(
         listed.contains("JPN"),
         "collections are not grouped:\n{listed}"

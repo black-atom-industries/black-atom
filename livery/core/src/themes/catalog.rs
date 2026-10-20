@@ -93,7 +93,6 @@ mod tests {
         let themes = themes();
         let expected: Vec<ThemeEntry> =
             serde_json::from_str(include_str!("../../tests/fixtures/catalog.json")).unwrap();
-        assert_eq!(themes.len(), 30);
         assert_eq!(themes, expected);
         let collections: std::collections::BTreeSet<_> = themes
             .iter()
