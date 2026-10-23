@@ -5,14 +5,10 @@
     "ignoreDependencies": [
         "@fontsource/chakra-petch",
         "@fontsource/kode-mono",
-        "@base-ui/react",
-        "@black-atom/core",
-        "@tanstack/react-store",
         "@vercel/analytics",
         "cva",
         "three",
         "tone",
-        "zod",
         "@playwright/test"
     ],
     "playwright": {

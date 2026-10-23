@@ -1,0 +1,86 @@
+import type * as Theme from "@black-atom/core";
+
+const themeVarNames = [
+    "bg",
+    "bg-panel",
+    "bg-float",
+    "bg-active",
+    "bg-hover",
+    "bg-selection",
+    "bg-contrast",
+    "fg",
+    "fg-subtle",
+    "fg-accent",
+    "fg-disabled",
+    "fg-contrast",
+    "accent",
+    "accent-2",
+    "negative",
+    "success",
+    "info",
+    "warning",
+    "c-red",
+    "c-green",
+    "c-yellow",
+    "c-blue",
+    "c-magenta",
+    "c-cyan",
+    "c-gray",
+    "syn-keyword",
+    "syn-string",
+    "syn-func",
+    "syn-type",
+    "syn-comment",
+    "syn-constant",
+    "syn-number",
+    "syn-operator",
+    "syn-variable",
+    "syn-punctuation",
+] as const;
+
+export type ThemeVar = `--ba-${(typeof themeVarNames)[number]}`;
+
+export function themeToCustomProperties(theme: Theme.Definition): Record<ThemeVar, string> {
+    return {
+        "--ba-bg": theme.ui.bg.default,
+        "--ba-bg-panel": theme.ui.bg.panel,
+        "--ba-bg-float": theme.ui.bg.float,
+        "--ba-bg-active": theme.ui.bg.active,
+        "--ba-bg-hover": theme.ui.bg.hover,
+        "--ba-bg-selection": theme.ui.bg.selection,
+        "--ba-bg-contrast": theme.ui.bg.contrast,
+
+        "--ba-fg": theme.ui.fg.default,
+        "--ba-fg-subtle": theme.ui.fg.subtle,
+        "--ba-fg-accent": theme.ui.fg.accent,
+        "--ba-fg-disabled": theme.ui.fg.disabled,
+        "--ba-fg-contrast": theme.ui.fg.contrast,
+
+        "--ba-accent": theme.accents.a10,
+        "--ba-accent-2": theme.accents.a20,
+
+        "--ba-negative": theme.feedback.negative,
+        "--ba-success": theme.feedback.success,
+        "--ba-info": theme.feedback.info,
+        "--ba-warning": theme.feedback.warning,
+
+        "--ba-c-red": theme.palette.red,
+        "--ba-c-green": theme.palette.green,
+        "--ba-c-yellow": theme.palette.yellow,
+        "--ba-c-blue": theme.palette.blue,
+        "--ba-c-magenta": theme.palette.magenta,
+        "--ba-c-cyan": theme.palette.cyan,
+        "--ba-c-gray": theme.palette.gray,
+
+        "--ba-syn-keyword": theme.syntax.keyword.default,
+        "--ba-syn-string": theme.syntax.string.default,
+        "--ba-syn-func": theme.syntax.func.default,
+        "--ba-syn-type": theme.syntax.type.default,
+        "--ba-syn-comment": theme.syntax.comment.default,
+        "--ba-syn-constant": theme.syntax.constant.default,
+        "--ba-syn-number": theme.syntax.number.default,
+        "--ba-syn-operator": theme.syntax.operator.default,
+        "--ba-syn-variable": theme.syntax.variable.default,
+        "--ba-syn-punctuation": theme.syntax.punctuation.default,
+    };
+}

@@ -7,7 +7,7 @@ export default function Devtools() {
     const router = useRouter();
     return (
         <TanStackDevtools
-            config={{ hideUntilHover: true }}
+            config={{ hideUntilHover: true, position: "bottom-left" }}
             plugins={[
                 {
                     name: "TanStack Query",

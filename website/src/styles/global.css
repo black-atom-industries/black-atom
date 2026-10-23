@@ -10,4 +10,26 @@
 body {
     margin: 0;
     font-family: var(--ba-font-sans);
+    background: var(--ba-bg);
+    color: var(--ba-fg);
+    transition:
+        background 1s,
+        color 1s;
+}
+
+button {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 1px solid var(--ba-accent);
+    outline-offset: 3px;
 }
