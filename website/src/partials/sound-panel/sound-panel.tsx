@@ -3,14 +3,7 @@ import { Caption } from "#/components/caption/index.ts";
 import { PairToggle } from "#/components/pair-toggle/index.ts";
 import { RangeField } from "#/components/range-field/index.ts";
 import { Stack } from "#/components/stack/index.ts";
-
-export type SoundSettings = {
-    isOn: boolean;
-    volume: number;
-    isHeartbeatOn: boolean;
-    bpm: number;
-    vinyl: number;
-};
+import type { SoundSettings } from "#/stores/sound.ts";
 
 type Props = {
     settings: SoundSettings;
@@ -39,6 +32,7 @@ export function SoundPanel({ settings, onChange }: Props) {
                     onClick={() => onChange({ isOn: !settings.isOn })}
                 />
             </Stack>
+
             <RangeField
                 label="Volume"
                 valueText={String(settings.volume)}

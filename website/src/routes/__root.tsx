@@ -17,12 +17,15 @@ import { blackAtom, blackAtomLinks } from "#/content/products/black-atom.ts";
 import { iter } from "#/content/products/iter.ts";
 import { radar } from "#/content/products/radar.ts";
 import { studio } from "#/content/studio.ts";
+import { useRouteBackgroundState } from "#/hooks/use-route-background-state.ts";
+import { useSound } from "#/hooks/use-sound.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { toShortKey } from "#/lib/theme-precedence.ts";
 import { themeToCustomProperties } from "#/lib/theme-vars.ts";
 import { Dock } from "#/partials/dock/index.ts";
 import { SiteFooter } from "#/partials/site-footer/index.ts";
 import { SiteHeader } from "#/partials/site-header/index.ts";
+import { SoundPanel } from "#/partials/sound-panel/index.ts";
 import { ThemePanel } from "#/partials/theme-panel/index.ts";
 import globalCss from "#/styles/global.css?url";
 import { NotFoundPage } from "./-not-found-page.tsx";
@@ -56,6 +59,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootLayout() {
     const { theme, setTheme } = useTheme();
     const pathname = useLocation({ select: (location) => location.pathname });
+    const backgroundState = useRouteBackgroundState();
+    const isBlackHole = backgroundState === "full" || backgroundState === "receded";
+    const sound = useSound({ isAvailable: isBlackHole, theme });
 
     return (
         <>
@@ -145,6 +151,12 @@ function RootLayout() {
                             ),
                         }}
                     />
+                }
+                soundLabel={isBlackHole ? "Sound" : undefined}
+                soundPanel={
+                    isBlackHole ? (
+                        <SoundPanel settings={sound.settings} onChange={sound.onChange} />
+                    ) : undefined
                 }
             />
         </>

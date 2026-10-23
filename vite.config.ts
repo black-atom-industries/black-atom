@@ -12,6 +12,7 @@ export default defineConfig({
             "**/.claude/**",
             "livery/e2e/**",
             "website/e2e/**",
+            "website/**/*.browser.test.ts",
             "target/**",
         ],
     },

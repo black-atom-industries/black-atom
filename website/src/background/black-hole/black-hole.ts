@@ -1017,6 +1017,7 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     let stillFrames = 2;
     let remeasureUntil = 0;
     let cameraSpeed = 0;
+    let cameraDrift = 0;
     let isMoving = false;
     const tint = new Color();
     const lineTint = new Color();
@@ -1032,6 +1033,8 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     const black = new Color(0, 0, 0);
     const coreDark = new Color();
     const camPrevious = new Vector3();
+    const camStep = new Vector3();
+    const camRight = new Vector3();
 
     function lineColor(hue: number, out: Color): Color {
         const current = colors;
@@ -1108,15 +1111,15 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         return Math.sqrt(best);
     }
 
-    function emitCamera(speed: number) {
+    function emitCamera(speed: number, drift: number) {
         if (!isMoving && speed > MOVING_SPEED) {
             isMoving = true;
-            emit({ type: "camera", speed, phase: "start" });
+            emit({ type: "camera", speed, drift, phase: "start" });
         } else if (isMoving && speed < SETTLED_SPEED) {
             isMoving = false;
-            emit({ type: "camera", speed, phase: "settle" });
+            emit({ type: "camera", speed, drift, phase: "settle" });
         } else if (isMoving) {
-            emit({ type: "camera", speed, phase: "move" });
+            emit({ type: "camera", speed, drift, phase: "move" });
         }
     }
 
@@ -1187,6 +1190,7 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         frame.r += (target.r - frame.r) * ease;
         const framingSpeed =
             Math.hypot(frame.x - lastFrameX, frame.y - lastFrameY) / H / Math.max(dt, 1e-3);
+        const framingDriftX = (lastFrameX - frame.x) / H / Math.max(dt, 1e-3);
         lastFrameX = frame.x;
         lastFrameY = frame.y;
 
@@ -1214,8 +1218,16 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
             .multiplyScalar(distance);
         if (!hasCameraPosition) camPrevious.copy(camera.position);
         const cameraMove = camPrevious.distanceTo(camera.position) / distance / Math.max(dt, 1e-3);
+        camRight.setFromMatrixColumn(camera.matrixWorld, 0);
+        const sideways =
+            camStep.subVectors(camera.position, camPrevious).dot(camRight) /
+                distance /
+                Math.max(dt, 1e-3) +
+            framingDriftX;
         camPrevious.copy(camera.position);
         cameraSpeed += (cameraMove + framingSpeed - cameraSpeed) * (1 - Math.exp(-dt * 8));
+        cameraDrift +=
+            (MathUtils.clamp(sideways * 2, -1, 1) - cameraDrift) * (1 - Math.exp(-dt * 8));
         camera.lookAt(0, 0, 0);
         camera.setViewOffset(W, H, W / 2 - frame.x, H / 2 - frame.y, W, H);
         camera.updateMatrixWorld();
@@ -1335,7 +1347,7 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
 
         if (!isStill) {
             emit({ type: "proximity", distance: distance / D, energy });
-            emitCamera(cameraSpeed);
+            emitCamera(cameraSpeed, cameraDrift);
         }
     }
 

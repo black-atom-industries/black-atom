@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { expect, fn } from "storybook/test";
 import preview from "#/storybook/preview.tsx";
-import { SoundPanel, type SoundSettings } from "./sound-panel.tsx";
+import type { SoundSettings } from "#/stores/sound.ts";
+import { SoundPanel } from "./sound-panel.tsx";
 
 const settings: SoundSettings = {
     isOn: false,

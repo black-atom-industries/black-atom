@@ -1,1 +1,1 @@
-export { SoundPanel, type SoundSettings } from "./sound-panel.tsx";
+export { SoundPanel } from "./sound-panel.tsx";

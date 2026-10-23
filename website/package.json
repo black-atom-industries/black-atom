@@ -15,6 +15,7 @@
         "verify:typecheck": "tsc -p . && tsc -p .storybook",
         "verify:tests": "vp test run --project unit",
         "verify:stories": "vp test run --project storybook",
+        "verify:audio": "vp test run --project audio",
         "verify:knip": "knip",
         "test:e2e": "playwright test"
     },

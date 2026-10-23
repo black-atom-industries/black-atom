@@ -27,7 +27,7 @@
         "test:rust": "cargo test --workspace",
         "test:e2e": "npm run test --workspace livery/e2e --",
         "test:e2e:ui": "npm run test:ui --workspace livery/e2e --",
-        "verify": "npm run build:ui && vp build website && npm run check:ts && npm run check:rust && npm run test:ts && npm run test:rust && npm run verify:knip --workspace website",
+        "verify": "npm run build:ui && vp build website && npm run check:ts && npm run check:rust && npm run test:ts && npm run test:rust && npm run verify:knip --workspace website && npm run verify:audio --workspace website",
         "fmt": "vp fmt",
         "lint": "vp lint",
         "install:hooks": "vp config",

@@ -9,8 +9,11 @@ export type SceneEvent =
     | { type: "absorb"; hue: number; pan: number; strength: number }
     /** Every frame: camera distance relative to the resting distance (1), and the hole's energy (0..1.6). */
     | { type: "proximity"; distance: number; energy: number }
-    /** Smoothed camera speed in view distances per second; the idle orbit alone is about 0.05. */
-    | { type: "camera"; speed: number; phase: "start" | "move" | "settle" };
+    /**
+     * Smoothed camera speed in view distances per second; the idle orbit alone is about 0.05.
+     * `drift` is the sideways direction of travel on screen, from -1 (left) to 1 (right).
+     */
+    | { type: "camera"; speed: number; drift: number; phase: "start" | "move" | "settle" };
 
 export interface SceneEvents {
     on(listener: (event: SceneEvent) => void): () => void;

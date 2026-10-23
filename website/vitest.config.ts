@@ -12,6 +12,22 @@ export default defineConfig({
                 test: {
                     name: "unit",
                     include: ["src/**/*.test.{ts,tsx}"],
+                    exclude: ["src/**/*.browser.test.ts"],
+                },
+            },
+            {
+                extends: true,
+                optimizeDeps: { include: ["tone", "zod"] },
+                test: {
+                    name: "audio",
+                    include: ["src/**/*.browser.test.ts"],
+                    testTimeout: 60_000,
+                    browser: {
+                        enabled: true,
+                        provider: playwright(),
+                        headless: true,
+                        instances: [{ browser: "chromium" }],
+                    },
                 },
             },
             {
