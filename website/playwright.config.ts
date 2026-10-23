@@ -10,6 +10,8 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
         baseURL: `http://localhost:${port}`,
         colorScheme: "dark",
+        // Without a GPU, headless Chrome logs adapter and driver warnings for the background scene.
+        launchOptions: { args: ["--enable-gpu"] },
     },
     webServer: {
         command: `vp build && vp preview --port ${port} --strictPort`,

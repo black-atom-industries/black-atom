@@ -12,6 +12,7 @@ import {
 } from "@tanstack/react-router";
 import { Analytics } from "@vercel/analytics/react";
 import { z } from "zod";
+import { BackgroundLayer } from "#/background/background-layer.tsx";
 import { blackAtom, blackAtomLinks } from "#/content/products/black-atom.ts";
 import { iter } from "#/content/products/iter.ts";
 import { radar } from "#/content/products/radar.ts";
@@ -58,6 +59,7 @@ function RootLayout() {
 
     return (
         <>
+            <BackgroundLayer theme={theme} />
             <SiteHeader
                 brand={{
                     title: "Black Atom",
