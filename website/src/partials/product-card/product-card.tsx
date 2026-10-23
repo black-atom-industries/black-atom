@@ -11,6 +11,8 @@ import type { Product } from "#/content/products/types.ts";
 
 type Props = {
     product: Product;
+    /** The latest release, read from GitHub. */
+    release?: { version: string; date?: string };
     /** Buttons and links under the pitch. */
     links: ReactNode;
     /** The illustration beside the pitch. */
@@ -18,7 +20,7 @@ type Props = {
 };
 
 /** A product on the studio page: its pitch, latest release and links, beside its illustration. */
-export function ProductCard({ product, links, art }: Props) {
+export function ProductCard({ product, release, links, art }: Props) {
     return (
         <PageGrid columns="two" render={<article />} data-partial="ProductCard">
             <Panel>
@@ -33,11 +35,11 @@ export function ProductCard({ product, links, art }: Props) {
                 </Text>
                 <MetaList
                     items={[
-                        ...(product.release === undefined
+                        ...(release === undefined
                             ? []
                             : [
-                                  { label: product.release.version, isStrong: true },
-                                  { label: product.release.date },
+                                  { label: release.version, isStrong: true },
+                                  ...(release.date === undefined ? [] : [{ label: release.date }]),
                               ]),
                         { label: product.platform },
                     ]}

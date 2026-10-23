@@ -143,11 +143,14 @@ export const blackAtom = {
     summary: [
         `${themeCount} dark and light themes in ${collectionCount} collections, generated for ${adapters.length} tools. Livery, the desktop app, switches ${switchedAdapters.length} of them and your system appearance in one go.`,
     ],
-    release: { version: "v0.11.0", date: "2026-10-15" },
     platform: "macOS app · any OS for the theme files",
     facts: [],
     repoUrl,
-    changelog: { repo: "black-atom-industries/black-atom", paths: ["core/", "adapters/"] },
+    changelog: {
+        repo: "black-atom-industries/black-atom",
+        paths: ["core/", "adapters/"],
+        sections: ["Themes", "Core"],
+    },
     install: {
         methods: [
             {

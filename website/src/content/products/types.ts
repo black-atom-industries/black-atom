@@ -1,5 +1,6 @@
 import type { InstallMethod } from "#/components/install-tabs/index.ts";
 import type { RichTextSegment } from "#/components/rich-text/index.ts";
+import type { HighlightSection } from "#/lib/highlights.ts";
 
 /** Copy with inline keys, code and placeholders, rendered by `RichText`. */
 type RichText = readonly RichTextSegment[];
@@ -38,15 +39,20 @@ export type Product = {
     description: string;
     /** Short pitch on the studio page. */
     summary: RichText;
-    /** Latest release, until the changelog reads it live. */
-    release?: { version: string; date: string };
     /** Where it runs, in one line, for the studio page. */
     platform: string;
     /** Requirements and licence under the hero pitch. */
     facts: readonly string[];
     repoUrl: string;
-    /** What the changelog reads: the GitHub repository and the paths its commits are filtered by. */
-    changelog: { repo: string; paths: readonly string[] };
+    /**
+     * What the changelog reads: the GitHub repository, the paths its commits are filtered by (all
+     * commits when empty), and the release highlight subheadings that belong to the product.
+     */
+    changelog: {
+        repo: string;
+        paths: readonly string[];
+        sections: readonly HighlightSection[];
+    };
     install: { note?: string; methods: readonly InstallMethod[] };
     steps?: { id: string; title: string; items: readonly Feature[] };
     keymap?: Keymap;

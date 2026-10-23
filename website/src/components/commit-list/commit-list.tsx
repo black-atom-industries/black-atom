@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import styles from "./commit-list.module.css";
 
 export type Commit = {
@@ -11,7 +12,7 @@ type Props = {
     title: string;
     commits: readonly Commit[];
     /** Shown in place of the list when there are no commits. */
-    emptyText?: string;
+    emptyText?: ReactNode;
     /** Level of the list title in the page outline. */
     headingLevel?: 2 | 3;
 };

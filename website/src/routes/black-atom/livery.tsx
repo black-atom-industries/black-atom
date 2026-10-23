@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { loadChangelog, useChangelog } from "#/api/github/use-changelog.ts";
 import { AppIcon } from "#/components/app-icon/index.ts";
 import { Breadcrumbs } from "#/components/breadcrumbs/index.ts";
 import { Button } from "#/components/button/index.ts";
@@ -29,7 +30,7 @@ import {
 import { studio } from "#/content/studio.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
-import { pendingChangelog } from "#/routes/-changelog-seam.ts";
+import { ChangelogEmpty } from "#/routes/-changelog-empty.tsx";
 
 export const Route = createFileRoute("/black-atom/livery")({
     head: () => ({
@@ -38,10 +39,15 @@ export const Route = createFileRoute("/black-atom/livery")({
             { name: "description", content: livery.description },
         ],
     }),
+    loader: ({ context }) => loadChangelog(context.queryClient, changelogProducts),
     component: LiveryPage,
 });
 
+const changelogProducts = [livery];
+
 function LiveryPage() {
+    const changelog = useChangelog(changelogProducts, { releasesPerProduct: 3, commits: 8 });
+
     return (
         <main>
             <Section variant="hero">
@@ -143,10 +149,10 @@ function LiveryPage() {
                 />
                 <ChangelogBlock
                     releasesTitle="Releases"
-                    releases={pendingChangelog.releases}
+                    releases={changelog.releases}
                     commitsTitle={`Recent commits · ${livery.changelog.paths.join(" + ")}`}
-                    commits={pendingChangelog.commits}
-                    emptyText={pendingChangelog.emptyText}
+                    commits={changelog.commits}
+                    emptyText={<ChangelogEmpty href={livery.repoUrl} />}
                 />
             </Section>
 

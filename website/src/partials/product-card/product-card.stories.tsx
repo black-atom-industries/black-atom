@@ -11,6 +11,7 @@ const meta = preview.meta({
     component: ProductCard,
     args: {
         product: iter,
+        release: { version: "v0.5.0", date: "2026-10-21" },
         links: (
             <>
                 <Button variant="cta" render={<a href="#iter" />}>

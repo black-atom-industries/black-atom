@@ -26,15 +26,17 @@ type Props = {
     /** The illustration beside the hero text. */
     art: ReactNode;
     pager: { previous: PagerLink; next: PagerLink };
+    /** The latest release, read from GitHub. */
+    release?: { version: string; date?: string };
     changelog: {
         releases: readonly Release[];
         commits: readonly Commit[];
-        emptyText: string;
+        emptyText: ReactNode;
     };
 };
 
 /** The page of a Neovim plugin: hero, how it works, clips, details, install and changelog. */
-export function ProductPage({ product, art, pager, changelog }: Props) {
+export function ProductPage({ product, art, pager, release, changelog }: Props) {
     const { steps, keymap, demos, features } = product;
 
     const stepList = steps !== undefined && (
@@ -58,9 +60,7 @@ export function ProductPage({ product, art, pager, changelog }: Props) {
                 tagline={product.tagline ?? ""}
                 lead={<RichText segments={product.lead} />}
                 meta={[
-                    ...(product.release === undefined
-                        ? []
-                        : [{ label: product.release.version, isStrong: true }]),
+                    ...(release === undefined ? [] : [{ label: release.version, isStrong: true }]),
                     ...product.facts.map((label) => ({ label })),
                 ]}
                 actions={

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { loadChangelog, useChangelog } from "#/api/github/use-changelog.ts";
 import { Button } from "#/components/button/index.ts";
 import { Caption } from "#/components/caption/index.ts";
 import { ColorStrip } from "#/components/color-strip/index.ts";
@@ -37,7 +38,7 @@ import { toShortKey } from "#/lib/theme-precedence.ts";
 import { themeToCustomProperties } from "#/lib/theme-vars.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
-import { pendingChangelog } from "#/routes/-changelog-seam.ts";
+import { ChangelogEmpty } from "#/routes/-changelog-empty.tsx";
 
 export const Route = createFileRoute("/black-atom/")({
     head: () => ({
@@ -46,6 +47,7 @@ export const Route = createFileRoute("/black-atom/")({
             { name: "description", content: blackAtom.description },
         ],
     }),
+    loader: ({ context }) => loadChangelog(context.queryClient, changelogProducts),
     component: BlackAtomPage,
 });
 
@@ -60,8 +62,11 @@ const rampColors = [
     "var(--ba-accent)",
 ];
 
+const changelogProducts = [blackAtom];
+
 function BlackAtomPage() {
     const { theme, setTheme } = useTheme();
+    const changelog = useChangelog(changelogProducts, { releasesPerProduct: 3, commits: 8 });
 
     return (
         <main>
@@ -267,10 +272,10 @@ function BlackAtomPage() {
                 <SectionHead number="07" title="Changelog" />
                 <ChangelogBlock
                     releasesTitle="Releases"
-                    releases={pendingChangelog.releases}
+                    releases={changelog.releases}
                     commitsTitle={`Recent commits · ${blackAtom.changelog.paths.join(" + ")}`}
-                    commits={pendingChangelog.commits}
-                    emptyText={pendingChangelog.emptyText}
+                    commits={changelog.commits}
+                    emptyText={<ChangelogEmpty href={blackAtom.repoUrl} />}
                 />
                 <Stack direction="row" gap="xl">
                     <Button render={<Link to="/changelog" search={{ product: "black-atom" }} />}>

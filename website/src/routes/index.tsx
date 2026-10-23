@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { loadChangelog, useChangelog } from "#/api/github/use-changelog.ts";
 import { ArtFrame } from "#/components/art-frame/index.ts";
 import { Button } from "#/components/button/index.ts";
 import { Caption } from "#/components/caption/index.ts";
@@ -13,18 +14,20 @@ import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
 import { blackAtom } from "#/content/products/black-atom.ts";
 import { iter } from "#/content/products/iter.ts";
+import { products } from "#/content/products/products.ts";
 import { radar } from "#/content/products/radar.ts";
 import { home, studio } from "#/content/studio.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
 import { ProductCard } from "#/partials/product-card/index.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
-import { pendingChangelog } from "#/routes/-changelog-seam.ts";
+import { ChangelogEmpty } from "./-changelog-empty.tsx";
 
 export const Route = createFileRoute("/")({
     head: () => ({
         meta: [{ title: studio.name }, { name: "description", content: studio.description }],
     }),
+    loader: ({ context }) => loadChangelog(context.queryClient, products),
     component: HomePage,
 });
 
@@ -41,6 +44,7 @@ const paletteBands = [
 
 function HomePage() {
     const { theme } = useTheme();
+    const changelog = useChangelog(products, { releasesPerProduct: 1, commits: 6 });
 
     return (
         <main>
@@ -66,6 +70,7 @@ function HomePage() {
                 <Stack gap="2xl">
                     <ProductCard
                         product={blackAtom}
+                        release={changelog.latest["black-atom"]}
                         links={
                             <>
                                 <Button variant="cta" render={<Link to="/black-atom" />}>
@@ -85,6 +90,7 @@ function HomePage() {
                     />
                     <ProductCard
                         product={iter}
+                        release={changelog.latest.iter}
                         links={
                             <>
                                 <Button variant="cta" render={<Link to="/iter" />}>
@@ -101,6 +107,7 @@ function HomePage() {
                     />
                     <ProductCard
                         product={radar}
+                        release={changelog.latest.radar}
                         links={
                             <>
                                 <Button variant="cta" render={<Link to="/radar" />}>
@@ -121,10 +128,10 @@ function HomePage() {
                 <SectionHead number="02" title="Latest" />
                 <ChangelogBlock
                     releasesTitle="Releases"
-                    releases={pendingChangelog.releases}
+                    releases={changelog.releases}
                     commitsTitle="Recent commits"
-                    commits={pendingChangelog.commits}
-                    emptyText={pendingChangelog.emptyText}
+                    commits={changelog.commits}
+                    emptyText={<ChangelogEmpty href={studio.githubUrl} />}
                 />
                 <Stack direction="row" gap="xl">
                     <Button render={<Link to="/changelog" />}>All changes →</Button>

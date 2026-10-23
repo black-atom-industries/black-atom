@@ -20,11 +20,10 @@ export const radar = {
     summary: [
         "Your working set in a small HUD at the bottom of the pane: locks on the home row, recent files on the numbers, the alternative file on o. Kept per project and git branch.",
     ],
-    release: { version: "v0.8.0", date: "2026-10-18" },
     platform: "Neovim",
     facts: ["Neovim", "MIT"],
     repoUrl: "https://github.com/black-atom-industries/radar.nvim",
-    changelog: { repo: "black-atom-industries/radar.nvim", paths: [] },
+    changelog: { repo: "black-atom-industries/radar.nvim", paths: [], sections: [] },
     artLabel:
         "A radar sweep over your working files, and the Lock HUD listing them with their keys",
     steps: {

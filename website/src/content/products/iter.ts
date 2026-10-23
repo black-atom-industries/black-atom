@@ -16,11 +16,10 @@ export const iter = {
     summary: [
         "The review half of the loop, whether the changes are yours or an agent's. Stage what is ready, annotate what is not, copy the annotations out as a prompt, and see what moved since your last pass.",
     ],
-    release: { version: "v0.5.0", date: "2026-10-21" },
     platform: "Neovim 0.12+",
     facts: ["Neovim 0.12+", "git", "GPL-3.0"],
     repoUrl: "https://github.com/black-atom-industries/iter.nvim",
-    changelog: { repo: "black-atom-industries/iter.nvim", paths: [] },
+    changelog: { repo: "black-atom-industries/iter.nvim", paths: [], sections: [] },
     artLabel: "Changes flow into a review loop and come back out as a prompt",
     steps: {
         id: "loop",

@@ -1,5 +1,7 @@
+import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
+import { loadChangelog, useChangelog } from "#/api/github/use-changelog.ts";
 import { Button } from "#/components/button/index.ts";
 import { Caption } from "#/components/caption/index.ts";
 import { Heading } from "#/components/heading/index.ts";
@@ -8,14 +10,11 @@ import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
-import { blackAtom } from "#/content/products/black-atom.ts";
-import { iter } from "#/content/products/iter.ts";
-import { livery } from "#/content/products/livery.ts";
-import { radar } from "#/content/products/radar.ts";
-import { productKeys } from "#/content/products/types.ts";
+import { products } from "#/content/products/products.ts";
+import { productKeys, type Product } from "#/content/products/types.ts";
 import { studio } from "#/content/studio.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
-import { pendingChangelog } from "#/routes/-changelog-seam.ts";
+import { ChangelogEmpty } from "./-changelog-empty.tsx";
 
 const changelogSearchSchema = z.object({
     product: z.enum(productKeys).optional().catch(undefined),
@@ -23,14 +22,20 @@ const changelogSearchSchema = z.object({
 
 const filters = [
     { key: undefined, label: "All" },
-    ...[blackAtom, livery, iter, radar].map((product) => ({
+    ...products.map((product) => ({
         key: product.key,
         label: product.name,
     })),
 ];
 
+function productsFor(key: Product["key"] | undefined): readonly Product[] {
+    return key === undefined ? products : products.filter((product) => product.key === key);
+}
+
 export const Route = createFileRoute("/changelog")({
     validateSearch: changelogSearchSchema,
+    loaderDeps: ({ search }) => ({ product: search.product }),
+    loader: ({ context, deps }) => loadChangelog(context.queryClient, productsFor(deps.product)),
     head: () => ({
         meta: [
             { title: `Changelog · ${studio.name}` },
@@ -46,6 +51,9 @@ export const Route = createFileRoute("/changelog")({
 
 function ChangelogPage() {
     const { product } = Route.useSearch();
+    const shownProducts = useMemo(() => productsFor(product), [product]);
+    const changelog = useChangelog(shownProducts, { releasesPerProduct: 10, commits: 12 });
+    const source = shownProducts.length === 1 ? shownProducts[0]?.repoUrl : undefined;
 
     return (
         <main>
@@ -103,10 +111,10 @@ function ChangelogPage() {
                 </Stack>
                 <ChangelogBlock
                     releasesTitle="Releases"
-                    releases={pendingChangelog.releases}
+                    releases={changelog.releases}
                     commitsTitle="Recent commits"
-                    commits={pendingChangelog.commits}
-                    emptyText={pendingChangelog.emptyText}
+                    commits={changelog.commits}
+                    emptyText={<ChangelogEmpty href={source ?? studio.githubUrl} />}
                     headingLevel={2}
                 />
             </Section>

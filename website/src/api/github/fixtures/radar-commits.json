@@ -1,0 +1,24 @@
+[
+    {
+        "sha": "50f48f4e7d677f7d61be849332313cda7f71f2c8",
+        "html_url": "https://github.com/black-atom-industries/radar.nvim/commit/50f48f4e7d677f7d61be849332313cda7f71f2c8",
+        "commit": {
+            "message": "feat(keys): put lock slots on the home row and recent files on numbers",
+            "author": {
+                "name": "nbr",
+                "date": "2026-10-18T08:20:00Z"
+            }
+        }
+    },
+    {
+        "sha": "35ac047cd64d107c9571034ef9f951974706b714",
+        "html_url": "https://github.com/black-atom-industries/radar.nvim/commit/35ac047cd64d107c9571034ef9f951974706b714",
+        "commit": {
+            "message": "fix(locks): warn when all lock slots are in use",
+            "author": {
+                "name": "nbr",
+                "date": "2026-10-17T21:05:00Z"
+            }
+        }
+    }
+]

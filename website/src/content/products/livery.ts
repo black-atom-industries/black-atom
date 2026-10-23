@@ -22,7 +22,11 @@ export const livery = {
     platform: "macOS",
     facts: ["macOS", "MIT"],
     repoUrl: "https://github.com/black-atom-industries/black-atom",
-    changelog: { repo: "black-atom-industries/black-atom", paths: ["livery/"] },
+    changelog: {
+        repo: "black-atom-industries/black-atom",
+        paths: ["livery/"],
+        sections: ["Livery"],
+    },
     steps: {
         id: "apply",
         title: "What apply does",

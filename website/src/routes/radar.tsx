@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { loadChangelog, useChangelog } from "#/api/github/use-changelog.ts";
 import { HudList } from "#/components/hud-list/index.ts";
 import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { Stack } from "#/components/stack/index.ts";
@@ -6,7 +7,7 @@ import { iter } from "#/content/products/iter.ts";
 import { radar, radarHud } from "#/content/products/radar.ts";
 import { studio } from "#/content/studio.ts";
 import { ProductPage } from "#/partials/product-page/index.ts";
-import { pendingChangelog } from "#/routes/-changelog-seam.ts";
+import { ChangelogEmpty } from "./-changelog-empty.tsx";
 
 export const Route = createFileRoute("/radar")({
     head: () => ({
@@ -15,10 +16,15 @@ export const Route = createFileRoute("/radar")({
             { name: "description", content: radar.description },
         ],
     }),
+    loader: ({ context }) => loadChangelog(context.queryClient, changelogProducts),
     component: RadarPage,
 });
 
+const changelogProducts = [radar];
+
 function RadarPage() {
+    const changelog = useChangelog(changelogProducts, { releasesPerProduct: 3, commits: 8 });
+
     return (
         <ProductPage
             product={radar}
@@ -32,7 +38,12 @@ function RadarPage() {
                 previous: { label: "← Back", title: iter.name, render: <Link to="/iter" /> },
                 next: { label: "Next →", title: "Changelog", render: <Link to="/changelog" /> },
             }}
-            changelog={pendingChangelog}
+            release={changelog.latest.radar}
+            changelog={{
+                releases: changelog.releases,
+                commits: changelog.commits,
+                emptyText: <ChangelogEmpty href={radar.repoUrl} />,
+            }}
         />
     );
 }
