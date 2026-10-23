@@ -9,19 +9,19 @@ export default defineCollection({
     meta: { key: "mono", label: "Mono", order: 6 },
     themes: {
         "black-atom-mono-dark": {
-            meta: { name: "Dark", appearance: "dark", status: "development" },
+            meta: { name: "Dark", appearance: "dark", status: "release" },
             colors: blackAtomMonoDark,
         },
         "black-atom-mono-light": {
-            meta: { name: "Light", appearance: "light", status: "development" },
+            meta: { name: "Light", appearance: "light", status: "release" },
             colors: blackAtomMonoLight,
         },
         "black-atom-mono-dimmed-dark": {
-            meta: { name: "Dimmed Dark", appearance: "dark", status: "development" },
+            meta: { name: "Dimmed Dark", appearance: "dark", status: "release" },
             colors: blackAtomMonoDimmedDark,
         },
         "black-atom-mono-dimmed-light": {
-            meta: { name: "Dimmed Light", appearance: "light", status: "development" },
+            meta: { name: "Dimmed Light", appearance: "light", status: "release" },
             colors: blackAtomMonoDimmedLight,
         },
     },
