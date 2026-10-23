@@ -6,6 +6,7 @@ import {
     Link,
     Outlet,
     retainSearchParams,
+    rootRouteId,
     ScriptOnce,
     Scripts,
     useLocation,
@@ -20,7 +21,7 @@ import { studio } from "#/content/studio.ts";
 import { useRouteBackgroundState } from "#/hooks/use-route-background-state.ts";
 import { useSound } from "#/hooks/use-sound.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
-import { toShortKey } from "#/lib/theme-precedence.ts";
+import { fromShortKey, toShortKey } from "#/lib/theme-precedence.ts";
 import { themeToCustomProperties } from "#/lib/theme-vars.ts";
 import { Dock } from "#/partials/dock/index.ts";
 import { SiteFooter } from "#/partials/site-footer/index.ts";
@@ -28,13 +29,17 @@ import { SiteHeader } from "#/partials/site-header/index.ts";
 import { SoundPanel } from "#/partials/sound-panel/index.ts";
 import { ThemePanel } from "#/partials/theme-panel/index.ts";
 import globalCss from "#/styles/global.css?url";
-import { NotFoundPage } from "./-not-found-page.tsx";
+import { NotFoundPage, notFoundTitle } from "./-not-found-page.tsx";
 import { themeScript } from "./-theme-script.ts";
 
 const Devtools = import.meta.env.DEV ? lazy(() => import("#/devtools.tsx")) : () => null;
 
 const rootSearchSchema = z.object({
-    theme: z.string().optional().catch(undefined),
+    theme: z
+        .string()
+        .refine((shortKey) => fromShortKey(shortKey) !== undefined)
+        .optional()
+        .catch(undefined),
 });
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
@@ -42,14 +47,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     search: {
         middlewares: [retainSearchParams(["theme"])],
     },
-    head: () => ({
+    head: ({ matches }) => ({
         meta: [
             { charSet: "utf-8" },
             { name: "viewport", content: "width=device-width, initial-scale=1" },
-            { title: studio.name },
+            {
+                // A URL that matches no route ends at the root; a route's own not-found sets its title.
+                title: matches.at(-1)?.routeId === rootRouteId ? notFoundTitle : studio.name,
+            },
             { name: "description", content: studio.description },
         ],
-        links: [{ rel: "stylesheet", href: globalCss }],
+        links: [
+            { rel: "stylesheet", href: globalCss },
+            { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+        ],
     }),
     shellComponent: RootDocument,
     component: RootLayout,

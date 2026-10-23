@@ -24,6 +24,7 @@ import { themeCollections } from "#/lib/theme-collections.ts";
 import { fromShortKey, siblingThemeKey, stepThemeKey, toShortKey } from "#/lib/theme-precedence.ts";
 import { themeToCustomProperties } from "#/lib/theme-vars.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
+import { NotFoundPage, notFoundTitle } from "#/routes/-not-found-page.tsx";
 
 export const Route = createFileRoute("/black-atom/themes/$theme")({
     loader: ({ params }) => {
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/black-atom/themes/$theme")({
         return { themeKey };
     },
     head: ({ loaderData }) => {
-        if (loaderData === undefined) return {};
+        if (loaderData === undefined) return { meta: [{ title: notFoundTitle }] };
         const { meta } = themeCatalog[loaderData.themeKey];
         const title = `${meta.collection.label} ${meta.name}`;
         return {
@@ -46,6 +47,7 @@ export const Route = createFileRoute("/black-atom/themes/$theme")({
         };
     },
     component: ThemePage,
+    notFoundComponent: NotFoundPage,
 });
 
 function themeLink(themeKey: keyof typeof themeCatalog) {
@@ -104,12 +106,12 @@ function ThemePage() {
                     </Stack>
                 </Stack>
                 <Stack direction="row" justify="between" align="end" gap="lg" isWrapped>
-                    <Stack gap="sm">
-                        <Caption tone="subtle">
-                            {meta.collection.label} · {meta.appearance}
-                        </Caption>
-                        <Heading variant="name">{meta.name}</Heading>
-                    </Stack>
+                    <Heading
+                        variant="name"
+                        kicker={`${meta.collection.label} · ${meta.appearance}`}
+                    >
+                        {meta.name}
+                    </Heading>
                     <Stack direction="row" gap="xs" isWrapped>
                         <Button
                             variant="cta"

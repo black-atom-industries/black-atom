@@ -32,15 +32,23 @@ const meta = preview.meta({
             { sha: "9b1e2d0", message: "feat(locks): put locks on the home row", date: "10-16" },
             { sha: "4c7aa31", message: "docs: describe the upgrade from 0.7", date: "10-15" },
         ],
+        empty: {
+            href: "https://github.com/black-atom-industries/radar.nvim",
+            failed: { releases: false, commits: false },
+        },
     },
 });
 
 export const Default = meta.story();
 
-export const Empty = meta.story({
+export const Empty = meta.story({ args: { releases: [], commits: [] } });
+
+export const CommitsFailed = meta.story({
     args: {
-        releases: [],
         commits: [],
-        emptyText: "Nothing to show yet. Releases and commits are on GitHub.",
+        empty: {
+            href: "https://github.com/black-atom-industries/radar.nvim",
+            failed: { releases: false, commits: true },
+        },
     },
 });

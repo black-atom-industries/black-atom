@@ -85,6 +85,28 @@ test("switching sound on runs the audio, and leaving for /iter fades it out", as
     expect(problems).toEqual([]);
 });
 
+test("an open sound panel stays closed after a detour through a route without sound", async ({
+    page,
+}) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    await page
+        .getByRole("navigation", { name: "Main" })
+        .getByRole("link", { name: /iter\.nvim/ })
+        .click();
+    await expect(page).toHaveURL(/\/iter$/);
+    await page.goBack();
+    await expect(page).toHaveURL(/\/$/);
+
+    await expect(await openSoundPanel(page)).toBeVisible();
+    await page.goForward();
+    await expect(page).toHaveURL(/\/iter$/);
+    await page.goBack();
+    await expect(page).toHaveURL(/\/$/);
+
+    await expect(page.getByRole("button", { name: "Sound", exact: true })).toBeVisible();
+    await expect(page.getByRole("dialog", { name: "Sound" })).toHaveCount(0);
+});
+
 test("a remembered 'on' waits for the first click, then starts", async ({ page }) => {
     const problems = watchConsole(page);
     await page.addInitScript(() => {

@@ -3,7 +3,7 @@ import { organicParams } from "./soundscapes/organic/params.ts";
 import { themeRoot } from "./soundscape.ts";
 
 describe("organic params", () => {
-    test("parse their own defaults: the v5 tuning, sound without a heartbeat", () => {
+    test("parse their own defaults: the shipped sound, without a heartbeat", () => {
         const defaults = organicParams.parse({});
         expect(organicParams.parse(defaults)).toEqual(defaults);
         expect(defaults).toMatchObject({

@@ -29,7 +29,7 @@ export interface SoundscapeContext {
     random: () => number;
 }
 
-export interface Soundscape<Params extends z.AnyZodObject = z.AnyZodObject> {
+export interface Soundscape<Params extends z.AnyZodObject> {
     readonly id: string;
     /** Every tunable value with its default; `params.parse({})` gives the shipped sound. */
     readonly params: Params;

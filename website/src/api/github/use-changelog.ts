@@ -40,9 +40,11 @@ type Changelog = {
     releases: Release[];
     commits: Commit[];
     latest: Partial<Record<Product["key"], ReleaseSummary>>;
+    /** Per list: some feed failed, so an empty list may only mean GitHub did not answer. */
+    failed: { releases: boolean; commits: boolean };
 };
 
-/** The products' releases and commits, read from GitHub. A failed feed reads as empty. */
+/** The products' releases and commits, read from GitHub. A failed feed reads as empty and is flagged in `failed`. */
 export function useChangelog(
     products: readonly Product[],
     limits: { releasesPerProduct: number; commits: number },
@@ -63,6 +65,10 @@ export function useChangelog(
             latest: Object.fromEntries(
                 entries.map(({ product, feed }) => [product.key, latestRelease(feed)]),
             ),
+            failed: {
+                releases: releaseFeeds.some((feed) => !feed.ok),
+                commits: commitFeeds.some((feed) => !feed.ok),
+            },
         };
     }, [products, releaseFeeds, commitFeeds, limits.releasesPerProduct, limits.commits]);
 }

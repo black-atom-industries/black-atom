@@ -54,6 +54,14 @@ describe("themeScript", () => {
         expect(result.propertyCount).toBe(0);
     });
 
+    it("reads a JSON-quoted URL theme like the router does", () => {
+        const result = runScript({
+            search: "?theme=%22jpn-koyo-dark%22",
+            stored: "black-atom-mono-light",
+        });
+        expect(result.theme).toBeUndefined();
+    });
+
     it("applies the stored theme on a bare URL", () => {
         const result = runScript({ stored: "black-atom-jpn-koyo-dark", isSystemLight: true });
         expect(result).toMatchObject({

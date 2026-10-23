@@ -6,7 +6,6 @@ import { livery } from "#/content/products/livery.ts";
 import { radar } from "#/content/products/radar.ts";
 import { studio } from "#/content/studio.ts";
 import { ProductPage } from "#/partials/product-page/index.ts";
-import { ChangelogEmpty } from "./-changelog-empty.tsx";
 
 export const Route = createFileRoute("/iter")({
     head: () => ({
@@ -40,7 +39,7 @@ function IterPage() {
             changelog={{
                 releases: changelog.releases,
                 commits: changelog.commits,
-                emptyText: <ChangelogEmpty href={iter.repoUrl} />,
+                empty: { href: iter.repoUrl, failed: changelog.failed },
             }}
         />
     );

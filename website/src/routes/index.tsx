@@ -16,12 +16,11 @@ import { blackAtom } from "#/content/products/black-atom.ts";
 import { iter } from "#/content/products/iter.ts";
 import { products } from "#/content/products/products.ts";
 import { radar } from "#/content/products/radar.ts";
-import { home, studio } from "#/content/studio.ts";
+import { changelogCopy, home, studio } from "#/content/studio.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
 import { ProductCard } from "#/partials/product-card/index.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
-import { ChangelogEmpty } from "./-changelog-empty.tsx";
 
 export const Route = createFileRoute("/")({
     head: () => ({
@@ -125,13 +124,13 @@ function HomePage() {
                 </Stack>
             </Section>
             <Section id="latest">
-                <SectionHead number="02" title="Latest" />
+                <SectionHead number="02" title="Latest" aside={changelogCopy.source} />
                 <ChangelogBlock
                     releasesTitle="Releases"
                     releases={changelog.releases}
                     commitsTitle="Recent commits"
                     commits={changelog.commits}
-                    emptyText={<ChangelogEmpty href={studio.githubUrl} />}
+                    empty={{ href: studio.githubUrl, failed: changelog.failed }}
                 />
                 <Stack direction="row" gap="xl">
                     <Button render={<Link to="/changelog" />}>All changes →</Button>

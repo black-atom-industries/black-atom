@@ -5,7 +5,11 @@ const routes = [
     { path: "/", h1: "Black AtomIndustries", title: "Black Atom Industries" },
     { path: "/black-atom", h1: "Black Atom", title: "Black Atom · Black Atom Industries" },
     { path: "/black-atom/livery", h1: "Livery", title: /^Livery · / },
-    { path: "/black-atom/themes/jpn-koyo-dark", h1: "Koyo Dark", title: /^JPN Koyo Dark · / },
+    {
+        path: "/black-atom/themes/jpn-koyo-dark",
+        h1: "JPN · dark Koyo Dark",
+        title: /^JPN Koyo Dark · /,
+    },
     { path: "/iter", h1: "iter.nvim", title: /^iter\.nvim · / },
     { path: "/radar", h1: "radar.nvim", title: /^radar\.nvim · / },
     { path: "/changelog", h1: "Changelog", title: /^Changelog · / },
@@ -69,7 +73,7 @@ for (const path of ["/black-atom/themes/no-such-theme", "/no-such-page"]) {
 
         expect(response?.status()).toBe(404);
         await expect(page.locator("h1")).toHaveText("Not found");
-        await expect(page).toHaveTitle("Black Atom Industries");
+        await expect(page).toHaveTitle("Not found · Black Atom Industries");
         await expect(page.getByRole("navigation", { name: "Main" })).toBeVisible();
         expect(problems).toEqual([]);
     });

@@ -1,4 +1,5 @@
 import type * as ToneModule from "tone";
+import type { z } from "zod";
 import { Store } from "@tanstack/react-store";
 import { background } from "#/background/handle.ts";
 import type { SceneEvent, SceneEvents } from "#/background/types.ts";
@@ -87,20 +88,20 @@ export function buildMasterChain(tone: Tone, random: () => number): MasterChain 
     };
 }
 
-export interface MountedSoundscape {
-    soundscape: Soundscape;
+export interface MountedSoundscape<Params extends z.AnyZodObject> {
+    soundscape: Soundscape<Params>;
     /** Crossfade gains on the dry and the reverb path. */
     gains: ToneModule.Gain[];
     dispose(): void;
 }
 
 /** Builds a soundscape into the chain behind its own crossfade gains, starting at `level`. */
-export function mountSoundscape(
+export function mountSoundscape<Params extends z.AnyZodObject>(
     tone: Tone,
     chain: MasterChain,
-    soundscape: Soundscape,
+    soundscape: Soundscape<Params>,
     { visual, random, level }: { visual: SoundscapeVisual; random: () => number; level: number },
-): MountedSoundscape {
+): MountedSoundscape<Params> {
     const context = tone.getContext();
     const bus = new tone.Gain(level).connect(chain.master);
     const send = new tone.Gain(level).connect(chain.reverb);
@@ -124,7 +125,7 @@ export function mountSoundscape(
     };
 }
 
-export interface SoundEngine {
+export interface SoundEngine<Params extends z.AnyZodObject> {
     readonly status: Store<SoundStatus>;
     /** Call from a user gesture: the audio context may only start there. Loads Tone on first use. */
     start(): Promise<void>;
@@ -132,11 +133,10 @@ export interface SoundEngine {
     stop(): void;
     /** 0 to 1. */
     setVolume(volume: number): void;
-    setParams(partial: Record<string, unknown>): void;
+    setParams(partial: Partial<z.infer<Params>>): void;
     setTheme(root: ThemeRoot): void;
     /** Crossfades to another soundscape. */
-    use(load: () => Promise<Soundscape>): Promise<void>;
-    readonly soundscape: Soundscape | undefined;
+    use(load: () => Promise<Soundscape<Params>>): Promise<void>;
     /** Feeds an event to the soundscape, as the scene would. */
     dispatch(event: SceneEvent): void;
     /** Whether scene events reach the soundscape. */
@@ -152,32 +152,32 @@ interface Running {
     chain: MasterChain;
 }
 
-function createSoundEngine({
+function createSoundEngine<Params extends z.AnyZodObject>({
     events,
     visual,
     load,
 }: {
     events: SceneEvents;
     visual: SoundscapeVisual;
-    load: () => Promise<Soundscape>;
-}): SoundEngine {
+    load: () => Promise<Soundscape<Params>>;
+}): SoundEngine<Params> {
     const status = new Store<SoundStatus>("off");
     let raw: AudioContext | undefined;
     let running: Running | undefined;
-    let current: MountedSoundscape | undefined;
+    let current: MountedSoundscape<Params> | undefined;
     let volume = 1;
-    let params: Record<string, unknown> = {};
+    let params: Partial<z.infer<Params>> = {};
     let root: ThemeRoot | undefined;
     let muted: ReadonlySet<string> = new Set();
     let isListening = true;
     let unsubscribe: (() => void) | undefined;
     let suspendTimer: number | undefined;
     /** One boot per context, shared by every `start()` that arrives while Tone loads. */
-    let booting: Promise<Running> | undefined;
+    let booting: Promise<Running | undefined> | undefined;
     /** Only the latest `start()` finishes the fade in; earlier ones step aside. */
     let attempts = 0;
     /** The soundscape fading out after a crossfade, and the timer that disposes it. */
-    let retiring: { slot: MountedSoundscape; timer: number } | undefined;
+    let retiring: { slot: MountedSoundscape<Params>; timer: number } | undefined;
 
     function finishRetiring() {
         if (!retiring) return;
@@ -231,19 +231,25 @@ function createSoundEngine({
             : undefined;
     }
 
-    function configure(soundscape: Soundscape) {
+    function configure(soundscape: Soundscape<Params>) {
         soundscape.setParams(params);
         if (root) soundscape.setTheme(root);
         soundscape.mute(muted);
     }
 
-    async function boot(context: AudioContext): Promise<Running> {
+    /** Resolves to `undefined` when `dispose()` closed the context while Tone loaded. */
+    async function boot(context: AudioContext): Promise<Running | undefined> {
         // Without this constant the server build bundles Tone; audio only ever starts in a browser.
         if (import.meta.env.SSR) throw new Error("Sound runs in the browser only");
         const tone = await import("tone");
+        if (raw !== context) return undefined;
         tone.setContext(context, true);
         const chain = buildMasterChain(tone, Math.random);
         const soundscape = await load();
+        if (raw !== context) {
+            chain.dispose();
+            return undefined;
+        }
         configure(soundscape);
         current = mountSoundscape(tone, chain, soundscape, {
             visual,
@@ -257,34 +263,37 @@ function createSoundEngine({
 
     return {
         status,
-        get soundscape() {
-            return current?.soundscape;
-        },
         async start() {
             if (status.state === "on" || status.state === "starting") return;
             window.clearTimeout(suspendTimer);
             raw ??= new AudioContext({ latencyHint: "playback" });
+            const context = raw;
             const attempt = ++attempts;
-            const resumed = raw.resume();
+            const resumed = context.resume();
             status.setState(() => "starting");
+            let booted: Running | undefined;
             try {
-                booting ??= boot(raw);
-                running = await booting;
+                booting ??= boot(context);
+                booted = await booting;
                 await resumed;
             } catch (error) {
+                if (raw !== context) return;
                 booting = undefined;
                 status.setState(() => "off");
                 throw error;
             }
+            if (raw !== context || !booted) return;
+            running = booted;
             if (attempt !== attempts) return;
             if (!isStarting()) {
                 // Stopped while Tone was loading: the gesture already resumed the context.
-                void raw.suspend();
+                void context.suspend();
                 return;
             }
             subscribe();
-            fadeTo(volume, fadeInSeconds);
             status.setState(() => "on");
+            if (document.hidden) void context.suspend();
+            else fadeTo(volume, fadeInSeconds);
         },
         stop() {
             if (status.state === "off" || status.state === "fading") return;

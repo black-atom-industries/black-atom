@@ -35,9 +35,18 @@ type Props = Omit<useRender.ComponentProps<"h2">, "className"> & {
     variant?: Variant;
     /** Second line of a display heading, set in the foreground colour. */
     subtitle?: ReactNode;
+    /** A small line above the heading, inside it, such as a collection and appearance. */
+    kicker?: ReactNode;
 };
 
-export function Heading({ render, variant = "section", subtitle, children, ...props }: Props) {
+export function Heading({
+    render,
+    variant = "section",
+    subtitle,
+    kicker,
+    children,
+    ...props
+}: Props) {
     return useRender({
         defaultTagName: tagByVariant[variant],
         render,
@@ -47,6 +56,11 @@ export function Heading({ render, variant = "section", subtitle, children, ...pr
                 "data-component": "Heading",
                 children: (
                     <>
+                        {kicker !== undefined && (
+                            <>
+                                <span className={styles.kicker}>{kicker}</span>{" "}
+                            </>
+                        )}
                         {children}
                         {subtitle !== undefined && <span className={styles.line}>{subtitle}</span>}
                     </>

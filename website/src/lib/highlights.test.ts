@@ -11,6 +11,16 @@ function bodyOf(releases: readonly { tag_name: string; body: string }[], tag: st
 }
 
 describe("parseHighlights", () => {
+    it("reads CRLF bodies, as GitHub's web editor saves them, like LF bodies", () => {
+        for (const release of blackAtomReleases) {
+            const crlf = release.body.replaceAll("\n", "\r\n");
+            expect(parseHighlights(crlf)).toEqual(parseHighlights(release.body));
+        }
+        expect(
+            parseHighlights(blackAtomReleases[0]?.body.replaceAll("\n", "\r\n") ?? ""),
+        ).not.toEqual([]);
+    });
+
     it("reads black-atom v0.11.0, which has no product subheadings", () => {
         expect(parseHighlights(bodyOf(blackAtomReleases, "v0.11.0"))).toEqual([
             { title: ["Claude Code"] },

@@ -8,7 +8,7 @@ import { Stack } from "#/components/stack/index.ts";
 export type NavItem = {
     label: string;
     number?: string;
-    /** Hidden on narrow screens, after a divider. */
+    /** Placed after the divider. */
     isSecondary?: boolean;
     /** The link element, such as a router `<Link>`; it marks the current page with `aria-current`. */
     render: ReactElement;
@@ -41,7 +41,7 @@ export function SiteHeader({ brand, navLabel, items }: Props) {
                 ))}
                 {primary.length > 0 && secondary.length > 0 && <Rule orientation="vertical" />}
                 {secondary.map((item) => (
-                    <NavLink key={item.label} number={item.number} render={item.render} isSecondary>
+                    <NavLink key={item.label} number={item.number} render={item.render}>
                         {item.label}
                     </NavLink>
                 ))}

@@ -4,6 +4,9 @@ import { Heading } from "#/components/heading/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
+import { studio } from "#/content/studio.ts";
+
+export const notFoundTitle = `Not found · ${studio.name}`;
 
 export function NotFoundPage() {
     return (

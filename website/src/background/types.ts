@@ -24,7 +24,7 @@ export interface SceneTheme {
     appearance: Appearance;
 }
 
-/** A note from the soundscape that lights one visible line, as `__baiSing(m, delay, dur, amp)` did. */
+/** A note from the soundscape that lights one visible line. */
 export interface SingNote {
     /** Picks the line; the same pitch keeps its line while the view holds. */
     pitch: number;

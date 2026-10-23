@@ -53,7 +53,9 @@ group plus ungrouped items.
 A successful response is cached on the CDN with `s-maxage=60, stale-while-revalidate=600`. A response
 that holds any failed feed gets `s-maxage=60` only, so a fallback never outlives GitHub's recovery by
 more than a minute. A failure reaches the page as a value and renders an inline fallback instead of an
-error page.
+error page; the fallback says GitHub couldn't be reached and links there. Each server instance also
+keeps successful responses for 60 seconds per GitHub path, so URLs that miss the CDN cache cannot
+spend the quota, and a request that GitHub leaves unanswered for 5 seconds counts as a failure.
 
 `GITHUB_TOKEN` is optional locally and required in production. Unauthenticated requests share GitHub's
 limit of 60 per hour. On Vercel the egress IPs are shared with other sites, and `/changelog` makes 8

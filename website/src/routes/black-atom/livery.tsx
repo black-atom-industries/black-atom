@@ -30,7 +30,6 @@ import {
 import { studio } from "#/content/studio.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
-import { ChangelogEmpty } from "#/routes/-changelog-empty.tsx";
 
 export const Route = createFileRoute("/black-atom/livery")({
     head: () => ({
@@ -152,7 +151,7 @@ function LiveryPage() {
                     releases={changelog.releases}
                     commitsTitle={`Recent commits · ${livery.changelog.paths.join(" + ")}`}
                     commits={changelog.commits}
-                    emptyText={<ChangelogEmpty href={livery.repoUrl} />}
+                    empty={{ href: livery.repoUrl, failed: changelog.failed }}
                 />
             </Section>
 

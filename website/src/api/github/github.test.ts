@@ -1,8 +1,9 @@
 import { QueryClient } from "@tanstack/react-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type * as GitHubServer from "#/server/github.ts";
 import radarReleases from "./fixtures/radar-releases.json";
-import { getCommits } from "./get-commits.ts";
-import { getReleases } from "./get-releases.ts";
+import type * as Commits from "./get-commits.ts";
+import type * as Releases from "./get-releases.ts";
 
 const headers = vi.hoisted(() => new Map<string, string>());
 
@@ -30,13 +31,22 @@ function respondWith(body: unknown, init?: ResponseInit) {
 }
 
 let queryClient: QueryClient;
+let github: typeof GitHubServer;
+let getCommits: typeof Commits.getCommits;
+let getReleases: typeof Releases.getReleases;
 
-beforeEach(() => {
+// A fresh module per test, so the server's memo of GitHub responses starts empty.
+beforeEach(async () => {
+    vi.resetModules();
+    github = await import("#/server/github.ts");
+    ({ getCommits } = await import("./get-commits.ts"));
+    ({ getReleases } = await import("./get-releases.ts"));
     vi.stubGlobal("fetch", fetchMock);
     queryClient = new QueryClient();
 });
 
 afterEach(() => {
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
     fetchMock.mockReset();
     headers.clear();
@@ -117,5 +127,43 @@ describe("GitHub data layer", () => {
         const feed = await queryClient.query(getCommits("black-atom-industries/iter.nvim"));
 
         expect(feed).toEqual({ ok: false, error: { code: "unavailable" } });
+    });
+
+    it("gives up on GitHub after five seconds", async () => {
+        const controller = new AbortController();
+        const timeout = vi.spyOn(AbortSignal, "timeout").mockReturnValue(controller.signal);
+        fetchMock.mockImplementationOnce(
+            (_, init) =>
+                new Promise((_resolve, reject) =>
+                    init?.signal?.addEventListener("abort", () => reject(init.signal?.reason)),
+                ),
+        );
+
+        const pending = queryClient.query(getCommits("black-atom-industries/iter.nvim"));
+        controller.abort(new DOMException("The operation timed out.", "TimeoutError"));
+
+        expect(timeout).toHaveBeenCalledWith(5000);
+        expect(await pending).toEqual({ ok: false, error: { code: "unavailable" } });
+    });
+
+    it("refuses input with keys a changelog never sends", () => {
+        const data = { repo: "black-atom-industries/iter.nvim", cacheBuster: "1" };
+
+        expect(() => github.getCommits({ data })).toThrow();
+        expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    it("answers a repeated request from memory for a minute, but never a failure", async () => {
+        respondWith({ message: "Server Error" }, { status: 500 });
+        respondWith(radarReleases);
+        const data = { repo: "black-atom-industries/radar.nvim" };
+
+        const failed = await github.getReleases({ data });
+        const first = await github.getReleases({ data });
+        const second = await github.getReleases({ data });
+
+        expect(failed.ok).toBe(false);
+        expect(second).toEqual(first);
+        expect(fetchMock).toHaveBeenCalledTimes(2);
     });
 });

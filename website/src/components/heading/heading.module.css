@@ -24,6 +24,15 @@
     letter-spacing: 0.01em;
 }
 
+.kicker {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 0.42em;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ba-fg-subtle);
+}
+
 .line {
     display: block;
     color: var(--ba-fg);

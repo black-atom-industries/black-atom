@@ -13,15 +13,18 @@
     &[aria-current="page"] {
         border-bottom-color: var(--ba-accent);
     }
+
+    @media (max-width: 720px) {
+        flex: none;
+        letter-spacing: 0.06em;
+    }
 }
 
 .number {
     font-style: normal;
     color: var(--ba-accent);
-}
 
-.secondary {
-    @media (max-width: 900px) {
+    @media (max-width: 720px) {
         display: none;
     }
 }

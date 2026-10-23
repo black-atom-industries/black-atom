@@ -22,13 +22,15 @@ const data = JSON.stringify({
 /**
  * Runs before first paint. SSR already wrote a valid URL theme onto <html>; without one, this
  * applies the stored theme, or the light default on a light system, so the page never flashes dark.
- * Mirrors resolveThemeKey in lib/theme-precedence.ts.
+ * Mirrors resolveThemeKey in lib/theme-precedence.ts, and reads `?theme=` the way the router's
+ * JSON search parser does.
  */
 export const themeScript = `(function (d) {
     try {
         var has = function (k) { return Object.prototype.hasOwnProperty.call(d.themes, k); };
         var url = new URLSearchParams(location.search).get("theme");
-        if (url && has("black-atom-" + url)) return;
+        try { url = JSON.parse(url); } catch (e) {}
+        if (typeof url === "string" && has("black-atom-" + url)) return;
         var key = localStorage.getItem(d.storageKey);
         if (!key || !has(key)) key = matchMedia("(prefers-color-scheme: light)").matches ? d.lightKey : null;
         if (!key) return;

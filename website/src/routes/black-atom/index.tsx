@@ -31,14 +31,13 @@ import {
     writtenOnce,
 } from "#/content/products/black-atom.ts";
 import { livery, liveryMainView } from "#/content/products/livery.ts";
-import { studio } from "#/content/studio.ts";
+import { changelogCopy, studio } from "#/content/studio.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { themeCollections } from "#/lib/theme-collections.ts";
 import { toShortKey } from "#/lib/theme-precedence.ts";
 import { themeToCustomProperties } from "#/lib/theme-vars.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
-import { ChangelogEmpty } from "#/routes/-changelog-empty.tsx";
 
 export const Route = createFileRoute("/black-atom/")({
     head: () => ({
@@ -269,13 +268,13 @@ function BlackAtomPage() {
             </Section>
 
             <Section id="changes">
-                <SectionHead number="07" title="Changelog" />
+                <SectionHead number="07" title="Changelog" aside={changelogCopy.source} />
                 <ChangelogBlock
                     releasesTitle="Releases"
                     releases={changelog.releases}
                     commitsTitle={`Recent commits · ${blackAtom.changelog.paths.join(" + ")}`}
                     commits={changelog.commits}
-                    emptyText={<ChangelogEmpty href={blackAtom.repoUrl} />}
+                    empty={{ href: blackAtom.repoUrl, failed: changelog.failed }}
                 />
                 <Stack direction="row" gap="xl">
                     <Button render={<Link to="/changelog" search={{ product: "black-atom" }} />}>

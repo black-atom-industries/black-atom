@@ -88,7 +88,8 @@ layers. Offline renders cover loudness in `*.browser.test.ts` (`npm run verify:a
 Server functions in `server/github.ts` are the only code that talks to GitHub. They return
 `{ ok, body }` or `{ ok: false, error }` as values, so an outage renders a fallback instead of an error
 boundary. Success sets `Cache-Control: s-maxage=60, stale-while-revalidate=600`; any failure in the
-response sets `s-maxage=60`. `GITHUB_TOKEN` is used when set. Only repos and paths from
+response sets `s-maxage=60`. Successful responses are memoized per path for 60 s, failures never; a
+request times out after 5 s. `GITHUB_TOKEN` is used when set. Only repos and paths from
 `content/products/` are accepted. `GITHUB_API_URL` replaces the API host; the e2e suite points it at a
 local stub.
 
@@ -101,8 +102,9 @@ addon runs with `test: "error"`, so a violation fails the story. Docs pages come
 
 ## Verify
 
-Scripts are in `package.json`. Before finishing, run `npm run verify:tests` and `npm run verify:stories`
-here; the root `npm run verify` also builds the site and runs knip and `verify:audio`.
+Scripts are in `package.json`. Before finishing, run `npm run verify:tests`, `npm run verify:stories`,
+`npm run verify:audio` and `npm run test:e2e` here; the root `npm run verify` builds the site and runs
+the unit tests and knip, but none of the browser suites.
 
 `test:e2e` runs Playwright against a production build on port 4319 with `GITHUB_TOKEN` empty and
 `GITHUB_API_URL` on `e2e/github-stub.ts`. The stub serves `src/api/github/fixtures/` and answers

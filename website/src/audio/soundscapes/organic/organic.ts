@@ -36,7 +36,7 @@ interface Built {
     context: ToneModule.BaseContext;
 }
 
-/** v5's organic soundscape: drone, noise bed, disk bands, struck and sung lines, heartbeat, plus vinyl and camera air. */
+/** The organic soundscape: drone, noise bed, disk bands, struck and sung lines, heartbeat, plus vinyl and camera air. */
 export function createOrganic(): Soundscape<typeof organicParams> {
     let params: OrganicParams = organicParams.parse({});
     let root: ThemeRoot = { ratio: 1, isLight: false };

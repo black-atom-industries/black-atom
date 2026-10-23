@@ -19,6 +19,9 @@ type Props = {
 
 export function Dock({ themeLabel, themePanel, soundLabel, soundPanel, closeLabel }: Props) {
     const [openPanel, setOpenPanel] = useState<PanelId | null>(null);
+    const hasSound = soundPanel !== undefined && soundLabel !== undefined;
+    // A route without sound closes its panel, so it never reopens on the way back.
+    if (!hasSound && openPanel === "sound") setOpenPanel(null);
 
     function handleOpenChange(panel: PanelId, isOpen: boolean) {
         setOpenPanel((current) => (isOpen ? panel : current === panel ? null : current));
@@ -38,7 +41,7 @@ export function Dock({ themeLabel, themePanel, soundLabel, soundPanel, closeLabe
                     {themePanel}
                 </DockPanel>
             </Dialog.Root>
-            {soundPanel !== undefined && soundLabel !== undefined && (
+            {hasSound && (
                 <Dialog.Root
                     modal={false}
                     open={openPanel === "sound"}

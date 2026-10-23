@@ -14,7 +14,6 @@ import { products } from "#/content/products/products.ts";
 import { productKeys, type Product } from "#/content/products/types.ts";
 import { studio } from "#/content/studio.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
-import { ChangelogEmpty } from "./-changelog-empty.tsx";
 
 const changelogSearchSchema = z.object({
     product: z.enum(productKeys).optional().catch(undefined),
@@ -114,7 +113,7 @@ function ChangelogPage() {
                     releases={changelog.releases}
                     commitsTitle="Recent commits"
                     commits={changelog.commits}
-                    emptyText={<ChangelogEmpty href={source ?? studio.githubUrl} />}
+                    empty={{ href: source ?? studio.githubUrl, failed: changelog.failed }}
                     headingLevel={2}
                 />
             </Section>

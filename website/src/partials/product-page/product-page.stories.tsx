@@ -19,7 +19,7 @@ const meta = preview.meta({
         changelog: {
             releases: [],
             commits: [],
-            emptyText: "Nothing to show yet. Releases and commits are on GitHub.",
+            empty: { href: iter.repoUrl, failed: { releases: false, commits: false } },
         },
     },
 });

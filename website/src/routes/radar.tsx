@@ -7,7 +7,6 @@ import { iter } from "#/content/products/iter.ts";
 import { radar, radarHud } from "#/content/products/radar.ts";
 import { studio } from "#/content/studio.ts";
 import { ProductPage } from "#/partials/product-page/index.ts";
-import { ChangelogEmpty } from "./-changelog-empty.tsx";
 
 export const Route = createFileRoute("/radar")({
     head: () => ({
@@ -42,7 +41,7 @@ function RadarPage() {
             changelog={{
                 releases: changelog.releases,
                 commits: changelog.commits,
-                emptyText: <ChangelogEmpty href={radar.repoUrl} />,
+                empty: { href: radar.repoUrl, failed: changelog.failed },
             }}
         />
     );

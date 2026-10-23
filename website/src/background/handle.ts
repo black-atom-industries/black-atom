@@ -15,7 +15,6 @@ let connected: BackgroundHandle | undefined;
  * Stays valid while backgrounds come and go: listeners keep their subscription, and notes or
  * kicks sent while nothing is connected are dropped.
  */
-/** @public Consumed by the soundscape. */
 export const background: BackgroundHandle = {
     events: { on: (listener) => emitter.on(listener) },
     sing: (note) => connected?.sing(note),

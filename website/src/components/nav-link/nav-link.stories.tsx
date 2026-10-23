@@ -11,6 +11,4 @@ export const Default = meta.story();
 
 export const Current = meta.story({ args: { "aria-current": "page" } });
 
-export const Secondary = meta.story({
-    args: { number: undefined, isSecondary: true, children: "Changelog" },
-});
+export const WithoutNumber = meta.story({ args: { number: undefined, children: "Changelog" } });

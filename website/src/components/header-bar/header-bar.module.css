@@ -21,4 +21,23 @@
     & > * {
         pointer-events: auto;
     }
+
+    /* Phones keep one row: the nav scrolls sideways instead of wrapping over the page. */
+    @media (max-width: 720px) {
+        flex-wrap: nowrap;
+        gap: 16px;
+
+        & > nav {
+            flex-wrap: nowrap;
+            gap: 14px;
+            min-width: 0;
+            overflow-x: auto;
+            scroll-padding-inline: 32px;
+            scrollbar-width: none;
+            /* Room for focus rings, and a fade at the screen edge that the last link scrolls past. */
+            padding: 4px 24px 4px 4px;
+            margin: -4px -5vw -4px -4px;
+            mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+        }
+    }
 }

@@ -6,12 +6,15 @@ import { products } from "#/content/products/products.ts";
 
 const cacheControl = "s-maxage=60, stale-while-revalidate=600";
 const failureCacheControl = "s-maxage=60";
+const memoMs = 60_000;
+const timeoutMs = 5_000;
 
 export type GitHubResponse = { ok: true; body: unknown } | { ok: false; error: ApiError };
 
 /** Only what a product's changelog reads, so a token never serves arbitrary repositories. */
 const changelogInput = z
     .object({ repo: z.string(), path: z.string().optional() })
+    .strict()
     .refine(({ repo, path }) =>
         products.some(
             (product) =>
@@ -29,8 +32,19 @@ function toError(response: Response): ApiError {
     return { code: "unavailable" };
 }
 
+/** Successful responses per path, so cache-busting URLs cannot spend the GitHub quota. */
+const memo = new Map<string, { at: number; result: GitHubResponse }>();
+
 /** The one place the site talks to GitHub. Uses `GITHUB_TOKEN` when it is set. */
 async function requestGitHub(path: string): Promise<GitHubResponse> {
+    const memoized = memo.get(path);
+    if (memoized && Date.now() - memoized.at < memoMs) return memoized.result;
+    const result = await fetchGitHub(path);
+    if (result.ok) memo.set(path, { at: Date.now(), result });
+    return result;
+}
+
+async function fetchGitHub(path: string): Promise<GitHubResponse> {
     const token = process.env.GITHUB_TOKEN;
     const response = await fetch(
         `${process.env.GITHUB_API_URL ?? "https://api.github.com"}${path}`,
@@ -41,6 +55,7 @@ async function requestGitHub(path: string): Promise<GitHubResponse> {
                 "X-GitHub-Api-Version": "2022-11-28",
                 ...(token ? { Authorization: `Bearer ${token}` } : {}),
             },
+            signal: AbortSignal.timeout(timeoutMs),
         },
     ).catch(() => undefined);
 

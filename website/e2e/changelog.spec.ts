@@ -61,7 +61,7 @@ test("a rate-limited feed shows the fallback with a GitHub link and a clean cons
     await page.goto("/black-atom/livery", { waitUntil: "networkidle" });
 
     const commitList = page.locator('[data-component="CommitList"]');
-    await expect(commitList).toContainText("Nothing to show here yet.");
+    await expect(commitList).toContainText("GitHub couldn't be reached right now.");
     await expect(commitList.getByRole("link", { name: "GitHub" })).toHaveAttribute(
         "href",
         "https://github.com/black-atom-industries/black-atom",

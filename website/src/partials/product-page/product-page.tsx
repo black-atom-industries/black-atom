@@ -17,6 +17,7 @@ import { Stack } from "#/components/stack/index.ts";
 import { StepList } from "#/components/step-list/index.ts";
 import { Text } from "#/components/text/index.ts";
 import type { Product } from "#/content/products/types.ts";
+import { changelogCopy } from "#/content/studio.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
 import { ProductHero } from "#/partials/product-hero/index.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
@@ -31,7 +32,7 @@ type Props = {
     changelog: {
         releases: readonly Release[];
         commits: readonly Commit[];
-        emptyText: ReactNode;
+        empty: { href: string; failed: { releases: boolean; commits: boolean } };
     };
 };
 
@@ -160,13 +161,13 @@ export function ProductPage({ product, art, pager, release, changelog }: Props) 
                 />
             </Section>
             <Section id="changes">
-                <SectionHead number="05" title="Changelog" />
+                <SectionHead number="05" title="Changelog" aside={changelogCopy.source} />
                 <ChangelogBlock
                     releasesTitle="Releases"
                     releases={changelog.releases}
                     commitsTitle="Recent commits"
                     commits={changelog.commits}
-                    emptyText={changelog.emptyText}
+                    empty={changelog.empty}
                 />
             </Section>
             <Section variant="compact">

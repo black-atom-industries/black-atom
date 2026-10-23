@@ -59,3 +59,10 @@ export const about = {
         { placeholder: "[Anything else: your contact address.]" },
     ],
 } as const;
+
+export const changelogCopy = {
+    source: "Live from GitHub",
+    empty: "Nothing to show here yet.",
+    failed: "GitHub couldn't be reached right now.",
+    elsewhere: "Every release and commit is on",
+} as const;

@@ -15,6 +15,10 @@ export const DisplaySmall = meta.story({ args: { variant: "display-sm", children
 
 export const Name = meta.story({ args: { variant: "name", children: "Koyo Dark" } });
 
+export const NameWithKicker = meta.story({
+    args: { variant: "name", kicker: "JPN · dark", children: "Koyo Dark" },
+});
+
 export const Section = meta.story({ args: { variant: "section" } });
 
 export const Product = meta.story({ args: { variant: "product", children: "iter.nvim" } });
