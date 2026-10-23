@@ -6,7 +6,7 @@ push to `main`. The most recent curated section is the reference shape.
 ## Workflow
 
 1. Check out the release PR branch with `gh pr checkout <number>`.
-2. Read the generated section and the commits behind it, and rank the outcomes by impact on a user.
+2. Read the generated section and the commits behind it, and rank the outcomes by impact on a user and sort them by product.
 3. Write `### Highlights` in impact order (below), directly under the release heading and above the first generated group.
 4. Run the `humanizer` skill on the highlights.
 5. Commit the section as `docs: curate the <version> release notes` and push the branch.
@@ -22,13 +22,35 @@ merge right after.
 
 ## Highlights
 
-Highlights are the one place where prose addresses the reader. In order:
+Highlights are the one place where prose addresses the reader. On the website, the Black Atom and Livery pages each show
+their own part of a shared release, so feature blocks are grouped by product. In order:
 
-1. **Feature blocks** (`#### Name`): the largest outcomes first. Promote undersold work hiding in the commit list; a new
-   workflow often matters more than a new option. Show config or usage as a code block when the reader will copy it.
-2. **Important fixes**: fixes a user would notice or has worked around.
-3. **Upgrading from X.Y**: last, one sentence per breaking change and the change as a `diff` block, old line `-`, new line
-   `+`.
+1. **Feature blocks**, grouped under `#### Themes`, `#### Livery` and `#### Core` (exact spelling), using only the
+   products the release touches. Within a product, the largest outcomes first. Each block is `##### Name`. Promote
+   undersold work hiding in the commit list; a new workflow often matters more than a new option. Show config or usage as
+   a code block when the reader will copy it.
+2. **Important fixes** (`#### Important fixes`): fixes a user would notice or has worked around.
+3. **Upgrading from X.Y** (`#### Upgrading from X.Y`): last, one sentence per breaking change and the change as a `diff`
+   block, old line `-`, new line `+`.
+
+Fixes and upgrade notes sit outside the product groups, as `####` items after the last one; they appear on every product
+page.
+
+```markdown
+### Highlights
+
+#### Themes
+
+##### Terra gets a winter night
+
+#### Livery
+
+##### Livery remembers the last theme per appearance
+
+#### Important fixes
+
+#### Upgrading from 0.11
+```
 
 ## Screenshots
 
