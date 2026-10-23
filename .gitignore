@@ -31,3 +31,9 @@ HANDOFF-*.md
 .agents/evals/results/
 .vitest/
 .vite-hooks/_/
+
+/website/.output/
+/website/.nitro/
+/website/.vercel/
+/website/.tanstack/
+/website/storybook-static/

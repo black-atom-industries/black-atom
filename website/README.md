@@ -1,3 +1,3 @@
 # website
 
-Placeholder for the Black Atom website. Rebuilt from scratch later; not wired into the workspace.
+The Black Atom Industries website, a TanStack Start app in the workspace.

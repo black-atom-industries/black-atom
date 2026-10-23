@@ -1,0 +1,57 @@
+{
+    "name": "@black-atom/website",
+    "private": true,
+    "type": "module",
+    "imports": {
+        "#/*": "./src/*"
+    },
+    "scripts": {
+        "dev": "vp dev",
+        "build": "vp build",
+        "preview": "vp preview",
+        "storybook": "storybook dev -p 6006 --no-open --ci",
+        "build:storybook": "storybook build",
+        "verify:typecheck": "tsc -p . && tsc -p .storybook",
+        "verify:tests": "vp test run --project unit --passWithNoTests",
+        "verify:stories": "vp test run --project storybook --passWithNoTests",
+        "verify:knip": "knip"
+    },
+    "dependencies": {
+        "@base-ui/react": "^1.7.0",
+        "@black-atom/core": "*",
+        "@fontsource/chakra-petch": "^5",
+        "@fontsource/kode-mono": "^5",
+        "@tanstack/react-query": "^5.101.4",
+        "@tanstack/react-router": "^1.170.46",
+        "@tanstack/react-router-ssr-query": "^1.167.3",
+        "@tanstack/react-start": "^1.169.4",
+        "@tanstack/react-store": "^0.11",
+        "@vercel/analytics": "^2",
+        "cva": "^1.0.0-beta.8",
+        "react": "^19.3.0",
+        "react-dom": "^19.3.0",
+        "three": "0.184.0",
+        "tone": "^15",
+        "zod": "^3.24.0"
+    },
+    "devDependencies": {
+        "@playwright/test": "1.62.1",
+        "@storybook/addon-a11y": "^10.6.3",
+        "@storybook/addon-docs": "^10.6.3",
+        "@storybook/addon-vitest": "^10.6.3",
+        "@storybook/react-vite": "^10.6.3",
+        "@tanstack/react-devtools": "^0.10.10",
+        "@tanstack/react-query-devtools": "^5.101.4",
+        "@tanstack/react-router-devtools": "^1.167.1",
+        "@types/react": "^19.2.18",
+        "@types/react-dom": "^19.2.4",
+        "@vitejs/plugin-react": "^6",
+        "@vitest/browser-playwright": "5.0.5",
+        "knip": "^6",
+        "nitro": "3.0.260903-beta",
+        "storybook": "^10.6.3",
+        "typescript": "~6.0.3",
+        "vite": "npm:@voidzero-dev/vite-plus-core@1.3.0",
+        "vite-plus": "1.3.0"
+    }
+}

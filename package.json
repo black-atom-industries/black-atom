@@ -9,7 +9,8 @@
         "core",
         "core/monitor",
         "livery",
-        "livery/e2e"
+        "livery/e2e",
+        "website"
     ],
     "scripts": {
         "dev": "node scripts/dev.ts",
@@ -19,14 +20,14 @@
         "eval:skills": "cd .agents && claude plugin eval . --allow-tools Bash Edit Write --scaffold --trust-plugin --no-publish -j 4 --max-cost-usd 25 --judge-model sonnet",
         "build:ui": "npm run generate && vp build livery",
         "check": "npm run build:ui && npm run check:ts && npm run check:rust",
-        "check:ts": "tsc -p tsconfig.json && tsc -p core/monitor && tsc -p livery && vp lint --max-warnings=0 && vp fmt --check",
+        "check:ts": "tsc -p tsconfig.json && tsc -p core/monitor && tsc -p livery && tsc -p website && tsc -p website/.storybook && vp lint --max-warnings=0 && vp fmt --check",
         "check:rust": "cargo fmt --check && cargo clippy --workspace --all-targets -- -D warnings",
         "test": "npm run build:ui && npm run test:ts && npm run test:rust",
         "test:ts": "vp test run",
         "test:rust": "cargo test --workspace",
         "test:e2e": "npm run test --workspace livery/e2e --",
         "test:e2e:ui": "npm run test:ui --workspace livery/e2e --",
-        "verify": "npm run build:ui && npm run check:ts && npm run check:rust && npm run test:ts && npm run test:rust",
+        "verify": "npm run build:ui && vp build website && npm run check:ts && npm run check:rust && npm run test:ts && npm run test:rust && npm run verify:knip --workspace website",
         "fmt": "vp fmt",
         "lint": "vp lint",
         "install:hooks": "vp config",
@@ -42,6 +43,9 @@
         "@swc/core@1.16.13": true
     },
     "overrides": {
-        "vite": "npm:@voidzero-dev/vite-plus-core@1.3.0"
+        "vite": "npm:@voidzero-dev/vite-plus-core@1.3.0",
+        "storybook": {
+            "vite-plus": "$vite-plus"
+        }
     }
 }

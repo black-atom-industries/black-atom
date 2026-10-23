@@ -7,7 +7,13 @@ export default defineConfig({
     },
     test: {
         include: ["**/*{_test,.test}.{ts,tsx}"],
-        exclude: ["**/node_modules/**", "**/.claude/**", "livery/e2e/**", "target/**"],
+        exclude: [
+            "**/node_modules/**",
+            "**/.claude/**",
+            "livery/e2e/**",
+            "website/e2e/**",
+            "target/**",
+        ],
     },
     fmt: {
         printWidth: 100,
@@ -26,6 +32,12 @@ export default defineConfig({
             ".github/.release-please-manifest.json",
             "core/monitor/src/routeTree.gen.ts",
             "livery/src/routeTree.gen.ts",
+            "website/src/routeTree.gen.ts",
+            "website/.output/",
+            "website/.nitro/",
+            "website/.vercel/",
+            "website/.tanstack/",
+            "website/storybook-static/",
             "livery/src/bindings.ts",
             "livery/core/",
             "livery/cli/",
@@ -62,6 +74,12 @@ export default defineConfig({
             "**/.vite/",
             "core/monitor/src/routeTree.gen.ts",
             "livery/src/routeTree.gen.ts",
+            "website/src/routeTree.gen.ts",
+            "website/.output/",
+            "website/.nitro/",
+            "website/.vercel/",
+            "website/.tanstack/",
+            "website/storybook-static/",
             "livery/src/bindings.ts",
             "livery/docs/design-system/reference/",
             "livery/e2e/fixtures/",
@@ -87,6 +105,20 @@ export default defineConfig({
             "no-useless-escape": "off",
             "preserve-caught-error": "off",
         },
+        overrides: [
+            {
+                files: ["website/**"],
+                excludeFiles: ["website/**/*.test.*", "website/**/*.stories.*"],
+                rules: {
+                    "typescript/consistent-type-assertions": ["error", { assertionStyle: "never" }],
+                    "typescript/no-non-null-assertion": "error",
+                    "no-restricted-imports": [
+                        "error",
+                        { patterns: [{ group: ["../*"], message: "Import through #/ instead." }] },
+                    ],
+                },
+            },
+        ],
     },
     staged: {
         "**/*.{ts,tsx,js,jsx,mts,cts,mjs,cjs,json,jsonc,md,markdown,css,scss,less,yml,yaml,toml,html}":
