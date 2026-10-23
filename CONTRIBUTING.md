@@ -8,6 +8,7 @@
 - `adapters/<name>/` — one directory per tool, with its templates and generated theme files
 - `livery/` — the desktop app that applies a theme across the tools on a machine. GUI binary
   `livery-gui`, terminal client `livery`
+- `website/` — the black-atom.industries site; see [`docs/website.md`](docs/website.md)
 
 [`GLOSSARY.md`](GLOSSARY.md) defines every term the codebase uses.
 

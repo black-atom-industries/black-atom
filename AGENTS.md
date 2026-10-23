@@ -15,6 +15,7 @@ second one.
 - `livery/` — Tauri v2 desktop app; frontend in `livery/src/`, domain logic in `livery/core/`
   (crate `livery_core`, no Tauri dependency), Tauri shell in `livery/src-tauri/`, terminal client
   in `livery/cli/` (binary `livery`)
+- `website/` — the black-atom.industries site, a TanStack Start app that reads theme data from `core/`
 
 ## Sandbox
 

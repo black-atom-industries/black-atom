@@ -5,6 +5,10 @@ before it merges the release PR.
 
 This page is the process that skill follows, and every step can also be run by hand.
 
+The website is not part of a release. It deploys from `main` on every push, and release-please
+excludes `website/`, so site changes never enter the version or `CHANGELOG.md`. See
+[Website](website.md).
+
 ```mermaid
 sequenceDiagram
   participant You

@@ -1,7 +1,7 @@
 # Black Atom
 
 Dark and light themes for developer tools. Every theme is defined once and generated for each tool, so the same colors
-show up in the terminal, the editor, and the rest of the desktop. Livery switches most of them at once.
+show up in the terminal, the editor, and the rest of the desktop. Livery switches most of them at once. See [black-atom.industries](https://black-atom.industries).
 
 ## Install
 

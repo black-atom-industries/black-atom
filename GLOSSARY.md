@@ -3,7 +3,8 @@
 Every term the codebase uses, in one place. Use these words in code, commits, and discussion.
 
 Terms are grouped by the part of the system they belong to: **Themes** covers what a theme is and
-how it is generated, **Livery** covers the app that applies themes to a machine.
+how it is generated, **Website** covers the black-atom.industries site, **Livery** covers the app that applies
+themes to a machine.
 
 ---
 
@@ -77,6 +78,26 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | **Theme Meta Base** | The `MetaBase` type: theme metadata without `label`; collection entries supply `name`, `appearance`, and `status` | Raw meta, base meta      |
 | **Label**           | A computed display string combining theme name and collection, derived by `defineCollection()`                    | Display name, title      |
 | **Name**            | The human-readable short name for a theme (e.g., "Winter Dark")                                                   | Title, display name      |
+
+---
+
+# Website
+
+## Studio and Products
+
+| Term               | Definition                                                                                                                                           | Aliases to avoid                |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| **Studio**         | Black Atom Industries as the website presents it: the home page and the owner of its products                                                        | Company, brand site, org        |
+| **Product**        | One of the studio's offerings with its own pages, changelog and background state: Black Atom (themes, with Livery as its app), iter.nvim, radar.nvim | Project, app, tool              |
+| **Install Method** | One way to get a product, kept as data on the product; one not yet released shows as a disabled "soon" tab (e.g. from source, brew)                  | Download option, install option |
+
+## Background and Sound
+
+| Term                 | Definition                                                                                                                                        | Aliases to avoid                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| **Background Layer** | The single fixed scene in the root layout behind every page; one renderer runs at a time and the content swaps on top                             | Backdrop, canvas, hero scene     |
+| **Background State** | The mode the Background Layer takes on a route: `full` and `receded` (the black hole, dimmed when receded), `iter` (review loop), `radar` (sweep) | Scene mode, background variant   |
+| **Soundscape**       | A pluggable sound design for the sound engine: params, layers and reactions to scene events, with a pitch root per theme                          | Track, sound theme, audio preset |
 
 ---
 
