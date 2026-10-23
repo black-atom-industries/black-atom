@@ -64,6 +64,8 @@ pointer, or anything under `livery/e2e/`, also run `npm run test:e2e`. A failing
 same update as the code: fix its specs, fixtures, or baselines in this commit, and look at a changed screenshot before
 accepting it with `--update-snapshots`.
 
+When the staged change touches `website/`, also run `npm run verify:stories --workspace website`, `npm run verify:audio --workspace website` and `npm run test:e2e --workspace website`.
+
 ## 5. Draft and ask
 
 The message is a [Conventional Commit](https://www.conventionalcommits.org/). release-please derives the next version from it
