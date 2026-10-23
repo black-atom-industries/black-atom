@@ -13,6 +13,10 @@ const meta = preview.meta({
     args: {
         themeKey: "black-atom-default-dark" as Theme.Key,
         sharePath: "/iter",
+        documentation: {
+            label: "Theme documentation →",
+            render: <a href="#theme-documentation" />,
+        },
         onSelect: fn(),
     },
     render: (args) => {

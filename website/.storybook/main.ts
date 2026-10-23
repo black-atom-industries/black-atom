@@ -13,6 +13,7 @@ export default defineMain({
         name: "@storybook/react-vite",
         options: { builder: { viteConfigPath: ".storybook/vite.config.ts" } },
     },
+    staticDirs: ["../public"],
     stories: ["../src/components/**/*.stories.tsx", "../src/partials/**/*.stories.tsx"],
     addons: [
         "@storybook/addon-docs",

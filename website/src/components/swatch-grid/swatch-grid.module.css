@@ -1,0 +1,17 @@
+.root {
+    display: grid;
+}
+
+.ramp {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 3px;
+
+    @media (max-width: 560px) {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+}
+
+.tiles {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+}

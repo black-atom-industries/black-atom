@@ -69,3 +69,10 @@
         }
     }
 }
+
+.empty {
+    padding: 18px 0;
+    border-top: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 35%, transparent);
+    font-size: 14.5px;
+    color: var(--ba-fg-subtle);
+}

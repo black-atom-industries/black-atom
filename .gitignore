@@ -37,3 +37,4 @@ HANDOFF-*.md
 /website/.vercel/
 /website/.tanstack/
 /website/storybook-static/
+/website/e2e/test-results/

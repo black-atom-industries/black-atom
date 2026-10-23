@@ -1,0 +1,24 @@
+.root {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 5;
+    padding: 24px;
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 70%, transparent);
+    background:
+        repeating-linear-gradient(
+            135deg,
+            transparent 0 9px,
+            color-mix(in srgb, var(--ba-fg) 9%, transparent) 9px 10px
+        ),
+        var(--ba-bg-panel);
+    text-align: center;
+}
+
+.label {
+    font-family: var(--ba-label-font);
+    font-size: var(--ba-label-size);
+    letter-spacing: var(--ba-label-tracking);
+    text-transform: var(--ba-label-case);
+    line-height: var(--ba-label-leading);
+    color: var(--ba-fg-subtle);
+}

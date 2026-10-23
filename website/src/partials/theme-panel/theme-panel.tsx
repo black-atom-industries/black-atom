@@ -1,5 +1,5 @@
-import { useId } from "react";
-import { collectionOrder, DEFAULT_THEME_KEY, themeCatalog } from "@black-atom/core";
+import { useId, type ReactElement } from "react";
+import { DEFAULT_THEME_KEY, themeCatalog } from "@black-atom/core";
 import type * as Theme from "@black-atom/core";
 import { Button } from "#/components/button/index.ts";
 import { Caption } from "#/components/caption/index.ts";
@@ -7,25 +7,22 @@ import { Choice } from "#/components/choice/index.ts";
 import { CodeBlock } from "#/components/code-block/index.ts";
 import { PairToggle } from "#/components/pair-toggle/index.ts";
 import { Stack } from "#/components/stack/index.ts";
+import { TextLink } from "#/components/text-link/index.ts";
+import { themeCollections } from "#/lib/theme-collections.ts";
 import { siblingThemeKey, stepThemeKey, toShortKey } from "#/lib/theme-precedence.ts";
 
 const siteHost = "black-atom.industries";
-
-const collections = collectionOrder.map((collectionKey) => {
-    const themes = Object.values(themeCatalog).filter(
-        (theme) => theme.meta.collection.key === collectionKey,
-    );
-    return { key: collectionKey, label: themes[0].meta.collection.label, themes };
-});
 
 type Props = {
     themeKey: Theme.Key;
     onSelect: (key: Theme.Key) => void;
     /** Path of the current page, for the share URL. */
     sharePath: string;
+    /** Link to the theme's documentation page. */
+    documentation: { label: string; render: ReactElement };
 };
 
-export function ThemePanel({ themeKey, onSelect, sharePath }: Props) {
+export function ThemePanel({ themeKey, onSelect, sharePath, documentation }: Props) {
     const appearanceId = useId();
     const appearanceToggleId = useId();
     const theme = themeCatalog[themeKey];
@@ -68,7 +65,7 @@ export function ThemePanel({ themeKey, onSelect, sharePath }: Props) {
                 />
             </Stack>
             <Stack gap="md" isDivided>
-                {collections.map((collection) => (
+                {themeCollections.map((collection) => (
                     <Stack key={collection.key} gap="2xs">
                         <Caption tone="subtle" size="sm">
                             {collection.label}
@@ -93,6 +90,7 @@ export function ThemePanel({ themeKey, onSelect, sharePath }: Props) {
                 </Caption>
                 <CodeBlock lines={[{ text: `${siteHost}${sharePath}`, accent: shareQuery }]} />
             </Stack>
+            <TextLink render={documentation.render}>{documentation.label}</TextLink>
         </Stack>
     );
 }

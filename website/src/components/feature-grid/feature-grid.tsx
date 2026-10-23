@@ -11,7 +11,7 @@ export function FeatureGrid({ features }: { features: readonly Feature[] }) {
         <ul data-component="FeatureGrid" className={styles.root}>
             {features.map((feature) => (
                 <li key={feature.title} className={styles.feature}>
-                    <h4 className={styles.title}>{feature.title}</h4>
+                    <h3 className={styles.title}>{feature.title}</h3>
                     <p className={styles.body}>{feature.body}</p>
                 </li>
             ))}

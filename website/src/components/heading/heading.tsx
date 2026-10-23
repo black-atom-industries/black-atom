@@ -10,7 +10,9 @@ const headingVariants = cva({
         variant: {
             display: styles.display,
             "display-sm": styles.displaySm,
+            name: styles.name,
             section: styles.section,
+            product: styles.product,
             title: styles.title,
             item: styles.item,
         },
@@ -22,7 +24,9 @@ type Variant = NonNullable<VariantProps<typeof headingVariants>["variant"]>;
 const tagByVariant = {
     display: "h1",
     "display-sm": "h1",
+    name: "h1",
     section: "h2",
+    product: "h3",
     title: "h3",
     item: "h4",
 } as const satisfies Record<Variant, keyof React.JSX.IntrinsicElements>;

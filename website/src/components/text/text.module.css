@@ -1,4 +1,5 @@
 .root {
+    font-style: normal;
     text-wrap: pretty;
 }
 
@@ -6,6 +7,10 @@
     max-width: 56ch;
     font-size: 16.5px;
     line-height: 1.75;
+}
+
+.intro {
+    max-width: 62ch;
 }
 
 .tagline {

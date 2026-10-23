@@ -13,7 +13,11 @@ export const Display = meta.story({
 
 export const DisplaySmall = meta.story({ args: { variant: "display-sm", children: "iter.nvim" } });
 
+export const Name = meta.story({ args: { variant: "name", children: "Koyo Dark" } });
+
 export const Section = meta.story({ args: { variant: "section" } });
+
+export const Product = meta.story({ args: { variant: "product", children: "iter.nvim" } });
 
 export const Title = meta.story({
     args: { variant: "title", children: "Every change, one keystroke away" },

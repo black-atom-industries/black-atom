@@ -32,3 +32,11 @@ const meta = preview.meta({
 });
 
 export const Default = meta.story();
+
+export const Empty = meta.story({
+    args: {
+        releases: [],
+        commits: [],
+        emptyText: "Nothing to show yet. Releases and commits are on GitHub.",
+    },
+});

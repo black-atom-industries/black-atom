@@ -10,33 +10,154 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ChangelogRouteImport } from './routes/changelog'
+import { Route as ImpressumRouteImport } from './routes/impressum'
+import { Route as IterRouteImport } from './routes/iter'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RadarRouteImport } from './routes/radar'
+import { Route as BlackAtomIndexRouteImport } from './routes/black-atom/index'
+import { Route as BlackAtomLiveryRouteImport } from './routes/black-atom/livery'
+import { Route as BlackAtomThemesThemeRouteImport } from './routes/black-atom/themes/$theme'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChangelogRoute = ChangelogRouteImport.update({
+  id: '/changelog',
+  path: '/changelog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImpressumRoute = ImpressumRouteImport.update({
+  id: '/impressum',
+  path: '/impressum',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IterRoute = IterRouteImport.update({
+  id: '/iter',
+  path: '/iter',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RadarRoute = RadarRouteImport.update({
+  id: '/radar',
+  path: '/radar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlackAtomIndexRoute = BlackAtomIndexRouteImport.update({
+  id: '/black-atom/',
+  path: '/black-atom/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlackAtomLiveryRoute = BlackAtomLiveryRouteImport.update({
+  id: '/black-atom/livery',
+  path: '/black-atom/livery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlackAtomThemesThemeRoute = BlackAtomThemesThemeRouteImport.update({
+  id: '/black-atom/themes/$theme',
+  path: '/black-atom/themes/$theme',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/changelog': typeof ChangelogRoute
+  '/impressum': typeof ImpressumRoute
+  '/iter': typeof IterRoute
+  '/privacy': typeof PrivacyRoute
+  '/radar': typeof RadarRoute
+  '/black-atom/livery': typeof BlackAtomLiveryRoute
+  '/black-atom/': typeof BlackAtomIndexRoute
+  '/black-atom/themes/$theme': typeof BlackAtomThemesThemeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/changelog': typeof ChangelogRoute
+  '/impressum': typeof ImpressumRoute
+  '/iter': typeof IterRoute
+  '/privacy': typeof PrivacyRoute
+  '/radar': typeof RadarRoute
+  '/black-atom/livery': typeof BlackAtomLiveryRoute
+  '/black-atom': typeof BlackAtomIndexRoute
+  '/black-atom/themes/$theme': typeof BlackAtomThemesThemeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/changelog': typeof ChangelogRoute
+  '/impressum': typeof ImpressumRoute
+  '/iter': typeof IterRoute
+  '/privacy': typeof PrivacyRoute
+  '/radar': typeof RadarRoute
+  '/black-atom/livery': typeof BlackAtomLiveryRoute
+  '/black-atom/': typeof BlackAtomIndexRoute
+  '/black-atom/themes/$theme': typeof BlackAtomThemesThemeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/changelog'
+    | '/impressum'
+    | '/iter'
+    | '/privacy'
+    | '/radar'
+    | '/black-atom/livery'
+    | '/black-atom/'
+    | '/black-atom/themes/$theme'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/changelog'
+    | '/impressum'
+    | '/iter'
+    | '/privacy'
+    | '/radar'
+    | '/black-atom/livery'
+    | '/black-atom'
+    | '/black-atom/themes/$theme'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/changelog'
+    | '/impressum'
+    | '/iter'
+    | '/privacy'
+    | '/radar'
+    | '/black-atom/livery'
+    | '/black-atom/'
+    | '/black-atom/themes/$theme'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ChangelogRoute: typeof ChangelogRoute
+  ImpressumRoute: typeof ImpressumRoute
+  IterRoute: typeof IterRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RadarRoute: typeof RadarRoute
+  BlackAtomLiveryRoute: typeof BlackAtomLiveryRoute
+  BlackAtomIndexRoute: typeof BlackAtomIndexRoute
+  BlackAtomThemesThemeRoute: typeof BlackAtomThemesThemeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +169,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/changelog': {
+      id: '/changelog'
+      path: '/changelog'
+      fullPath: '/changelog'
+      preLoaderRoute: typeof ChangelogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/impressum': {
+      id: '/impressum'
+      path: '/impressum'
+      fullPath: '/impressum'
+      preLoaderRoute: typeof ImpressumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/iter': {
+      id: '/iter'
+      path: '/iter'
+      fullPath: '/iter'
+      preLoaderRoute: typeof IterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/radar': {
+      id: '/radar'
+      path: '/radar'
+      fullPath: '/radar'
+      preLoaderRoute: typeof RadarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/black-atom/': {
+      id: '/black-atom/'
+      path: '/black-atom'
+      fullPath: '/black-atom/'
+      preLoaderRoute: typeof BlackAtomIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/black-atom/livery': {
+      id: '/black-atom/livery'
+      path: '/black-atom/livery'
+      fullPath: '/black-atom/livery'
+      preLoaderRoute: typeof BlackAtomLiveryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/black-atom/themes/$theme': {
+      id: '/black-atom/themes/$theme'
+      path: '/black-atom/themes/$theme'
+      fullPath: '/black-atom/themes/$theme'
+      preLoaderRoute: typeof BlackAtomThemesThemeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ChangelogRoute: ChangelogRoute,
+  ImpressumRoute: ImpressumRoute,
+  IterRoute: IterRoute,
+  PrivacyRoute: PrivacyRoute,
+  RadarRoute: RadarRoute,
+  BlackAtomLiveryRoute: BlackAtomLiveryRoute,
+  BlackAtomIndexRoute: BlackAtomIndexRoute,
+  BlackAtomThemesThemeRoute: BlackAtomThemesThemeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

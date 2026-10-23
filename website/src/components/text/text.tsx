@@ -9,6 +9,7 @@ const textVariants = cva({
         variant: {
             body: null,
             lead: styles.lead,
+            intro: styles.intro,
             tagline: styles.tagline,
             small: styles.small,
         },

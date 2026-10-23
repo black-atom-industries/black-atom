@@ -7,13 +7,34 @@ type Props = {
     releases: readonly Release[];
     commitsTitle: string;
     commits: readonly Commit[];
+    /** Shown in place of an empty list. */
+    emptyText?: string;
+    /** Level of the list titles in the page outline. */
+    headingLevel?: 2 | 3;
 };
 
-export function ChangelogBlock({ releasesTitle, releases, commitsTitle, commits }: Props) {
+export function ChangelogBlock({
+    releasesTitle,
+    releases,
+    commitsTitle,
+    commits,
+    emptyText,
+    headingLevel,
+}: Props) {
     return (
         <PageGrid columns="two" align="start" data-partial="ChangelogBlock">
-            <ReleaseList title={releasesTitle} releases={releases} />
-            <CommitList title={commitsTitle} commits={commits} />
+            <ReleaseList
+                title={releasesTitle}
+                releases={releases}
+                emptyText={emptyText}
+                headingLevel={headingLevel}
+            />
+            <CommitList
+                title={commitsTitle}
+                commits={commits}
+                emptyText={emptyText}
+                headingLevel={headingLevel}
+            />
         </PageGrid>
     );
 }

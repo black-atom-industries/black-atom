@@ -10,6 +10,7 @@ const sectionVariants = cva({
             default: null,
             hero: styles.hero,
             product: styles.product,
+            page: styles.page,
             compact: styles.compact,
             footer: styles.footer,
         },

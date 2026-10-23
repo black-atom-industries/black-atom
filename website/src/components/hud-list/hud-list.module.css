@@ -1,0 +1,37 @@
+.root {
+    display: grid;
+    gap: 8px;
+    width: min(100%, 460px);
+    padding: 10px 14px;
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 60%, transparent);
+    background: var(--ba-bg-float);
+    font-family: var(--ba-font-mono);
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+.group {
+    display: grid;
+    padding: 0;
+    list-style: none;
+}
+
+.entry {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 10px;
+
+    & b {
+        font-weight: 600;
+        color: var(--ba-fg-subtle);
+    }
+}
+
+.current b,
+.current span {
+    color: var(--ba-accent);
+}
+
+.recent span {
+    color: var(--ba-fg-subtle);
+}

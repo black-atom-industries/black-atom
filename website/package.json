@@ -15,7 +15,8 @@
         "verify:typecheck": "tsc -p . && tsc -p .storybook",
         "verify:tests": "vp test run --project unit",
         "verify:stories": "vp test run --project storybook",
-        "verify:knip": "knip"
+        "verify:knip": "knip",
+        "test:e2e": "playwright test"
     },
     "dependencies": {
         "@base-ui/react": "^1.7.0",

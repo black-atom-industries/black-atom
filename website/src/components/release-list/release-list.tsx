@@ -11,12 +11,20 @@ export type Release = {
 type Props = {
     title: string;
     releases: readonly Release[];
+    /** Shown in place of the list when there are no releases. */
+    emptyText?: string;
+    /** Level of the list title in the page outline. */
+    headingLevel?: 2 | 3;
 };
 
-export function ReleaseList({ title, releases }: Props) {
+export function ReleaseList({ title, releases, emptyText, headingLevel = 3 }: Props) {
+    const Title = headingLevel === 2 ? "h2" : "h3";
     return (
         <section data-component="ReleaseList" className={styles.root}>
-            <h3 className={styles.title}>{title}</h3>
+            <Title className={styles.title}>{title}</Title>
+            {releases.length === 0 && emptyText !== undefined && (
+                <p className={styles.empty}>{emptyText}</p>
+            )}
             {releases.map((release) => (
                 <article
                     key={`${release.product ?? ""}${release.version}`}

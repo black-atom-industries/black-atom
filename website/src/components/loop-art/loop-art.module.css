@@ -1,0 +1,43 @@
+.root {
+    width: min(78%, 320px);
+    aspect-ratio: 1;
+}
+
+.rings {
+    fill: none;
+    stroke: var(--ba-fg-subtle);
+    stroke-width: 1;
+}
+
+.arc {
+    transform-origin: 150px 150px;
+    animation: spin 14s linear infinite;
+
+    & path {
+        fill: none;
+        stroke: var(--ba-accent);
+        stroke-width: 3;
+    }
+
+    & circle {
+        fill: var(--ba-accent);
+    }
+}
+
+.mark {
+    fill: var(--ba-fg);
+    font: 600 34px var(--ba-font-mono);
+}
+
+.stations {
+    fill: var(--ba-fg-subtle);
+    font: 500 10px var(--ba-font-mono);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

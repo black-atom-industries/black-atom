@@ -1,0 +1,9 @@
+.mono {
+    font-family: var(--ba-font-mono);
+    font-size: 0.95em;
+}
+
+.placeholder {
+    background: none;
+    color: var(--ba-warning);
+}

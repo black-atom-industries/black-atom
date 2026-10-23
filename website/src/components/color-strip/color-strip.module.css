@@ -1,0 +1,25 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 3px;
+
+    & i {
+        display: block;
+        transition: background 1s;
+    }
+}
+
+.sm i {
+    height: 22px;
+}
+
+.md i {
+    height: 34px;
+    border: 1px solid color-mix(in srgb, var(--ba-fg) 10%, transparent);
+}
+
+.fill {
+    position: absolute;
+    inset: 32px 32px 60px;
+    gap: 4px;
+}

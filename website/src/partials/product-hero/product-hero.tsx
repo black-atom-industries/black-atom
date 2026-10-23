@@ -13,7 +13,7 @@ type Props = {
     kicker: string;
     title: string;
     tagline: string;
-    lead: string;
+    lead: ReactNode;
     meta: readonly MetaItem[];
     /** Buttons and links under the text. */
     actions: ReactNode;

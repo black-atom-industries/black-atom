@@ -38,6 +38,10 @@
     }
 }
 
+.page {
+    padding-top: 150px;
+}
+
 .compact {
     padding-top: 4vh;
 }

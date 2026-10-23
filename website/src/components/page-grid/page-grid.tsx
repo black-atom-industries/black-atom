@@ -6,7 +6,12 @@ import styles from "./page-grid.module.css";
 const pageGridVariants = cva({
     base: styles.root,
     variants: {
-        columns: { two: styles.two, three: styles.three, four: styles.four },
+        columns: {
+            two: styles.two,
+            three: styles.three,
+            four: styles.four,
+            cards: styles.cards,
+        },
         align: { stretch: null, start: styles.alignStart, center: styles.alignCenter },
     },
 });

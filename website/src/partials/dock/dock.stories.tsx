@@ -16,7 +16,15 @@ const meta = preview.meta({
         themeLabel: "Theme",
         closeLabel: "Close",
         themePanel: (
-            <ThemePanel themeKey="black-atom-default-dark" sharePath="/" onSelect={() => {}} />
+            <ThemePanel
+                themeKey="black-atom-default-dark"
+                sharePath="/"
+                onSelect={() => {}}
+                documentation={{
+                    label: "Theme documentation →",
+                    render: <a href="#theme-documentation" />,
+                }}
+            />
         ),
     },
     render: (args) => (

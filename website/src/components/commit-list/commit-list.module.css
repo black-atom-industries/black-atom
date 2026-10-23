@@ -68,3 +68,10 @@
         opacity: 1;
     }
 }
+
+.empty {
+    padding: 10px 0;
+    border-top: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 28%, transparent);
+    font-size: 14px;
+    color: var(--ba-fg-subtle);
+}

@@ -10,15 +10,23 @@ export type Commit = {
 type Props = {
     title: string;
     commits: readonly Commit[];
+    /** Shown in place of the list when there are no commits. */
+    emptyText?: string;
+    /** Level of the list title in the page outline. */
+    headingLevel?: 2 | 3;
 };
 
-export function CommitList({ title, commits }: Props) {
+export function CommitList({ title, commits, emptyText, headingLevel = 3 }: Props) {
+    const Title = headingLevel === 2 ? "h2" : "h3";
     return (
         <section data-component="CommitList" className={styles.root}>
-            <h3 className={styles.title}>
+            <Title className={styles.title}>
                 <i aria-hidden="true" className={styles.live} />
                 {title}
-            </h3>
+            </Title>
+            {commits.length === 0 && emptyText !== undefined && (
+                <p className={styles.empty}>{emptyText}</p>
+            )}
             <ul className={styles.list}>
                 {commits.map((commit) => (
                     <li key={commit.sha} className={styles.commit}>

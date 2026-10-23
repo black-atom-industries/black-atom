@@ -1,0 +1,5 @@
+.root {
+    display: grid;
+    gap: 40px;
+    max-width: 760px;
+}

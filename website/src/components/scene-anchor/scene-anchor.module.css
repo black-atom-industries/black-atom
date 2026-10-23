@@ -1,0 +1,35 @@
+.root {
+    pointer-events: none;
+}
+
+.hole {
+    position: absolute;
+    top: 12vh;
+    right: 10vw;
+    width: min(36vw, 56vh);
+    aspect-ratio: 1;
+
+    @media (max-width: 900px) {
+        right: 50%;
+        width: min(70vw, 64vh);
+        transform: translateX(50%);
+    }
+}
+
+.farHole {
+    position: absolute;
+    top: 9vh;
+    right: 5vw;
+    width: min(22vw, 36vh);
+    aspect-ratio: 1;
+}
+
+.wide {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+}
+
+.square {
+    width: min(100%, 460px);
+    aspect-ratio: 1;
+}
