@@ -1,0 +1,47 @@
+.root {
+    position: relative;
+    display: grid;
+    padding: 14vh 5vw 8vh;
+
+    @media (max-width: 560px) {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+.wrap {
+    display: grid;
+    gap: 36px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.hero {
+    min-height: 100vh;
+    align-content: end;
+    padding-bottom: 11vh;
+
+    & .wrap {
+        gap: 28px;
+        max-width: none;
+    }
+}
+
+.product {
+    min-height: 100vh;
+    align-content: center;
+    padding-top: 150px;
+
+    & .wrap {
+        max-width: none;
+    }
+}
+
+.compact {
+    padding-top: 4vh;
+}
+
+.footer {
+    padding: 10vh 5vw 6vh;
+}

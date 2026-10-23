@@ -1,0 +1,27 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 8px;
+    font-family: var(--ba-label-font);
+    font-size: var(--ba-label-size);
+    letter-spacing: var(--ba-label-tracking);
+    text-transform: var(--ba-label-case);
+    line-height: var(--ba-label-leading);
+    border-bottom: 1px solid transparent;
+
+    &[aria-current="page"] {
+        border-bottom-color: var(--ba-accent);
+    }
+}
+
+.number {
+    font-style: normal;
+    color: var(--ba-accent);
+}
+
+.secondary {
+    @media (max-width: 900px) {
+        display: none;
+    }
+}

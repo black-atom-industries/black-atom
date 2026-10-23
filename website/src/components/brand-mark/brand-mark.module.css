@@ -1,0 +1,41 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-height: 44px;
+}
+
+.atom {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid var(--ba-fg);
+    display: grid;
+    place-items: center;
+
+    & b {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--ba-fg);
+    }
+}
+
+.words {
+    display: grid;
+    line-height: 1.15;
+    font-family: var(--ba-font-mono);
+    text-transform: uppercase;
+
+    & strong {
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.18em;
+    }
+
+    & small {
+        font-size: 9.5px;
+        letter-spacing: 0.42em;
+        color: var(--ba-fg-subtle);
+    }
+}

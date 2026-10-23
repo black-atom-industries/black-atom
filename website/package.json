@@ -3,7 +3,8 @@
     "private": true,
     "type": "module",
     "imports": {
-        "#/*": "./src/*"
+        "#/*": "./src/*",
+        "#/storybook/*": "./.storybook/*"
     },
     "scripts": {
         "dev": "vp dev",
@@ -13,7 +14,7 @@
         "build:storybook": "storybook build",
         "verify:typecheck": "tsc -p . && tsc -p .storybook",
         "verify:tests": "vp test run --project unit",
-        "verify:stories": "vp test run --project storybook --passWithNoTests",
+        "verify:stories": "vp test run --project storybook",
         "verify:knip": "knip"
     },
     "dependencies": {

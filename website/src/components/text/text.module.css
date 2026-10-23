@@ -1,0 +1,22 @@
+.root {
+    text-wrap: pretty;
+}
+
+.lead {
+    max-width: 56ch;
+    font-size: 16.5px;
+    line-height: 1.75;
+}
+
+.tagline {
+    font-size: 22px;
+    line-height: 1.4;
+}
+
+.small {
+    font-size: 14px;
+}
+
+.subtle {
+    color: var(--ba-fg-subtle);
+}

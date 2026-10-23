@@ -1,4 +1,11 @@
 :root {
     --ba-font-mono: "Kode Mono", ui-monospace, monospace;
     --ba-font-sans: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
+
+    /* Small uppercase mono labels: captions, buttons, tabs, nav. */
+    --ba-label-font: var(--ba-font-mono);
+    --ba-label-size: 11px;
+    --ba-label-tracking: 0.24em;
+    --ba-label-leading: 1.7;
+    --ba-label-case: uppercase;
 }

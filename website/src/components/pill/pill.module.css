@@ -1,0 +1,24 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--ba-font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 55%, transparent);
+    color: var(--ba-fg-subtle);
+}
+
+.active {
+    border-color: var(--ba-accent);
+    color: var(--ba-accent);
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}

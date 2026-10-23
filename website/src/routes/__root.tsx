@@ -7,10 +7,12 @@ import {
     retainSearchParams,
     ScriptOnce,
     Scripts,
+    useLocation,
 } from "@tanstack/react-router";
 import { z } from "zod";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { themeToCustomProperties } from "#/lib/theme-vars.ts";
+import { Dock } from "#/partials/dock/index.ts";
 import { ThemePanel } from "#/partials/theme-panel/index.ts";
 import globalCss from "#/styles/global.css?url";
 import { themeScript } from "./-theme-script.ts";
@@ -38,10 +40,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootComponent() {
+    const { theme, setTheme } = useTheme();
+    const pathname = useLocation({ select: (location) => location.pathname });
+
     return (
         <RootDocument>
             <Outlet />
-            <ThemePanel />
+            <Dock
+                themeLabel="Theme"
+                closeLabel="Close"
+                themePanel={
+                    <ThemePanel
+                        themeKey={theme.meta.key}
+                        onSelect={setTheme}
+                        sharePath={pathname}
+                    />
+                }
+            />
         </RootDocument>
     );
 }

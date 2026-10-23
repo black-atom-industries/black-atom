@@ -1,0 +1,13 @@
+.root {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 30;
+    display: grid;
+    gap: 8px;
+
+    @media (max-width: 560px) {
+        right: 16px;
+        bottom: 16px;
+    }
+}

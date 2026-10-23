@@ -1,0 +1,27 @@
+.root {
+    --corner: linear-gradient(var(--ba-accent), var(--ba-accent));
+
+    position: relative;
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    background: var(--ba-bg);
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 70%, transparent);
+    padding: 28px 30px 26px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        pointer-events: none;
+        background:
+            var(--corner) 0 0 / 14px 2px no-repeat,
+            var(--corner) 0 0 / 2px 14px no-repeat,
+            var(--corner) 100% 100% / 14px 2px no-repeat,
+            var(--corner) 100% 100% / 2px 14px no-repeat;
+    }
+
+    @media (max-width: 560px) {
+        padding: 22px 18px 20px;
+    }
+}

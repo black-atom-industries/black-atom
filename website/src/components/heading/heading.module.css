@@ -1,0 +1,39 @@
+.root {
+    font-family: var(--ba-font-mono);
+    font-weight: 500;
+}
+
+.display,
+.displaySm {
+    font-weight: 600;
+    font-size: clamp(52px, 8.6vw, 132px);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    color: var(--ba-accent);
+    text-transform: uppercase;
+}
+
+.displaySm {
+    font-size: clamp(44px, 6.4vw, 96px);
+}
+
+.line {
+    display: block;
+    color: var(--ba-fg);
+}
+
+.section {
+    font-size: 28px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.title {
+    font-size: 22px;
+    letter-spacing: 0.03em;
+}
+
+.item {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+}

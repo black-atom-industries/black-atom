@@ -1,0 +1,22 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 6px;
+    font-family: var(--ba-label-font);
+    font-size: var(--ba-label-size);
+    letter-spacing: var(--ba-label-tracking);
+    text-transform: var(--ba-label-case);
+    line-height: var(--ba-label-leading);
+    color: var(--ba-fg-subtle);
+
+    & [data-active="true"] {
+        color: var(--ba-fg);
+        border-bottom: 1px solid var(--ba-accent);
+    }
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.6;
+    }
+}

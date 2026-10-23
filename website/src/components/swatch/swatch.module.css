@@ -1,0 +1,37 @@
+.root {
+    display: block;
+}
+
+.dot {
+    width: 14px;
+    height: 14px;
+    border: 1px solid color-mix(in srgb, var(--ba-fg) 15%, transparent);
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    box-shadow: inset 0 0 0 2px var(--ba-bg);
+}
+
+.bar {
+    height: 18px;
+}
+
+.tile {
+    display: grid;
+    gap: 4px;
+    font-family: var(--ba-font-mono);
+    font-size: 10.5px;
+}
+
+.chip {
+    display: block;
+    height: 44px;
+    border: 1px solid color-mix(in srgb, var(--ba-fg) 12%, transparent);
+    transition: background 1s;
+}
+
+.label {
+    color: var(--ba-fg-subtle);
+}

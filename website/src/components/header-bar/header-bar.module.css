@@ -1,0 +1,24 @@
+.root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 32px;
+    padding: 22px 5vw 40px;
+    background: linear-gradient(
+        var(--ba-bg) 0%,
+        color-mix(in srgb, var(--ba-bg) 72%, transparent) 45%,
+        transparent 100%
+    );
+    pointer-events: none;
+    transition: background 1s;
+
+    & > * {
+        pointer-events: auto;
+    }
+}

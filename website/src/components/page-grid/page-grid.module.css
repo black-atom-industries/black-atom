@@ -1,0 +1,30 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--column-min)), 1fr));
+}
+
+.two {
+    --column-min: 460px;
+
+    gap: 36px;
+}
+
+.three {
+    --column-min: 300px;
+
+    gap: 28px;
+}
+
+.four {
+    --column-min: 200px;
+
+    gap: 28px;
+}
+
+.alignStart {
+    align-items: start;
+}
+
+.alignCenter {
+    align-items: center;
+}

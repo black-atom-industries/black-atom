@@ -1,0 +1,14 @@
+.root {
+    display: inline-grid;
+    place-items: center;
+    min-width: 26px;
+    height: 26px;
+    padding: 0 6px;
+    font-family: var(--ba-font-mono);
+    font-size: 12.5px;
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 70%, transparent);
+    border-bottom-width: 2px;
+    background: var(--ba-bg-panel);
+    color: var(--ba-fg);
+    vertical-align: middle;
+}

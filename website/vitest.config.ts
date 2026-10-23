@@ -17,6 +17,24 @@ export default defineConfig({
             {
                 extends: true,
                 plugins: [storybookTest({ configDir: ".storybook" })],
+                // Discovering these mid-run reloads the browser and fails the first cold run.
+                optimizeDeps: {
+                    include: [
+                        "@base-ui/react/dialog",
+                        "@base-ui/react/merge-props",
+                        "@base-ui/react/slider",
+                        "@base-ui/react/tabs",
+                        "@base-ui/react/use-render",
+                        "cva",
+                        "culori",
+                        "react",
+                        "react-dom",
+                        "react-dom/client",
+                        "react/jsx-dev-runtime",
+                        "react/jsx-runtime",
+                        "storybook/test",
+                    ],
+                },
                 test: {
                     name: "storybook",
                     browser: {

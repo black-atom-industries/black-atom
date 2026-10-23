@@ -1,0 +1,21 @@
+.root {
+    display: grid;
+    gap: 10px;
+}
+
+.frame {
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 60%, transparent);
+    background: var(--ba-bg-panel);
+    overflow: hidden;
+
+    & img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.caption {
+    font-size: 13.5px;
+    color: var(--ba-fg-subtle);
+    text-wrap: pretty;
+}

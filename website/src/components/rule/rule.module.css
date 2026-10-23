@@ -1,0 +1,20 @@
+.root {
+    display: block;
+    background: color-mix(in srgb, var(--ba-fg-subtle) 45%, transparent);
+}
+
+.horizontal {
+    height: 1px;
+    width: 100%;
+    max-width: 640px;
+}
+
+.vertical {
+    width: 1px;
+    height: 14px;
+    align-self: center;
+
+    @media (max-width: 900px) {
+        display: none;
+    }
+}

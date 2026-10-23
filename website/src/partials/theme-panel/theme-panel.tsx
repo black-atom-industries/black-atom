@@ -1,9 +1,13 @@
-import { Dialog } from "@base-ui/react/dialog";
+import { useId } from "react";
 import { collectionOrder, DEFAULT_THEME_KEY, themeCatalog } from "@black-atom/core";
-import { useLocation } from "@tanstack/react-router";
-import { useTheme } from "#/hooks/use-theme.ts";
+import type * as Theme from "@black-atom/core";
+import { Button } from "#/components/button/index.ts";
+import { Caption } from "#/components/caption/index.ts";
+import { Choice } from "#/components/choice/index.ts";
+import { CodeBlock } from "#/components/code-block/index.ts";
+import { PairToggle } from "#/components/pair-toggle/index.ts";
+import { Stack } from "#/components/stack/index.ts";
 import { siblingThemeKey, stepThemeKey, toShortKey } from "#/lib/theme-precedence.ts";
-import styles from "./theme-panel.module.css";
 
 const siteHost = "black-atom.industries";
 
@@ -14,89 +18,81 @@ const collections = collectionOrder.map((collectionKey) => {
     return { key: collectionKey, label: themes[0].meta.collection.label, themes };
 });
 
-export function ThemePanel() {
-    const { theme, setTheme } = useTheme();
-    const pathname = useLocation({ select: (location) => location.pathname });
-    const key = theme.meta.key;
-    const sibling = siblingThemeKey(key);
-    const shareQuery = key === DEFAULT_THEME_KEY ? "" : `?theme=${toShortKey(key)}`;
+type Props = {
+    themeKey: Theme.Key;
+    onSelect: (key: Theme.Key) => void;
+    /** Path of the current page, for the share URL. */
+    sharePath: string;
+};
+
+export function ThemePanel({ themeKey, onSelect, sharePath }: Props) {
+    const appearanceId = useId();
+    const appearanceToggleId = useId();
+    const theme = themeCatalog[themeKey];
+    const sibling = siblingThemeKey(themeKey);
+    const shareQuery = themeKey === DEFAULT_THEME_KEY ? "" : `?theme=${toShortKey(themeKey)}`;
 
     return (
-        <Dialog.Root modal={false}>
-            <div className={styles.dock}>
-                <Dialog.Trigger className={styles.dockButton} aria-label="Theme">
-                    <i className={styles.swatch} />
-                </Dialog.Trigger>
-            </div>
-            <Dialog.Portal>
-                <Dialog.Popup className={styles.panel}>
-                    <div className={styles.row}>
-                        <Dialog.Title className={styles.label}>Theme</Dialog.Title>
-                        <Dialog.Close className={styles.close} aria-label="Close">
-                            ×
-                        </Dialog.Close>
-                    </div>
-                    <div className={styles.row}>
-                        <span className={styles.current}>{theme.meta.label}</span>
-                        <div className={styles.step}>
-                            <button
-                                type="button"
-                                aria-label="Previous theme"
-                                onClick={() => setTheme(stepThemeKey(key, -1))}
-                            >
-                                ‹
-                            </button>
-                            <button
-                                type="button"
-                                aria-label="Next theme"
-                                onClick={() => setTheme(stepThemeKey(key, 1))}
-                            >
-                                ›
-                            </button>
-                        </div>
-                    </div>
-                    <div className={styles.row}>
-                        <span className={styles.caption}>Appearance</span>
-                        <button
-                            type="button"
-                            className={styles.pair}
-                            disabled={sibling === undefined}
-                            onClick={() => sibling && setTheme(sibling)}
-                        >
-                            <span data-active={theme.meta.appearance === "dark"}>dark</span> /{" "}
-                            <span data-active={theme.meta.appearance === "light"}>light</span>
-                        </button>
-                    </div>
-                    <div className={styles.section}>
-                        {collections.map((collection) => (
-                            <div key={collection.key} className={styles.collection}>
-                                <span className={styles.caption}>{collection.label}</span>
-                                <div className={styles.themes}>
-                                    {collection.themes.map((entry) => (
-                                        <button
-                                            key={entry.meta.key}
-                                            type="button"
-                                            className={styles.theme}
-                                            aria-pressed={entry.meta.key === key}
-                                            onClick={() => setTheme(entry.meta.key)}
-                                        >
-                                            {entry.meta.name}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className={styles.section}>
-                        <span className={styles.caption}>This page in this theme</span>
-                        <div className={styles.share}>
-                            {siteHost}
-                            {pathname}
-                            <b>{shareQuery}</b>
-                        </div>
-                    </div>
-                </Dialog.Popup>
-            </Dialog.Portal>
-        </Dialog.Root>
+        <Stack gap="lg" data-partial="ThemePanel">
+            <Stack direction="row" justify="between" align="center">
+                <Caption tone="accent">{theme.meta.label}</Caption>
+                <Stack direction="row" gap="xs">
+                    <Button
+                        variant="square"
+                        aria-label="Previous theme"
+                        onClick={() => onSelect(stepThemeKey(themeKey, -1))}
+                    >
+                        ‹
+                    </Button>
+                    <Button
+                        variant="square"
+                        aria-label="Next theme"
+                        onClick={() => onSelect(stepThemeKey(themeKey, 1))}
+                    >
+                        ›
+                    </Button>
+                </Stack>
+            </Stack>
+            <Stack direction="row" justify="between" align="center">
+                <Caption id={appearanceId} tone="subtle" size="sm">
+                    Appearance
+                </Caption>
+                <PairToggle
+                    first="dark"
+                    second="light"
+                    active={theme.meta.appearance === "dark" ? "first" : "second"}
+                    id={appearanceToggleId}
+                    aria-labelledby={`${appearanceId} ${appearanceToggleId}`}
+                    disabled={sibling === undefined}
+                    onClick={() => sibling && onSelect(sibling)}
+                />
+            </Stack>
+            <Stack gap="md" isDivided>
+                {collections.map((collection) => (
+                    <Stack key={collection.key} gap="2xs">
+                        <Caption tone="subtle" size="sm">
+                            {collection.label}
+                        </Caption>
+                        <Stack direction="row" gap="md" isWrapped>
+                            {collection.themes.map((entry) => (
+                                <Choice
+                                    key={entry.meta.key}
+                                    isSelected={entry.meta.key === themeKey}
+                                    onClick={() => onSelect(entry.meta.key)}
+                                >
+                                    {entry.meta.name}
+                                </Choice>
+                            ))}
+                        </Stack>
+                    </Stack>
+                ))}
+            </Stack>
+            <Stack gap="md" isDivided>
+                <Caption tone="subtle" size="sm">
+                    This page in this theme
+                </Caption>
+                <CodeBlock lines={[{ text: `${siteHost}${sharePath}`, accent: shareQuery }]} />
+            </Stack>
+        </Stack>
     );
 }

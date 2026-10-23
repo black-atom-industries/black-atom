@@ -1,12 +1,11 @@
 {
     "$schema": "https://unpkg.com/knip@6/schema.json",
-    "entry": ["src/routes/**/*.tsx"],
+    "entry": ["src/routes/**/*.tsx", "src/components/*/index.ts", "src/partials/*/index.ts"],
     "project": ["src/**/*.{ts,tsx}", ".storybook/**/*.{ts,tsx}"],
     "ignoreDependencies": [
         "@fontsource/chakra-petch",
         "@fontsource/kode-mono",
         "@vercel/analytics",
-        "cva",
         "three",
         "tone",
         "@playwright/test"

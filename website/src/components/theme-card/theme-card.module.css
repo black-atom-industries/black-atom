@@ -1,0 +1,66 @@
+.root {
+    display: grid;
+    gap: 12px;
+    padding: 16px;
+    background: var(--ba-bg);
+    color: var(--ba-fg);
+    border: 1px solid var(--ba-fg-disabled);
+    transition: transform 0.3s;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
+}
+
+.worn {
+    border-color: var(--ba-accent);
+}
+
+.name {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    font-family: var(--ba-font-mono);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.subtle {
+    color: var(--ba-fg-subtle);
+}
+
+.swatches {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 2px;
+
+    & i {
+        display: block;
+        height: 18px;
+    }
+}
+
+.sample {
+    font-family: var(--ba-font-mono);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.keyword {
+    color: var(--ba-syn-keyword);
+}
+
+.func {
+    color: var(--ba-syn-func);
+}
+
+.string {
+    color: var(--ba-syn-string);
+}
+
+.actions {
+    display: flex;
+    gap: 16px;
+}

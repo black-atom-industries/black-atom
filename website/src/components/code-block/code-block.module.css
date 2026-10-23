@@ -1,0 +1,39 @@
+.root {
+    display: grid;
+    font-family: var(--ba-font-mono);
+    font-size: 13px;
+    line-height: 1.85;
+    background: var(--ba-bg-panel);
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 45%, transparent);
+    padding: 12px 14px;
+}
+
+.scroll {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.wrapped {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.line {
+    display: block;
+    font: inherit;
+}
+
+.prompt {
+    color: var(--ba-fg-subtle);
+    user-select: none;
+}
+
+.accent {
+    font-weight: 500;
+    color: var(--ba-accent);
+}
+
+.comment {
+    color: var(--ba-syn-comment);
+    font-style: italic;
+}
