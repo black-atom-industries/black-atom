@@ -1,0 +1,84 @@
+.root {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    color: var(--ba-fg);
+}
+
+.figure {
+    position: absolute;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    fill: none;
+    stroke-linecap: round;
+}
+
+.line {
+    stroke: currentColor;
+    stroke-width: 0.6;
+    opacity: 0.32;
+}
+
+.faint {
+    stroke: currentColor;
+    stroke-width: 0.4;
+    opacity: 0.16;
+}
+
+.accent {
+    stroke: var(--ba-accent);
+    stroke-width: 0.8;
+    opacity: 0.45;
+}
+
+.beam {
+    fill: var(--ba-accent);
+    opacity: 0.08;
+}
+
+.hole {
+    top: calc(12vh + min(36vw, 56vh) / 2);
+    left: calc(90vw - min(36vw, 56vh) / 2);
+    width: min(62vw, 94vh);
+
+    &.receded {
+        top: calc(9vh + min(22vw, 36vh) / 2);
+        left: calc(95vw - min(22vw, 36vh) / 2);
+        width: min(40vw, 62vh);
+    }
+
+    @media (max-width: 900px) {
+        left: 50%;
+        top: calc(12vh + min(70vw, 64vh) / 2);
+        width: min(150vw, 130vh);
+    }
+}
+
+.iter,
+.radar {
+    top: 42%;
+    left: 68%;
+    width: 64vmin;
+
+    @media (max-width: 700px) {
+        top: 30%;
+        left: 50%;
+        width: 100vmin;
+    }
+}
+
+.wide {
+    top: 57%;
+    left: 63%;
+    width: 86vmin;
+
+    &.receded {
+        width: 60vmin;
+    }
+
+    @media (max-width: 720px) {
+        top: 50%;
+        left: 50%;
+    }
+}

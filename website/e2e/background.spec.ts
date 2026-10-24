@@ -77,4 +77,28 @@ test.describe("with reduced motion", () => {
                 .toBe(true);
         });
     }
+
+    test("a page change cuts instead of flying", async ({ page }) => {
+        await page.goto("/", { waitUntil: "networkidle" });
+        await sceneCanvas(page);
+        await page
+            .getByRole("navigation", { name: "Main" })
+            .getByRole("link", { name: /iter\.nvim/ })
+            .click();
+        await expect(page.locator('[data-component="BackgroundLayer"]')).toHaveAttribute(
+            "data-state",
+            "iter",
+        );
+        // A flight moves the camera for about two seconds; a cut holds still within a moment.
+        await expect
+            .poll(
+                async () => {
+                    const before = await page.screenshot();
+                    await page.waitForTimeout(250);
+                    return (await page.screenshot()).equals(before);
+                },
+                { timeout: 1200, intervals: [0] },
+            )
+            .toBe(true);
+    });
 });

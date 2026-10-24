@@ -1,10 +1,11 @@
 const tileSize = 220;
 const frameCount = 6;
-const frameMs = 83;
+/** Milliseconds a grain frame shows at least. */
+export const grainFrameMs = 83;
 
 export interface Grain {
     setLight(isLight: boolean): void;
-    /** Steps the film grain to another frame at most every `frameMs`. */
+    /** Steps the film grain to another frame at most every `grainFrameMs`. */
     tick(now: number): void;
     dispose(): void;
 }
@@ -77,7 +78,7 @@ export function createGrain(): Grain {
             show();
         },
         tick(now) {
-            if (now - lastStep < frameMs) return;
+            if (now - lastStep < grainFrameMs) return;
             lastStep = now;
             index = (index + 1 + Math.floor(Math.random() * (frameCount - 1))) % frameCount;
             show();

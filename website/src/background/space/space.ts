@@ -8,7 +8,6 @@ import {
 } from "three/webgpu";
 import { pass } from "three/tsl";
 import { bloom } from "three/examples/jsm/tsl/display/BloomNode.js";
-import { createGrain } from "#/background/grain.ts";
 import { createBlackHole } from "#/background/landmarks/black-hole/black-hole.ts";
 import { flowDir, flowSide } from "#/background/landmarks/black-hole/field.ts";
 import { createIter } from "#/background/landmarks/iter/iter.ts";
@@ -87,7 +86,7 @@ function themeColors({ vars }: SceneTheme): Colors & { accentCount: number } {
 
 /**
  * Builds the space on a WebGPU renderer (WebGL 2 when WebGPU is missing): one scene and camera that
- * every landmark lives in, with the theme colours, bloom, film grain and the render loop.
+ * every landmark lives in, with the theme colours, bloom and the render loop.
  */
 async function createScene(
     host: HTMLElement,
@@ -303,7 +302,6 @@ async function createScene(
         }
         scene.background = background;
         pushColors(colors);
-        grain.setLight(isLight);
         stillFrames = 2;
     }
 
@@ -341,7 +339,6 @@ async function createScene(
         if (!signal.aborted) measure();
     });
 
-    const grain = createGrain();
     rig.setShot(shotFor(state), false);
     size();
     measure();
@@ -360,7 +357,6 @@ async function createScene(
         last = now;
         frameNumber += 1;
         if (frameNumber % 120 === 1 || now < remeasureUntil || rig.isCutPending) measure();
-        grain.tick(isStill ? 0 : now);
         stepColors(dt);
         lightMix += ((isLight ? 1 : 0) - lightMix) * (1 - Math.exp(-dt * 2.6));
         if (Math.abs(lightMix - (isLight ? 1 : 0)) < 0.002) lightMix = isLight ? 1 : 0;
@@ -442,7 +438,6 @@ async function createScene(
             pipeline.dispose();
             renderer.dispose();
             renderer.domElement.remove();
-            grain.dispose();
         },
     };
 }

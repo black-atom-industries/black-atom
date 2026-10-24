@@ -128,8 +128,10 @@ describe("createBackgroundController", () => {
         expect(created[0]?.log).toEqual(["state:hole", "theme", "start", "dispose"]);
     });
 
-    it("stays on the theme background for the session after a scene fails to start", async () => {
+    it("stays on the fallback for the session after a scene fails to start", async () => {
         const controller = createBackgroundController(host);
+        const onFail = vi.fn();
+        controller.onFail(onFail);
         controller.update({ state: full, theme, isStill: false });
         await settled();
         created[0]?.failStart();
@@ -141,6 +143,8 @@ describe("createBackgroundController", () => {
         expect(created).toHaveLength(1);
         expect(created[0]?.log.at(-1)).toBe("dispose");
         expect(console.warn).toHaveBeenCalledTimes(1);
+        expect(onFail).toHaveBeenCalledTimes(1);
+        expect(controller.hasFailed).toBe(true);
     });
 
     it("passes notes and kicks to the running renderer", async () => {

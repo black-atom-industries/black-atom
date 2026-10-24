@@ -19,6 +19,10 @@ export interface BackgroundInput {
 
 export interface BackgroundController {
     readonly events: SceneEvents;
+    /** True once the scene failed to start; it stays off for the session. */
+    readonly hasFailed: boolean;
+    /** Calls `listener` when the scene fails to start; returns the unsubscribe. */
+    onFail(listener: () => void): () => void;
     update(input: BackgroundInput): void;
     sing(note: SingNote): void;
     pulse(amount: number): void;
@@ -43,8 +47,9 @@ export function createBackgroundController(
     const events = createEmitter();
     let slot: Slot | undefined;
     let hasWarned = false;
-    /** A renderer that failed to start stays off for the session; the theme background shows instead. */
+    /** A renderer that failed to start stays off for the session; the fallback outline shows instead. */
     let hasFailed = false;
+    const failListeners = new Set<() => void>();
 
     function apply(current: Slot, renderer: BackgroundRenderer) {
         const input = current.wanted;
@@ -73,9 +78,10 @@ export function createBackgroundController(
         } catch (error) {
             hasFailed = true;
             if (slot === current) release();
+            failListeners.forEach((listener) => listener());
             if (!hasWarned) {
                 hasWarned = true;
-                console.warn("[background] scene unavailable, showing the theme background", error);
+                console.warn("[background] scene unavailable, showing the fallback outline", error);
             }
         }
     }
@@ -88,6 +94,13 @@ export function createBackgroundController(
 
     return {
         events,
+        get hasFailed() {
+            return hasFailed;
+        },
+        onFail(listener) {
+            failListeners.add(listener);
+            return () => failListeners.delete(listener);
+        },
         update(input) {
             if (hasFailed) {
                 release();
