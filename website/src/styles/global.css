@@ -9,6 +9,8 @@
 
 html {
     scroll-behavior: smooth;
+    /* One finger scrolls natively; a pinch reaches the page, where it zooms the camera. */
+    touch-action: pan-x pan-y;
 }
 
 body {

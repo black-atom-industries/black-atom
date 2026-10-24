@@ -226,13 +226,21 @@ async function createScene(
 
     let shown = state;
 
-    /** How much a landmark is the subject of the current shot, 0..1. */
+    /** A landmark's presence on the wide shot, where all three share the frame. */
+    function widePresenceOf(landmark: Landmark): number {
+        if (landmark !== hole) return 1;
+        return WIDE_HOLE_PRESENCE + (WIDE_HOLE_PRESENCE_LIGHT - WIDE_HOLE_PRESENCE) * lightMix;
+    }
+
+    /**
+     * How much a landmark is the subject of the current shot, 0..1. Zooming out by hand eases it
+     * toward the wide shot's presence as the camera nears the wide distance.
+     */
     function presenceOf(landmark: Landmark): number {
-        if (shown.view === "wide") {
-            if (landmark !== hole) return 1;
-            return WIDE_HOLE_PRESENCE + (WIDE_HOLE_PRESENCE_LIGHT - WIDE_HOLE_PRESENCE) * lightMix;
-        }
-        return byKey[shown.view] === landmark ? 1 : 0;
+        const wide = widePresenceOf(landmark);
+        if (shown.view === "wide") return wide;
+        const own = byKey[shown.view] === landmark ? 1 : 0;
+        return own + (wide - own) * rig.wideness;
     }
 
     const pipeline = new RenderPipeline(renderer);
@@ -244,7 +252,15 @@ async function createScene(
 
     const listeners = new AbortController();
     const { signal } = listeners;
-    const rig = createCameraRig({ camera, uniforms: S, look, isStill, emit, signal });
+    const rig = createCameraRig({
+        camera,
+        uniforms: S,
+        look,
+        isStill,
+        emit,
+        signal,
+        wide: shotFor({ view: "wide", mode: "full" }),
+    });
     let builtFor = "";
 
     function measure() {
@@ -337,7 +353,7 @@ async function createScene(
     function render() {
         const current = colors;
         if (!current || !rig.hasFrame) return;
-        if (isStill && stillFrames <= 0 && !rig.isCutPending) return;
+        if (isStill && stillFrames <= 0 && !rig.isCutPending && !rig.isManualPending) return;
         stillFrames -= 1;
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000);
@@ -354,6 +370,8 @@ async function createScene(
         glow.threshold.value = 0.7 + 0.32 * lightMix;
 
         const { viewDistance, cameraSpeed, cut } = rig.update(dt);
+        const zoom = rig.manualZoom.toFixed(2);
+        if (host.dataset.zoom !== zoom) host.dataset.zoom = zoom;
         background.copy(current.bg0).lerp(current.fg, 0.07 * look.lightContrast * lightMix);
         landmarks.forEach((landmark) =>
             landmark.update({
@@ -389,6 +407,8 @@ async function createScene(
                 hasFailed = true;
                 console.warn("[background] space stopped", error);
             }
+            // With nothing to zoom, a pinch and Ctrl+wheel go back to zooming the page.
+            listeners.abort();
             void renderer.setAnimationLoop(null);
         }
     }
@@ -397,6 +417,7 @@ async function createScene(
         setState(next: BackgroundState) {
             shown = next;
             rig.setShot(shotFor(next), !isStill);
+            rig.resetManual();
             remeasureUntil = performance.now() + 1500;
             stillFrames = 2;
             measure();
