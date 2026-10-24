@@ -37,8 +37,7 @@ function createStub(kind: string): Stub {
     return stub;
 }
 
-vi.mock("./space/space.ts", () => ({ createSpace: () => createStub("black-hole") }));
-vi.mock("./iter/iter.ts", () => ({ createIterScene: () => createStub("iter") }));
+vi.mock("./space/space.ts", () => ({ createSpace: () => createStub("space") }));
 vi.mock("./radar/radar.ts", () => ({ createRadarScene: () => createStub("radar") }));
 
 const { createBackgroundController } = await import("./controller.ts");
@@ -66,32 +65,34 @@ afterEach(() => {
 });
 
 describe("createBackgroundController", () => {
-    it("eases between black-hole states on one renderer instead of remounting", async () => {
+    it("keeps one space renderer across the hole and iter states instead of remounting", async () => {
         const controller = createBackgroundController(host);
         controller.update({ state: "full", theme, isStill: false });
         await settled();
         controller.update({ state: "receded", theme, isStill: false });
+        controller.update({ state: "iter", theme, isStill: false });
         controller.update({ state: "full", theme, isStill: false });
 
-        expect(created.map((stub) => stub.kind)).toEqual(["black-hole"]);
+        expect(created.map((stub) => stub.kind)).toEqual(["space"]);
         expect(created[0]?.log).toEqual([
             "state:full",
             "theme",
             "start",
             "state:receded",
+            "state:iter",
             "state:full",
         ]);
     });
 
-    it("disposes the black hole before a product scene takes over", async () => {
+    it("disposes the space before radar's scene takes over", async () => {
         const controller = createBackgroundController(host);
         controller.update({ state: "full", theme, isStill: false });
         await settled();
         created[0]?.finishStart();
-        controller.update({ state: "iter", theme, isStill: false });
+        controller.update({ state: "radar", theme, isStill: false });
         await settled();
 
-        expect(created.map((stub) => stub.kind)).toEqual(["black-hole", "iter"]);
+        expect(created.map((stub) => stub.kind)).toEqual(["space", "radar"]);
         expect(created[0]?.log.at(-1)).toBe("dispose");
         expect(created[1]?.log).toContain("start");
         expect(created[1]?.log).not.toContain("dispose");
@@ -103,9 +104,9 @@ describe("createBackgroundController", () => {
         controller.update({ state: "radar", theme, isStill: false });
         await settled();
 
-        const iter = created.find((stub) => stub.kind === "iter");
+        const space = created.find((stub) => stub.kind === "space");
         const radar = created.find((stub) => stub.kind === "radar");
-        expect(iter?.log ?? []).not.toContain("start");
+        expect(space?.log ?? []).not.toContain("start");
         expect(radar?.log).toContain("start");
     });
 
@@ -128,7 +129,7 @@ describe("createBackgroundController", () => {
         controller.update({ state: "full", theme, isStill: false });
         await settled();
 
-        expect(created.map((stub) => stub.kind)).toEqual(["black-hole"]);
+        expect(created.map((stub) => stub.kind)).toEqual(["space"]);
         expect(created[0]?.log.at(-1)).toBe("dispose");
         expect(console.warn).toHaveBeenCalledTimes(1);
     });

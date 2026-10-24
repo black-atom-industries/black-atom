@@ -7,18 +7,17 @@ import type {
     SingNote,
 } from "./types.ts";
 
-type RendererKind = "black-hole" | "iter" | "radar";
+type RendererKind = "space" | "radar";
 
 const rendererKinds: Record<BackgroundState, RendererKind> = {
-    full: "black-hole",
-    receded: "black-hole",
-    iter: "iter",
+    full: "space",
+    receded: "space",
+    iter: "space",
     radar: "radar",
 };
 
 const loadRenderer: Record<RendererKind, () => Promise<BackgroundRenderer>> = {
-    "black-hole": () => import("./space/space.ts").then((m) => m.createSpace()),
-    iter: () => import("./iter/iter.ts").then((m) => m.createIterScene()),
+    space: () => import("./space/space.ts").then((m) => m.createSpace()),
     radar: () => import("./radar/radar.ts").then((m) => m.createRadarScene()),
 };
 
@@ -45,8 +44,8 @@ interface Slot {
 }
 
 /**
- * Runs one renderer at a time in `host`. Black-hole states share one renderer and ease between
- * each other; a change to or from a product scene disposes the old renderer before the next starts.
+ * Runs one renderer at a time in `host`. States in the space share one renderer, which frames each
+ * state's landmark; a change to or from radar's scene disposes the old renderer before the next starts.
  */
 export function createBackgroundController(host: HTMLElement): BackgroundController {
     const events = createEmitter();

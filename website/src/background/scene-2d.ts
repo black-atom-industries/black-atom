@@ -4,8 +4,6 @@ import type { BackgroundRenderer, SceneTheme } from "./types.ts";
 
 export const TAU = Math.PI * 2;
 
-export type Point = [number, number];
-
 export interface Colors2d {
     bg: string;
     sub: string;

@@ -35,7 +35,7 @@ export interface SingNote {
     amp: number;
 }
 
-export interface RendererOptions {
+interface RendererOptions {
     /** Draw a still frame instead of animating. */
     isStill: boolean;
 }

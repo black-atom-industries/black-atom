@@ -58,12 +58,16 @@ export interface LandmarkContext {
 export interface LandmarkFrame {
     dt: number;
     now: number;
-    /** Camera distance from the landmark. */
+    /** Camera distance from this landmark. */
     distance: number;
-    /** Resting camera distance for the viewport. */
-    restDistance: number;
+    /** Camera distance from the active landmark, which it looks at; the same for every landmark. */
+    viewDistance: number;
     /** Smoothed camera speed in view distances per second. */
     cameraSpeed: number;
+    /** The camera jumped this frame; its move since the last frame is no motion. */
+    cut: boolean;
+    /** This landmark is the one the camera targets. */
+    isActive: boolean;
     isSmall: boolean;
     W: number;
     H: number;
@@ -71,14 +75,23 @@ export interface LandmarkFrame {
 
 /** One object in the space, with everything it draws and the events it sends. */
 export interface Landmark {
+    /** World position the camera targets when this landmark is active; set by `build`. */
+    readonly position: Vector3;
+    /** World radius a shot frames; set by `build`. */
+    readonly radius: number;
+    /** Energy (0..1.6) the `proximity` event carries while this landmark is active. */
+    readonly energy?: number;
     /** Builds the geometry around world radius `R`, once per viewport size. */
     build(R: number, isSmall: boolean): void;
-    /** Wraps the rendered scene colour before bloom, once when the pipeline is made. */
+    /**
+     * Wraps the rendered scene colour before bloom, once when the pipeline is made. A lens samples
+     * the scene texture, so lenses don't chain: at most one landmark has one.
+     */
     lens?: (color: SceneColorNode) => Node<"vec4">;
     /** Runs every frame after the camera has moved and before the frame renders. */
     update(frame: LandmarkFrame): void;
     sing?(note: SingNote): void;
     pulse?(amount: number): void;
-    /** Disposes the landmark's materials; the space disposes geometries. */
+    /** Disposes every geometry and material the landmark made. */
     dispose(): void;
 }

@@ -1,18 +1,18 @@
-import {
-    Color,
-    Mesh,
-    PerspectiveCamera,
-    RenderPipeline,
-    Scene,
-    WebGPURenderer,
-} from "three/webgpu";
+import { Color, PerspectiveCamera, RenderPipeline, Scene, WebGPURenderer } from "three/webgpu";
 import { pass } from "three/tsl";
 import { bloom } from "three/examples/jsm/tsl/display/BloomNode.js";
-import { createEmitter } from "#/background/emitter.ts";
 import { createGrain } from "#/background/grain.ts";
 import { createBlackHole } from "#/background/landmarks/black-hole/black-hole.ts";
-import type { BackgroundRenderer, RendererOptions, SceneTheme } from "#/background/types.ts";
-import { createCameraRig } from "./camera-rig.ts";
+import { flowDir, flowSide } from "#/background/landmarks/black-hole/field.ts";
+import { createIter } from "#/background/landmarks/iter/iter.ts";
+import type {
+    BackgroundRenderer,
+    BackgroundState,
+    SceneTheme,
+    SingNote,
+} from "#/background/types.ts";
+import { createCameraRig, type Shot } from "./camera-rig.ts";
+import { createSpaceRenderer, type SpaceScene } from "./renderer.ts";
 import { look as tunedLook, type Look } from "./look.ts";
 import {
     PALETTE_VARS,
@@ -22,6 +22,15 @@ import {
     type Landmark,
     type LandmarkContext,
 } from "./landmark.ts";
+
+/** World radius per pixel of `min(W, H)`, before `atomSize`: the hole anchor's half width on a desktop. */
+const WORLD_SCALE = 0.28;
+/** Where iter sits, in world radii from the black hole at the origin: downstream and to one side. */
+const ITER_PLACE = flowDir.clone().multiplyScalar(14).addScaledVector(flowSide, 7);
+/** Degrees the camera sways either side of iter's ring, so the ring never turns edge-on. */
+const ITER_SWAY = 30;
+const HOLE_ANCHOR = '[data-scene-anchor="hole"], [data-scene-anchor="far-hole"]';
+const WIDE_ANCHOR = '[data-scene-anchor="wide"]';
 
 async function hasWebGPU(): Promise<boolean> {
     if (!("gpu" in navigator)) return false;
@@ -54,7 +63,13 @@ function themeColors({ vars }: SceneTheme): Colors & { accentCount: number } {
  * Builds the space on a WebGPU renderer (WebGL 2 when WebGPU is missing): one scene and camera that
  * every landmark lives in, with the theme colours, bloom, film grain and the render loop.
  */
-async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit: Emit) {
+async function createScene(
+    host: HTMLElement,
+    look: Look,
+    isStill: boolean,
+    emit: Emit,
+    state: BackgroundState,
+): Promise<SpaceScene> {
     const isWebGPU = await hasWebGPU();
     if (!isWebGPU && !hasWebGL2()) throw new Error("neither WebGPU nor WebGL 2 is available");
     const renderer = new WebGPURenderer({ antialias: true, forceWebGL: !isWebGPU });
@@ -84,7 +99,35 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         emit,
         colors: () => colors,
     };
-    const landmarks: Landmark[] = [createBlackHole(context)];
+    const hole = createBlackHole(context);
+    const iter = createIter(context, ITER_PLACE);
+    const landmarks: Landmark[] = [hole, iter];
+    const holeShot: Shot = {
+        landmark: hole,
+        anchor: HOLE_ANCHOR,
+        radius: (rect) => (rect.width / 2) * look.atomSize,
+        fallback: (width, height) => ({
+            x: width * 0.7,
+            y: height * 0.35,
+            r: Math.min(width, height) * 0.17 * look.atomSize,
+        }),
+    };
+    const shots: Record<BackgroundState, Shot> = {
+        full: holeShot,
+        receded: holeShot,
+        iter: {
+            landmark: iter,
+            anchor: WIDE_ANCHOR,
+            radius: (rect) => Math.min(rect.width, rect.height) * 0.36,
+            sway: ITER_SWAY,
+            fallback: (width, height) => ({
+                x: width * 0.68,
+                y: height * 0.42,
+                r: Math.min(width, height) * 0.2,
+            }),
+        },
+        radar: holeShot,
+    };
 
     const pipeline = new RenderPipeline(renderer);
     const scenePass = pass(scene, camera, { samples: 4 });
@@ -96,10 +139,18 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     const listeners = new AbortController();
     const { signal } = listeners;
     const rig = createCameraRig({ camera, uniforms: S, look, isStill, emit, signal });
+    rig.setShot(shots[state]);
+    let builtFor = "";
 
     function measure() {
-        const R = rig.measure();
-        if (R !== undefined) landmarks.forEach((landmark) => landmark.build(R, isSmall));
+        const viewportKey = `${W}|${H}`;
+        if (viewportKey !== builtFor) {
+            builtFor = viewportKey;
+            const R = Math.min(W, H) * WORLD_SCALE * look.atomSize;
+            landmarks.forEach((landmark) => landmark.build(R, isSmall));
+            rig.reset();
+        }
+        rig.measure();
     }
 
     function size() {
@@ -179,13 +230,13 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     function render() {
         const current = colors;
         if (!current || !rig.hasFrame) return;
-        if (isStill && stillFrames <= 0) return;
+        if (isStill && stillFrames <= 0 && !rig.isCutPending) return;
         stillFrames -= 1;
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000);
         last = now;
         frameNumber += 1;
-        if (frameNumber % 120 === 1 || now < remeasureUntil) measure();
+        if (frameNumber % 120 === 1 || now < remeasureUntil || rig.isCutPending) measure();
         grain.tick(isStill ? 0 : now);
         stepColors(dt);
         lightMix += ((isLight ? 1 : 0) - lightMix) * (1 - Math.exp(-dt * 2.6));
@@ -195,22 +246,32 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         glow.strength.value = look.bloom * (1 - 0.7 * lightMix);
         glow.threshold.value = 0.7 + 0.32 * lightMix;
 
-        const { distance, cameraSpeed } = rig.update(dt);
+        const { viewDistance, cameraSpeed, cut } = rig.update(dt);
+        const active = rig.landmark;
         background.copy(current.bg0).lerp(current.fg, 0.07 * look.lightContrast * lightMix);
         landmarks.forEach((landmark) =>
             landmark.update({
                 dt,
                 now,
-                distance,
-                restDistance: rig.restDistance(),
+                distance: camera.position.distanceTo(landmark.position),
+                viewDistance,
                 cameraSpeed,
+                cut,
+                isActive: landmark === active,
                 isSmall,
                 W,
                 H,
             }),
         );
         pipeline.render();
-        if (!isStill) rig.emitCamera();
+        if (!isStill) {
+            emit({
+                type: "proximity",
+                distance: viewDistance / rig.restDistance(),
+                energy: active?.energy ?? 0,
+            });
+            rig.emitCamera();
+        }
     }
 
     let hasFailed = false;
@@ -227,14 +288,14 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     }
 
     return {
-        setState() {
+        setState(next: BackgroundState) {
+            rig.setShot(shots[next]);
             remeasureUntil = performance.now() + 1500;
             stillFrames = 2;
             measure();
         },
         setTheme,
-        sing: (note: Parameters<NonNullable<Landmark["sing"]>>[0]) =>
-            landmarks.forEach((landmark) => landmark.sing?.(note)),
+        sing: (note: SingNote) => landmarks.forEach((landmark) => landmark.sing?.(note)),
         pulse: (amount: number) => landmarks.forEach((landmark) => landmark.pulse?.(amount)),
         run() {
             last = performance.now();
@@ -247,9 +308,6 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
             listeners.abort();
             clearTimeout(resizeTimer);
             void renderer.setAnimationLoop(null);
-            scene.traverse((object) => {
-                if (object instanceof Mesh) object.geometry.dispose();
-            });
             landmarks.forEach((landmark) => landmark.dispose());
             scenePass.dispose();
             pipeline.dispose();
@@ -260,51 +318,12 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     };
 }
 
-/** The background space: the black hole behind the studio and Black Atom pages, receded on the quieter ones. */
+/**
+ * The background space: the black hole behind the studio and Black Atom pages, receded on the
+ * quieter ones, and iter's review cycle on its page.
+ */
 export function createSpace(look: Look = tunedLook): BackgroundRenderer {
-    const events = createEmitter();
-    let scene: Awaited<ReturnType<typeof createScene>> | undefined;
-    let theme: SceneTheme | undefined;
-    let isDisposed = false;
-    let isPaused = false;
-
-    return {
-        events,
-        async start(host, { isStill }: RendererOptions) {
-            const created = await createScene(host, look, isStill, (event) => events.emit(event));
-            if (isDisposed) {
-                created.dispose();
-                return;
-            }
-            scene = created;
-            if (theme) scene.setTheme(theme);
-            if (!isPaused) scene.run();
-        },
-        setState() {
-            scene?.setState();
-        },
-        sing(note) {
-            scene?.sing(note);
-        },
-        pulse(amount) {
-            scene?.pulse(amount);
-        },
-        setTheme(next) {
-            theme = next;
-            scene?.setTheme(next);
-        },
-        pause() {
-            isPaused = true;
-            scene?.pause();
-        },
-        resume() {
-            if (!isPaused) return;
-            isPaused = false;
-            scene?.run();
-        },
-        dispose() {
-            isDisposed = true;
-            scene?.dispose();
-        },
-    };
+    return createSpaceRenderer((host, isStill, emit, state) =>
+        createScene(host, look, isStill, emit, state),
+    );
 }

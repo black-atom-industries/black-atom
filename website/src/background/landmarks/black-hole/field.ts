@@ -1,16 +1,11 @@
 import { MathUtils, Vector3 } from "three/webgpu";
 import { rng } from "#/background/rng.ts";
+import { buildTubes, type Tubes } from "#/background/space/tube.ts";
 
 const TAU = Math.PI * 2;
 const GOLD = 0.6180339887;
-/** Vertices around each tube. */
-const RADIAL = 6;
 /** Integration step for near lines, in world units (1 unit = 1 px at the hole). */
 const STEP = 14;
-/** Floats per vertex: center xyz, normal xyz, dat (arc length, radius, offset, gap), ext (hue, hit, length, id). */
-export const STRIDE = 14;
-/** Share of lines coloured by the theme accents; the rest take the palette. */
-export const ACCENT_SHARE = 0.58;
 
 const WAVES = [
     [0.28, 0.9, 0.0011, 1.3],
@@ -70,10 +65,8 @@ export interface Line {
 }
 
 export interface Streamlines {
-    vertices: Float32Array;
-    indices: Uint32Array;
-    /** Index count up to the end of each line, starting with 0. */
-    lineEnds: number[];
+    /** One tube per line, in the order of `lines`. */
+    tubes: Tubes;
     lines: Line[];
     farCount: number;
 }
@@ -200,28 +193,7 @@ export function buildStreamlines(R: number, count: number, isSmall: boolean): St
         if (points.length >= 6) traced.push({ points, radii, hit, seed, isFar });
     }
 
-    let vertexCount = 0;
-    let indexCount = 0;
-    traced.forEach(({ points }) => {
-        vertexCount += points.length * RADIAL;
-        indexCount += (points.length - 1) * RADIAL * 6;
-    });
-    const vertices = new Float32Array(vertexCount * STRIDE);
-    const indices = new Uint32Array(indexCount);
-    const tangent = new Vector3();
-    const normal = new Vector3();
-    const binormal = new Vector3();
-    const radial = new Vector3();
-    const up = new Vector3(0, 1, 0);
-    const right = new Vector3(1, 0, 0);
-    const lines: Line[] = [];
-    const lineEnds = [0];
-    let vo = 0;
-    let io = 0;
-
-    traced.forEach(({ points, radii, hit, seed, isFar }) => {
-        const n = points.length;
-        const base = vo / STRIDE;
+    const tubes = traced.map(({ points, radii, hit, seed, isFar }, k) => {
         const tr = (seed * 0.7548776 + 0.31) % 1;
         const tj = (seed * 0.2360679) % 1;
         const tier =
@@ -234,85 +206,42 @@ export function buildStreamlines(R: number, count: number, isSmall: boolean): St
                     : 9 + tj * 7;
         const r0 = tier * (isSmall ? 0.8 : 1) * (isFar ? 3 : 1);
         const gap = 900 + ((seed * 0.5698403) % 1) * 2100;
-        const offset = ((seed * 0.4142135) % 1) * gap;
-        const hue = (seed * 0.381966 + 0.11) % 1;
-        const id = lines.length + 1;
-        const arc = new Float32Array(n);
-        let s = 0;
-        for (let k = 1; k < n; k++) {
-            s += points[k].distanceTo(points[k - 1]);
-            arc[k] = s;
-        }
-        normal.set(0, 0, 0);
-        for (let k = 0; k < n; k++) {
-            tangent
-                .subVectors(points[Math.min(n - 1, k + 1)], points[Math.max(0, k - 1)])
-                .normalize();
-            if (k === 0)
-                normal.crossVectors(tangent, Math.abs(tangent.y) < 0.9 ? up : right).normalize();
-            else normal.addScaledVector(tangent, -normal.dot(tangent)).normalize();
-            binormal.crossVectors(tangent, normal);
-            const radius = r0 * (0.3 + 0.7 * MathUtils.smoothstep(radii[k], R, R * 4));
-            for (let j = 0; j < RADIAL; j++) {
-                const a = (j / RADIAL) * TAU;
-                radial
-                    .copy(normal)
-                    .multiplyScalar(Math.cos(a))
-                    .addScaledVector(binormal, Math.sin(a));
-                const point = points[k];
-                vertices[vo] = point.x;
-                vertices[vo + 1] = point.y;
-                vertices[vo + 2] = point.z;
-                vertices[vo + 3] = radial.x;
-                vertices[vo + 4] = radial.y;
-                vertices[vo + 5] = radial.z;
-                vertices[vo + 6] = arc[k];
-                vertices[vo + 7] = radius;
-                vertices[vo + 8] = offset;
-                vertices[vo + 9] = gap;
-                vertices[vo + 10] = hue;
-                vertices[vo + 11] = hit ? 1 : 0;
-                vertices[vo + 12] = s;
-                vertices[vo + 13] = id;
-                vo += STRIDE;
-            }
-        }
-        for (let k = 0; k < n - 1; k++) {
-            for (let j = 0; j < RADIAL; j++) {
-                const a = base + k * RADIAL + j;
-                const b = base + k * RADIAL + ((j + 1) % RADIAL);
-                indices[io] = a;
-                indices[io + 1] = a + RADIAL;
-                indices[io + 2] = b;
-                indices[io + 3] = b;
-                indices[io + 4] = a + RADIAL;
-                indices[io + 5] = b + RADIAL;
-                io += 6;
-            }
-        }
-        lineEnds.push(io);
-        const sampled = points.flatMap((_, k) => (k % 3 === 0 || k === n - 1 ? [k] : []));
-        lines.push({
-            samples: sampled.map((k) => points[k]),
-            sampleArcs: sampled.map((k) => arc[k]),
-            id,
-            hit,
-            length: s,
-            offset,
+        return {
+            points,
+            widths: radii.map((r) => r0 * (0.3 + 0.7 * MathUtils.smoothstep(r, R, R * 4))),
+            offset: ((seed * 0.4142135) % 1) * gap,
             gap,
-            hue,
-            weight: MathUtils.clamp(Math.log(tier / 0.45) / 3.57, 0, 1),
+            hue: (seed * 0.381966 + 0.11) % 1,
+            flag: hit ? 1 : 0,
+            id: k + 1,
+            tier,
+        };
+    });
+    const built = buildTubes(tubes);
+    const lines: Line[] = traced.map(({ points, hit, isFar }, k) => {
+        const n = points.length;
+        const arc = built.arcs[k];
+        const tube = tubes[k];
+        const sampled = points.flatMap((_, j) => (j % 3 === 0 || j === n - 1 ? [j] : []));
+        return {
+            samples: sampled.map((j) => points[j]),
+            sampleArcs: sampled.map((j) => arc[j]),
+            id: k + 1,
+            hit,
+            length: arc[n - 1],
+            offset: tube.offset,
+            gap: tube.gap,
+            hue: tube.hue,
+            weight: MathUtils.clamp(Math.log(tube.tier / 0.45) / 3.57, 0, 1),
             end: points[n - 1].clone().normalize(),
             isFar,
             isNear: false,
             cooldown: 0,
-        });
+        };
     });
 
     return {
-        vertices,
-        indices,
-        lineEnds,
+        tubes: built,
         lines,
         farCount: lines.filter((line) => line.isFar).length,
     };

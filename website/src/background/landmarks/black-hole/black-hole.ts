@@ -1,5 +1,4 @@
 import {
-    BufferAttribute,
     BufferGeometry,
     Color,
     CustomBlending,
@@ -7,8 +6,6 @@ import {
     Group,
     InstancedBufferGeometry,
     InstancedInterleavedBuffer,
-    InterleavedBuffer,
-    InterleavedBufferAttribute,
     MathUtils,
     Matrix4,
     Mesh,
@@ -33,7 +30,6 @@ import {
     dot,
     exp,
     float,
-    floor,
     fract,
     fwidth,
     instancedBufferAttribute,
@@ -61,16 +57,10 @@ import type {
     LandmarkFrame,
     SceneColorNode,
 } from "#/background/space/landmark.ts";
+import { ACCENT_SHARE, accentAt, glowOutput, hueColor } from "#/background/space/shading.ts";
+import { tubeGeometry as createTubeGeometry } from "#/background/space/tube.ts";
 import type { SingNote } from "#/background/types.ts";
-import {
-    ACCENT_SHARE,
-    STRIDE,
-    buildStreamlines,
-    flowDir,
-    flowSide,
-    flowUp,
-    type Line,
-} from "./field.ts";
+import { buildStreamlines, flowDir, flowSide, flowUp, type Line } from "./field.ts";
 
 const TAU = Math.PI * 2;
 /** Pulse speed along the lines, world units per second. */
@@ -84,26 +74,6 @@ const VOID_PATCHES = [
     [-600, -2900, 1000],
     [3400, 1700, 1200],
 ] as const;
-
-/** Premultiplied output: alpha 0 adds light on dark themes, alpha `a` blends normally on light ones. */
-function glowOutput(
-    material: MeshBasicNodeMaterial,
-    colorNode: Node<"vec3">,
-    intensity: Node<"float">,
-    light: Node<"float">,
-    lift = 2.2,
-) {
-    const alpha = clamp(intensity.mul(lift), 0, 1);
-    material.colorNode = mix(colorNode.mul(intensity), colorNode.mul(alpha), light);
-    material.opacityNode = alpha.mul(light);
-    material.transparent = true;
-    material.depthWrite = false;
-    material.blending = CustomBlending;
-    material.blendSrc = OneFactor;
-    material.blendDst = OneMinusSrcAlphaFactor;
-    material.blendSrcAlpha = OneFactor;
-    material.blendDstAlpha = OneMinusSrcAlphaFactor;
-}
 
 /**
  * The black hole: lines flow past and into a hole whose place and size come from the page's hole
@@ -130,6 +100,10 @@ export function createBlackHole({
         fogStart: S.fogStart,
         fogK: uniform(1 / 2400),
         energy: uniform(0),
+        /** Where the near-camera fade of the lines ends, in world units from the camera. */
+        nearEnd: uniform(900),
+        /** Line intensity factor, below 1 while another landmark is active. */
+        recede: uniform(1),
         lineSat: uniform(1),
         lineGlow: uniform(1),
         pulseShape: uniform(2.5),
@@ -152,10 +126,6 @@ export function createBlackHole({
         singGlow: uniform(look.singGlow),
         singDecay: uniform(look.singDecay),
     };
-    const ACC = S.acc;
-    const PAL = S.pal;
-    const accNodes = ACC.map((u) => u.rgb);
-    const palNodes = PAL.map((u) => u.rgb);
     const VOIDS = VOID_PATCHES.map(() => uniform(new Vector4(1e6, 0, 0, 1)));
     const uRB = uniform(1.78);
     const uRW = uniform(0.66);
@@ -268,21 +238,7 @@ export function createBlackHole({
         const h = vE.x;
         const hit = vE.y;
         const len = vE.z;
-        const isAccent = h.lessThan(ACCENT_SHARE);
-        const ai = floor(h.div(ACCENT_SHARE).mul(U.nAcc));
-        const pi = floor(
-            h
-                .sub(ACCENT_SHARE)
-                .div(1 - ACCENT_SHARE)
-                .mul(PAL.length),
-        );
-        let accC: Node<"vec3"> = accNodes[3];
-        for (let k = 2; k >= 0; k--) accC = select(ai.lessThan(k + 0.5), accNodes[k], accC);
-        let palC: Node<"vec3"> = palNodes[palNodes.length - 1];
-        for (let k = palNodes.length - 2; k >= 0; k--) {
-            palC = select(pi.lessThan(k + 0.5), palNodes[k], palC);
-        }
-        const lc = select(isAccent, accC, palC);
+        const lc = hueColor(h, S);
 
         const u = s.sub(U.phase).sub(vD.z).div(vD.w);
         const wv = cos(u.mul(TAU)).mul(0.5).add(0.5);
@@ -311,7 +267,7 @@ export function createBlackHole({
         )
             .mul(0.82)
             .add(mix(float(0.18), float(0.32), U.light));
-        const nearF = smoothstep(float(160), float(900), depth);
+        const nearF = smoothstep(float(160), U.nearEnd, depth);
         const endF = smoothstep(float(0), float(2600), s).mul(
             mix(smoothstep(float(0), float(900), len.sub(s)), float(1), hit),
         );
@@ -319,7 +275,7 @@ export function createBlackHole({
         VOIDS.forEach((v) => {
             vf = vf.mul(smoothstep(float(0.3), float(1), length(vC.sub(v.xyz)).div(v.w)));
         });
-        const env = shade.mul(prof).mul(fog).mul(nearF).mul(endF).mul(vf).mul(vanish);
+        const env = shade.mul(prof).mul(fog).mul(nearF).mul(endF).mul(vf).mul(vanish).mul(U.recede);
         const bI = mix(float(0.04), float(0.24), sat);
         const cI = p.mul(mix(float(0.5), float(2.6), sat));
         const slow = cos(
@@ -427,26 +383,6 @@ export function createBlackHole({
     halo.renderOrder = 1;
     holeGroup.add(halo);
 
-    /** Blends the accents around the ring by phase `ph` (0..nAcc). */
-    function accentAt(ph: Node<"float">): Node<"vec3"> {
-        const seg = (k: number) =>
-            smoothstep(
-                float(0.62),
-                float(0.38),
-                abs(ph.sub(k))
-                    .min(abs(ph.sub(k).sub(U.nAcc)))
-                    .min(abs(ph.sub(k).add(U.nAcc))),
-            );
-        let mixed: Node<"vec3"> = accNodes[0].mul(seg(0));
-        let weight: Node<"float"> = seg(0);
-        for (let k = 1; k < 4; k++) {
-            const wk = seg(k).mul(select(U.nAcc.greaterThan(k - 0.5), float(1), float(0)));
-            mixed = mixed.add(accNodes[k].mul(wk));
-            weight = weight.add(wk);
-        }
-        return mixed.div(weight.add(1e-4));
-    }
-
     const ringGroup = new Group();
     holeGroup.add(ringGroup);
     const ringMat = new MeshBasicNodeMaterial({ side: DoubleSide });
@@ -537,7 +473,7 @@ export function createBlackHole({
                 .sub(tt.mul(0.035))
                 .add(sin(ru.mul(TAU * 3).add(tt.mul(0.4))).mul(0.06)),
         ).mul(U.nAcc);
-        const accMix = accentAt(ph);
+        const accMix = accentAt(ph, S);
         const lm = dot(accMix, vec3(0.299, 0.587, 0.114));
         const vividAcc = max(mix(vec3(lm, lm, lm), accMix, 1.35), 0);
         const hot = pow(clump.mul(0.6).add(strand.mul(0.4)), 2);
@@ -577,7 +513,7 @@ export function createBlackHole({
         const gust = sin(ha.mul(TAU * 3).sub(tt.mul(0.6).mul(U.wind)))
             .mul(0.35)
             .add(0.65);
-        const hc = accentAt(fract(ha.sub(tt.mul(0.035))).mul(U.nAcc));
+        const hc = accentAt(fract(ha.sub(tt.mul(0.035))).mul(U.nAcc), S);
         glowOutput(
             hazeMat,
             hc,
@@ -674,7 +610,7 @@ export function createBlackHole({
         );
         glowOutput(
             particleMat,
-            mix(accentAt(vb.y.mul(U.nAcc)), vec3(1, 1, 1), exp(d.mul(d).mul(-30)).mul(0.5)),
+            mix(accentAt(vb.y.mul(U.nAcc), S), vec3(1, 1, 1), exp(d.mul(d).mul(-30)).mul(0.5)),
             exp(d.mul(d).mul(-6)).mul(tw).mul(fade).mul(ptFade).mul(1.4),
             U.light,
         );
@@ -755,6 +691,8 @@ export function createBlackHole({
         );
     }
 
+    /** The streamlines are traced around the origin, so the hole stays there. */
+    const position = new Vector3();
     let tubeGeometry = new BufferGeometry();
     let tubes: Mesh | undefined;
     let lines: Line[] = [];
@@ -763,8 +701,6 @@ export function createBlackHole({
     let drawnCount = -1;
     /** World radius the streamlines were built around. */
     let buildR = 100;
-    /** False until the camera has a position to measure motion from. */
-    let hasCameraPosition = false;
 
     function build(R: number, small: boolean) {
         isSmall = small;
@@ -775,32 +711,28 @@ export function createBlackHole({
         ringGroup.scale.setScalar(buildR);
         const built = buildStreamlines(R, isSmall ? 120 : 400, isSmall);
         lines = built.lines;
-        lineEnds = built.lineEnds;
+        lineEnds = built.tubes.tubeEnds;
         farCount = built.farCount;
-        const buffer = new InterleavedBuffer(built.vertices, STRIDE);
-        const geometry = new BufferGeometry();
-        geometry.setAttribute("center", new InterleavedBufferAttribute(buffer, 3, 0));
-        geometry.setAttribute("nrm", new InterleavedBufferAttribute(buffer, 3, 3));
-        geometry.setAttribute("dat", new InterleavedBufferAttribute(buffer, 4, 6));
-        geometry.setAttribute("ext", new InterleavedBufferAttribute(buffer, 4, 10));
-        geometry.setAttribute("position", new InterleavedBufferAttribute(buffer, 3, 0));
-        geometry.setIndex(new BufferAttribute(built.indices, 1));
+        const geometry = createTubeGeometry(built.tubes);
+        // The disk drag and camera shakes move lines a little off their traced path.
+        geometry.computeBoundingSphere();
+        if (geometry.boundingSphere) geometry.boundingSphere.radius += R * 2;
         tubeGeometry.dispose();
         tubeGeometry = geometry;
         if (tubes) {
             tubes.geometry = geometry;
         } else {
             tubes = new Mesh(geometry, tubeMat);
-            tubes.frustumCulled = false;
             tubes.renderOrder = 2;
             scene.add(tubes);
         }
         drawnCount = -1;
-        hasCameraPosition = false;
     }
 
     let phase = 0;
     let energy = 0;
+    /** 1 while the hole is the active landmark, 0 while another is; eased between. */
+    let presence = 1;
     let tintAmount = 0;
     const tint = new Color();
     const lineTint = new Color();
@@ -841,7 +773,10 @@ export function createBlackHole({
     function spawnFlash(line: Line) {
         flashIndex = (flashIndex + 1) % FLASH_COUNT;
         const flash = flashes[flashIndex];
-        flash.position.copy(line.end).multiplyScalar(buildR * 1.01);
+        flash.position
+            .copy(line.end)
+            .multiplyScalar(buildR * 1.01)
+            .add(position);
         flash.max = flash.life = 0.45 + Math.random() * 0.35;
         flash.size = buildR * (line.hue < ACCENT_SHARE ? 0.2 : 0.14) * (0.8 + Math.random() * 0.5);
         lineColor(line.hue, flash.color);
@@ -891,7 +826,17 @@ export function createBlackHole({
         return Math.sqrt(best);
     }
 
-    function update({ dt, now, distance, restDistance, cameraSpeed, W, H }: LandmarkFrame) {
+    function update({
+        dt,
+        now,
+        distance,
+        viewDistance,
+        cameraSpeed,
+        cut,
+        isActive,
+        W,
+        H,
+    }: LandmarkFrame) {
         const current = currentColors();
         if (!current) return;
         const visibleCount = Math.max(
@@ -933,14 +878,16 @@ export function createBlackHole({
         uDiskPull.value = look.diskPull;
         uDiskGlow.value = look.diskLineGlow;
 
-        ndc.set(0, 0, 0).project(camera);
+        ndc.copy(position).applyMatrix4(camera.matrixWorldInverse);
+        const isInFront = ndc.z < 0;
+        ndc.copy(position).project(camera);
         uCenter.value.set((ndc.x + 1) / 2, (1 - ndc.y) / 2);
         uAspect.value = W / H;
         uRs.value =
             (buildR * breathScale * (H / 2)) /
             (Math.tan(MathUtils.degToRad(camera.fov / 2)) * distance) /
             H;
-        uLens.value = look.lens;
+        uLens.value = isInFront ? look.lens : 0;
         U.ringGlow.value = look.ringGlow;
         U.absorb.value = look.absorb;
         U.depth.value = look.atomDepth;
@@ -963,7 +910,7 @@ export function createBlackHole({
         });
 
         if (!isStill) {
-            toCamera.copy(camera.position).normalize();
+            toCamera.subVectors(camera.position, position).normalize();
             for (let i = farCount; i < farCount + drawnCount; i++) {
                 const line = lines[i];
                 if (!line?.hit) continue;
@@ -981,17 +928,18 @@ export function createBlackHole({
                 line.lastPulse = pulse;
             }
 
-            if (!hasCameraPosition) previousCamera.copy(camera.position);
+            if (cut) previousCamera.copy(camera.position);
             cameraVelocity.subVectors(camera.position, previousCamera);
             previousCamera.copy(camera.position);
-            if (cameraVelocity.lengthSq() > 1e-6) {
-                const threshold = distance * look.camBody;
+            // A cut only records which lines are near, so the new view starts without a burst of shakes.
+            if (cut || cameraVelocity.lengthSq() > 1e-6) {
+                const threshold = viewDistance * look.camBody;
                 for (let i = farCount; i < farCount + drawnCount; i++) {
                     const line = lines[i];
                     if (!line) continue;
                     line.cooldown -= dt;
                     const isNear = distanceToLine(line, camera.position, closest) < threshold;
-                    if (isNear && !line.isNear && line.cooldown <= 0) {
+                    if (!cut && isNear && !line.isNear && line.cooldown <= 0) {
                         line.cooldown = 0.5;
                         cameraDirection.copy(cameraVelocity).normalize();
                         const first = line.samples[0];
@@ -1005,7 +953,7 @@ export function createBlackHole({
                         }
                         cameraDirection.normalize();
                         const strength = Math.min(1.6, 0.5 + cameraSpeed * 1.5);
-                        shakeLine(line, closest, cameraDirection, distance, strength);
+                        shakeLine(line, closest, cameraDirection, viewDistance, strength);
                         emit({
                             type: "absorb",
                             hue: line.hue,
@@ -1016,11 +964,16 @@ export function createBlackHole({
                     line.isNear = isNear;
                 }
             }
-            hasCameraPosition = true;
         }
         energy = Math.min(1.6, energy * Math.exp(-dt * 1.4));
         tintAmount *= Math.exp(-dt * 0.35);
         U.energy.value = energy;
+        presence =
+            cut || isStill
+                ? Number(isActive)
+                : presence + (Number(isActive) - presence) * (1 - Math.exp(-dt * 2));
+        U.nearEnd.value = 900 + (1 - presence) * viewDistance * 0.5;
+        U.recede.value = 1 - (1 - presence) * MathUtils.lerp(0.25, 0.7, S.light.value);
         U.rim.value.copy(current.fg).lerp(tint, Math.min(1, tintAmount * 1.8));
         flashes.forEach((flash, i) => {
             if (flash.life > 0) flash.life -= dt;
@@ -1040,7 +993,6 @@ export function createBlackHole({
             );
         });
         flashBuffer.needsUpdate = true;
-        if (!isStill) emit({ type: "proximity", distance: distance / restDistance, energy });
     }
 
     let kickAt = -Infinity;
@@ -1055,7 +1007,7 @@ export function createBlackHole({
         line.samples.forEach((point, k) => {
             const arc = line.sampleArcs[k] ?? 0;
             if (arc < 2800 || (!line.hit && arc > line.length - 1000)) return;
-            if (point.length() < buildR * 1.8) return;
+            if (point.distanceTo(position) < buildR * 1.8) return;
             viewPoint.copy(point).applyMatrix4(camera.matrixWorldInverse);
             const z = -viewPoint.z;
             if (z < Math.max(300, viewDistance * 0.25) || z > viewDistance * 5) return;
@@ -1081,7 +1033,7 @@ export function createBlackHole({
     function sing({ pitch, delay, duration, amp }: SingNote) {
         if (isStill || !lines.length) return;
         camera.updateMatrixWorld();
-        const viewDistance = camera.position.length();
+        const viewDistance = camera.position.distanceTo(position);
         const now = U.time.value;
         // Seats are re-ranked at most four times a second, so one pitch keeps its line while the view holds.
         if (now - seatsAt > 0.25 || !seats.length) {
@@ -1109,6 +1061,13 @@ export function createBlackHole({
     }
 
     return {
+        position,
+        get radius() {
+            return buildR;
+        },
+        get energy() {
+            return energy;
+        },
         build,
         lens,
         update,
@@ -1128,6 +1087,15 @@ export function createBlackHole({
                 particleMat,
                 flashMat,
             ].forEach((material) => material.dispose());
+            [
+                tubeGeometry,
+                sphere.geometry,
+                halo.geometry,
+                ring.geometry,
+                haze.geometry,
+                particleGeometry,
+                flashGeometry,
+            ].forEach((geometry) => geometry.dispose());
         },
     };
 }
