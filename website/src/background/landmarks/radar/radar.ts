@@ -336,6 +336,9 @@ export function createRadar(
         get radius() {
             return unit;
         },
+        get extent() {
+            return unit * REACH;
+        },
         build,
         update() {
             const current = currentColors();

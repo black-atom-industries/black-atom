@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type * as Theme from "@black-atom/core";
 import { useReducedMotion } from "#/hooks/use-reduced-motion.ts";
 import { useRouteBackgroundState } from "#/hooks/use-route-background-state.ts";
+import { backgroundStateKey } from "#/lib/route-background-state.ts";
 import { themeToCustomProperties } from "#/lib/theme-vars.ts";
 import type { BackgroundController } from "./controller.ts";
 import { connectBackground } from "./handle.ts";
@@ -42,5 +43,14 @@ export function BackgroundLayer({ theme }: { theme: Theme.Definition }) {
         controller?.update({ state, theme: sceneTheme, isStill });
     }, [controller, state, sceneTheme, isStill]);
 
-    return <div ref={hostRef} className={styles.layer} data-state={state} aria-hidden />;
+    return (
+        <div
+            ref={hostRef}
+            data-component="BackgroundLayer"
+            className={styles.layer}
+            data-state={backgroundStateKey(state)}
+            data-mode={state.mode}
+            aria-hidden
+        />
+    );
 }

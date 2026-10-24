@@ -31,7 +31,7 @@ export function createSpaceRenderer(createScene: CreateScene): BackgroundRendere
     const events = createEmitter();
     let scene: SpaceScene | undefined;
     let theme: SceneTheme | undefined;
-    let state: BackgroundState = "full";
+    let state: BackgroundState = { view: "hole", mode: "full" };
     let isDisposed = false;
     let isPaused = false;
 

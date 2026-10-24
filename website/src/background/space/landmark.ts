@@ -36,6 +36,8 @@ export function createSpaceUniforms() {
         camU: uniform(new Vector3(0, 1, 0)),
         /** Line width factor that keeps tubes their screen width while the camera pulls back. */
         thick: uniform(1),
+        /** Camera distance as a multiple of the resting distance; `thick` follows it up to a limit. */
+        zoom: uniform(1),
         focus: uniform(1200),
         fogStart: uniform(1200),
     };
@@ -66,8 +68,8 @@ export interface LandmarkFrame {
     cameraSpeed: number;
     /** The camera jumped this frame; its move since the last frame is no motion. */
     cut: boolean;
-    /** This landmark is the one the camera targets. */
-    isActive: boolean;
+    /** How much this landmark is the subject of the shot: 1 on its own shot, 0 on another's. */
+    presence: number;
     isSmall: boolean;
     W: number;
     H: number;
@@ -79,6 +81,8 @@ export interface Landmark {
     readonly position: Vector3;
     /** World radius a shot frames; set by `build`. */
     readonly radius: number;
+    /** World radius around `position` that holds everything the landmark draws; set by `build`. */
+    readonly extent: number;
     /** Energy (0..1.6) the `proximity` event carries while this landmark is active. */
     readonly energy?: number;
     /** Builds the geometry around world radius `R`, once per viewport size. */

@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 async function sceneCanvas(page: Page) {
-    const canvas = page.locator("[data-state] canvas");
+    const canvas = page.locator('[data-component="BackgroundLayer"] canvas');
     await expect(canvas).toHaveCount(1);
     return canvas;
 }
@@ -15,7 +15,7 @@ async function sceneCanvas(page: Page) {
 test("moving between black-hole pages keeps the same canvas", async ({ page }) => {
     await page.goto("/", { waitUntil: "networkidle" });
     await sceneCanvas(page);
-    const first = await page.locator("[data-state] canvas").elementHandle();
+    const first = await page.locator('[data-component="BackgroundLayer"] canvas').elementHandle();
 
     await page
         .getByRole("navigation", { name: "Main" })
@@ -27,12 +27,16 @@ test("moving between black-hole pages keeps the same canvas", async ({ page }) =
         .getByRole("link", { name: "Changelog" })
         .click();
     await expect(page).toHaveURL(/\/changelog$/);
-    await expect(page.locator("[data-state]")).toHaveAttribute("data-state", "receded");
+    await expect(page.locator('[data-component="BackgroundLayer"]')).toHaveAttribute(
+        "data-state",
+        "wide",
+    );
 
     await sceneCanvas(page);
     expect(
         await page.evaluate(
-            (canvas) => canvas === document.querySelector("[data-state] canvas"),
+            (canvas) =>
+                canvas === document.querySelector('[data-component="BackgroundLayer"] canvas'),
             first,
         ),
     ).toBe(true);
@@ -46,7 +50,10 @@ test("a product page runs exactly one scene", async ({ page }) => {
         .getByRole("link", { name: /iter\.nvim/ })
         .click();
     await expect(page).toHaveURL(/\/iter$/);
-    await expect(page.locator("[data-state]")).toHaveAttribute("data-state", "iter");
+    await expect(page.locator('[data-component="BackgroundLayer"]')).toHaveAttribute(
+        "data-state",
+        "iter",
+    );
     await expect(page.locator("canvas")).toHaveCount(1);
 });
 

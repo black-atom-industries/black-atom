@@ -1,31 +1,56 @@
 import { describe, expect, it } from "vitest";
-import { backgroundStateFor } from "./route-background-state.ts";
+import { backgroundStateFor, backgroundStateKey, productParam } from "./route-background-state.ts";
+
+function keyFor(pathname: string, product?: string) {
+    return backgroundStateKey(backgroundStateFor(pathname, product));
+}
 
 describe("backgroundStateFor", () => {
     it.each([
-        ["/", "full"],
-        ["/black-atom", "full"],
-        ["/black-atom/livery", "full"],
+        ["/", "hole"],
+        ["/black-atom", "hole"],
+        ["/black-atom/livery", "hole"],
+        ["/black-atom/themes/jpn-koyo-dark", "hole-receded"],
         ["/iter", "iter"],
         ["/radar", "radar"],
-    ])("%s shows %s", (pathname, state) => {
-        expect(backgroundStateFor(pathname)).toBe(state);
+        ["/changelog", "wide"],
+        ["/about", "wide"],
+        ["/impressum", "wide-receded"],
+        ["/privacy", "wide-receded"],
+    ])("%s shows %s", (pathname, key) => {
+        expect(keyFor(pathname)).toBe(key);
     });
 
-    it.each(["/black-atom/themes/jpn-koyo-dark", "/changelog", "/about", "/impressum", "/privacy"])(
-        "%s shows the receded black hole",
-        (pathname) => {
-            expect(backgroundStateFor(pathname)).toBe("receded");
-        },
-    );
+    it.each([
+        ["radar", "wide-radar"],
+        ["iter", "wide-iter"],
+        ["black-atom", "wide-hole"],
+        ["livery", "wide-hole"],
+    ])("the changelog filtered to %s drifts the wide shot to %s", (product, key) => {
+        expect(keyFor("/changelog", product)).toBe(key);
+    });
+
+    it("ignores the product param outside the changelog and unknown products", () => {
+        expect(keyFor("/about", "radar")).toBe("wide");
+        expect(keyFor("/changelog", "emacs")).toBe("wide");
+    });
 
     it("ignores a trailing slash", () => {
-        expect(backgroundStateFor("/black-atom/")).toBe("full");
-        expect(backgroundStateFor("/iter/")).toBe("iter");
+        expect(keyFor("/black-atom/")).toBe("hole");
+        expect(keyFor("/iter/")).toBe("iter");
     });
 
-    it("recedes on unknown paths, so a 404 page stays quiet", () => {
-        expect(backgroundStateFor("/nope")).toBe("receded");
-        expect(backgroundStateFor("/iter/nope")).toBe("receded");
+    it("recedes the wide shot on unknown paths, so a 404 page stays quiet", () => {
+        expect(keyFor("/nope")).toBe("wide-receded");
+        expect(keyFor("/iter/nope")).toBe("wide-receded");
+    });
+});
+
+describe("productParam", () => {
+    it("reads a known product and drops anything else", () => {
+        expect(productParam({ product: "radar" })).toBe("radar");
+        expect(productParam({ product: "emacs" })).toBeUndefined();
+        expect(productParam({})).toBeUndefined();
+        expect(productParam(undefined)).toBeUndefined();
     });
 });

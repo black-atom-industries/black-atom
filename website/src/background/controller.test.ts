@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { backgroundStateFor, backgroundStateKey } from "#/lib/route-background-state.ts";
 import type { BackgroundRenderer, SceneTheme } from "./types.ts";
 
 interface Stub extends BackgroundRenderer {
@@ -23,7 +24,7 @@ function createStub(): Stub {
         },
         finishStart: () => settle?.resolve(),
         failStart: () => settle?.reject(new Error("no GPU")),
-        setState: (state) => log.push(`state:${state}`),
+        setState: (state) => log.push(`state:${backgroundStateKey(state)}`),
         setTheme: () => log.push("theme"),
         sing: () => log.push("sing"),
         pulse: () => log.push("pulse"),
@@ -41,6 +42,10 @@ const { createBackgroundController } = await import("./controller.ts");
 
 const theme: SceneTheme = { vars: {} as SceneTheme["vars"], appearance: "dark" };
 const host = {} as HTMLElement;
+const full = backgroundStateFor("/");
+const receded = backgroundStateFor("/black-atom/themes/jpn-koyo-dark");
+const iter = backgroundStateFor("/iter");
+const radar = backgroundStateFor("/radar");
 
 async function settled() {
     await new Promise((resolve) => setTimeout(resolve, 0));
@@ -64,31 +69,31 @@ afterEach(() => {
 describe("createBackgroundController", () => {
     it("keeps one space renderer across every state instead of remounting", async () => {
         const controller = createBackgroundController(host);
-        controller.update({ state: "full", theme, isStill: false });
+        controller.update({ state: full, theme, isStill: false });
         await settled();
-        controller.update({ state: "receded", theme, isStill: false });
-        controller.update({ state: "iter", theme, isStill: false });
-        controller.update({ state: "radar", theme, isStill: false });
-        controller.update({ state: "full", theme, isStill: false });
+        controller.update({ state: receded, theme, isStill: false });
+        controller.update({ state: iter, theme, isStill: false });
+        controller.update({ state: radar, theme, isStill: false });
+        controller.update({ state: full, theme, isStill: false });
 
         expect(created).toHaveLength(1);
         expect(created[0]?.log).toEqual([
-            "state:full",
+            "state:hole",
             "theme",
             "start",
-            "state:receded",
+            "state:hole-receded",
             "state:iter",
             "state:radar",
-            "state:full",
+            "state:hole",
         ]);
     });
 
     it("disposes the renderer before a still one takes over", async () => {
         const controller = createBackgroundController(host);
-        controller.update({ state: "full", theme, isStill: false });
+        controller.update({ state: full, theme, isStill: false });
         await settled();
         created[0]?.finishStart();
-        controller.update({ state: "full", theme, isStill: true });
+        controller.update({ state: full, theme, isStill: true });
         await settled();
 
         expect(created).toHaveLength(2);
@@ -103,8 +108,8 @@ describe("createBackgroundController", () => {
             host,
             () => new Promise<BackgroundRenderer>((resolve) => loads.push(resolve)),
         );
-        controller.update({ state: "full", theme, isStill: false });
-        controller.update({ state: "full", theme, isStill: true });
+        controller.update({ state: full, theme, isStill: false });
+        controller.update({ state: full, theme, isStill: true });
         const [first, second] = [createStub(), createStub()];
         loads[1]?.(second);
         loads[0]?.(first);
@@ -116,21 +121,21 @@ describe("createBackgroundController", () => {
 
     it("disposes a renderer that is still starting", async () => {
         const controller = createBackgroundController(host);
-        controller.update({ state: "full", theme, isStill: false });
+        controller.update({ state: full, theme, isStill: false });
         await settled();
         controller.dispose();
 
-        expect(created[0]?.log).toEqual(["state:full", "theme", "start", "dispose"]);
+        expect(created[0]?.log).toEqual(["state:hole", "theme", "start", "dispose"]);
     });
 
     it("stays on the theme background for the session after a scene fails to start", async () => {
         const controller = createBackgroundController(host);
-        controller.update({ state: "full", theme, isStill: false });
+        controller.update({ state: full, theme, isStill: false });
         await settled();
         created[0]?.failStart();
         await settled();
-        controller.update({ state: "receded", theme, isStill: false });
-        controller.update({ state: "full", theme, isStill: false });
+        controller.update({ state: receded, theme, isStill: false });
+        controller.update({ state: full, theme, isStill: false });
         await settled();
 
         expect(created).toHaveLength(1);
@@ -140,7 +145,7 @@ describe("createBackgroundController", () => {
 
     it("passes notes and kicks to the running renderer", async () => {
         const controller = createBackgroundController(host);
-        controller.update({ state: "full", theme, isStill: false });
+        controller.update({ state: full, theme, isStill: false });
         await settled();
         controller.sing({ pitch: 60, delay: 0, duration: 1, amp: 1 });
         controller.pulse(1);

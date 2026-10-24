@@ -11,17 +11,21 @@ import type { SpaceUniforms } from "./landmark.ts";
 /** Share of hues (0..1) coloured by the theme accents; the rest take the palette. */
 export const ACCENT_SHARE = 0.58;
 
-/** Premultiplied output: alpha 0 adds light on dark themes, alpha `a` blends normally on light ones. */
+/**
+ * Premultiplied output: alpha 0 adds light on dark themes, alpha `a` blends normally on light ones.
+ * `fade` scales the result after the light-theme alpha saturates, so it thins lines on both.
+ */
 export function glowOutput(
     material: MeshBasicNodeMaterial,
     colorNode: Node<"vec3">,
     intensity: Node<"float">,
     light: Node<"float">,
     lift = 2.2,
+    fade: Node<"float"> = float(1),
 ) {
     const alpha = clamp(intensity.mul(lift), 0, 1);
-    material.colorNode = mix(colorNode.mul(intensity), colorNode.mul(alpha), light);
-    material.opacityNode = alpha.mul(light);
+    material.colorNode = mix(colorNode.mul(intensity), colorNode.mul(alpha), light).mul(fade);
+    material.opacityNode = alpha.mul(light).mul(fade);
     material.transparent = true;
     material.depthWrite = false;
     material.blending = CustomBlending;

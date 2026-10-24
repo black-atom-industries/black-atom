@@ -5,7 +5,7 @@
     pointer-events: none;
     transition: opacity 1.2s ease;
 
-    &[data-state="receded"] {
+    &[data-mode="receded"] {
         opacity: 0.5;
     }
 

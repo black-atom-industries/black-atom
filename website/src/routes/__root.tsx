@@ -71,8 +71,8 @@ function RootLayout() {
     const { theme, setTheme } = useTheme();
     const pathname = useLocation({ select: (location) => location.pathname });
     const backgroundState = useRouteBackgroundState();
-    const isBlackHole = backgroundState === "full" || backgroundState === "receded";
-    const sound = useSound({ isAvailable: isBlackHole, theme });
+    const isSoundAvailable = backgroundState.view === "hole" || backgroundState.view === "wide";
+    const sound = useSound({ isAvailable: isSoundAvailable, theme });
 
     return (
         <>
@@ -163,9 +163,9 @@ function RootLayout() {
                         }}
                     />
                 }
-                soundLabel={isBlackHole ? "Sound" : undefined}
+                soundLabel={isSoundAvailable ? "Sound" : undefined}
                 soundPanel={
-                    isBlackHole ? (
+                    isSoundAvailable ? (
                         <SoundPanel settings={sound.settings} onChange={sound.onChange} />
                     ) : undefined
                 }

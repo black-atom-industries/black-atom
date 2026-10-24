@@ -336,6 +336,9 @@ export function createIter(
         get radius() {
             return ringR;
         },
+        get extent() {
+            return ringR * Math.max(...GUIDES);
+        },
         build,
         update,
         dispose() {

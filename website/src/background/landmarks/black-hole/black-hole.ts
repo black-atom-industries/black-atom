@@ -104,6 +104,8 @@ export function createBlackHole({
         nearEnd: uniform(900),
         /** Line intensity factor, below 1 while another landmark is active. */
         recede: uniform(1),
+        /** Line width factor, below 1 on light themes while another landmark is active. */
+        thin: uniform(1),
         lineSat: uniform(1),
         lineGlow: uniform(1),
         pulseShape: uniform(2.5),
@@ -217,6 +219,7 @@ export function createBlackHole({
             N.mul(
                 DA.y
                     .mul(U.thick)
+                    .mul(U.thin)
                     .mul(cocS.mul(3.2).add(1))
                     .mul(
                         sg
@@ -275,7 +278,7 @@ export function createBlackHole({
         VOIDS.forEach((v) => {
             vf = vf.mul(smoothstep(float(0.3), float(1), length(vC.sub(v.xyz)).div(v.w)));
         });
-        const env = shade.mul(prof).mul(fog).mul(nearF).mul(endF).mul(vf).mul(vanish).mul(U.recede);
+        const env = shade.mul(prof).mul(fog).mul(nearF).mul(endF).mul(vf).mul(vanish);
         const bI = mix(float(0.04), float(0.24), sat);
         const cI = p.mul(mix(float(0.5), float(2.6), sat));
         const slow = cos(
@@ -318,6 +321,7 @@ export function createBlackHole({
             aI.mul(env).mul(vSg.mul(0.6).add(1)),
             U.light,
             4.2,
+            U.recede,
         );
     }
 
@@ -833,7 +837,7 @@ export function createBlackHole({
         viewDistance,
         cameraSpeed,
         cut,
-        isActive,
+        presence: wanted,
         W,
         H,
     }: LandmarkFrame) {
@@ -969,11 +973,14 @@ export function createBlackHole({
         tintAmount *= Math.exp(-dt * 0.35);
         U.energy.value = energy;
         presence =
-            cut || isStill
-                ? Number(isActive)
-                : presence + (Number(isActive) - presence) * (1 - Math.exp(-dt * 2));
-        U.nearEnd.value = 900 + (1 - presence) * viewDistance * 0.5;
+            cut || isStill ? wanted : presence + (wanted - presence) * (1 - Math.exp(-dt * 2));
+        // Pulled back well past the receded framing, as on the wide shot, depth of field and the near fade scale along.
+        const zoom = Math.max(1, S.zoom.value - 1);
+        U.focusIn.value = 260 * zoom;
+        U.focusR.value = 900 * zoom;
+        U.nearEnd.value = 900 * zoom + (1 - presence) * viewDistance * 0.5;
         U.recede.value = 1 - (1 - presence) * MathUtils.lerp(0.25, 0.7, S.light.value);
+        U.thin.value = 1 - (1 - presence) * 0.45 * S.light.value;
         U.rim.value.copy(current.fg).lerp(tint, Math.min(1, tintAmount * 1.8));
         flashes.forEach((flash, i) => {
             if (flash.life > 0) flash.life -= dt;
@@ -1064,6 +1071,9 @@ export function createBlackHole({
         position,
         get radius() {
             return buildR;
+        },
+        get extent() {
+            return buildR * (look.diskRadius + look.diskWidth);
         },
         get energy() {
             return energy;

@@ -6,7 +6,6 @@ import { Button } from "#/components/button/index.ts";
 import { Caption } from "#/components/caption/index.ts";
 import { Heading } from "#/components/heading/index.ts";
 import { RichText } from "#/components/rich-text/index.ts";
-import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
@@ -57,7 +56,6 @@ function ChangelogPage() {
     return (
         <main>
             <Section variant="page">
-                <SceneAnchor variant="far-hole" />
                 <Stack direction="row" gap="md" align="baseline">
                     <Caption tone="accent">··</Caption>
                     <Caption tone="subtle">Everything that shipped</Caption>

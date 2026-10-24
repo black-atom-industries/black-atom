@@ -7,7 +7,6 @@ import { PageGrid } from "#/components/page-grid/index.ts";
 import { PlaceholderSlot } from "#/components/placeholder-slot/index.ts";
 import { RichText } from "#/components/rich-text/index.ts";
 import { Rule } from "#/components/rule/index.ts";
-import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
@@ -28,7 +27,6 @@ function AboutPage() {
     return (
         <main>
             <Section variant="page">
-                <SceneAnchor variant="far-hole" />
                 <PageGrid columns="two" align="start">
                     <Stack gap="lg">
                         <Stack direction="row" gap="md" align="baseline">

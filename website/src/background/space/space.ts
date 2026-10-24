@@ -1,4 +1,11 @@
-import { Color, PerspectiveCamera, RenderPipeline, Scene, WebGPURenderer } from "three/webgpu";
+import {
+    Color,
+    PerspectiveCamera,
+    RenderPipeline,
+    Scene,
+    Vector3,
+    WebGPURenderer,
+} from "three/webgpu";
 import { pass } from "three/tsl";
 import { bloom } from "three/examples/jsm/tsl/display/BloomNode.js";
 import { createGrain } from "#/background/grain.ts";
@@ -12,6 +19,7 @@ import type {
     SceneTheme,
     SingNote,
 } from "#/background/types.ts";
+import type { LandmarkKey } from "#/lib/route-background-state.ts";
 import { createCameraRig, type Shot } from "./camera-rig.ts";
 import { createSpaceRenderer, type SpaceScene } from "./renderer.ts";
 import { look as tunedLook, type Look } from "./look.ts";
@@ -32,6 +40,20 @@ const ITER_PLACE = flowDir.clone().multiplyScalar(14).addScaledVector(flowSide, 
 const RADAR_PLACE = flowDir.clone().multiplyScalar(14).addScaledVector(flowSide, -7);
 /** Degrees the camera sways either side of a product landmark, so its face never turns edge-on. */
 const PRODUCT_SWAY = 30;
+/** Share of the wide shot's target the focus drift moves toward the focused landmark. */
+const FOCUS_DRIFT = 1 / 3;
+/** Screen radius of the wide shot's frame, as a share of `min(W, H)`, full and receded. */
+const WIDE_FILL = 0.47;
+const WIDE_RECEDED_FILL = 0.32;
+/** Viewport width above which the wide shot sits right of and below the centre, clear of the text column. */
+const WIDE_BIAS_FROM = 720;
+/** The wide shot's centre on wide layouts, as shares of the viewport. */
+const WIDE_BIAS_X = 0.63;
+const WIDE_BIAS_Y = 0.57;
+/** The hole's line presence on the wide shot, where it is one of three landmarks. */
+const WIDE_HOLE_PRESENCE = 0.3;
+/** On light themes the hole's lines recede further on the wide shot, so the text stays clean. */
+const WIDE_HOLE_PRESENCE_LIGHT = 0.05;
 const HOLE_ANCHOR = '[data-scene-anchor="hole"], [data-scene-anchor="far-hole"]';
 const WIDE_ANCHOR = '[data-scene-anchor="wide"]';
 const SQUARE_ANCHOR = '[data-scene-anchor="square"]';
@@ -106,24 +128,27 @@ async function createScene(
     const hole = createBlackHole(context);
     const iter = createIter(context, ITER_PLACE);
     const radar = createRadar(context, RADAR_PLACE);
+    const byKey: Record<LandmarkKey, Landmark> = { hole, iter, radar };
     const landmarks: Landmark[] = [hole, iter, radar];
-    const holeShot: Shot = {
-        landmark: hole,
-        anchor: HOLE_ANCHOR,
-        radius: (rect) => (rect.width / 2) * look.atomSize,
-        fallback: (width, height) => ({
-            x: width * 0.7,
-            y: height * 0.35,
-            r: Math.min(width, height) * 0.17 * look.atomSize,
-        }),
-    };
-    const shots: Record<BackgroundState, Shot> = {
-        full: holeShot,
-        receded: holeShot,
+    const landmarkShots: Record<LandmarkKey, Shot> = {
+        hole: {
+            target: hole,
+            anchor: {
+                selector: HOLE_ANCHOR,
+                radius: (rect) => (rect.width / 2) * look.atomSize,
+            },
+            fallback: (width, height) => ({
+                x: width * 0.7,
+                y: height * 0.35,
+                r: Math.min(width, height) * 0.17 * look.atomSize,
+            }),
+        },
         iter: {
-            landmark: iter,
-            anchor: WIDE_ANCHOR,
-            radius: (rect) => Math.min(rect.width, rect.height) * 0.36,
+            target: iter,
+            anchor: {
+                selector: WIDE_ANCHOR,
+                radius: (rect) => Math.min(rect.width, rect.height) * 0.36,
+            },
             sway: PRODUCT_SWAY,
             fallback: (width, height) => ({
                 x: width * 0.68,
@@ -132,9 +157,11 @@ async function createScene(
             }),
         },
         radar: {
-            landmark: radar,
-            anchor: SQUARE_ANCHOR,
-            radius: (rect) => Math.min(rect.width, rect.height) * 0.45,
+            target: radar,
+            anchor: {
+                selector: SQUARE_ANCHOR,
+                radius: (rect) => Math.min(rect.width, rect.height) * 0.45,
+            },
             sway: PRODUCT_SWAY,
             fallback: (width, height) => ({
                 x: width * 0.68,
@@ -143,6 +170,70 @@ async function createScene(
             }),
         },
     };
+    /** Wide targets by focus: the centroid of the landmarks, or drifted toward one of them. */
+    const wideTargets = new Map<LandmarkKey | undefined, { position: Vector3; radius: number }>();
+    const wideShots = new Map<string, Shot>();
+
+    /** Places the wide targets around the landmarks as built, framing all three with margin. */
+    function placeWide() {
+        const centroid = new Vector3();
+        landmarks.forEach((landmark) => centroid.add(landmark.position));
+        centroid.divideScalar(landmarks.length);
+        const radius = Math.max(
+            ...landmarks.map(
+                (landmark) => landmark.position.distanceTo(centroid) + landmark.extent,
+            ),
+        );
+        const foci: (LandmarkKey | undefined)[] = [undefined, "hole", "iter", "radar"];
+        foci.forEach((focus) => {
+            const position = centroid.clone();
+            if (focus) position.lerp(byKey[focus].position, FOCUS_DRIFT);
+            const wide = wideTargets.get(focus);
+            if (wide) {
+                wide.position.copy(position);
+                wide.radius = radius;
+            } else {
+                wideTargets.set(focus, { position, radius });
+            }
+        });
+    }
+
+    function shotFor({ view, mode, focus }: BackgroundState): Shot {
+        if (view !== "wide") return landmarkShots[view];
+        const key = `${mode}|${focus ?? ""}`;
+        const cached = wideShots.get(key);
+        if (cached) return cached;
+        const fill = mode === "receded" ? WIDE_RECEDED_FILL : WIDE_FILL;
+        const target = wideTargets.get(focus) ?? { position: new Vector3(), radius: 1 };
+        wideTargets.set(focus, target);
+        const shot: Shot = {
+            target,
+            sway: PRODUCT_SWAY,
+            fallback: (width, height) => {
+                if (width <= WIDE_BIAS_FROM) {
+                    return { x: width / 2, y: height / 2, r: Math.min(width, height) * fill };
+                }
+                const x = width * WIDE_BIAS_X;
+                const y = height * WIDE_BIAS_Y;
+                // The largest circle around the biased centre that stays in the viewport, scaled like the centred fill.
+                const room = Math.min(width - x, height - y);
+                return { x, y, r: room * (fill / 0.5) };
+            },
+        };
+        wideShots.set(key, shot);
+        return shot;
+    }
+
+    let shown = state;
+
+    /** How much a landmark is the subject of the current shot, 0..1. */
+    function presenceOf(landmark: Landmark): number {
+        if (shown.view === "wide") {
+            if (landmark !== hole) return 1;
+            return WIDE_HOLE_PRESENCE + (WIDE_HOLE_PRESENCE_LIGHT - WIDE_HOLE_PRESENCE) * lightMix;
+        }
+        return byKey[shown.view] === landmark ? 1 : 0;
+    }
 
     const pipeline = new RenderPipeline(renderer);
     const scenePass = pass(scene, camera, { samples: 4 });
@@ -154,7 +245,6 @@ async function createScene(
     const listeners = new AbortController();
     const { signal } = listeners;
     const rig = createCameraRig({ camera, uniforms: S, look, isStill, emit, signal });
-    rig.setShot(shots[state]);
     let builtFor = "";
 
     function measure() {
@@ -163,6 +253,7 @@ async function createScene(
             builtFor = viewportKey;
             const R = Math.min(W, H) * WORLD_SCALE * look.atomSize;
             landmarks.forEach((landmark) => landmark.build(R, isSmall));
+            placeWide();
             rig.reset();
         }
         rig.measure();
@@ -235,6 +326,7 @@ async function createScene(
     });
 
     const grain = createGrain();
+    rig.setShot(shotFor(state), false);
     size();
     measure();
 
@@ -262,7 +354,6 @@ async function createScene(
         glow.threshold.value = 0.7 + 0.32 * lightMix;
 
         const { viewDistance, cameraSpeed, cut } = rig.update(dt);
-        const active = rig.landmark;
         background.copy(current.bg0).lerp(current.fg, 0.07 * look.lightContrast * lightMix);
         landmarks.forEach((landmark) =>
             landmark.update({
@@ -272,7 +363,7 @@ async function createScene(
                 viewDistance,
                 cameraSpeed,
                 cut,
-                isActive: landmark === active,
+                presence: presenceOf(landmark),
                 isSmall,
                 W,
                 H,
@@ -283,7 +374,7 @@ async function createScene(
             emit({
                 type: "proximity",
                 distance: viewDistance / rig.restDistance(),
-                energy: active?.energy ?? 0,
+                energy: shown.view === "hole" ? (hole.energy ?? 0) : 0,
             });
             rig.emitCamera();
         }
@@ -304,7 +395,8 @@ async function createScene(
 
     return {
         setState(next: BackgroundState) {
-            rig.setShot(shots[next]);
+            shown = next;
+            rig.setShot(shotFor(next), !isStill);
             remeasureUntil = performance.now() + 1500;
             stillFrames = 2;
             measure();

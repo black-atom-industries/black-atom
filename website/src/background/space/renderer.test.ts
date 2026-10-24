@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
+import { backgroundStateKey } from "#/lib/route-background-state.ts";
 import type { BackgroundState } from "#/background/types.ts";
 import { createSpaceRenderer, type SpaceScene } from "./renderer.ts";
 
 function createStubScene(log: string[]): SpaceScene {
     return {
-        setState: (state) => log.push(`state:${state}`),
+        setState: (state) => log.push(`state:${backgroundStateKey(state)}`),
         setTheme: () => log.push("theme"),
         sing: () => log.push("sing"),
         pulse: () => log.push("pulse"),
@@ -15,6 +16,8 @@ function createStubScene(log: string[]): SpaceScene {
 }
 
 const host = {} as HTMLElement;
+const hole: BackgroundState = { view: "hole", mode: "full" };
+const iter: BackgroundState = { view: "iter", mode: "full" };
 
 describe("createSpaceRenderer", () => {
     it("builds the scene for the state set before start", async () => {
@@ -24,10 +27,10 @@ describe("createSpaceRenderer", () => {
             builtFor = state;
             return createStubScene(log);
         });
-        renderer.setState("iter");
+        renderer.setState(iter);
         await renderer.start(host, { isStill: false });
 
-        expect(builtFor).toBe("iter");
+        expect(builtFor).toBe(iter);
         expect(log).toEqual(["run"]);
     });
 
@@ -40,9 +43,9 @@ describe("createSpaceRenderer", () => {
             });
             return createStubScene(log);
         });
-        renderer.setState("full");
+        renderer.setState(hole);
         const started = renderer.start(host, { isStill: false });
-        renderer.setState("iter");
+        renderer.setState(iter);
         finish?.();
         await started;
 
