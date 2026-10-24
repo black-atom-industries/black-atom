@@ -33,7 +33,7 @@ export const organicParams = z.object({
     duckDepth: level(1, 1),
     duckRelease: z.number().min(0.05).max(0.6).default(0.6),
     vinyl: level(0.3, 1),
-    motionVolume: level(1, 3),
+    motionVolume: level(0.65, 3),
 });
 
 export type OrganicParams = z.infer<typeof organicParams>;

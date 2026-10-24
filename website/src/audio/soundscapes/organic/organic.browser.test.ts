@@ -129,16 +129,14 @@ describe("organic, rendered offline", () => {
         expect(full.rmsDb).toBeGreaterThan(without.rmsDb);
     });
 
-    test("a fast camera raises the level, and its air stays under the drone", async () => {
-        const still = await render({ cameraSpeed: 0.05 });
-        const fast = await render({ cameraSpeed: 1.2 });
+    test("a fast camera brings in air that stays under the drone", async () => {
+        const restingAir = await render({ cameraSpeed: 0.05, solo: "motion" });
         const air = await render({ cameraSpeed: 1.2, solo: "motion" });
         const drone = await render({ cameraSpeed: 1.2, solo: "drone" });
-        report("camera still", still);
-        report("camera fast", fast);
+        report("motion solo, still", restingAir);
         report("motion solo, fast", air);
         report("drone solo", drone);
-        expect(fast.rmsDb).toBeGreaterThan(still.rmsDb);
-        expect(air.rmsDb).toBeLessThan(drone.rmsDb);
+        expect(air.rmsDb).toBeGreaterThan(restingAir.rmsDb + 10);
+        expect(air.rmsDb).toBeLessThan(drone.rmsDb - 10);
     });
 });
