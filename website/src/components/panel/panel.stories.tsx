@@ -21,3 +21,5 @@ const meta = preview.meta({
 });
 
 export const Default = meta.story();
+
+export const Backdrop = meta.story({ args: { variant: "backdrop" } });

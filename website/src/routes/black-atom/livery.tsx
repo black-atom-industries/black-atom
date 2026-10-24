@@ -10,6 +10,7 @@ import { InstallTabs } from "#/components/install-tabs/index.ts";
 import { MediaFrame } from "#/components/media-frame/index.ts";
 import { PageGrid } from "#/components/page-grid/index.ts";
 import { Pager } from "#/components/pager/index.ts";
+import { Panel } from "#/components/panel/index.ts";
 import { Pill } from "#/components/pill/index.ts";
 import { RichText } from "#/components/rich-text/index.ts";
 import { Rule } from "#/components/rule/index.ts";
@@ -51,26 +52,28 @@ function LiveryPage() {
         <main>
             <Section variant="hero">
                 <SceneAnchor variant="hole" />
-                <AppIcon src={liveryIcon.src} alt="" />
-                <Breadcrumbs
-                    label="Breadcrumbs"
-                    crumbs={[
-                        { label: blackAtom.name, render: <Link to="/black-atom" /> },
-                        { label: livery.kicker },
-                    ]}
-                />
-                <Heading variant="display">{livery.name}</Heading>
-                <Rule />
-                <Text variant="lead">
-                    <RichText segments={livery.lead} />
-                </Text>
-                <Stack direction="row" gap="xl" isWrapped>
-                    <Button variant="cta" render={<a href="#install" />}>
-                        Install
-                    </Button>
-                    <Button render={<a href="#cli" />}>The livery command</Button>
-                    <Button render={<a href="#tools" />}>Supported tools</Button>
-                </Stack>
+                <Panel variant="backdrop" isFitted>
+                    <AppIcon src={liveryIcon.src} alt="" />
+                    <Breadcrumbs
+                        label="Breadcrumbs"
+                        crumbs={[
+                            { label: blackAtom.name, render: <Link to="/black-atom" /> },
+                            { label: livery.kicker },
+                        ]}
+                    />
+                    <Heading variant="display">{livery.name}</Heading>
+                    <Rule />
+                    <Text variant="lead">
+                        <RichText segments={livery.lead} />
+                    </Text>
+                    <Stack direction="row" gap="xl" isWrapped>
+                        <Button variant="cta" render={<a href="#install" />}>
+                            Install
+                        </Button>
+                        <Button render={<a href="#cli" />}>The livery command</Button>
+                        <Button render={<a href="#tools" />}>Supported tools</Button>
+                    </Stack>
+                </Panel>
             </Section>
 
             <Section id={livery.steps.id}>

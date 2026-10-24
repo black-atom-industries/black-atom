@@ -19,8 +19,8 @@ type Props = VariantProps<typeof anchorVariants> & {
 };
 
 /**
- * Reserves the place the background scene frames, marked with `data-scene-anchor`. `hole` and
- * `far-hole` sit over their section; `wide` and `square` take space in the layout.
+ * Reserves the place the background scene frames, marked with `data-scene-anchor`. Each variant
+ * sits at the top right of its section; the variant names the landmark the camera frames there.
  */
 export function SceneAnchor({ variant = "hole", label }: Props) {
     return (

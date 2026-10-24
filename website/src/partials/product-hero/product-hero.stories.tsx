@@ -1,5 +1,6 @@
 import preview from "#/storybook/preview.tsx";
 import { Button } from "#/components/button/index.ts";
+import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { ProductHero } from "./product-hero.tsx";
 
 const meta = preview.meta({
@@ -30,13 +31,9 @@ const meta = preview.meta({
             </>
         ),
         art: (
-            <div
-                role="img"
-                aria-label="Changes flow into a review loop and come back out as a prompt"
-                style={{
-                    aspectRatio: "5 / 4",
-                    border: "1px dashed var(--ba-fg-subtle)",
-                }}
+            <SceneAnchor
+                variant="wide"
+                label="Changes flow into a review loop and come back out as a prompt"
             />
         ),
     },

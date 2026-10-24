@@ -180,7 +180,7 @@ function buildSpace(
             target: radar,
             anchor: {
                 selector: SQUARE_ANCHOR,
-                radius: (rect) => Math.min(rect.width, rect.height) * 0.45,
+                radius: (rect) => Math.min(rect.width, rect.height) * 0.24,
             },
             sway: PRODUCT_SWAY,
             fallback: (width, height) => ({

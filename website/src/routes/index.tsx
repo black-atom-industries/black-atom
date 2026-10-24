@@ -6,6 +6,7 @@ import { Caption } from "#/components/caption/index.ts";
 import { ColorStrip } from "#/components/color-strip/index.ts";
 import { Heading } from "#/components/heading/index.ts";
 import { LoopArt } from "#/components/loop-art/index.ts";
+import { Panel } from "#/components/panel/index.ts";
 import { RadarArt } from "#/components/radar-art/index.ts";
 import { Rule } from "#/components/rule/index.ts";
 import { SceneAnchor } from "#/components/scene-anchor/index.ts";
@@ -49,20 +50,22 @@ function HomePage() {
         <main>
             <Section variant="hero" id="top">
                 <SceneAnchor variant="hole" />
-                <Stack direction="row" gap="md" align="baseline">
-                    <Caption tone="accent">00</Caption>
-                    <Caption tone="subtle">{home.kicker}</Caption>
-                </Stack>
-                <Heading variant="display" subtitle="Industries">
-                    Black Atom
-                </Heading>
-                <Rule />
-                <Text variant="lead">{home.lead}</Text>
-                <Stack direction="row" gap="xl" isWrapped>
-                    <Button render={<a href="#products" />}>Products</Button>
-                    <Button render={<Link to="/changelog" />}>Changelog</Button>
-                    <Button render={<a href={studio.githubUrl} />}>GitHub ↗</Button>
-                </Stack>
+                <Panel variant="backdrop" isFitted>
+                    <Stack direction="row" gap="md" align="baseline">
+                        <Caption tone="accent">00</Caption>
+                        <Caption tone="subtle">{home.kicker}</Caption>
+                    </Stack>
+                    <Heading variant="display" subtitle="Industries">
+                        Black Atom
+                    </Heading>
+                    <Rule />
+                    <Text variant="lead">{home.lead}</Text>
+                    <Stack direction="row" gap="xl" isWrapped>
+                        <Button render={<a href="#products" />}>Products</Button>
+                        <Button render={<Link to="/changelog" />}>Changelog</Button>
+                        <Button render={<a href={studio.githubUrl} />}>GitHub ↗</Button>
+                    </Stack>
+                </Panel>
             </Section>
             <Section id="products">
                 <SectionHead number="01" title="Products" />

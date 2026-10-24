@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { loadChangelog, useChangelog } from "#/api/github/use-changelog.ts";
 import { HudList } from "#/components/hud-list/index.ts";
 import { SceneAnchor } from "#/components/scene-anchor/index.ts";
-import { Stack } from "#/components/stack/index.ts";
 import { iter } from "#/content/products/iter.ts";
 import { radar, radarHud } from "#/content/products/radar.ts";
 import { studio } from "#/content/studio.ts";
@@ -27,12 +26,8 @@ function RadarPage() {
     return (
         <ProductPage
             product={radar}
-            art={
-                <Stack gap="lg" align="center">
-                    <SceneAnchor variant="square" label={radar.artLabel} />
-                    <HudList groups={radarHud} />
-                </Stack>
-            }
+            art={<SceneAnchor variant="square" label={radar.artLabel} />}
+            keymapAside={<HudList groups={radarHud} />}
             pager={{
                 previous: { label: "← Back", title: iter.name, render: <Link to="/iter" /> },
                 next: { label: "Next →", title: "Changelog", render: <Link to="/changelog" /> },

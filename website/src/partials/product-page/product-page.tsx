@@ -26,6 +26,8 @@ type Props = {
     product: Product;
     /** The illustration beside the hero text. */
     art: ReactNode;
+    /** Shown under the keymap panel. */
+    keymapAside?: ReactNode;
     pager: { previous: PagerLink; next: PagerLink };
     /** The latest release, read from GitHub. */
     release?: { version: string; date?: string };
@@ -37,7 +39,7 @@ type Props = {
 };
 
 /** The page of a Neovim plugin: hero, how it works, clips, details, install and changelog. */
-export function ProductPage({ product, art, pager, release, changelog }: Props) {
+export function ProductPage({ product, art, keymapAside, pager, release, changelog }: Props) {
     const { steps, keymap, demos, features } = product;
 
     const stepList = steps !== undefined && (
@@ -84,28 +86,31 @@ export function ProductPage({ product, art, pager, release, changelog }: Props) 
                     ) : (
                         <PageGrid columns="two" align="start">
                             {stepList}
-                            <Panel>
-                                <Caption tone="subtle">{keymap.title}</Caption>
-                                {keymap.rows.map((row) => (
-                                    <Stack
-                                        key={row.label}
-                                        direction="row"
-                                        gap="xs"
-                                        align="center"
-                                        isWrapped
-                                    >
-                                        {row.keys.map((key) => (
-                                            <Kbd key={key}>{key}</Kbd>
-                                        ))}
-                                        <Text variant="small" tone="subtle">
-                                            {row.label}
-                                        </Text>
-                                    </Stack>
-                                ))}
-                                <Text variant="small" tone="subtle">
-                                    {keymap.note}
-                                </Text>
-                            </Panel>
+                            <Stack gap="lg">
+                                <Panel>
+                                    <Caption tone="subtle">{keymap.title}</Caption>
+                                    {keymap.rows.map((row) => (
+                                        <Stack
+                                            key={row.label}
+                                            direction="row"
+                                            gap="xs"
+                                            align="center"
+                                            isWrapped
+                                        >
+                                            {row.keys.map((key) => (
+                                                <Kbd key={key}>{key}</Kbd>
+                                            ))}
+                                            <Text variant="small" tone="subtle">
+                                                {row.label}
+                                            </Text>
+                                        </Stack>
+                                    ))}
+                                    <Text variant="small" tone="subtle">
+                                        {keymap.note}
+                                    </Text>
+                                </Panel>
+                                {keymapAside}
+                            </Stack>
                         </PageGrid>
                     )}
                 </Section>

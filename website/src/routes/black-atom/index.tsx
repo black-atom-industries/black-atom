@@ -71,22 +71,24 @@ function BlackAtomPage() {
         <main>
             <Section variant="hero">
                 <SceneAnchor variant="hole" />
-                <Stack direction="row" gap="md" align="baseline">
-                    <Caption tone="accent">{blackAtom.number}</Caption>
-                    <Caption tone="subtle">{blackAtom.kicker}</Caption>
-                </Stack>
-                <Heading variant="display">{blackAtom.name}</Heading>
-                <Rule />
-                <Text variant="lead">
-                    <RichText segments={blackAtom.lead} />
-                </Text>
-                <Stack direction="row" gap="xl" isWrapped>
-                    <Button variant="cta" render={<a href="#themes" />}>
-                        Browse themes
-                    </Button>
-                    <Button render={<Link to="/black-atom/livery" />}>Get Livery</Button>
-                    <Button render={<a href="#tools" />}>{adapters.length} tools</Button>
-                </Stack>
+                <Panel variant="backdrop" isFitted>
+                    <Stack direction="row" gap="md" align="baseline">
+                        <Caption tone="accent">{blackAtom.number}</Caption>
+                        <Caption tone="subtle">{blackAtom.kicker}</Caption>
+                    </Stack>
+                    <Heading variant="display">{blackAtom.name}</Heading>
+                    <Rule />
+                    <Text variant="lead">
+                        <RichText segments={blackAtom.lead} />
+                    </Text>
+                    <Stack direction="row" gap="xl" isWrapped>
+                        <Button variant="cta" render={<a href="#themes" />}>
+                            Browse themes
+                        </Button>
+                        <Button render={<Link to="/black-atom/livery" />}>Get Livery</Button>
+                        <Button render={<a href="#tools" />}>{adapters.length} tools</Button>
+                    </Stack>
+                </Panel>
             </Section>
 
             <Section id="how">

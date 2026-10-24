@@ -2,7 +2,9 @@
     pointer-events: none;
 }
 
-.hole {
+.hole,
+.wide,
+.square {
     position: absolute;
     top: 12vh;
     right: 10vw;
@@ -21,15 +23,5 @@
     top: 9vh;
     right: 5vw;
     width: min(22vw, 36vh);
-    aspect-ratio: 1;
-}
-
-.wide {
-    width: 100%;
-    aspect-ratio: 5 / 4;
-}
-
-.square {
-    width: min(100%, 460px);
     aspect-ratio: 1;
 }

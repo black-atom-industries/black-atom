@@ -28,16 +28,6 @@
     }
 }
 
-.product {
-    min-height: 100vh;
-    align-content: center;
-    padding-top: 150px;
-
-    & .wrap {
-        max-width: none;
-    }
-}
-
 .page {
     padding-top: 150px;
 }

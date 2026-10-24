@@ -5,7 +5,7 @@
     display: grid;
     gap: 14px;
     align-content: start;
-    background: var(--ba-bg);
+    background: color-mix(in srgb, var(--ba-bg) 95%, transparent);
     border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 70%, transparent);
     padding: 28px 30px 26px;
 
@@ -24,4 +24,19 @@
     @media (max-width: 560px) {
         padding: 22px 18px 20px;
     }
+}
+
+.backdrop {
+    gap: 36px;
+    padding: 44px 48px 40px;
+
+    @media (max-width: 560px) {
+        padding: 28px 22px 24px;
+    }
+}
+
+.fitted {
+    justify-self: start;
+    width: fit-content;
+    max-width: 100%;
 }

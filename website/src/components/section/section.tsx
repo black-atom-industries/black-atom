@@ -1,6 +1,7 @@
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "cva";
+import { Panel } from "#/components/panel/index.ts";
 import styles from "./section.module.css";
 
 const sectionVariants = cva({
@@ -9,7 +10,6 @@ const sectionVariants = cva({
         variant: {
             default: null,
             hero: styles.hero,
-            product: styles.product,
             page: styles.page,
             compact: styles.compact,
             footer: styles.footer,
@@ -28,7 +28,15 @@ export function Section({ render, variant = "default", children, ...props }: Pro
             {
                 className: sectionVariants({ variant }),
                 "data-layout": "Section",
-                children: <div className={styles.wrap}>{children}</div>,
+                children: (
+                    <div className={styles.wrap}>
+                        {variant === "hero" || variant === "footer" ? (
+                            children
+                        ) : (
+                            <Panel variant="backdrop">{children}</Panel>
+                        )}
+                    </div>
+                ),
             },
             props,
         ),
