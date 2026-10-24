@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { BackgroundRenderer, SceneTheme } from "./types.ts";
 
 interface Stub extends BackgroundRenderer {
-    kind: string;
     log: string[];
     finishStart(): void;
     failStart(): void;
@@ -10,11 +9,10 @@ interface Stub extends BackgroundRenderer {
 
 const created: Stub[] = [];
 
-function createStub(kind: string): Stub {
+function createStub(): Stub {
     const log: string[] = [];
     let settle: { resolve(): void; reject(error: Error): void } | undefined;
     const stub: Stub = {
-        kind,
         log,
         events: { on: () => () => {} },
         start: () => {
@@ -37,8 +35,7 @@ function createStub(kind: string): Stub {
     return stub;
 }
 
-vi.mock("./space/space.ts", () => ({ createSpace: () => createStub("space") }));
-vi.mock("./radar/radar.ts", () => ({ createRadarScene: () => createStub("radar") }));
+vi.mock("./space/space.ts", () => ({ createSpace: () => createStub() }));
 
 const { createBackgroundController } = await import("./controller.ts");
 
@@ -65,49 +62,56 @@ afterEach(() => {
 });
 
 describe("createBackgroundController", () => {
-    it("keeps one space renderer across the hole and iter states instead of remounting", async () => {
+    it("keeps one space renderer across every state instead of remounting", async () => {
         const controller = createBackgroundController(host);
         controller.update({ state: "full", theme, isStill: false });
         await settled();
         controller.update({ state: "receded", theme, isStill: false });
         controller.update({ state: "iter", theme, isStill: false });
+        controller.update({ state: "radar", theme, isStill: false });
         controller.update({ state: "full", theme, isStill: false });
 
-        expect(created.map((stub) => stub.kind)).toEqual(["space"]);
+        expect(created).toHaveLength(1);
         expect(created[0]?.log).toEqual([
             "state:full",
             "theme",
             "start",
             "state:receded",
             "state:iter",
+            "state:radar",
             "state:full",
         ]);
     });
 
-    it("disposes the space before radar's scene takes over", async () => {
+    it("disposes the renderer before a still one takes over", async () => {
         const controller = createBackgroundController(host);
         controller.update({ state: "full", theme, isStill: false });
         await settled();
         created[0]?.finishStart();
-        controller.update({ state: "radar", theme, isStill: false });
+        controller.update({ state: "full", theme, isStill: true });
         await settled();
 
-        expect(created.map((stub) => stub.kind)).toEqual(["space", "radar"]);
+        expect(created).toHaveLength(2);
         expect(created[0]?.log.at(-1)).toBe("dispose");
         expect(created[1]?.log).toContain("start");
         expect(created[1]?.log).not.toContain("dispose");
     });
 
-    it("drops a mount that a newer route overtook while its module loaded", async () => {
-        const controller = createBackgroundController(host);
-        controller.update({ state: "iter", theme, isStill: false });
-        controller.update({ state: "radar", theme, isStill: false });
+    it("drops a mount that a newer one overtook while its module loaded", async () => {
+        const loads: ((renderer: Stub) => void)[] = [];
+        const controller = createBackgroundController(
+            host,
+            () => new Promise<BackgroundRenderer>((resolve) => loads.push(resolve)),
+        );
+        controller.update({ state: "full", theme, isStill: false });
+        controller.update({ state: "full", theme, isStill: true });
+        const [first, second] = [createStub(), createStub()];
+        loads[1]?.(second);
+        loads[0]?.(first);
         await settled();
 
-        const space = created.find((stub) => stub.kind === "space");
-        const radar = created.find((stub) => stub.kind === "radar");
-        expect(space?.log ?? []).not.toContain("start");
-        expect(radar?.log).toContain("start");
+        expect(first.log).not.toContain("start");
+        expect(second.log).toContain("start");
     });
 
     it("disposes a renderer that is still starting", async () => {
@@ -129,7 +133,7 @@ describe("createBackgroundController", () => {
         controller.update({ state: "full", theme, isStill: false });
         await settled();
 
-        expect(created.map((stub) => stub.kind)).toEqual(["space"]);
+        expect(created).toHaveLength(1);
         expect(created[0]?.log.at(-1)).toBe("dispose");
         expect(console.warn).toHaveBeenCalledTimes(1);
     });

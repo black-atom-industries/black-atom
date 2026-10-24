@@ -180,6 +180,8 @@ export function createCameraRig({ camera, uniforms: S, look, isStill, emit, sign
                 needsSnap = false;
                 isCut = true;
             }
+            // A cut opens on the landmark's resting view, as a direct load of the page does.
+            if (isCutting) orbitAngle = swayPhase = 0;
             framed = shot;
         },
 

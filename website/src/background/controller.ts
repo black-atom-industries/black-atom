@@ -7,19 +7,9 @@ import type {
     SingNote,
 } from "./types.ts";
 
-type RendererKind = "space" | "radar";
-
-const rendererKinds: Record<BackgroundState, RendererKind> = {
-    full: "space",
-    receded: "space",
-    iter: "space",
-    radar: "radar",
-};
-
-const loadRenderer: Record<RendererKind, () => Promise<BackgroundRenderer>> = {
-    space: () => import("./space/space.ts").then((m) => m.createSpace()),
-    radar: () => import("./radar/radar.ts").then((m) => m.createRadarScene()),
-};
+function loadRenderer(): Promise<BackgroundRenderer> {
+    return import("./space/space.ts").then((m) => m.createSpace());
+}
 
 export interface BackgroundInput {
     state: BackgroundState;
@@ -36,7 +26,6 @@ export interface BackgroundController {
 }
 
 interface Slot {
-    kind: RendererKind;
     isStill: boolean;
     wanted: BackgroundInput;
     renderer?: BackgroundRenderer;
@@ -44,15 +33,18 @@ interface Slot {
 }
 
 /**
- * Runs one renderer at a time in `host`. States in the space share one renderer, which frames each
- * state's landmark; a change to or from radar's scene disposes the old renderer before the next starts.
+ * Runs the space renderer in `host` for every state; it frames each state's landmark. A change of
+ * reduced motion disposes the renderer before the next one starts.
  */
-export function createBackgroundController(host: HTMLElement): BackgroundController {
+export function createBackgroundController(
+    host: HTMLElement,
+    load: () => Promise<BackgroundRenderer> = loadRenderer,
+): BackgroundController {
     const events = createEmitter();
     let slot: Slot | undefined;
     let hasWarned = false;
     /** A renderer that failed to start stays off for the session; the theme background shows instead. */
-    const failedKinds = new Set<RendererKind>();
+    let hasFailed = false;
 
     function apply(current: Slot, renderer: BackgroundRenderer) {
         const input = current.wanted;
@@ -68,14 +60,10 @@ export function createBackgroundController(host: HTMLElement): BackgroundControl
 
     async function mount(input: BackgroundInput) {
         release();
-        const current: Slot = {
-            kind: rendererKinds[input.state],
-            isStill: input.isStill,
-            wanted: input,
-        };
+        const current: Slot = { isStill: input.isStill, wanted: input };
         slot = current;
         try {
-            const renderer = await loadRenderer[current.kind]();
+            const renderer = await load();
             if (slot !== current) return;
             current.renderer = renderer;
             renderer.events.on((event) => events.emit(event));
@@ -83,7 +71,7 @@ export function createBackgroundController(host: HTMLElement): BackgroundControl
             await renderer.start(host, { isStill: current.isStill });
             if (slot === current && document.hidden) renderer.pause();
         } catch (error) {
-            failedKinds.add(current.kind);
+            hasFailed = true;
             if (slot === current) release();
             if (!hasWarned) {
                 hasWarned = true;
@@ -101,11 +89,11 @@ export function createBackgroundController(host: HTMLElement): BackgroundControl
     return {
         events,
         update(input) {
-            if (failedKinds.has(rendererKinds[input.state])) {
+            if (hasFailed) {
                 release();
                 return;
             }
-            if (slot?.kind !== rendererKinds[input.state] || slot.isStill !== input.isStill) {
+            if (slot?.isStill !== input.isStill) {
                 void mount(input);
                 return;
             }

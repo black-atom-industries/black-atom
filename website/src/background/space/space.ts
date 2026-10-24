@@ -5,6 +5,7 @@ import { createGrain } from "#/background/grain.ts";
 import { createBlackHole } from "#/background/landmarks/black-hole/black-hole.ts";
 import { flowDir, flowSide } from "#/background/landmarks/black-hole/field.ts";
 import { createIter } from "#/background/landmarks/iter/iter.ts";
+import { createRadar } from "#/background/landmarks/radar/radar.ts";
 import type {
     BackgroundRenderer,
     BackgroundState,
@@ -27,10 +28,13 @@ import {
 const WORLD_SCALE = 0.28;
 /** Where iter sits, in world radii from the black hole at the origin: downstream and to one side. */
 const ITER_PLACE = flowDir.clone().multiplyScalar(14).addScaledVector(flowSide, 7);
-/** Degrees the camera sways either side of iter's ring, so the ring never turns edge-on. */
-const ITER_SWAY = 30;
+/** Where radar sits: downstream like iter, on the other side of the flow. */
+const RADAR_PLACE = flowDir.clone().multiplyScalar(14).addScaledVector(flowSide, -7);
+/** Degrees the camera sways either side of a product landmark, so its face never turns edge-on. */
+const PRODUCT_SWAY = 30;
 const HOLE_ANCHOR = '[data-scene-anchor="hole"], [data-scene-anchor="far-hole"]';
 const WIDE_ANCHOR = '[data-scene-anchor="wide"]';
+const SQUARE_ANCHOR = '[data-scene-anchor="square"]';
 
 async function hasWebGPU(): Promise<boolean> {
     if (!("gpu" in navigator)) return false;
@@ -101,7 +105,8 @@ async function createScene(
     };
     const hole = createBlackHole(context);
     const iter = createIter(context, ITER_PLACE);
-    const landmarks: Landmark[] = [hole, iter];
+    const radar = createRadar(context, RADAR_PLACE);
+    const landmarks: Landmark[] = [hole, iter, radar];
     const holeShot: Shot = {
         landmark: hole,
         anchor: HOLE_ANCHOR,
@@ -119,14 +124,24 @@ async function createScene(
             landmark: iter,
             anchor: WIDE_ANCHOR,
             radius: (rect) => Math.min(rect.width, rect.height) * 0.36,
-            sway: ITER_SWAY,
+            sway: PRODUCT_SWAY,
             fallback: (width, height) => ({
                 x: width * 0.68,
                 y: height * 0.42,
                 r: Math.min(width, height) * 0.2,
             }),
         },
-        radar: holeShot,
+        radar: {
+            landmark: radar,
+            anchor: SQUARE_ANCHOR,
+            radius: (rect) => Math.min(rect.width, rect.height) * 0.45,
+            sway: PRODUCT_SWAY,
+            fallback: (width, height) => ({
+                x: width * 0.68,
+                y: height * 0.42,
+                r: Math.min(width, height) * 0.25,
+            }),
+        },
     };
 
     const pipeline = new RenderPipeline(renderer);
@@ -320,7 +335,7 @@ async function createScene(
 
 /**
  * The background space: the black hole behind the studio and Black Atom pages, receded on the
- * quieter ones, and iter's review cycle on its page.
+ * quieter ones, and iter's review cycle and radar's sweep on their pages.
  */
 export function createSpace(look: Look = tunedLook): BackgroundRenderer {
     return createSpaceRenderer((host, isStill, emit, state) =>
