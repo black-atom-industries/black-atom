@@ -1,4 +1,4 @@
-/** The tuned look of the black-hole scene. */
+/** The tuned look of the background space and its black hole. */
 export interface Look {
     /** Seconds a singing line takes to fade after its note ends. */
     singDecay: number;

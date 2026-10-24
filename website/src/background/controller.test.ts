@@ -37,7 +37,7 @@ function createStub(kind: string): Stub {
     return stub;
 }
 
-vi.mock("./black-hole/black-hole.ts", () => ({ createBlackHole: () => createStub("black-hole") }));
+vi.mock("./space/space.ts", () => ({ createSpace: () => createStub("black-hole") }));
 vi.mock("./iter/iter.ts", () => ({ createIterScene: () => createStub("iter") }));
 vi.mock("./radar/radar.ts", () => ({ createRadarScene: () => createStub("radar") }));
 

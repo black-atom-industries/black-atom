@@ -15,16 +15,12 @@ import {
     MeshBasicNodeMaterial,
     OneFactor,
     OneMinusSrcAlphaFactor,
-    PerspectiveCamera,
     PlaneGeometry,
-    RenderPipeline,
-    Scene,
     SphereGeometry,
     TorusGeometry,
     Vector2,
     Vector3,
     Vector4,
-    WebGPURenderer,
     type Node,
 } from "three/webgpu";
 import {
@@ -45,7 +41,6 @@ import {
     max,
     mix,
     normalWorld,
-    pass,
     positionWorld,
     pow,
     screenUV,
@@ -59,16 +54,14 @@ import {
     vec3,
     vec4,
 } from "three/tsl";
-import { bloom } from "three/examples/jsm/tsl/display/BloomNode.js";
-import { createEmitter } from "#/background/emitter.ts";
-import { createGrain } from "#/background/grain.ts";
 import { rng } from "#/background/rng.ts";
 import type {
-    BackgroundRenderer,
-    RendererOptions,
-    SceneTheme,
-    SingNote,
-} from "#/background/types.ts";
+    Landmark,
+    LandmarkContext,
+    LandmarkFrame,
+    SceneColorNode,
+} from "#/background/space/landmark.ts";
+import type { SingNote } from "#/background/types.ts";
 import {
     ACCENT_SHARE,
     STRIDE,
@@ -78,7 +71,6 @@ import {
     flowUp,
     type Line,
 } from "./field.ts";
-import { look as tunedLook, type Look } from "./look.ts";
 
 const TAU = Math.PI * 2;
 /** Pulse speed along the lines, world units per second. */
@@ -86,67 +78,12 @@ const PULSE_SPEED = 90;
 const FLASH_COUNT = 48;
 const PARTICLE_COUNT = 3600;
 const HALO_SCALE = 3.2;
-const PALETTE_VARS = [
-    "--ba-c-red",
-    "--ba-c-yellow",
-    "--ba-c-green",
-    "--ba-c-cyan",
-    "--ba-c-blue",
-    "--ba-c-magenta",
-    "--ba-c-gray",
-] as const;
 const VOID_PATCHES = [
     [-2000, 1300, 1150],
     [2300, -1500, 1300],
     [-600, -2900, 1000],
     [3400, 1700, 1200],
 ] as const;
-/** Camera speed (view distances per second) above which the camera counts as moving. */
-const MOVING_SPEED = 0.12;
-const SETTLED_SPEED = 0.08;
-
-type Emit = ReturnType<typeof createEmitter>["emit"];
-
-interface Colors {
-    bg0: Color;
-    fg: Color;
-    acc: Color[];
-    pal: Color[];
-}
-
-interface Frame {
-    x: number;
-    y: number;
-    /** Hole radius in screen pixels. */
-    r: number;
-}
-
-async function hasWebGPU(): Promise<boolean> {
-    if (!("gpu" in navigator)) return false;
-    try {
-        return (await navigator.gpu.requestAdapter()) !== null;
-    } catch {
-        return false;
-    }
-}
-
-function hasWebGL2(): boolean {
-    return document.createElement("canvas").getContext("webgl2") !== null;
-}
-
-function themeColors({ vars }: SceneTheme): Colors & { accentCount: number } {
-    const color = (hex: string) => new Color().setStyle(hex);
-    const acc = [color(vars["--ba-accent"]), color(vars["--ba-accent-2"])];
-    const accentCount = acc.length;
-    while (acc.length < 4) acc.push((acc.at(-1) ?? new Color()).clone());
-    return {
-        bg0: color(vars["--ba-bg"]),
-        fg: color(vars["--ba-fg"]),
-        acc,
-        pal: PALETTE_VARS.map((name) => color(vars[name])),
-        accentCount,
-    };
-}
 
 /** Premultiplied output: alpha 0 adds light on dark themes, alpha `a` blends normally on light ones. */
 function glowOutput(
@@ -168,40 +105,29 @@ function glowOutput(
     material.blendDstAlpha = OneMinusSrcAlphaFactor;
 }
 
-function holeAnchor(): Element | null {
-    return document.querySelector('[data-scene-anchor="hole"], [data-scene-anchor="far-hole"]');
-}
-
 /**
- * Builds the scene on a WebGPU renderer (WebGL 2 when WebGPU is missing). Lines flow past and into
- * a black hole whose place and size come from the page's hole anchor.
+ * The black hole: lines flow past and into a hole whose place and size come from the page's hole
+ * anchor, with its accretion disk, particles and the flashes of absorbed lines.
  */
-async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit: Emit) {
-    const isWebGPU = await hasWebGPU();
-    if (!isWebGPU && !hasWebGL2()) throw new Error("neither WebGPU nor WebGL 2 is available");
-    const renderer = new WebGPURenderer({ antialias: true, forceWebGL: !isWebGPU });
-    await renderer.init();
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, innerWidth < 1000 ? 2 : 1.5));
-    renderer.domElement.dataset.backend = isWebGPU ? "webgpu" : "webgl2";
-    host.appendChild(renderer.domElement);
-
-    const html = document.documentElement;
-    const scene = new Scene();
-    const camera = new PerspectiveCamera(35, 1, 5, 40000);
-    let W = 0;
-    let H = 0;
-    let D = 1000;
-    let pageHeight = 0;
+export function createBlackHole({
+    scene,
+    camera,
+    uniforms: S,
+    look,
+    isStill,
+    emit,
+    colors: currentColors,
+}: LandmarkContext): Landmark {
     let isSmall = innerWidth < 700;
 
     const U = {
         R: uniform(100),
         phase: uniform(0),
-        time: uniform(0),
+        time: S.time,
         rim: uniform(new Color()),
         core: uniform(new Color()),
-        light: uniform(0),
-        fogStart: uniform(1200),
+        light: S.light,
+        fogStart: S.fogStart,
         fogK: uniform(1 / 2400),
         energy: uniform(0),
         lineSat: uniform(1),
@@ -215,19 +141,19 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         ringGlow: uniform(1),
         depth: uniform(0.85),
         absorb: uniform(0.6),
-        focus: uniform(1200),
+        focus: S.focus,
         focusIn: uniform(260),
         focusR: uniform(900),
         blur: uniform(0.6),
-        nAcc: uniform(2),
-        camR: uniform(new Vector3(1, 0, 0)),
-        camU: uniform(new Vector3(0, 1, 0)),
-        thick: uniform(1),
+        nAcc: S.nAcc,
+        camR: S.camR,
+        camU: S.camU,
+        thick: S.thick,
         singGlow: uniform(look.singGlow),
         singDecay: uniform(look.singDecay),
     };
-    const ACC = [0, 1, 2, 3].map(() => uniform(new Color()));
-    const PAL = PALETTE_VARS.map(() => uniform(new Color()));
+    const ACC = S.acc;
+    const PAL = S.pal;
     const accNodes = ACC.map((u) => u.rgb);
     const palNodes = PAL.map((u) => u.rgb);
     const VOIDS = VOID_PATCHES.map(() => uniform(new Vector4(1e6, 0, 0, 1)));
@@ -800,15 +726,14 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     }));
     let flashIndex = 0;
 
-    const pipeline = new RenderPipeline(renderer);
-    const scenePass = pass(scene, camera, { samples: 4 });
-    const sceneColor = scenePass.getTextureNode("output");
     const uCenter = uniform(new Vector2(0.5, 0.5));
     const uAspect = uniform(1);
     const uRs = uniform(0.2);
     const uLens = uniform(1);
     const uCore = uniform(new Color());
-    const lensBloom = (() => {
+
+    /** Bends the rendered scene around the hole, with a slight colour split, and shades its shadow. */
+    function lens(sceneColor: SceneColorNode): Node<"vec4"> {
         const dd = screenUV.sub(uCenter).mul(vec2(uAspect, 1));
         const lr = max(length(dd), 1e-4);
         const thE = uRs.mul(0.72).mul(uLens);
@@ -816,7 +741,7 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         const offset = thE.mul(thE).div(lr).mul(falloff);
         const dir = dd.div(lr).div(vec2(uAspect, 1));
         const shadow = smoothstep(float(0.8), float(1.0), offset.div(lr));
-        const lensed = vec4(
+        return vec4(
             mix(
                 vec3(
                     sceneColor.sample(screenUV.sub(dir.mul(offset.mul(1.04)))).r,
@@ -828,10 +753,7 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
             ),
             1,
         );
-        const glow = bloom(lensed, 0.6, 0.35, 0.7);
-        pipeline.outputNode = lensed.add(glow);
-        return glow;
-    })();
+    }
 
     let tubeGeometry = new BufferGeometry();
     let tubes: Mesh | undefined;
@@ -839,17 +761,18 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     let lineEnds: number[] = [0];
     let farCount = 0;
     let drawnCount = -1;
-    let builtFor = "";
     /** World radius the streamlines were built around. */
     let buildR = 100;
-    let target: Frame = { x: 0, y: 0, r: 100 };
-    let frame: Frame | undefined;
-    let lastFrameX = 0;
-    let lastFrameY = 0;
     /** False until the camera has a position to measure motion from. */
     let hasCameraPosition = false;
 
-    function build(R: number) {
+    function build(R: number, small: boolean) {
+        isSmall = small;
+        buildR = R;
+        U.R.value = buildR;
+        sphere.scale.setScalar(buildR);
+        halo.scale.setScalar(buildR);
+        ringGroup.scale.setScalar(buildR);
         const built = buildStreamlines(R, isSmall ? 120 : 400, isSmall);
         lines = built.lines;
         lineEnds = built.lineEnds;
@@ -873,152 +796,12 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
             scene.add(tubes);
         }
         drawnCount = -1;
-    }
-
-    /**
-     * Reads the hole anchor. The streamlines are built once per viewport size around the first hole
-     * seen; a different anchor later moves the camera instead of rebuilding.
-     */
-    function measure() {
-        const scrollY = window.scrollY;
-        pageHeight = html.scrollHeight;
-        const anchor = holeAnchor();
-        if (anchor) {
-            const rect = anchor.getBoundingClientRect();
-            target = {
-                x: (rect.left + rect.right) / 2,
-                y: (rect.top + rect.bottom) / 2 + scrollY,
-                r: (rect.width / 2) * look.atomSize,
-            };
-        } else {
-            target = { x: W * 0.7, y: H * 0.35, r: Math.min(W, H) * 0.17 * look.atomSize };
-        }
-        const viewportKey = `${W}|${H}`;
-        if (viewportKey === builtFor) return;
-        builtFor = viewportKey;
-        buildR = target.r;
-        U.R.value = buildR;
-        sphere.scale.setScalar(buildR);
-        halo.scale.setScalar(buildR);
-        ringGroup.scale.setScalar(buildR);
-        build(buildR);
-        frame = { ...target };
-        lastFrameX = frame.x;
-        lastFrameY = frame.y;
         hasCameraPosition = false;
     }
 
-    function size() {
-        W = innerWidth;
-        H = innerHeight;
-        isSmall = W < 700;
-        renderer.setSize(W, H);
-        camera.aspect = W / H;
-        D = H / 2 / Math.tan(MathUtils.degToRad(camera.fov / 2));
-        camera.updateProjectionMatrix();
-    }
-
-    let colors: Colors | undefined;
-    let colorTarget: Colors | undefined;
-    let isLight = false;
-    let lightMix = 0;
-    const background = new Color();
-
-    function pushColors(current: Colors) {
-        ACC.forEach((u, k) => u.value.copy(current.acc[k]));
-        PAL.forEach((u, k) => u.value.copy(current.pal[k]));
-    }
-
-    function setTheme(theme: SceneTheme) {
-        const next = themeColors(theme);
-        isLight = theme.appearance === "light";
-        U.nAcc.value = next.accentCount;
-        if (!colors || isStill) {
-            colors = next;
-            colorTarget = undefined;
-            lightMix = isLight ? 1 : 0;
-        } else {
-            colorTarget = next;
-        }
-        scene.background = background;
-        pushColors(colors);
-        grain.setLight(isLight);
-        stillFrames = 2;
-    }
-
-    function stepColors(dt: number) {
-        if (!colors || !colorTarget) return;
-        const k = 1 - Math.exp(-dt * 2.6);
-        const current = colors;
-        const next = colorTarget;
-        current.bg0.lerp(next.bg0, k);
-        current.fg.lerp(next.fg, k);
-        current.acc.forEach((c, i) => c.lerp(next.acc[i], k));
-        current.pal.forEach((c, i) => c.lerp(next.pal[i], k));
-        pushColors(current);
-        const left =
-            Math.abs(current.bg0.r - next.bg0.r) +
-            Math.abs(current.fg.g - next.fg.g) +
-            Math.abs(current.acc[0].b - next.acc[0].b);
-        if (left < 0.0005) colorTarget = undefined;
-    }
-
-    const listeners = new AbortController();
-    const { signal } = listeners;
-    let yaw = 0;
-    let yawSmooth = 0;
-    let pointerX = 0;
-    let pointerY = 0;
-    let pointerTargetX = 0;
-    let pointerTargetY = 0;
-    let resizeTimer = 0;
-    addEventListener(
-        "wheel",
-        (event) => {
-            if (Math.abs(event.deltaX) > Math.abs(event.deltaY) * 0.6) yaw += event.deltaX * 0.14;
-        },
-        { passive: true, signal },
-    );
-    addEventListener(
-        "pointermove",
-        (event) => {
-            pointerTargetX = (event.clientX / W) * 2 - 1;
-            pointerTargetY = (event.clientY / H) * 2 - 1;
-        },
-        { passive: true, signal },
-    );
-    addEventListener(
-        "resize",
-        () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = window.setTimeout(() => {
-                size();
-                measure();
-                stillFrames = 2;
-            }, 180);
-        },
-        { signal },
-    );
-    void document.fonts.ready.then(() => {
-        if (!signal.aborted) measure();
-    });
-
-    const grain = createGrain();
-    size();
-    measure();
-
-    let last = performance.now();
-    let frameNumber = 0;
     let phase = 0;
     let energy = 0;
     let tintAmount = 0;
-    let scroll = 0;
-    let orbitAngle = 0;
-    let stillFrames = 2;
-    let remeasureUntil = 0;
-    let cameraSpeed = 0;
-    let cameraDrift = 0;
-    let isMoving = false;
     const tint = new Color();
     const lineTint = new Color();
     const toCamera = new Vector3();
@@ -1032,12 +815,9 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
     const candidate = new Vector3();
     const black = new Color(0, 0, 0);
     const coreDark = new Color();
-    const camPrevious = new Vector3();
-    const camStep = new Vector3();
-    const camRight = new Vector3();
 
     function lineColor(hue: number, out: Color): Color {
-        const current = colors;
+        const current = currentColors();
         if (!current) return out;
         if (hue < ACCENT_SHARE) {
             const index = Math.min(
@@ -1111,34 +891,9 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         return Math.sqrt(best);
     }
 
-    function emitCamera(speed: number, drift: number) {
-        if (!isMoving && speed > MOVING_SPEED) {
-            isMoving = true;
-            emit({ type: "camera", speed, drift, phase: "start" });
-        } else if (isMoving && speed < SETTLED_SPEED) {
-            isMoving = false;
-            emit({ type: "camera", speed, drift, phase: "settle" });
-        } else if (isMoving) {
-            emit({ type: "camera", speed, drift, phase: "move" });
-        }
-    }
-
-    function render() {
-        const current = colors;
-        if (!current || !frame) return;
-        if (isStill && stillFrames <= 0) return;
-        stillFrames -= 1;
-        const now = performance.now();
-        const dt = Math.min(0.05, (now - last) / 1000);
-        last = now;
-        frameNumber += 1;
-        if (frameNumber % 120 === 1 || now < remeasureUntil) measure();
-        grain.tick(isStill ? 0 : now);
-        stepColors(dt);
-        lightMix += ((isLight ? 1 : 0) - lightMix) * (1 - Math.exp(-dt * 2.6));
-        if (Math.abs(lightMix - (isLight ? 1 : 0)) < 0.002) lightMix = isLight ? 1 : 0;
-        U.light.value = lightMix;
-
+    function update({ dt, now, distance, restDistance, cameraSpeed, W, H }: LandmarkFrame) {
+        const current = currentColors();
+        if (!current) return;
         const visibleCount = Math.max(
             1,
             Math.min(lines.length - farCount, Math.round(look.lineCount * (isSmall ? 0.3 : 1))),
@@ -1147,17 +902,12 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
             drawnCount = visibleCount;
             tubeGeometry.setDrawRange(0, lineEnds[farCount + drawnCount] ?? 0);
         }
-        if (!isStill) {
-            phase += dt * PULSE_SPEED * look.speed;
-            U.time.value += dt;
-        }
+        if (!isStill) phase += dt * PULSE_SPEED * look.speed;
         U.phase.value = phase;
         U.lineSat.value = look.lineSat;
         U.lineGlow.value = look.lineGlow;
         U.pulseShape.value = 1 + 5 * (1 - look.pulseWidth);
         U.blur.value = look.dof;
-        lensBloom.strength.value = look.bloom * (1 - 0.7 * lightMix);
-        lensBloom.threshold.value = 0.7 + 0.32 * lightMix;
         ringGroup.rotation.set(MathUtils.degToRad(look.ringTilt), 0, -0.38);
         if (!isStill) ring.rotation.z += dt * 0.04;
         ringBody.rotation.z = ring.rotation.z;
@@ -1183,56 +933,6 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         uDiskPull.value = look.diskPull;
         uDiskGlow.value = look.diskLineGlow;
 
-        // A smaller anchor pulls the camera back instead of rebuilding the streamlines; `thick` keeps the lines' screen width.
-        const ease = isStill ? 1 : 1 - Math.exp(-dt * 2.2);
-        frame.x += (target.x - frame.x) * ease;
-        frame.y += (target.y - frame.y) * ease;
-        frame.r += (target.r - frame.r) * ease;
-        const framingSpeed =
-            Math.hypot(frame.x - lastFrameX, frame.y - lastFrameY) / H / Math.max(dt, 1e-3);
-        const framingDriftX = (lastFrameX - frame.x) / H / Math.max(dt, 1e-3);
-        lastFrameX = frame.x;
-        lastFrameY = frame.y;
-
-        const k = 1 - Math.exp(-dt * 3);
-        pointerX += (pointerTargetX - pointerX) * k;
-        pointerY += (pointerTargetY - pointerY) * k;
-        const progress = MathUtils.clamp(window.scrollY / Math.max(1, pageHeight - H), 0, 1);
-        scroll += (progress - scroll) * (1 - Math.exp(-dt * 5));
-        yawSmooth += (yaw - yawSmooth) * (1 - Math.exp(-dt * 4));
-        if (!isStill) orbitAngle -= dt * look.orbit;
-        const yawAngle = MathUtils.degToRad(
-            -80 * scroll * look.lookAround + yawSmooth + orbitAngle + pointerX * 6 * look.parallax,
-        );
-        const pitch = MathUtils.degToRad(
-            (4 + 34 * scroll) * look.lookAround - pointerY * 4 * look.parallax,
-        );
-        const distance = D * (1 + 0.55 * scroll * look.lookAround) * (buildR / frame.r);
-        U.thick.value = buildR / frame.r;
-        camera.position
-            .set(
-                Math.sin(yawAngle) * Math.cos(pitch),
-                Math.sin(pitch),
-                Math.cos(yawAngle) * Math.cos(pitch),
-            )
-            .multiplyScalar(distance);
-        if (!hasCameraPosition) camPrevious.copy(camera.position);
-        const cameraMove = camPrevious.distanceTo(camera.position) / distance / Math.max(dt, 1e-3);
-        camRight.setFromMatrixColumn(camera.matrixWorld, 0);
-        const sideways =
-            camStep.subVectors(camera.position, camPrevious).dot(camRight) /
-                distance /
-                Math.max(dt, 1e-3) +
-            framingDriftX;
-        camPrevious.copy(camera.position);
-        cameraSpeed += (cameraMove + framingSpeed - cameraSpeed) * (1 - Math.exp(-dt * 8));
-        cameraDrift +=
-            (MathUtils.clamp(sideways * 2, -1, 1) - cameraDrift) * (1 - Math.exp(-dt * 8));
-        camera.lookAt(0, 0, 0);
-        camera.setViewOffset(W, H, W / 2 - frame.x, H / 2 - frame.y, W, H);
-        camera.updateMatrixWorld();
-        U.focus.value = distance;
-        U.fogStart.value = distance * 0.9;
         ndc.set(0, 0, 0).project(camera);
         uCenter.value.set((ndc.x + 1) / 2, (1 - ndc.y) / 2);
         uAspect.value = W / H;
@@ -1244,16 +944,13 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         U.ringGlow.value = look.ringGlow;
         U.absorb.value = look.absorb;
         U.depth.value = look.atomDepth;
-        background.copy(current.bg0).lerp(current.fg, 0.07 * look.lightContrast * lightMix);
         coreDark.copy(current.bg0).lerp(black, look.atomDepth);
         U.core.value
             .copy(current.fg)
             .lerp(black, 0.3 + 0.7 * look.atomDepth)
-            .lerp(coreDark, 1 - lightMix);
+            .lerp(coreDark, 1 - S.light.value);
         uCore.value.copy(U.core.value);
         U.haloC.value.copy(U.core.value);
-        U.camR.value.setFromMatrixColumn(camera.matrixWorld, 0);
-        U.camU.value.setFromMatrixColumn(camera.matrixWorld, 1);
         halo.quaternion.copy(camera.quaternion);
 
         VOID_PATCHES.forEach(([b, a, r], j) => {
@@ -1343,12 +1040,7 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
             );
         });
         flashBuffer.needsUpdate = true;
-        pipeline.render();
-
-        if (!isStill) {
-            emit({ type: "proximity", distance: distance / D, energy });
-            emitCamera(cameraSpeed, cameraDrift);
-        }
+        if (!isStill) emit({ type: "proximity", distance: distance / restDistance, energy });
     }
 
     let kickAt = -Infinity;
@@ -1416,45 +1108,16 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
         singer.amp.value = Math.max(0.6, amp);
     }
 
-    let hasFailed = false;
-    function tick() {
-        try {
-            render();
-        } catch (error) {
-            if (!hasFailed) {
-                hasFailed = true;
-                console.warn("[background] black hole stopped", error);
-            }
-            void renderer.setAnimationLoop(null);
-        }
-    }
-
     return {
-        setState() {
-            remeasureUntil = performance.now() + 1500;
-            stillFrames = 2;
-            measure();
-        },
-        setTheme,
+        build,
+        lens,
+        update,
         sing,
         pulse(amount: number) {
             kickAt = performance.now();
             kickAmount = amount;
         },
-        run() {
-            last = performance.now();
-            void renderer.setAnimationLoop(tick);
-        },
-        pause() {
-            void renderer.setAnimationLoop(null);
-        },
         dispose() {
-            listeners.abort();
-            clearTimeout(resizeTimer);
-            void renderer.setAnimationLoop(null);
-            scene.traverse((object) => {
-                if (object instanceof Mesh) object.geometry.dispose();
-            });
             [
                 tubeMat,
                 sphereMat,
@@ -1465,60 +1128,6 @@ async function createScene(host: HTMLElement, look: Look, isStill: boolean, emit
                 particleMat,
                 flashMat,
             ].forEach((material) => material.dispose());
-            scenePass.dispose();
-            pipeline.dispose();
-            renderer.dispose();
-            renderer.domElement.remove();
-            grain.dispose();
-        },
-    };
-}
-
-/** The black hole behind the studio and Black Atom pages, receded on the quieter ones. */
-export function createBlackHole(look: Look = tunedLook): BackgroundRenderer {
-    const events = createEmitter();
-    let scene: Awaited<ReturnType<typeof createScene>> | undefined;
-    let theme: SceneTheme | undefined;
-    let isDisposed = false;
-    let isPaused = false;
-
-    return {
-        events,
-        async start(host, { isStill }: RendererOptions) {
-            const created = await createScene(host, look, isStill, (event) => events.emit(event));
-            if (isDisposed) {
-                created.dispose();
-                return;
-            }
-            scene = created;
-            if (theme) scene.setTheme(theme);
-            if (!isPaused) scene.run();
-        },
-        setState() {
-            scene?.setState();
-        },
-        sing(note) {
-            scene?.sing(note);
-        },
-        pulse(amount) {
-            scene?.pulse(amount);
-        },
-        setTheme(next) {
-            theme = next;
-            scene?.setTheme(next);
-        },
-        pause() {
-            isPaused = true;
-            scene?.pause();
-        },
-        resume() {
-            if (!isPaused) return;
-            isPaused = false;
-            scene?.run();
-        },
-        dispose() {
-            isDisposed = true;
-            scene?.dispose();
         },
     };
 }

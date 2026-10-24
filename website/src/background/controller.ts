@@ -17,7 +17,7 @@ const rendererKinds: Record<BackgroundState, RendererKind> = {
 };
 
 const loadRenderer: Record<RendererKind, () => Promise<BackgroundRenderer>> = {
-    "black-hole": () => import("./black-hole/black-hole.ts").then((m) => m.createBlackHole()),
+    "black-hole": () => import("./space/space.ts").then((m) => m.createSpace()),
     iter: () => import("./iter/iter.ts").then((m) => m.createIterScene()),
     radar: () => import("./radar/radar.ts").then((m) => m.createRadarScene()),
 };
