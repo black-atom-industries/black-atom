@@ -17,6 +17,16 @@ async function ctrlWheel(page: Page, deltaY: number, times: number) {
     await page.keyboard.up("Control");
 }
 
+/** Waits for the scene to draw two more frames, so `data-zoom` shows every input sent so far. */
+async function nextFrames(page: Page) {
+    await page.evaluate(
+        () =>
+            new Promise((resolve) =>
+                requestAnimationFrame(() => requestAnimationFrame(() => resolve(undefined))),
+            ),
+    );
+}
+
 /** The zoom once two reads a moment apart agree, so a capture never lands mid-change. */
 async function settledZoom(page: Page) {
     const read = async () => Number(await layer(page).getAttribute("data-zoom"));
@@ -47,13 +57,15 @@ test("Ctrl+wheel zooms the camera within its range, not the page", async ({ page
     const farthest = await settledZoom(page);
     expect(farthest).toBeGreaterThan(1);
     await ctrlWheel(page, 60, 5);
-    await expect.poll(zoomOf).toBe(farthest);
+    await nextFrames(page);
+    expect(await zoomOf()).toBe(farthest);
 
     await ctrlWheel(page, -60, 60);
     const closest = await settledZoom(page);
     expect(closest).toBeLessThan(1);
     await ctrlWheel(page, -60, 5);
-    await expect.poll(zoomOf).toBe(closest);
+    await nextFrames(page);
+    expect(await zoomOf()).toBe(closest);
 
     expect(await page.evaluate(() => [visualViewport?.scale, devicePixelRatio])).toEqual([1, 1]);
 
@@ -70,7 +82,8 @@ test("the wide shot zooms in but no farther out", async ({ page }) => {
     await expect(layer(page)).toHaveAttribute("data-zoom", "1.00", { timeout: 15_000 });
 
     await ctrlWheel(page, 60, 10);
-    await expect(layer(page)).toHaveAttribute("data-zoom", "1.00");
+    await nextFrames(page);
+    expect(await layer(page).getAttribute("data-zoom")).toBe("1.00");
     await ctrlWheel(page, -60, 2);
     await expect
         .poll(async () => Number(await layer(page).getAttribute("data-zoom")))
@@ -104,7 +117,8 @@ test("a plain wheel still scrolls the page", async ({ page }) => {
     await page.mouse.move(700, 400);
     await page.mouse.wheel(0, 600);
     await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(0);
-    await expect(layer(page)).toHaveAttribute("data-zoom", "1.00");
+    await nextFrames(page);
+    expect(await layer(page).getAttribute("data-zoom")).toBe("1.00");
 });
 
 test("Ctrl+wheel still zooms with reduced motion", async ({ page }) => {

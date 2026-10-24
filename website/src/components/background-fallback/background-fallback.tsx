@@ -1,7 +1,6 @@
 import { cva } from "cva";
+import type { BackgroundState } from "#/lib/route-background-state.ts";
 import styles from "./background-fallback.module.css";
-
-type View = "hole" | "iter" | "radar" | "wide";
 
 const figureVariants = cva({
     base: styles.figure,
@@ -115,7 +114,7 @@ const drawings = { hole: Hole, iter: Iter, radar: Radar, wide: Wide };
 
 type Props = {
     /** The landmark the page is about, or the wide shot of all three. */
-    view: View;
+    view: BackgroundState["view"];
     isReceded?: boolean;
 };
 

@@ -67,9 +67,10 @@ export function BackgroundLayer({ theme }: { theme: Theme.Definition }) {
 
     useEffect(() => {
         if (isStill) return;
+        // Ticking at half the frame time lets the grain's own throttle step every `grainFrameMs`.
         const timer = window.setInterval(
             () => grainRef.current?.tick(performance.now()),
-            grainFrameMs,
+            grainFrameMs / 2,
         );
         return () => clearInterval(timer);
     }, [isStill]);

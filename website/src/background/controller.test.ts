@@ -6,6 +6,8 @@ interface Stub extends BackgroundRenderer {
     log: string[];
     finishStart(): void;
     failStart(): void;
+    /** Reports that the running scene stopped, as a lost device or a failed frame does. */
+    failRunning(): void;
 }
 
 const created: Stub[] = [];
@@ -13,10 +15,12 @@ const created: Stub[] = [];
 function createStub(): Stub {
     const log: string[] = [];
     let settle: { resolve(): void; reject(error: Error): void } | undefined;
+    let reportFail: ((error: unknown) => void) | undefined;
     const stub: Stub = {
         log,
         events: { on: () => () => {} },
-        start: () => {
+        start: (_host, { onFail }) => {
+            reportFail = onFail;
             log.push("start");
             return new Promise<void>((resolve, reject) => {
                 settle = { resolve, reject };
@@ -24,6 +28,7 @@ function createStub(): Stub {
         },
         finishStart: () => settle?.resolve(),
         failStart: () => settle?.reject(new Error("no GPU")),
+        failRunning: () => reportFail?.(new Error("device lost")),
         setState: (state) => log.push(`state:${backgroundStateKey(state)}`),
         setTheme: () => log.push("theme"),
         sing: () => log.push("sing"),
@@ -144,7 +149,24 @@ describe("createBackgroundController", () => {
         expect(created[0]?.log.at(-1)).toBe("dispose");
         expect(console.warn).toHaveBeenCalledTimes(1);
         expect(onFail).toHaveBeenCalledTimes(1);
-        expect(controller.hasFailed).toBe(true);
+    });
+
+    it("switches to the fallback when a running scene stops", async () => {
+        const controller = createBackgroundController(host);
+        const onFail = vi.fn();
+        controller.onFail(onFail);
+        controller.update({ state: full, theme, isStill: false });
+        await settled();
+        created[0]?.finishStart();
+        await settled();
+        created[0]?.failRunning();
+        controller.update({ state: iter, theme, isStill: false });
+        await settled();
+
+        expect(created).toHaveLength(1);
+        expect(created[0]?.log.at(-1)).toBe("dispose");
+        expect(console.warn).toHaveBeenCalledTimes(1);
+        expect(onFail).toHaveBeenCalledTimes(1);
     });
 
     it("passes notes and kicks to the running renderer", async () => {

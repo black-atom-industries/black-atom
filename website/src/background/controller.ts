@@ -19,9 +19,7 @@ export interface BackgroundInput {
 
 export interface BackgroundController {
     readonly events: SceneEvents;
-    /** True once the scene failed to start; it stays off for the session. */
-    readonly hasFailed: boolean;
-    /** Calls `listener` when the scene fails to start; returns the unsubscribe. */
+    /** Calls `listener` when the scene fails to start or stops while running; returns the unsubscribe. */
     onFail(listener: () => void): () => void;
     update(input: BackgroundInput): void;
     sing(note: SingNote): void;
@@ -47,7 +45,7 @@ export function createBackgroundController(
     const events = createEmitter();
     let slot: Slot | undefined;
     let hasWarned = false;
-    /** A renderer that failed to start stays off for the session; the fallback outline shows instead. */
+    /** A renderer that failed stays off for the session; the fallback outline shows instead. */
     let hasFailed = false;
     const failListeners = new Set<() => void>();
 
@@ -63,6 +61,17 @@ export function createBackgroundController(
         slot = undefined;
     }
 
+    /** Turns the scene off for the session: warns once, then tells the layer to show the fallback. */
+    function fail(current: Slot, error: unknown) {
+        hasFailed = true;
+        if (slot === current) release();
+        if (!hasWarned) {
+            hasWarned = true;
+            console.warn("[background] scene unavailable, showing the fallback outline", error);
+        }
+        failListeners.forEach((listener) => listener());
+    }
+
     async function mount(input: BackgroundInput) {
         release();
         const current: Slot = { isStill: input.isStill, wanted: input };
@@ -73,16 +82,15 @@ export function createBackgroundController(
             current.renderer = renderer;
             renderer.events.on((event) => events.emit(event));
             apply(current, renderer);
-            await renderer.start(host, { isStill: current.isStill });
+            await renderer.start(host, {
+                isStill: current.isStill,
+                onFail: (error) => {
+                    if (slot === current) fail(current, error);
+                },
+            });
             if (slot === current && document.hidden) renderer.pause();
         } catch (error) {
-            hasFailed = true;
-            if (slot === current) release();
-            failListeners.forEach((listener) => listener());
-            if (!hasWarned) {
-                hasWarned = true;
-                console.warn("[background] scene unavailable, showing the fallback outline", error);
-            }
+            fail(current, error);
         }
     }
 
@@ -94,9 +102,6 @@ export function createBackgroundController(
 
     return {
         events,
-        get hasFailed() {
-            return hasFailed;
-        },
         onFail(listener) {
             failListeners.add(listener);
             return () => failListeners.delete(listener);

@@ -5,9 +5,12 @@ import type { ThemeVar } from "#/lib/theme-vars.ts";
 export type { BackgroundState };
 
 export type SceneEvent =
-    /** A line meets the hole or the camera. `hue` is the line's colour slot (0..1), `pan` its screen x (-1..1). */
+    /**
+     * A line meets the hole or the camera, a comet reaches iter's review ring, or radar's beam
+     * catches a key. `hue` is the colour slot (0..1), `pan` the screen x (-1..1).
+     */
     | { type: "absorb"; hue: number; pan: number; strength: number }
-    /** Every frame: camera distance relative to the resting distance (1), and the hole's energy (0..1.6). */
+    /** Every frame: camera distance relative to the resting distance (1), and the shown landmark's energy (0..1.6). */
     | { type: "proximity"; distance: number; energy: number }
     /**
      * Smoothed camera speed in view distances per second; the idle orbit alone is about 0.05.
@@ -38,11 +41,13 @@ export interface SingNote {
 interface RendererOptions {
     /** Draw a still frame instead of animating. */
     isStill: boolean;
+    /** Called once if the running scene stops for good, after a lost GPU device or a failed frame. */
+    onFail: (error: unknown) => void;
 }
 
 export interface BackgroundRenderer {
     readonly events: SceneEvents;
-    /** Rejects when neither WebGPU nor WebGL 2 (or 2D canvas) is available. */
+    /** Rejects when neither WebGPU nor WebGL 2 is available. */
     start(host: HTMLElement, options: RendererOptions): Promise<void>;
     setState(state: BackgroundState): void;
     setTheme(theme: SceneTheme): void;

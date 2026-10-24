@@ -1,5 +1,6 @@
 import { MathUtils, Vector3 } from "three/webgpu";
 import { rng } from "#/background/rng.ts";
+import { flowDir, flowSide, flowUp } from "#/background/space/axes.ts";
 import { buildTubes, type Tubes } from "#/background/space/tube.ts";
 
 const TAU = Math.PI * 2;
@@ -13,11 +14,6 @@ const WAVES = [
     [0.09, 5.1, 0.0033, 2.7],
 ] as const;
 
-/** Main flow direction and the sheet it flows in. */
-export const flowDir = new Vector3(0.55, -0.8, 0.06).normalize();
-const sheetNormal = new Vector3(0.05, 0.16, 1).normalize();
-export const flowSide = new Vector3().crossVectors(sheetNormal, flowDir).normalize();
-export const flowUp = new Vector3().crossVectors(flowDir, flowSide).normalize();
 const swirlAxis = flowUp
     .clone()
     .multiplyScalar(-1)

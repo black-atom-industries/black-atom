@@ -1,5 +1,6 @@
 import { MathUtils, Vector3, type PerspectiveCamera } from "three/webgpu";
-import { flowUp } from "#/background/landmarks/black-hole/field.ts";
+import { flowUp } from "./axes.ts";
+import { listenToCameraInput } from "./camera-input.ts";
 import type { Look } from "./look.ts";
 import type { Emit, SpaceUniforms } from "./landmark.ts";
 
@@ -20,20 +21,9 @@ const MAX_THICK = 2.2;
 const CLOSE_UP = 5;
 /** Share of a shot's distance a manual zoom always reaches in to, where the close-up is farther out. */
 const ZOOM_IN = 0.5;
-/** Zoom e-folds per wheel pixel with Ctrl held or a trackpad pinch. */
-const WHEEL_ZOOM = 0.006;
-/** Most wheel pixels one event counts toward zoom, so a mouse notch takes a step, not the whole range. */
-const WHEEL_STEP = 60;
-/** Degrees of yaw per sideways wheel pixel. */
-const WHEEL_YAW = 0.14;
-/** Pixels two fingers' spread must change by before a pinch zooms. */
-const PINCH_DEAD_ZONE = 6;
-/** Milliseconds after the last Safari gesture event that a gesture counts as over without `gestureend`. */
-const GESTURE_IDLE = 300;
-/** Pixels per wheel delta unit, by `deltaMode`: pixels, lines, pages. */
-const WHEEL_UNIT = [1, 16, 800];
 
-interface Frame {
+/** Where a target sits on screen: its centre and the screen radius of its world radius. */
+export interface Frame {
     x: number;
     y: number;
     /** Screen radius in pixels of the landmark's `radius`. */
@@ -41,7 +31,7 @@ interface Frame {
 }
 
 /** A point the camera looks at and the world radius around it a shot frames. */
-export interface Target {
+interface Target {
     readonly position: Vector3;
     readonly radius: number;
 }
@@ -107,49 +97,15 @@ export function zoomRange(
     D: number,
     shotZoom: number,
     wideZoom: number,
+    out: ZoomRange = { min: 1, max: 1 },
 ): ZoomRange {
-    return {
-        min: Math.min(ZOOM_IN, (CLOSE_UP * frameRadius) / D),
-        max: Math.max(1, wideZoom / shotZoom),
-    };
+    out.min = Math.min(ZOOM_IN, (CLOSE_UP * frameRadius) / D);
+    out.max = Math.max(1, wideZoom / shotZoom);
+    return out;
 }
 
 export function clampZoom(zoom: number, { min, max }: ZoomRange): number {
     return MathUtils.clamp(zoom, min, max);
-}
-
-type WheelInput = Pick<WheelEvent, "deltaX" | "deltaY" | "deltaMode" | "ctrlKey" | "shiftKey">;
-
-/**
- * What a wheel event asks of the camera: Ctrl (and a trackpad pinch, which arrives as Ctrl) zooms by
- * a distance factor; a sideways swipe, or Shift with a vertical wheel as Firefox sends it, turns it.
- * Vertical scrolling asks nothing.
- */
-export function readWheel({
-    deltaX,
-    deltaY,
-    deltaMode,
-    ctrlKey,
-    shiftKey,
-}: WheelInput): { zoom: number } | { yaw: number } | undefined {
-    const unit = WHEEL_UNIT[deltaMode] ?? 1;
-    const x = deltaX * unit;
-    const y = deltaY * unit;
-    if (ctrlKey) {
-        return { zoom: Math.exp(MathUtils.clamp(y, -WHEEL_STEP, WHEEL_STEP) * WHEEL_ZOOM) };
-    }
-    if (shiftKey && Math.abs(y) > Math.abs(x)) return { yaw: y * WHEEL_YAW };
-    if (Math.abs(x) > Math.abs(y) * 0.6) return { yaw: x * WHEEL_YAW };
-    return undefined;
-}
-
-/**
- * The distance factor of a pinch whose fingers moved from `previous` to `current` pixels apart, or
- * nothing while the change stays inside the dead zone, so a two-finger drag doesn't jitter the zoom.
- */
-export function pinchStep(previous: number, current: number): number | undefined {
-    if (current <= 0 || Math.abs(current - previous) < PINCH_DEAD_ZONE) return undefined;
-    return previous / current;
 }
 
 /**
@@ -159,6 +115,19 @@ export function pinchStep(previous: number, current: number): number | undefined
 export function wideness(zoom: number, { max }: ZoomRange): number {
     if (max <= 1 || zoom <= 1) return 0;
     return Math.min(1, Math.log(zoom) / Math.log(max));
+}
+
+/** `a` to `b` at `e` in log space, so a scale halves and doubles at the same pace. */
+export function logLerp(a: number, b: number, e: number): number {
+    return a * Math.pow(b / a, e);
+}
+
+/** The framing at eased progress `e` of a flight from `from` to `to`, written into `out`. */
+export function flyFrame(from: Frame, to: Frame, e: number, out: Frame): Frame {
+    out.x = MathUtils.lerp(from.x, to.x, e);
+    out.y = MathUtils.lerp(from.y, to.y, e);
+    out.r = logLerp(from.r, to.r, e);
+    return out;
 }
 
 function easeInOut(t: number): number {
@@ -223,7 +192,13 @@ export function createCameraRig({
     let W = 0;
     let H = 0;
     let D = 1000;
-    let pageHeight = 0;
+    let pageHeight = html.scrollHeight;
+    // The page height changes only when the content does; reading it every frame forces layout.
+    const pageObserver = new ResizeObserver(() => {
+        pageHeight = html.scrollHeight;
+    });
+    pageObserver.observe(document.body);
+    signal.addEventListener("abort", () => pageObserver.disconnect(), { once: true });
     let shot: Shot | undefined;
     /** The shot the framing was last measured for; trails `shot` while it waits for its anchor. */
     let framed: Shot | undefined;
@@ -243,14 +218,10 @@ export function createCameraRig({
     /** Manual zoom as a factor on the shot's camera distance, asked for and eased. */
     let zoom = 1;
     let zoomSmooth = 1;
-    let range: ZoomRange = { min: 1, max: 1 };
-    /** Safari's pinch scale at the last gesture event, while a gesture runs. */
-    let gestureScale: number | undefined;
-    let gestureTimer = 0;
-    /** Fingers on the screen, from touch events. */
-    let touchCount = 0;
-    /** The two fingers' spread when the pinch last zoomed. */
-    let pinchDistance: number | undefined;
+    const range: ZoomRange = { min: 1, max: 1 };
+    /** The wide shot's distance ratio, kept for the viewport and radius it was worked out for. */
+    let wideZoom = 1;
+    let wideFor = { W: 0, H: 0, radius: 0 };
     let pointerX = 0;
     let pointerY = 0;
     let pointerTargetX = 0;
@@ -268,93 +239,20 @@ export function createCameraRig({
     const camStep = new Vector3();
     const camRight = new Vector3();
 
-    function zoomBy(factor: number) {
-        zoom = clampZoom(zoom * factor, range);
-    }
-
-    function touchSpread({ touches }: TouchEvent) {
-        const [a, b] = [touches[0], touches[1]];
-        if (touches.length !== 2 || !a || !b) return undefined;
-        return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
-    }
-
-    function trackTouches(event: TouchEvent) {
-        touchCount = event.touches.length;
-        pinchDistance = touchSpread(event);
-    }
-
-    function endGesture() {
-        clearTimeout(gestureTimer);
-        gestureScale = undefined;
-    }
-
-    addEventListener(
-        "wheel",
-        (event) => {
-            const input = readWheel(event);
-            if (!input) return;
-            if ("yaw" in input) {
-                yaw += input.yaw;
-                return;
-            }
-            // The camera takes the pinch instead of the browser's page zoom.
-            event.preventDefault();
-            if (gestureScale === undefined) zoomBy(input.zoom);
+    listenToCameraInput(
+        {
+            zoom(factor) {
+                zoom = clampZoom(zoom * factor, range);
+            },
+            turn(degrees) {
+                yaw += degrees;
+            },
+            point(x, y) {
+                pointerTargetX = (x / W) * 2 - 1;
+                pointerTargetY = (y / H) * 2 - 1;
+            },
         },
-        { passive: false, signal },
-    );
-    addEventListener(
-        "gesturestart",
-        (event) => {
-            event.preventDefault();
-            endGesture();
-            gestureScale = 1;
-        },
-        { passive: false, signal },
-    );
-    addEventListener(
-        "gesturechange",
-        (event) => {
-            event.preventDefault();
-            if (!("scale" in event) || typeof event.scale !== "number" || event.scale <= 0) return;
-            clearTimeout(gestureTimer);
-            gestureTimer = window.setTimeout(endGesture, GESTURE_IDLE);
-            // iOS reports a two-finger pinch as touch events too, which zoom on their own.
-            if (gestureScale !== undefined && touchCount < 2) zoomBy(gestureScale / event.scale);
-            gestureScale = event.scale;
-        },
-        { passive: false, signal },
-    );
-    addEventListener("gestureend", endGesture, { passive: true, signal });
-    addEventListener("touchstart", trackTouches, { passive: true, signal });
-    addEventListener("touchend", trackTouches, { passive: true, signal });
-    addEventListener("touchcancel", trackTouches, { passive: true, signal });
-    addEventListener(
-        "touchmove",
-        (event) => {
-            touchCount = event.touches.length;
-            const spread = touchSpread(event);
-            if (spread === undefined) return;
-            // Two fingers belong to the camera; one finger keeps scrolling the page natively.
-            if (event.cancelable) event.preventDefault();
-            if (pinchDistance === undefined) {
-                pinchDistance = spread;
-                return;
-            }
-            const step = pinchStep(pinchDistance, spread);
-            if (step === undefined) return;
-            zoomBy(step);
-            pinchDistance = spread;
-        },
-        { passive: false, signal },
-    );
-    addEventListener(
-        "pointermove",
-        (event) => {
-            pointerTargetX = (event.clientX / W) * 2 - 1;
-            pointerTargetY = (event.clientY / H) * 2 - 1;
-        },
-        { passive: true, signal },
+        signal,
     );
 
     return {
@@ -367,11 +265,6 @@ export function createCameraRig({
             camera.aspect = W / H;
             D = H / 2 / Math.tan(MathUtils.degToRad(camera.fov / 2));
             camera.updateProjectionMatrix();
-        },
-
-        /** The target of the shot asked for last. */
-        get target(): Target | undefined {
-            return shot?.target;
         },
 
         get isCutPending() {
@@ -399,9 +292,13 @@ export function createCameraRig({
             yaw = 0;
         },
 
-        /** Frames `next`: flies there when `fly` is set and the camera has a view, cuts otherwise. */
-        setShot(next: Shot, fly: boolean) {
-            if (next === shot) return;
+        /**
+         * Frames `next`: flies there when `fly` is set and the camera has a view, cuts otherwise.
+         * Returns whether a flight began.
+         */
+        setShot(next: Shot, fly: boolean): boolean {
+            if (next === shot) return false;
+            let isFlight = false;
             waited = settled = 0;
             if (view && fly) {
                 // The flight starts from the manually zoomed and turned view, and carries both home.
@@ -427,8 +324,10 @@ export function createCameraRig({
                 };
                 // The new shot's idle motion starts at rest, as on a direct load of its page.
                 orbitAngle = swayPhase = 0;
+                isFlight = true;
             }
             shot = next;
+            return isFlight;
         },
 
         /** Snaps the framing at the next measure and counts the next frame as a cut. */
@@ -442,7 +341,6 @@ export function createCameraRig({
         measure() {
             if (!shot) return;
             const scrollY = window.scrollY;
-            pageHeight = html.scrollHeight;
             const anchor = shot.anchor ? document.querySelector(shot.anchor.selector) : null;
             const isCutting = framed !== undefined && framed !== shot;
             const oldAnchor = isCutting ? framed?.anchor?.selector : undefined;
@@ -498,10 +396,8 @@ export function createCameraRig({
                 const e = easeInOut(progress);
                 const { from } = flight;
                 view.position.lerpVectors(from.position, shot.target.position, e);
-                view.radius = from.radius * Math.pow(shot.target.radius / from.radius, e);
-                frame.x = MathUtils.lerp(from.frame.x, target.x, e);
-                frame.y = MathUtils.lerp(from.frame.y, target.y, e);
-                frame.r = from.frame.r * Math.pow(target.r / from.frame.r, e);
+                view.radius = logLerp(from.radius, shot.target.radius, e);
+                flyFrame(from.frame, target, e, frame);
                 view.idle = MathUtils.lerp(from.idle, idle, e);
                 flightOffset(flight.startOffset, flight.lift, e, offset);
                 if (progress >= 1) {
@@ -530,8 +426,11 @@ export function createCameraRig({
             const progress = MathUtils.clamp(window.scrollY / Math.max(1, pageHeight - H), 0, 1);
             scroll += (progress - scroll) * (1 - Math.exp(-dt * 5));
             const shotZoom = view.radius / frame.r;
-            const wideZoom = wide.target.radius / wide.fallback(W, H).r;
-            range = zoomRange(frame.r, D, shotZoom, wideZoom);
+            if (wideFor.W !== W || wideFor.H !== H || wideFor.radius !== wide.target.radius) {
+                wideFor = { W, H, radius: wide.target.radius };
+                wideZoom = wide.target.radius / wide.fallback(W, H).r;
+            }
+            zoomRange(frame.r, D, shotZoom, wideZoom, range);
             zoom = clampZoom(zoom, range);
             const manualEase = isStill ? 1 : 1 - Math.exp(-dt * 4);
             yawSmooth += (yaw - yawSmooth) * manualEase;

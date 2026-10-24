@@ -57,11 +57,12 @@ import type {
     LandmarkFrame,
     SceneColorNode,
 } from "#/background/space/landmark.ts";
-import { createThinning } from "#/background/space/crossing.ts";
+import { createAbsorber } from "#/background/space/absorb.ts";
 import { ACCENT_SHARE, accentAt, glowOutput, hueColor } from "#/background/space/shading.ts";
 import { tubeGeometry as createTubeGeometry } from "#/background/space/tube.ts";
 import type { SingNote } from "#/background/types.ts";
-import { buildStreamlines, flowDir, flowSide, flowUp, type Line } from "./field.ts";
+import { flowDir, flowSide, flowUp } from "#/background/space/axes.ts";
+import { buildStreamlines, type Line } from "./field.ts";
 
 const TAU = Math.PI * 2;
 /** Pulse speed along the lines, world units per second. */
@@ -741,18 +742,18 @@ export function createBlackHole({
     /** The presence the shot asks for; the hole's own absorbs sound only while it is in the shot. */
     let wantedPresence = 1;
     let soundShare = 1;
-    const thinning = createThinning();
+    const absorber = createAbsorber(emit, camera);
     let tintAmount = 0;
     const tint = new Color();
     const lineTint = new Color();
     const toCamera = new Vector3();
     const ndc = new Vector3();
-    const projected = new Vector3();
     const previousCamera = new Vector3();
     const cameraVelocity = new Vector3();
     const cameraDirection = new Vector3();
     const segment = new Vector3();
     const closest = new Vector3();
+    const voidCenter = new Vector3();
     const candidate = new Vector3();
     const black = new Color(0, 0, 0);
     const coreDark = new Color();
@@ -774,11 +775,6 @@ export function createBlackHole({
         return out.copy(current.pal[index]);
     }
 
-    function pan(point: Vector3): number {
-        projected.copy(point).project(camera);
-        return MathUtils.clamp(projected.x, -1, 1);
-    }
-
     function spawnFlash(line: Line) {
         flashIndex = (flashIndex + 1) % FLASH_COUNT;
         const flash = flashes[flashIndex];
@@ -789,13 +785,13 @@ export function createBlackHole({
         flash.max = flash.life = 0.45 + Math.random() * 0.35;
         flash.size = buildR * (line.hue < ACCENT_SHARE ? 0.2 : 0.14) * (0.8 + Math.random() * 0.5);
         lineColor(line.hue, flash.color);
-        if (wantedPresence <= 0 || !thinning(soundShare)) return;
-        emit({
-            type: "absorb",
-            hue: line.hue,
-            pan: pan(flash.position),
-            strength: (0.3 + 0.7 * line.weight) * wantedPresence,
-        });
+        absorber.sendCrossing(
+            flash.position,
+            line.hue,
+            0.3 + 0.7 * line.weight,
+            wantedPresence,
+            soundShare,
+        );
     }
 
     function shakeLine(
@@ -914,8 +910,8 @@ export function createBlackHole({
         halo.quaternion.copy(camera.quaternion);
 
         VOID_PATCHES.forEach(([b, a, r], j) => {
-            const c = flowDir
-                .clone()
+            const c = voidCenter
+                .copy(flowDir)
                 .multiplyScalar(b + 420 * Math.sin(bt * 0.05 + j * 1.9))
                 .addScaledVector(flowSide, a + 360 * Math.cos(bt * 0.04 + j * 2.3))
                 .addScaledVector(flowUp, 260 * Math.sin(bt * 0.03 + j));
@@ -967,12 +963,7 @@ export function createBlackHole({
                         cameraDirection.normalize();
                         const strength = Math.min(1.6, 0.5 + cameraSpeed * 1.5);
                         shakeLine(line, closest, cameraDirection, viewDistance, strength);
-                        emit({
-                            type: "absorb",
-                            hue: line.hue,
-                            pan: pan(closest),
-                            strength: Math.min(1, strength / 1.2),
-                        });
+                        absorber.send(closest, line.hue, Math.min(1, strength / 1.2));
                     }
                     line.isNear = isNear;
                 }
@@ -994,19 +985,15 @@ export function createBlackHole({
         flashes.forEach((flash, i) => {
             if (flash.life > 0) flash.life -= dt;
             const share = flash.life > 0 ? flash.life / flash.max : 0;
-            flashData.set(
-                [
-                    flash.position.x,
-                    flash.position.y,
-                    flash.position.z,
-                    flash.size * (1.4 - 0.6 * share),
-                    flash.color.r,
-                    flash.color.g,
-                    flash.color.b,
-                    share * share * 1.1,
-                ],
-                i * 8,
-            );
+            const at = i * 8;
+            flashData[at] = flash.position.x;
+            flashData[at + 1] = flash.position.y;
+            flashData[at + 2] = flash.position.z;
+            flashData[at + 3] = flash.size * (1.4 - 0.6 * share);
+            flashData[at + 4] = flash.color.r;
+            flashData[at + 5] = flash.color.g;
+            flashData[at + 6] = flash.color.b;
+            flashData[at + 7] = share * share * 1.1;
         });
         flashBuffer.needsUpdate = true;
     }

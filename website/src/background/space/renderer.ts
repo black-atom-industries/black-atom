@@ -21,6 +21,7 @@ type CreateScene = (
     isStill: boolean,
     emit: ReturnType<typeof createEmitter>["emit"],
     state: BackgroundState,
+    fail: (error: unknown) => void,
 ) => Promise<SpaceScene>;
 
 /**
@@ -37,13 +38,14 @@ export function createSpaceRenderer(createScene: CreateScene): BackgroundRendere
 
     return {
         events,
-        async start(host, { isStill }) {
+        async start(host, { isStill, onFail }) {
             const startState = state;
             const created = await createScene(
                 host,
                 isStill,
                 (event) => events.emit(event),
                 startState,
+                onFail,
             );
             if (isDisposed) {
                 created.dispose();

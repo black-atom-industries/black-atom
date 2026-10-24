@@ -57,6 +57,16 @@ test("a product page runs exactly one scene", async ({ page }) => {
     await expect(page.locator("canvas")).toHaveCount(1);
 });
 
+/** Waits two animation frames, so effects from the last render have run. */
+async function nextFrames(page: Page) {
+    await page.evaluate(
+        () =>
+            new Promise((resolve) =>
+                requestAnimationFrame(() => requestAnimationFrame(() => resolve(undefined))),
+            ),
+    );
+}
+
 test.describe("with reduced motion", () => {
     test.use({ contextOptions: { reducedMotion: "reduce" } });
 
@@ -64,41 +74,26 @@ test.describe("with reduced motion", () => {
         test(`${path} shows a still frame`, async ({ page }) => {
             await page.goto(path, { waitUntil: "networkidle" });
             await sceneCanvas(page);
-            // An animated scene never holds still; a still one does once its first frame is drawn.
-            await expect
-                .poll(
-                    async () => {
-                        const before = await page.screenshot();
-                        await page.waitForTimeout(800);
-                        return (await page.screenshot()).equals(before);
-                    },
-                    { timeout: 15_000 },
-                )
-                .toBe(true);
+            // A still scene marks its layer once its frame is drawn and it stops rendering.
+            await expect(page.locator('[data-component="BackgroundLayer"]')).toHaveAttribute(
+                "data-frame",
+                "still",
+                { timeout: 15_000 },
+            );
         });
     }
 
     test("a page change cuts instead of flying", async ({ page }) => {
+        const layer = page.locator('[data-component="BackgroundLayer"]');
         await page.goto("/", { waitUntil: "networkidle" });
-        await sceneCanvas(page);
+        await expect(layer).toHaveAttribute("data-frame", "still", { timeout: 15_000 });
         await page
             .getByRole("navigation", { name: "Main" })
             .getByRole("link", { name: /iter\.nvim/ })
             .click();
-        await expect(page.locator('[data-component="BackgroundLayer"]')).toHaveAttribute(
-            "data-state",
-            "iter",
-        );
-        // A flight moves the camera for about two seconds; a cut holds still within a moment.
-        await expect
-            .poll(
-                async () => {
-                    const before = await page.screenshot();
-                    await page.waitForTimeout(250);
-                    return (await page.screenshot()).equals(before);
-                },
-                { timeout: 1200, intervals: [0] },
-            )
-            .toBe(true);
+        await expect(layer).toHaveAttribute("data-state", "iter");
+        await nextFrames(page);
+        await expect(layer).not.toHaveAttribute("data-flights");
+        await expect(layer).toHaveAttribute("data-frame", "still");
     });
 });

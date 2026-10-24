@@ -34,6 +34,10 @@ test("flying between every shot keeps one canvas and a clean console", async ({ 
         .getByRole("link", { name: /iter\.nvim/ })
         .click();
     await expectShot(page, /\/iter$/, "iter");
+    await expect(page.locator('[data-component="BackgroundLayer"]')).toHaveAttribute(
+        "data-flights",
+        "1",
+    );
 
     await mainNav(page).getByRole("link", { name: "Changelog" }).click();
     await expectShot(page, /\/changelog$/, "wide");

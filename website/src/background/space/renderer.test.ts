@@ -28,7 +28,7 @@ describe("createSpaceRenderer", () => {
             return createStubScene(log);
         });
         renderer.setState(iter);
-        await renderer.start(host, { isStill: false });
+        await renderer.start(host, { isStill: false, onFail: () => {} });
 
         expect(builtFor).toBe(iter);
         expect(log).toEqual(["run"]);
@@ -44,7 +44,7 @@ describe("createSpaceRenderer", () => {
             return createStubScene(log);
         });
         renderer.setState(hole);
-        const started = renderer.start(host, { isStill: false });
+        const started = renderer.start(host, { isStill: false, onFail: () => {} });
         renderer.setState(iter);
         finish?.();
         await started;
@@ -52,10 +52,21 @@ describe("createSpaceRenderer", () => {
         expect(log).toEqual(["state:iter", "run"]);
     });
 
+    it("hands the scene the way to report that it stopped", async () => {
+        const reported: unknown[] = [];
+        const renderer = createSpaceRenderer(async (_host, _isStill, _emit, _state, fail) => {
+            fail(new Error("device lost"));
+            return createStubScene([]);
+        });
+        await renderer.start(host, { isStill: false, onFail: (error) => reported.push(error) });
+
+        expect(reported).toHaveLength(1);
+    });
+
     it("disposes a scene that finishes starting after dispose", async () => {
         const log: string[] = [];
         const renderer = createSpaceRenderer(async () => createStubScene(log));
-        const started = renderer.start(host, { isStill: false });
+        const started = renderer.start(host, { isStill: false, onFail: () => {} });
         renderer.dispose();
         await started;
 

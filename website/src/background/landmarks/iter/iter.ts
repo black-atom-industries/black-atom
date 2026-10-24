@@ -5,7 +5,6 @@ import {
     InstancedBufferGeometry,
     InstancedInterleavedBuffer,
     Matrix4,
-    MathUtils,
     Mesh,
     MeshBasicNodeMaterial,
     PlaneGeometry,
@@ -35,9 +34,10 @@ import {
     varying,
     vec3,
 } from "three/tsl";
-import { flowDir, flowSide, flowUp } from "#/background/landmarks/black-hole/field.ts";
+import { flowDir, flowSide, flowUp } from "#/background/space/axes.ts";
 import { rng } from "#/background/rng.ts";
-import { createThinning, hasPassed } from "#/background/space/crossing.ts";
+import { createAbsorber } from "#/background/space/absorb.ts";
+import { hasPassed } from "#/background/space/crossing.ts";
 import type { Landmark, LandmarkContext, LandmarkFrame } from "#/background/space/landmark.ts";
 import { ACCENT_SHARE, glowOutput, hueColor } from "#/background/space/shading.ts";
 import { buildTubes, tubeGeometry, type Tube } from "#/background/space/tube.ts";
@@ -55,7 +55,7 @@ const TAIL = 0.05;
 const STRAND_COLORS = 6;
 /** Accent arc speed in radians per second. */
 const ARC_SPEED = 0.35;
-/** Strands whose comet sounds on reaching the ring, about one a second at the strands' mean speed. */
+/** Strands whose comet sounds on reaching the ring; with the strands' speeds this sets the rate. */
 const SOUNDING_STRANDS = 45;
 /** Points from a strand's start to where it meets the ring. */
 const ENTRY_INDEX = 40;
@@ -98,8 +98,7 @@ export function createIter(
     let ringR = 200;
     let sounding: Sounding[] = [];
     let previousTime: number | undefined;
-    const thinning = createThinning();
-    const projected = new Vector3();
+    const absorber = createAbsorber(emit, camera);
 
     /** The ring faces the camera's resting side (+z), tilted up so its depth reads while the shot sways. */
     const axis = new Vector3(0, 0, 1).applyAxisAngle(new Vector3(1, 0, 0), -0.4);
@@ -373,14 +372,8 @@ export function createIter(
         for (const strand of sounding) {
             const from = previous * strand.speed + strand.offset;
             const to = time * strand.speed + strand.offset;
-            if (!hasPassed(from, to, strand.entry) || !thinning(share)) continue;
-            projected.copy(strand.point).project(camera);
-            emit({
-                type: "absorb",
-                hue: strand.hue,
-                pan: MathUtils.clamp(projected.x, -1, 1),
-                strength: strand.strength * presence,
-            });
+            if (!hasPassed(from, to, strand.entry)) continue;
+            absorber.sendCrossing(strand.point, strand.hue, strand.strength, presence, share);
         }
     }
 

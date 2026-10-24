@@ -75,7 +75,6 @@ export interface LandmarkFrame {
      * landmarks together keep about one landmark's rate when the shot shows them all.
      */
     soundShare: number;
-    isSmall: boolean;
     W: number;
     H: number;
 }

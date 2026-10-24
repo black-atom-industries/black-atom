@@ -10,7 +10,6 @@ import {
     InstancedBufferGeometry,
     InstancedInterleavedBuffer,
     InstancedMesh,
-    MathUtils,
     Matrix4,
     Mesh,
     MeshBasicNodeMaterial,
@@ -47,7 +46,8 @@ import {
 } from "three/tsl";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { rng } from "#/background/rng.ts";
-import { createThinning, hasPassed } from "#/background/space/crossing.ts";
+import { createAbsorber } from "#/background/space/absorb.ts";
+import { hasPassed } from "#/background/space/crossing.ts";
 import type { Landmark, LandmarkContext, LandmarkFrame } from "#/background/space/landmark.ts";
 import { ACCENT_SHARE, glowOutput, paletteHue } from "#/background/space/shading.ts";
 
@@ -116,8 +116,7 @@ export function createRadar(
     /** The keyed blips, which sound as the beam passes them. */
     const keyed: { angle: number; point: Vector3; hue: number; strength: number }[] = [];
     let previousSweep: number | undefined;
-    const thinning = createThinning();
-    const projected = new Vector3();
+    const absorber = createAbsorber(emit, camera);
 
     /** The disc faces the camera's resting side (+z), tilted up so its depth reads while the shot sways. */
     const axis = new Vector3(0, 0, 1).applyAxisAngle(new Vector3(1, 0, 0), -0.55);
@@ -364,14 +363,8 @@ export function createRadar(
             previousSweep = sweep;
             if (previous === undefined || presence <= 0) return;
             for (const blip of keyed) {
-                if (!hasPassed(previous, sweep, blip.angle, TAU) || !thinning(soundShare)) continue;
-                projected.copy(blip.point).project(camera);
-                emit({
-                    type: "absorb",
-                    hue: blip.hue,
-                    pan: MathUtils.clamp(projected.x, -1, 1),
-                    strength: blip.strength * presence,
-                });
+                if (!hasPassed(previous, sweep, blip.angle, TAU)) continue;
+                absorber.sendCrossing(blip.point, blip.hue, blip.strength, presence, soundShare);
             }
         },
         dispose() {

@@ -10,7 +10,6 @@ import { Caption } from "#/components/caption/index.ts";
 import { Heading } from "#/components/heading/index.ts";
 import { PageGrid } from "#/components/page-grid/index.ts";
 import { RangeField } from "#/components/range-field/index.ts";
-import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
@@ -112,7 +111,6 @@ export function SoundLab() {
     return (
         <main>
             <Section variant="page">
-                <SceneAnchor variant="far-hole" />
                 <Stack gap="xl">
                     <Stack gap="sm">
                         <Caption tone="subtle">Development</Caption>

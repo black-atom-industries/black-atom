@@ -9,7 +9,7 @@ import {
 import { pass } from "three/tsl";
 import { bloom } from "three/examples/jsm/tsl/display/BloomNode.js";
 import { createBlackHole } from "#/background/landmarks/black-hole/black-hole.ts";
-import { flowDir, flowSide } from "#/background/landmarks/black-hole/field.ts";
+import { flowDir, flowSide } from "./axes.ts";
 import { createIter } from "#/background/landmarks/iter/iter.ts";
 import { createRadar } from "#/background/landmarks/radar/radar.ts";
 import type {
@@ -22,6 +22,7 @@ import type { LandmarkKey } from "#/lib/route-background-state.ts";
 import { createCameraRig, type Shot } from "./camera-rig.ts";
 import { createSpaceRenderer, type SpaceScene } from "./renderer.ts";
 import { look as tunedLook, type Look } from "./look.ts";
+import { wideFrame, wideTarget } from "./wide.ts";
 import {
     PALETTE_VARS,
     createSpaceUniforms,
@@ -39,16 +40,9 @@ const ITER_PLACE = flowDir.clone().multiplyScalar(14).addScaledVector(flowSide, 
 const RADAR_PLACE = flowDir.clone().multiplyScalar(14).addScaledVector(flowSide, -7);
 /** Degrees the camera sways either side of a product landmark, so its face never turns edge-on. */
 const PRODUCT_SWAY = 30;
-/** Share of the wide shot's target the focus drift moves toward the focused landmark. */
-const FOCUS_DRIFT = 1 / 3;
 /** Screen radius of the wide shot's frame, as a share of `min(W, H)`, full and receded. */
 const WIDE_FILL = 0.47;
 const WIDE_RECEDED_FILL = 0.32;
-/** Viewport width above which the wide shot sits right of and below the centre, clear of the text column. */
-const WIDE_BIAS_FROM = 720;
-/** The wide shot's centre on wide layouts, as shares of the viewport. */
-const WIDE_BIAS_X = 0.63;
-const WIDE_BIAS_Y = 0.57;
 /** The hole's line presence on the wide shot, where it is one of three landmarks. */
 const WIDE_HOLE_PRESENCE = 0.3;
 /** On light themes the hole's lines recede further on the wide shot, so the text stays clean. */
@@ -84,9 +78,13 @@ function themeColors({ vars }: SceneTheme): Colors & { accentCount: number } {
     };
 }
 
+function pixelRatio(): number {
+    return Math.min(devicePixelRatio || 1, innerWidth < 1000 ? 2 : 1.5);
+}
+
 /**
- * Builds the space on a WebGPU renderer (WebGL 2 when WebGPU is missing): one scene and camera that
- * every landmark lives in, with the theme colours, bloom and the render loop.
+ * Starts a WebGPU renderer (WebGL 2 when WebGPU is missing) and builds the space on it. A space
+ * that fails to build takes its renderer and canvas with it.
  */
 async function createScene(
     host: HTMLElement,
@@ -94,13 +92,36 @@ async function createScene(
     isStill: boolean,
     emit: Emit,
     state: BackgroundState,
+    fail: (error: unknown) => void,
 ): Promise<SpaceScene> {
     const isWebGPU = await hasWebGPU();
     if (!isWebGPU && !hasWebGL2()) throw new Error("neither WebGPU nor WebGL 2 is available");
-    const renderer = new WebGPURenderer({ antialias: true, forceWebGL: !isWebGPU });
+    const renderer = new WebGPURenderer({ forceWebGL: !isWebGPU });
     await renderer.init();
-    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, innerWidth < 1000 ? 2 : 1.5));
     renderer.domElement.dataset.backend = isWebGPU ? "webgpu" : "webgl2";
+    try {
+        return buildSpace(renderer, host, look, isStill, emit, state, fail);
+    } catch (error) {
+        renderer.dispose();
+        renderer.domElement.remove();
+        throw error;
+    }
+}
+
+/**
+ * Builds the space: one scene and camera that every landmark lives in, with the theme colours,
+ * bloom and the render loop. `fail` reports a space that stopped for good while running.
+ */
+function buildSpace(
+    renderer: WebGPURenderer,
+    host: HTMLElement,
+    look: Look,
+    isStill: boolean,
+    emit: Emit,
+    state: BackgroundState,
+    fail: (error: unknown) => void,
+): SpaceScene {
+    renderer.setPixelRatio(pixelRatio());
     host.appendChild(renderer.domElement);
 
     const scene = new Scene();
@@ -175,18 +196,12 @@ async function createScene(
 
     /** Places the wide targets around the landmarks as built, framing all three with margin. */
     function placeWide() {
-        const centroid = new Vector3();
-        landmarks.forEach((landmark) => centroid.add(landmark.position));
-        centroid.divideScalar(landmarks.length);
-        const radius = Math.max(
-            ...landmarks.map(
-                (landmark) => landmark.position.distanceTo(centroid) + landmark.extent,
-            ),
-        );
         const foci: (LandmarkKey | undefined)[] = [undefined, "hole", "iter", "radar"];
         foci.forEach((focus) => {
-            const position = centroid.clone();
-            if (focus) position.lerp(byKey[focus].position, FOCUS_DRIFT);
+            const { position, radius } = wideTarget(
+                landmarks,
+                focus ? byKey[focus].position : undefined,
+            );
             const wide = wideTargets.get(focus);
             if (wide) {
                 wide.position.copy(position);
@@ -208,16 +223,7 @@ async function createScene(
         const shot: Shot = {
             target,
             sway: PRODUCT_SWAY,
-            fallback: (width, height) => {
-                if (width <= WIDE_BIAS_FROM) {
-                    return { x: width / 2, y: height / 2, r: Math.min(width, height) * fill };
-                }
-                const x = width * WIDE_BIAS_X;
-                const y = height * WIDE_BIAS_Y;
-                // The largest circle around the biased centre that stays in the viewport, scaled like the centred fill.
-                const room = Math.min(width - x, height - y);
-                return { x, y, r: room * (fill / 0.5) };
-            },
+            fallback: (width, height) => wideFrame(width, height, fill),
         };
         wideShots.set(key, shot);
         return shot;
@@ -260,6 +266,8 @@ async function createScene(
         signal,
         wide: shotFor({ view: "wide", mode: "full" }),
     });
+    // The page hands pinches to the camera only while a scene is there to take them.
+    document.documentElement.dataset.scene = "running";
     let builtFor = "";
 
     function measure() {
@@ -278,6 +286,7 @@ async function createScene(
         W = innerWidth;
         H = innerHeight;
         isSmall = W < 700;
+        renderer.setPixelRatio(pixelRatio());
         renderer.setSize(W, H);
         rig.resize(W, H);
     }
@@ -346,11 +355,27 @@ async function createScene(
     let last = performance.now();
     let frameNumber = 0;
     let remeasureUntil = 0;
+    /** The manual zoom in hundredths that `data-zoom` shows. */
+    let shownZoom = Number.NaN;
+    /** Flights since the space started, shown as `data-flights`; a still background only cuts. */
+    let flightCount = 0;
+    /** A still background has drawn its frame and waits, shown as `data-frame="still"`. */
+    let isResting = false;
 
     function render() {
         const current = colors;
         if (!current || !rig.hasFrame) return;
-        if (isStill && stillFrames <= 0 && !rig.isCutPending && !rig.isManualPending) return;
+        if (isStill && stillFrames <= 0 && !rig.isCutPending && !rig.isManualPending) {
+            if (!isResting) {
+                isResting = true;
+                host.dataset.frame = "still";
+            }
+            return;
+        }
+        if (isResting) {
+            isResting = false;
+            delete host.dataset.frame;
+        }
         stillFrames -= 1;
         const now = performance.now();
         const dt = Math.min(0.05, (now - last) / 1000);
@@ -366,8 +391,11 @@ async function createScene(
         glow.threshold.value = 0.7 + 0.32 * lightMix;
 
         const { viewDistance, cameraSpeed, cut } = rig.update(dt);
-        const zoom = rig.manualZoom.toFixed(2);
-        if (host.dataset.zoom !== zoom) host.dataset.zoom = zoom;
+        const zoom = Math.round(rig.manualZoom * 100);
+        if (zoom !== shownZoom) {
+            shownZoom = zoom;
+            host.dataset.zoom = (zoom / 100).toFixed(2);
+        }
         background.copy(current.bg0).lerp(current.fg, 0.07 * look.lightContrast * lightMix);
         landmarks.forEach((landmark) =>
             landmark.update({
@@ -379,7 +407,6 @@ async function createScene(
                 cut,
                 presence: presenceOf(landmark),
                 soundShare: shown.view === "wide" ? 1 / landmarks.length : 1,
-                isSmall,
                 W,
                 H,
             }),
@@ -389,31 +416,42 @@ async function createScene(
             emit({
                 type: "proximity",
                 distance: viewDistance / rig.restDistance(),
-                energy: shown.view === "hole" ? (hole.energy ?? 0) : 0,
+                energy: shown.view === "wide" ? 0 : (byKey[shown.view].energy ?? 0),
             });
             rig.emitCamera();
         }
     }
 
-    let hasFailed = false;
+    let hasStopped = false;
+    /**
+     * Stops the space for good after a lost device or a failed frame: the loop ends, a pinch and
+     * Ctrl+wheel go back to zooming the page, and the controller swaps in the fallback.
+     */
+    function stop(error: unknown) {
+        if (hasStopped) return;
+        hasStopped = true;
+        listeners.abort();
+        delete document.documentElement.dataset.scene;
+        void renderer.setAnimationLoop(null);
+        fail(error);
+    }
+    renderer.onDeviceLost = (info) => stop(new Error(`GPU device lost: ${info.message}`));
+
     function tick() {
         try {
             render();
         } catch (error) {
-            if (!hasFailed) {
-                hasFailed = true;
-                console.warn("[background] space stopped", error);
-            }
-            // With nothing to zoom, a pinch and Ctrl+wheel go back to zooming the page.
-            listeners.abort();
-            void renderer.setAnimationLoop(null);
+            stop(error);
         }
     }
 
     return {
         setState(next: BackgroundState) {
             shown = next;
-            rig.setShot(shotFor(next), !isStill);
+            if (rig.setShot(shotFor(next), !isStill)) {
+                flightCount += 1;
+                host.dataset.flights = String(flightCount);
+            }
             rig.resetManual();
             remeasureUntil = performance.now() + 1500;
             stillFrames = 2;
@@ -431,23 +469,30 @@ async function createScene(
         },
         dispose() {
             listeners.abort();
+            delete document.documentElement.dataset.scene;
             clearTimeout(resizeTimer);
             void renderer.setAnimationLoop(null);
-            landmarks.forEach((landmark) => landmark.dispose());
-            scenePass.dispose();
-            pipeline.dispose();
-            renderer.dispose();
             renderer.domElement.remove();
+            try {
+                landmarks.forEach((landmark) => landmark.dispose());
+                glow.dispose();
+                scenePass.dispose();
+                pipeline.dispose();
+                renderer.dispose();
+            } catch (error) {
+                // After a lost device, releasing GPU resources can throw; the space is gone either way.
+                if (!hasStopped) throw error;
+            }
         },
     };
 }
 
 /**
- * The background space: the black hole behind the studio and Black Atom pages, receded on the
- * quieter ones, and iter's review cycle and radar's sweep on their pages.
+ * The background space: the black hole, iter and radar in one field, framed by the shot each page
+ * asks for, from one landmark to the wide shot of all three.
  */
 export function createSpace(look: Look = tunedLook): BackgroundRenderer {
-    return createSpaceRenderer((host, isStill, emit, state) =>
-        createScene(host, look, isStill, emit, state),
+    return createSpaceRenderer((host, isStill, emit, state, fail) =>
+        createScene(host, look, isStill, emit, state, fail),
     );
 }

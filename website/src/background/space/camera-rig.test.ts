@@ -3,8 +3,8 @@ import { Vector3 } from "three/webgpu";
 import {
     clampZoom,
     flightOffset,
-    pinchStep,
-    readWheel,
+    flyFrame,
+    logLerp,
     shouldFrame,
     wideness,
     zoomRange,
@@ -92,53 +92,6 @@ describe("clampZoom", () => {
     });
 });
 
-describe("readWheel", () => {
-    const wheel = { deltaX: 0, deltaY: 0, deltaMode: 0, ctrlKey: false, shiftKey: false };
-
-    it("leaves vertical scrolling to the page", () => {
-        expect(readWheel({ ...wheel, deltaY: 100 })).toBeUndefined();
-    });
-
-    it("zooms out on a Ctrl wheel down and in on a pinch open", () => {
-        const out = readWheel({ ...wheel, ctrlKey: true, deltaY: 10 });
-        const pinchIn = readWheel({ ...wheel, ctrlKey: true, deltaY: -10 });
-        expect(out && "zoom" in out && out.zoom).toBeGreaterThan(1);
-        expect(pinchIn && "zoom" in pinchIn && pinchIn.zoom).toBeLessThan(1);
-    });
-
-    it("takes a step per mouse notch, whether it counts pixels or lines", () => {
-        const pixels = readWheel({ ...wheel, ctrlKey: true, deltaY: 500 });
-        const lines = readWheel({ ...wheel, ctrlKey: true, deltaY: 3, deltaMode: 1 });
-        for (const notch of [pixels, lines]) {
-            const factor = notch && "zoom" in notch ? notch.zoom : 1;
-            expect(factor).toBeGreaterThan(1.2);
-            expect(factor).toBeLessThan(1.5);
-        }
-    });
-
-    it("turns on a sideways swipe and on Shift with a vertical wheel", () => {
-        const yaw = (input: Parameters<typeof readWheel>[0]) => {
-            const read = readWheel(input);
-            return read && "yaw" in read ? read.yaw : 0;
-        };
-        expect(yaw({ ...wheel, deltaX: 50 })).toBeCloseTo(7);
-        expect(yaw({ ...wheel, shiftKey: true, deltaY: 50 })).toBeCloseTo(7);
-        expect(yaw({ ...wheel, shiftKey: true, deltaX: -50 })).toBeCloseTo(-7);
-    });
-});
-
-describe("pinchStep", () => {
-    it("moves the camera in as the fingers spread and out as they close", () => {
-        expect(pinchStep(100, 200)).toBe(0.5);
-        expect(pinchStep(200, 100)).toBe(2);
-    });
-
-    it("ignores the small spread changes of a two-finger drag", () => {
-        expect(pinchStep(200, 205)).toBeUndefined();
-        expect(pinchStep(200, 195)).toBeUndefined();
-    });
-});
-
 describe("wideness", () => {
     const range = { min: 0.5, max: 4 };
 
@@ -154,5 +107,25 @@ describe("wideness", () => {
 
     it("is 0 on a shot that can't zoom out", () => {
         expect(wideness(1, { min: 0.5, max: 1 })).toBe(0);
+    });
+});
+
+describe("flyFrame", () => {
+    const from = { x: 100, y: 200, r: 50 };
+    const to = { x: 300, y: 100, r: 200 };
+
+    it("starts at the old framing and lands on the new one", () => {
+        expect(flyFrame(from, to, 0, { x: 0, y: 0, r: 0 })).toEqual(from);
+        const end = flyFrame(from, to, 1, { x: 0, y: 0, r: 0 });
+        expect(end.x).toBeCloseTo(300);
+        expect(end.y).toBeCloseTo(100);
+        expect(end.r).toBeCloseTo(200);
+    });
+
+    it("moves the centre evenly and the size in log space", () => {
+        const mid = flyFrame(from, to, 0.5, { x: 0, y: 0, r: 0 });
+        expect(mid.x).toBeCloseTo(200);
+        expect(mid.r).toBeCloseTo(100);
+        expect(logLerp(50, 200, 0.5)).toBeCloseTo(100);
     });
 });
