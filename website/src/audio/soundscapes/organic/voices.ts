@@ -231,7 +231,8 @@ export function createVoices(ctx: LayerContext): Voices {
                     i === 0 ? f0 : base * 2 ** ((chord[Math.floor(random() * 4)] ?? 0) / 12);
                 strike(at, frequency, {
                     amp: amp * (i ? 0.4 + random() * 0.4 : 1),
-                    pan: pan + (random() - 0.5) * 0.3,
+                    // A stereo panner warns outside -1..1, and the jitter can push a hard-panned line past it.
+                    pan: Math.min(1, Math.max(-1, pan + (random() - 0.5) * 0.3)),
                     pr: prox,
                     wet: 0,
                     clickNoise: params.lineClickNoise,

@@ -6,7 +6,7 @@ import {
     type Node,
 } from "three/webgpu";
 import { abs, clamp, float, floor, mix, select, smoothstep } from "three/tsl";
-import type { SpaceUniforms } from "./landmark.ts";
+import { PALETTE_VARS, type SpaceUniforms } from "./landmark.ts";
 
 /** Share of hues (0..1) coloured by the theme accents; the rest take the palette. */
 export const ACCENT_SHARE = 0.58;
@@ -33,6 +33,11 @@ export function glowOutput(
     material.blendDst = OneMinusSrcAlphaFactor;
     material.blendSrcAlpha = OneFactor;
     material.blendDstAlpha = OneMinusSrcAlphaFactor;
+}
+
+/** The hue `hueColor` reads as palette colour `slot` (an index into `PALETTE_VARS`). */
+export function paletteHue(slot: number): number {
+    return ACCENT_SHARE + ((1 - ACCENT_SHARE) * (slot + 0.5)) / PALETTE_VARS.length;
 }
 
 /** The theme colour for hue `h`: an accent below `ACCENT_SHARE`, a palette colour above. */

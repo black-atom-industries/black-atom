@@ -382,6 +382,7 @@ async function createScene(
                 cameraSpeed,
                 cut,
                 presence: presenceOf(landmark),
+                soundShare: shown.view === "wide" ? 1 / landmarks.length : 1,
                 isSmall,
                 W,
                 H,

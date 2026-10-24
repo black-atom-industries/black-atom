@@ -11,17 +11,13 @@ type PanelId = "theme" | "sound";
 type Props = {
     themeLabel: string;
     themePanel: ReactNode;
-    /** Without a sound panel the dock shows only the theme button. */
-    soundLabel?: string;
-    soundPanel?: ReactNode;
+    soundLabel: string;
+    soundPanel: ReactNode;
     closeLabel: string;
 };
 
 export function Dock({ themeLabel, themePanel, soundLabel, soundPanel, closeLabel }: Props) {
     const [openPanel, setOpenPanel] = useState<PanelId | null>(null);
-    const hasSound = soundPanel !== undefined && soundLabel !== undefined;
-    // A route without sound closes its panel, so it never reopens on the way back.
-    if (!hasSound && openPanel === "sound") setOpenPanel(null);
 
     function handleOpenChange(panel: PanelId, isOpen: boolean) {
         setOpenPanel((current) => (isOpen ? panel : current === panel ? null : current));
@@ -41,20 +37,18 @@ export function Dock({ themeLabel, themePanel, soundLabel, soundPanel, closeLabe
                     {themePanel}
                 </DockPanel>
             </Dialog.Root>
-            {hasSound && (
-                <Dialog.Root
-                    modal={false}
-                    open={openPanel === "sound"}
-                    onOpenChange={(isOpen) => handleOpenChange("sound", isOpen)}
-                >
-                    <Dialog.Trigger render={<Button variant="square" aria-label={soundLabel} />}>
-                        <SpeakerIcon />
-                    </Dialog.Trigger>
-                    <DockPanel title={soundLabel} closeLabel={closeLabel}>
-                        {soundPanel}
-                    </DockPanel>
-                </Dialog.Root>
-            )}
+            <Dialog.Root
+                modal={false}
+                open={openPanel === "sound"}
+                onOpenChange={(isOpen) => handleOpenChange("sound", isOpen)}
+            >
+                <Dialog.Trigger render={<Button variant="square" aria-label={soundLabel} />}>
+                    <SpeakerIcon />
+                </Dialog.Trigger>
+                <DockPanel title={soundLabel} closeLabel={closeLabel}>
+                    {soundPanel}
+                </DockPanel>
+            </Dialog.Root>
         </DockRail>
     );
 }

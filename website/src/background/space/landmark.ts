@@ -70,6 +70,11 @@ export interface LandmarkFrame {
     cut: boolean;
     /** How much this landmark is the subject of the shot: 1 on its own shot, 0 on another's. */
     presence: number;
+    /**
+     * Share of its crossings (pulses, comets, beam passes) a landmark sends as `absorb`, so the
+     * landmarks together keep about one landmark's rate when the shot shows them all.
+     */
+    soundShare: number;
     isSmall: boolean;
     W: number;
     H: number;

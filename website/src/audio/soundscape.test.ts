@@ -9,7 +9,7 @@ describe("organic params", () => {
         expect(defaults).toMatchObject({
             soundVolume: 0.15,
             atomLowpass: 128,
-            linesVolume: 0,
+            linesVolume: 0.35,
             globalLowpassNear: 2390,
             heartbeat: false,
             bpm: 96,

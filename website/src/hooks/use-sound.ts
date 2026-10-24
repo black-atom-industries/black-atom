@@ -15,20 +15,13 @@ function hasUserActivation(): boolean {
 }
 
 /**
- * Drives the sound engine from the stored settings. Sound plays only where `isAvailable`, and a
- * remembered "on" starts on the visitor's first click or key press, since browsers allow audio
- * only after one.
+ * Drives the sound engine from the stored settings. A remembered "on" starts on the visitor's
+ * first click or key press, since browsers allow audio only after one.
  */
-export function useSound({
-    isAvailable,
-    theme,
-}: {
-    isAvailable: boolean;
-    theme: Theme.Definition;
-}) {
+export function useSound({ theme }: { theme: Theme.Definition }) {
     const settings = useSelector(soundStore);
     const rootRef = useRef<ThemeRoot>(undefined);
-    const isWanted = isAvailable && settings.isOn;
+    const isWanted = settings.isOn;
 
     useEffect(() => {
         soundEngine.setVolume(settings.volume / 100);
@@ -72,7 +65,7 @@ export function useSound({
 
     function handleChange(patch: Partial<SoundSettings>) {
         soundStore.setState((previous) => ({ ...previous, ...patch }));
-        if (patch.isOn === true && isAvailable) soundEngine.start().catch(warn);
+        if (patch.isOn === true) soundEngine.start().catch(warn);
     }
 
     return {

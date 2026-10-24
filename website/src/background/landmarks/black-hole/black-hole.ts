@@ -57,6 +57,7 @@ import type {
     LandmarkFrame,
     SceneColorNode,
 } from "#/background/space/landmark.ts";
+import { createThinning } from "#/background/space/crossing.ts";
 import { ACCENT_SHARE, accentAt, glowOutput, hueColor } from "#/background/space/shading.ts";
 import { tubeGeometry as createTubeGeometry } from "#/background/space/tube.ts";
 import type { SingNote } from "#/background/types.ts";
@@ -737,6 +738,10 @@ export function createBlackHole({
     let energy = 0;
     /** 1 while the hole is the active landmark, 0 while another is; eased between. */
     let presence = 1;
+    /** The presence the shot asks for; the hole's own absorbs sound only while it is in the shot. */
+    let wantedPresence = 1;
+    let soundShare = 1;
+    const thinning = createThinning();
     let tintAmount = 0;
     const tint = new Color();
     const lineTint = new Color();
@@ -784,11 +789,12 @@ export function createBlackHole({
         flash.max = flash.life = 0.45 + Math.random() * 0.35;
         flash.size = buildR * (line.hue < ACCENT_SHARE ? 0.2 : 0.14) * (0.8 + Math.random() * 0.5);
         lineColor(line.hue, flash.color);
+        if (wantedPresence <= 0 || !thinning(soundShare)) return;
         emit({
             type: "absorb",
             hue: line.hue,
             pan: pan(flash.position),
-            strength: 0.3 + 0.7 * line.weight,
+            strength: (0.3 + 0.7 * line.weight) * wantedPresence,
         });
     }
 
@@ -838,11 +844,14 @@ export function createBlackHole({
         cameraSpeed,
         cut,
         presence: wanted,
+        soundShare: share,
         W,
         H,
     }: LandmarkFrame) {
         const current = currentColors();
         if (!current) return;
+        wantedPresence = wanted;
+        soundShare = share;
         const visibleCount = Math.max(
             1,
             Math.min(lines.length - farCount, Math.round(look.lineCount * (isSmall ? 0.3 : 1))),

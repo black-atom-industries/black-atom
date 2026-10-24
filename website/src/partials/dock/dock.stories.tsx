@@ -26,18 +26,6 @@ const meta = preview.meta({
                 }}
             />
         ),
-    },
-    render: (args) => (
-        <div style={{ minHeight: "100vh" }}>
-            <Dock {...args} />
-        </div>
-    ),
-});
-
-export const ThemeOnly = meta.story();
-
-export const WithSound = meta.story({
-    args: {
         soundLabel: "Sound",
         soundPanel: (
             <SoundPanel
@@ -46,10 +34,16 @@ export const WithSound = meta.story({
             />
         ),
     },
+    render: (args) => (
+        <div style={{ minHeight: "100vh" }}>
+            <Dock {...args} />
+        </div>
+    ),
 });
 
+export const Default = meta.story();
+
 export const OpensOnePanelAtATime = meta.story({
-    args: WithSound.input.args,
     play: async ({ canvas, userEvent }) => {
         await userEvent.click(canvas.getByRole("button", { name: "Theme" }));
         const themeDialog = await screen.findByRole("dialog", { name: "Theme" });

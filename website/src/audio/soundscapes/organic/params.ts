@@ -15,7 +15,7 @@ export const organicParams = z.object({
     atomLowpass: hertz(128, 40, 200),
     atomLowpassBoost: level(0.72, 1),
     droneNoise: level(1, 3),
-    linesVolume: level(0, 3),
+    linesVolume: level(0.35, 3),
     lineClickNoise: level(1, 2),
     diskVolume: level(1, 3),
     ringNoise: level(0.5, 6),

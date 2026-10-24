@@ -5,6 +5,7 @@ import {
     InstancedBufferGeometry,
     InstancedInterleavedBuffer,
     Matrix4,
+    MathUtils,
     Mesh,
     MeshBasicNodeMaterial,
     PlaneGeometry,
@@ -36,7 +37,8 @@ import {
 } from "three/tsl";
 import { flowDir, flowSide, flowUp } from "#/background/landmarks/black-hole/field.ts";
 import { rng } from "#/background/rng.ts";
-import type { Landmark, LandmarkContext } from "#/background/space/landmark.ts";
+import { createThinning, hasPassed } from "#/background/space/crossing.ts";
+import type { Landmark, LandmarkContext, LandmarkFrame } from "#/background/space/landmark.ts";
 import { ACCENT_SHARE, glowOutput, hueColor } from "#/background/space/shading.ts";
 import { buildTubes, tubeGeometry, type Tube } from "#/background/space/tube.ts";
 
@@ -53,6 +55,21 @@ const TAIL = 0.05;
 const STRAND_COLORS = 6;
 /** Accent arc speed in radians per second. */
 const ARC_SPEED = 0.35;
+/** Strands whose comet sounds on reaching the ring, about one a second at the strands' mean speed. */
+const SOUNDING_STRANDS = 45;
+/** Points from a strand's start to where it meets the ring. */
+const ENTRY_INDEX = 40;
+
+/** A strand whose comet sends an `absorb` as its head reaches the review ring. */
+interface Sounding {
+    offset: number;
+    speed: number;
+    /** Share of the strand's length where it meets the ring. */
+    entry: number;
+    point: Vector3;
+    hue: number;
+    strength: number;
+}
 
 function cubic(p0: Vector3, p1: Vector3, p2: Vector3, p3: Vector3, steps: number, out: Vector3[]) {
     for (let i = 1; i <= steps; i++) {
@@ -74,11 +91,15 @@ function cubic(p0: Vector3, p1: Vector3, p2: Vector3, p3: Vector3, steps: number
  * rings and an accent arc turning around the ring.
  */
 export function createIter(
-    { scene, uniforms: S, colors: currentColors }: LandmarkContext,
+    { scene, camera, uniforms: S, emit, colors: currentColors }: LandmarkContext,
     place: Vector3,
 ): Landmark {
     const position = new Vector3();
     let ringR = 200;
+    let sounding: Sounding[] = [];
+    let previousTime: number | undefined;
+    const thinning = createThinning();
+    const projected = new Vector3();
 
     /** The ring faces the camera's resting side (+z), tilted up so its depth reads while the shot sways. */
     const axis = new Vector3(0, 0, 1).applyAxisAngle(new Vector3(1, 0, 0), -0.4);
@@ -210,6 +231,8 @@ export function createIter(
         const tangent = new Vector3();
         const tubes: Tube[] = [];
         const notePoints: { point: Vector3; phase: number }[] = [];
+        const soundShare = Math.min(1, SOUNDING_STRANDS / count);
+        const soundingDraft: (Omit<Sounding, "entry"> & { tube: number })[] = [];
 
         for (let i = 0; i < count; i++) {
             const r = ringR * (0.82 + random() * 0.42);
@@ -286,15 +309,28 @@ export function createIter(
             const speed = 0.015 + random() * 0.015;
             const hasNote = random() < NOTE_SHARE;
             const noteAt = 0.25 + random() * 0.5;
+            const hue =
+                ACCENT_SHARE + ((1 - ACCENT_SHARE) * (colorSlot + 0.5)) / (STRAND_COLORS + 1);
             tubes.push({
                 points,
                 widths: points.map(() => width),
                 offset,
                 gap: speed,
-                hue: ACCENT_SHARE + ((1 - ACCENT_SHARE) * (colorSlot + 0.5)) / (STRAND_COLORS + 1),
+                hue,
                 flag: hasNote ? noteAt : -1,
                 id: i + 1,
             });
+            // Every strand when there are few, every other one or so when there are many.
+            if (Math.floor((i + 1) * soundShare) > Math.floor(i * soundShare)) {
+                soundingDraft.push({
+                    tube: tubes.length - 1,
+                    offset,
+                    speed,
+                    point: entry,
+                    hue,
+                    strength: 0.4 + 0.6 * ((width - 1.6) / 3),
+                });
+            }
             if (hasNote) {
                 const point = points[Math.floor(noteAt * (points.length - 1))];
                 notePoints.push({ point, phase: i });
@@ -302,6 +338,10 @@ export function createIter(
         }
 
         const built = buildTubes(tubes);
+        sounding = soundingDraft.map(({ tube, ...strand }) => {
+            const arc = built.arcs[tube];
+            return { ...strand, entry: (arc?.[ENTRY_INDEX] ?? 0) / (arc?.at(-1) ?? 1) };
+        });
         strandGeometry.dispose();
         strandGeometry = tubeGeometry(built);
         strandGeometry.computeBoundingSphere();
@@ -325,10 +365,31 @@ export function createIter(
         arcDot.position.set(0, ringR, 0);
     }
 
-    function update() {
+    /** Sends an `absorb` for each sounding comet whose head reached the ring since the last frame. */
+    function sound(time: number, presence: number, share: number) {
+        const previous = previousTime;
+        previousTime = time;
+        if (previous === undefined || presence <= 0) return;
+        for (const strand of sounding) {
+            const from = previous * strand.speed + strand.offset;
+            const to = time * strand.speed + strand.offset;
+            if (!hasPassed(from, to, strand.entry) || !thinning(share)) continue;
+            projected.copy(strand.point).project(camera);
+            emit({
+                type: "absorb",
+                hue: strand.hue,
+                pan: MathUtils.clamp(projected.x, -1, 1),
+                strength: strand.strength * presence,
+            });
+        }
+    }
+
+    function update({ cut, presence, soundShare }: LandmarkFrame) {
         const current = currentColors();
         if (current) U.fg.value.copy(current.fg);
         arcGroup.rotation.z = S.time.value * ARC_SPEED;
+        if (cut) previousTime = undefined;
+        sound(S.time.value, presence, soundShare);
     }
 
     return {

@@ -10,6 +10,7 @@ import {
     InstancedBufferGeometry,
     InstancedInterleavedBuffer,
     InstancedMesh,
+    MathUtils,
     Matrix4,
     Mesh,
     MeshBasicNodeMaterial,
@@ -46,8 +47,9 @@ import {
 } from "three/tsl";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { rng } from "#/background/rng.ts";
-import type { Landmark, LandmarkContext } from "#/background/space/landmark.ts";
-import { glowOutput } from "#/background/space/shading.ts";
+import { createThinning, hasPassed } from "#/background/space/crossing.ts";
+import type { Landmark, LandmarkContext, LandmarkFrame } from "#/background/space/landmark.ts";
+import { ACCENT_SHARE, glowOutput, paletteHue } from "#/background/space/shading.ts";
 
 const TAU = Math.PI * 2;
 /** The radar's unit, the scale its rings and blips are laid out in, in world radii. */
@@ -71,6 +73,12 @@ const KIND_LOCK = 0;
 const KIND_RECENT = 1;
 const KIND_ALTERNATE = 2;
 const KIND_FILE = 3;
+/** What a keyed blip sends when the beam catches it: the hue of its colour and how hard it strikes. */
+const KIND_SOUND: Record<number, { hue: number; strength: number }> = {
+    [KIND_LOCK]: { hue: ACCENT_SHARE / 4, strength: 0.7 },
+    [KIND_RECENT]: { hue: paletteHue(3), strength: 0.5 },
+    [KIND_ALTERNATE]: { hue: paletteHue(5), strength: 0.9 },
+};
 /** Pixels per glyph cell in the key atlas. */
 const CELL = 64;
 
@@ -100,11 +108,16 @@ function drawKeyAtlas(canvas: HTMLCanvasElement) {
  * and the alternate file carry their key.
  */
 export function createRadar(
-    { scene, uniforms: S, colors: currentColors }: LandmarkContext,
+    { scene, camera, uniforms: S, emit, colors: currentColors }: LandmarkContext,
     place: Vector3,
 ): Landmark {
     const position = new Vector3();
     let unit = 140;
+    /** The keyed blips, which sound as the beam passes them. */
+    const keyed: { angle: number; point: Vector3; hue: number; strength: number }[] = [];
+    let previousSweep: number | undefined;
+    const thinning = createThinning();
+    const projected = new Vector3();
 
     /** The disc faces the camera's resting side (+z), tilted up so its depth reads while the shot sways. */
     const axis = new Vector3(0, 0, 1).applyAxisAngle(new Vector3(1, 0, 0), -0.55);
@@ -298,6 +311,7 @@ export function createRadar(
         const local = new Vector3();
         const world = new Vector3();
         const stem = new Object3D();
+        keyed.length = 0;
         for (let i = 0; i < BLIP_COUNT; i++) {
             const key: string | undefined = KEYS[i];
             const angle = random() * TAU;
@@ -320,6 +334,8 @@ export function createRadar(
                 ],
                 i * 8,
             );
+            const sound = KIND_SOUND[kindOf(key)];
+            if (sound) keyed.push({ angle, point: world.clone(), ...sound });
             stem.position.set(local.x, local.y, 0);
             stem.scale.set(unit * 0.004, unit * 0.004, height === 0 ? 1e-3 : height);
             stem.updateMatrix();
@@ -340,9 +356,23 @@ export function createRadar(
             return unit * REACH;
         },
         build,
-        update() {
+        update({ cut, presence, soundShare }: LandmarkFrame) {
             const current = currentColors();
             if (current) U.fg.value.copy(current.fg);
+            const sweep = S.time.value * SWEEP_SPEED;
+            const previous = cut ? undefined : previousSweep;
+            previousSweep = sweep;
+            if (previous === undefined || presence <= 0) return;
+            for (const blip of keyed) {
+                if (!hasPassed(previous, sweep, blip.angle, TAU) || !thinning(soundShare)) continue;
+                projected.copy(blip.point).project(camera);
+                emit({
+                    type: "absorb",
+                    hue: blip.hue,
+                    pan: MathUtils.clamp(projected.x, -1, 1),
+                    strength: blip.strength * presence,
+                });
+            }
         },
         dispose() {
             [ringMat, crossMat, beamMat, stemMat, blipMat].forEach((material) =>

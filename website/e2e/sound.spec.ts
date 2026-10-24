@@ -63,7 +63,9 @@ async function openSoundPanel(page: Page) {
     return page.getByRole("dialog", { name: "Sound" });
 }
 
-test("switching sound on runs the audio, and leaving for /iter fades it out", async ({ page }) => {
+test("switching sound on runs the audio, and it keeps playing through /iter and /radar", async ({
+    page,
+}) => {
     const problems = watchConsole(page);
     await page.goto("/", { waitUntil: "networkidle" });
     expect(await engineState(page)).toBe("none");
@@ -75,36 +77,38 @@ test("switching sound on runs the audio, and leaving for /iter fades it out", as
     await expect.poll(() => engineState(page)).toBe("running");
 
     await page.keyboard.press("Escape");
-    await page
-        .getByRole("navigation", { name: "Main" })
-        .getByRole("link", { name: /iter\.nvim/ })
-        .click();
+    const main = page.getByRole("navigation", { name: "Main" });
+    await main.getByRole("link", { name: /iter\.nvim/ }).click();
     await expect(page).toHaveURL(/\/iter$/);
-    await expect(page.getByRole("button", { name: "Sound", exact: true })).toHaveCount(0);
-    await expect.poll(() => engineState(page)).toBe("suspended");
+    await main.getByRole("link", { name: /radar\.nvim/ }).click();
+    await expect(page).toHaveURL(/\/radar$/);
+    // The engine stays running across the page changes, not only at one moment after them.
+    const states = await page.evaluate(async () => {
+        const seen: string[] = [];
+        for (let i = 0; i < 10; i++) {
+            seen.push(window.audioContexts?.[0]?.state ?? "none");
+            await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+        return seen;
+    });
+    expect(new Set(states)).toEqual(new Set(["running"]));
     expect(problems).toEqual([]);
 });
 
-test("an open sound panel stays closed after a detour through a route without sound", async ({
-    page,
-}) => {
-    await page.goto("/", { waitUntil: "networkidle" });
-    await page
-        .getByRole("navigation", { name: "Main" })
-        .getByRole("link", { name: /iter\.nvim/ })
-        .click();
-    await expect(page).toHaveURL(/\/iter$/);
-    await page.goBack();
-    await expect(page).toHaveURL(/\/$/);
+for (const path of ["/about", "/iter", "/radar", "/changelog", "/impressum", "/does-not-exist"]) {
+    test(`${path} has the sound panel`, async ({ page }) => {
+        await page.goto(path, { waitUntil: "networkidle" });
+        await expect(await openSoundPanel(page)).toBeVisible();
+    });
+}
 
-    await expect(await openSoundPanel(page)).toBeVisible();
-    await page.goForward();
-    await expect(page).toHaveURL(/\/iter$/);
-    await page.goBack();
-    await expect(page).toHaveURL(/\/$/);
-
-    await expect(page.getByRole("button", { name: "Sound", exact: true })).toBeVisible();
-    await expect(page.getByRole("dialog", { name: "Sound" })).toHaveCount(0);
+test("sound switches on from the panel on /iter", async ({ page }) => {
+    const problems = watchConsole(page);
+    await page.goto("/iter", { waitUntil: "networkidle" });
+    const panel = await openSoundPanel(page);
+    await panel.getByRole("button", { name: "Soundscape on / off" }).click();
+    await expect.poll(() => engineState(page)).toBe("running");
+    expect(problems).toEqual([]);
 });
 
 test("a remembered 'on' waits for the first click, then starts", async ({ page }) => {
@@ -125,24 +129,21 @@ test("a remembered 'on' waits for the first click, then starts", async ({ page }
     expect(problems).toEqual([]);
 });
 
-test("leaving while the sound still loads leaves the audio suspended", async ({ page }) => {
+test("switching off while the sound still loads leaves the audio suspended", async ({ page }) => {
     const problems = watchConsole(page);
     await page.goto("/", { waitUntil: "networkidle" });
     await delayTone(page);
 
     const panel = await openSoundPanel(page);
-    await panel.getByRole("button", { name: "Soundscape on / off" }).click();
-    await page.keyboard.press("Escape");
-    await page
-        .getByRole("navigation", { name: "Main" })
-        .getByRole("link", { name: /iter\.nvim/ })
-        .click();
-    await expect(page).toHaveURL(/\/iter$/);
+    const toggle = panel.getByRole("button", { name: "Soundscape on / off" });
+    await toggle.click();
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
     await expect.poll(() => engineState(page), { timeout: 10_000 }).toBe("suspended");
     expect(problems).toEqual([]);
 });
 
-test("switching on, leaving and returning while the sound loads boots once", async ({ page }) => {
+test("switching on and moving between pages while the sound loads boots once", async ({ page }) => {
     const problems = watchConsole(page);
     await page.goto("/", { waitUntil: "networkidle" });
     await delayTone(page);

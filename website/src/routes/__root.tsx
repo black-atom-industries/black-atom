@@ -18,7 +18,6 @@ import { blackAtom, blackAtomLinks } from "#/content/products/black-atom.ts";
 import { iter } from "#/content/products/iter.ts";
 import { radar } from "#/content/products/radar.ts";
 import { studio } from "#/content/studio.ts";
-import { useRouteBackgroundState } from "#/hooks/use-route-background-state.ts";
 import { useSound } from "#/hooks/use-sound.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { fromShortKey, toShortKey } from "#/lib/theme-precedence.ts";
@@ -70,9 +69,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootLayout() {
     const { theme, setTheme } = useTheme();
     const pathname = useLocation({ select: (location) => location.pathname });
-    const backgroundState = useRouteBackgroundState();
-    const isSoundAvailable = backgroundState.view === "hole" || backgroundState.view === "wide";
-    const sound = useSound({ isAvailable: isSoundAvailable, theme });
+    const sound = useSound({ theme });
 
     return (
         <>
@@ -163,12 +160,8 @@ function RootLayout() {
                         }}
                     />
                 }
-                soundLabel={isSoundAvailable ? "Sound" : undefined}
-                soundPanel={
-                    isSoundAvailable ? (
-                        <SoundPanel settings={sound.settings} onChange={sound.onChange} />
-                    ) : undefined
-                }
+                soundLabel="Sound"
+                soundPanel={<SoundPanel settings={sound.settings} onChange={sound.onChange} />}
             />
         </>
     );

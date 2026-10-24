@@ -109,6 +109,18 @@ describe("organic, rendered offline", () => {
         expect(measure.peakDb).toBeLessThan(0);
     });
 
+    test("the default lines sound on absorbs and stay under the drone", async () => {
+        const lines = await render({ solo: "voices" });
+        const silent = await render({ solo: "voices", params: { linesVolume: 0 } });
+        const drone = await render({ solo: "drone" });
+        report("lines solo, defaults", lines);
+        report("lines solo, off", silent);
+        expect(lines.hasNaN).toBe(false);
+        expect(lines.rmsDb).toBeGreaterThan(silent.rmsDb + 20);
+        expect(lines.rmsDb).toBeLessThan(drone.rmsDb);
+        expect(lines.peakDb).toBeLessThan(0);
+    });
+
     test("vinyl raises the level", async () => {
         const without = await render({ params: { vinyl: 0 } });
         const full = await render({ params: { vinyl: 1 } });
