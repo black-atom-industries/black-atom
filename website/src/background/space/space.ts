@@ -47,6 +47,14 @@ const WIDE_RECEDED_FILL = 0.32;
 const WIDE_HOLE_PRESENCE = 0.3;
 /** On light themes the hole's lines recede further on the wide shot, so the text stays clean. */
 const WIDE_HOLE_PRESENCE_LIGHT = 0.05;
+/** Shortest time between frames while the camera moves, and once it has settled. */
+const MOVING_FRAME_MS = 1000 / 60;
+const SETTLED_FRAME_MS = 1000 / 30;
+/** Camera speed in view distances per second under which the shot counts as settled. */
+const SETTLED_SPEED = 0.08;
+/** Lets a frame through a little early, so a 120 Hz display lands on every second or fourth tick. */
+const FRAME_SLACK_MS = 2;
+
 const HOLE_ANCHOR = '[data-scene-anchor="hole"], [data-scene-anchor="far-hole"]';
 const WIDE_ANCHOR = '[data-scene-anchor="wide"]';
 const SQUARE_ANCHOR = '[data-scene-anchor="square"]';
@@ -79,7 +87,7 @@ function themeColors({ vars }: SceneTheme): Colors & { accentCount: number } {
 }
 
 function pixelRatio(): number {
-    return Math.min(devicePixelRatio || 1, innerWidth < 1000 ? 2 : 1.5);
+    return Math.min(devicePixelRatio || 1, innerWidth < 1000 ? 2 : 1);
 }
 
 /**
@@ -361,6 +369,8 @@ function buildSpace(
     let flightCount = 0;
     /** A still background has drawn its frame and waits, shown as `data-frame="still"`. */
     let isResting = false;
+    let lastTick = 0;
+    let isSettled = false;
 
     function render() {
         const current = colors;
@@ -391,6 +401,7 @@ function buildSpace(
         glow.threshold.value = 0.7 + 0.32 * lightMix;
 
         const { viewDistance, cameraSpeed, cut } = rig.update(dt);
+        isSettled = !cut && cameraSpeed < SETTLED_SPEED && !rig.isManualPending;
         const zoom = Math.round(rig.manualZoom * 100);
         if (zoom !== shownZoom) {
             shownZoom = zoom;
@@ -438,6 +449,10 @@ function buildSpace(
     renderer.onDeviceLost = (info) => stop(new Error(`GPU device lost: ${info.message}`));
 
     function tick() {
+        const now = performance.now();
+        const frameMs = isSettled ? SETTLED_FRAME_MS : MOVING_FRAME_MS;
+        if (now - lastTick < frameMs - FRAME_SLACK_MS) return;
+        lastTick = now;
         try {
             render();
         } catch (error) {
