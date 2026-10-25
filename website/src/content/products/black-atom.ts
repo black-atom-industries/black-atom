@@ -136,9 +136,7 @@ export const blackAtom = {
     number: "01",
     kicker: "Theme system",
     tagline: "Colour themes, written once and generated for every tool you use.",
-    lead: [
-        `Black Atom starts from black. Colour falls in, and what comes back out is colour you can work with all day: ${themeCount} dark and light themes, each written once and generated for your terminal, your editor and the rest of your desktop. Same colours, wherever you look.`,
-    ],
+    lead: ["Hand-crafted colour schemes, generated from one source for every tool you use."],
     description: `Black Atom: ${themeCount} dark and light colour themes, each written once and generated for ${adapters.length} tools, from your terminal and editor to the rest of your desktop.`,
     summary: [
         `${themeCount} dark and light themes in ${collectionCount} collections, generated for ${adapters.length} tools. Livery, the desktop app, switches ${switchedAdapters.length} of them and your system appearance in one go.`,
