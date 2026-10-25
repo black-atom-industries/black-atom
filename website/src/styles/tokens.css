@@ -8,4 +8,16 @@
     --ba-label-tracking: 0.24em;
     --ba-label-leading: 1.7;
     --ba-label-case: uppercase;
+
+    /* Backing for controls that sit straight on the background scene. */
+    --ba-chip-bg: color-mix(in srgb, var(--ba-bg) 92%, transparent);
+
+    /* The viewport frame: its distance from the window edge, and from the content inside it. */
+    --ba-frame-inset: 24px;
+    --ba-frame-gap: 20px;
+
+    @media (max-width: 720px) {
+        --ba-frame-inset: 12px;
+        --ba-frame-gap: 14px;
+    }
 }

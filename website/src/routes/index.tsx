@@ -2,17 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { loadChangelog, useChangelog } from "#/api/github/use-changelog.ts";
 import { ArtFrame } from "#/components/art-frame/index.ts";
 import { Button } from "#/components/button/index.ts";
-import { Caption } from "#/components/caption/index.ts";
 import { ColorStrip } from "#/components/color-strip/index.ts";
-import { Heading } from "#/components/heading/index.ts";
 import { LoopArt } from "#/components/loop-art/index.ts";
-import { Panel } from "#/components/panel/index.ts";
 import { RadarArt } from "#/components/radar-art/index.ts";
-import { Rule } from "#/components/rule/index.ts";
-import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
-import { Text } from "#/components/text/index.ts";
 import { blackAtom } from "#/content/products/black-atom.ts";
 import { iter } from "#/content/products/iter.ts";
 import { products } from "#/content/products/products.ts";
@@ -20,6 +14,7 @@ import { radar } from "#/content/products/radar.ts";
 import { changelogCopy, home, studio } from "#/content/studio.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { ChangelogBlock } from "#/partials/changelog-block/index.ts";
+import { HomeHero } from "#/partials/home-hero/index.ts";
 import { ProductCard } from "#/partials/product-card/index.ts";
 import { SectionHead } from "#/partials/section-head/index.ts";
 
@@ -48,25 +43,21 @@ function HomePage() {
 
     return (
         <main>
-            <Section variant="hero" id="top">
-                <SceneAnchor variant="hole" />
-                <Panel variant="backdrop" isFitted>
-                    <Stack direction="row" gap="md" align="baseline">
-                        <Caption tone="accent">00</Caption>
-                        <Caption tone="subtle">{home.kicker}</Caption>
-                    </Stack>
-                    <Heading variant="display" subtitle="Industries">
-                        Black Atom
-                    </Heading>
-                    <Rule />
-                    <Text variant="lead">{home.lead}</Text>
-                    <Stack direction="row" gap="xl" isWrapped>
-                        <Button render={<a href="#products" />}>Products</Button>
-                        <Button render={<Link to="/changelog" />}>Changelog</Button>
-                        <Button render={<a href={studio.githubUrl} />}>GitHub ↗</Button>
-                    </Stack>
-                </Panel>
-            </Section>
+            <HomeHero
+                actions={
+                    <>
+                        <Button variant="primary" render={<a href="#products" />}>
+                            Products
+                        </Button>
+                        <Button variant="solid" render={<Link to="/changelog" />}>
+                            Changelog
+                        </Button>
+                        <Button variant="solid" render={<a href={studio.githubUrl} />}>
+                            GitHub ↗
+                        </Button>
+                    </>
+                }
+            />
             <Section id="products">
                 <SectionHead number="01" title="Products" />
                 <Stack gap="2xl">

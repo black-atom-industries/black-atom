@@ -10,6 +10,7 @@ const sectionVariants = cva({
         variant: {
             default: null,
             hero: styles.hero,
+            "hero-centered": [styles.hero, styles.centered],
             page: styles.page,
             compact: styles.compact,
             footer: styles.footer,
@@ -30,7 +31,7 @@ export function Section({ render, variant = "default", children, ...props }: Pro
                 "data-layout": "Section",
                 children: (
                     <div className={styles.wrap}>
-                        {variant === "hero" || variant === "footer" ? (
+                        {variant === "hero" || variant === "hero-centered" ? (
                             children
                         ) : (
                             <Panel variant="backdrop">{children}</Panel>

@@ -26,6 +26,7 @@ const stackVariants = cva({
         },
         justify: {
             start: null,
+            center: styles.justifyCenter,
             between: styles.justifyBetween,
             end: styles.justifyEnd,
         },

@@ -9,6 +9,8 @@ const panelVariants = cva({
             card: null,
             /** Sits behind text that lies directly on the background scene. */
             backdrop: styles.backdrop,
+            /** Hero text set straight on the scene, over the hero's fade. */
+            hero: styles.hero,
         },
         /** Shrinks to its content instead of filling the row. */
         isFitted: { true: styles.fitted },

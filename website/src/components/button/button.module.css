@@ -45,6 +45,22 @@
     }
 }
 
+.primary {
+    padding: 0 20px;
+    background: var(--ba-accent);
+    color: var(--ba-bg);
+
+    &:hover {
+        background: var(--ba-fg);
+        color: var(--ba-bg);
+    }
+}
+
+.solid {
+    padding: 0 20px;
+    background: var(--ba-chip-bg);
+}
+
 .chip {
     min-height: 40px;
     padding: 0 14px;

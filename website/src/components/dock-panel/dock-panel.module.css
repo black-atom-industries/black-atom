@@ -1,7 +1,7 @@
 .root {
     position: fixed;
-    right: 80px;
-    bottom: 24px;
+    right: calc(var(--ba-frame-inset) + 2 * var(--ba-frame-gap) + 44px);
+    bottom: calc(var(--ba-frame-inset) + var(--ba-frame-gap));
     z-index: 40;
     width: min(380px, calc(100vw - 100px));
     max-height: calc(100vh - 120px);
@@ -13,7 +13,6 @@
     color: var(--ba-fg);
     border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 70%, transparent);
     background: color-mix(in srgb, var(--ba-bg-float) 94%, transparent);
-    backdrop-filter: blur(8px);
 
     @media (max-width: 560px) {
         left: 0;

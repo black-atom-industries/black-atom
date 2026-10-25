@@ -55,7 +55,8 @@ const SETTLED_SPEED = 0.08;
 /** Lets a frame through a little early, so a 120 Hz display lands on every second or fourth tick. */
 const FRAME_SLACK_MS = 2;
 
-const HOLE_ANCHOR = '[data-scene-anchor="hole"], [data-scene-anchor="far-hole"]';
+const HOLE_ANCHOR =
+    '[data-scene-anchor="hole"], [data-scene-anchor="center-hole"], [data-scene-anchor="far-hole"]';
 const WIDE_ANCHOR = '[data-scene-anchor="wide"]';
 const SQUARE_ANCHOR = '[data-scene-anchor="square"]';
 

@@ -6,6 +6,7 @@ const anchorVariants = cva({
     variants: {
         variant: {
             hole: styles.hole,
+            "center-hole": styles.centerHole,
             "far-hole": styles.farHole,
             wide: styles.wide,
             square: styles.square,

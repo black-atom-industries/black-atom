@@ -14,7 +14,7 @@
 }
 
 .displaySm {
-    font-size: clamp(44px, 6.4vw, 96px);
+    font-size: clamp(40px, 5vw, 72px);
 }
 
 .name {

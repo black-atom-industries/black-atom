@@ -1,26 +1,9 @@
 .root {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 20;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 12px 32px;
-    padding: 22px 5vw 40px;
-    background: linear-gradient(
-        var(--ba-bg) 0%,
-        color-mix(in srgb, var(--ba-bg) 72%, transparent) 45%,
-        transparent 100%
-    );
-    pointer-events: none;
-    transition: background 1s;
-
-    & > * {
-        pointer-events: auto;
-    }
 
     /* Phones keep one row: the nav scrolls sideways instead of wrapping over the page. */
     @media (max-width: 720px) {
@@ -29,14 +12,14 @@
 
         & > nav {
             flex-wrap: nowrap;
-            gap: 14px;
+            gap: 6px;
             min-width: 0;
             overflow-x: auto;
             scroll-padding-inline: 32px;
             scrollbar-width: none;
             /* Room for focus rings, and a fade at the screen edge that the last link scrolls past. */
             padding: 4px 24px 4px 4px;
-            margin: -4px -5vw -4px -4px;
+            margin: -4px;
             mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
         }
     }

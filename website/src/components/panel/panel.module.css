@@ -40,3 +40,19 @@
     width: fit-content;
     max-width: 100%;
 }
+
+.hero {
+    gap: 24px;
+    max-width: 40rem;
+    padding: 0;
+    background: none;
+    border-color: transparent;
+
+    &::before {
+        display: none;
+    }
+
+    @media (max-width: 560px) {
+        padding: 0;
+    }
+}

@@ -97,6 +97,8 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
 | **Background Layer** | The single fixed scene in the root layout behind every page; one renderer runs at a time and the content swaps on top                             | Backdrop, canvas, hero scene     |
 | **Background State** | The mode the Background Layer takes on a route: `full` and `receded` (the black hole, dimmed when receded), `iter` (review loop), `radar` (sweep) | Scene mode, background variant   |
+| **Viewport Frame**   | The cornered frame fixed over every page; the header sits along its top edge and the dock in its bottom-right corner                              | Border, overlay, chrome frame    |
+| **Edge Label**       | The line set into the Viewport Frame's bottom edge on the studio page; it fades into the rule once the page scrolls                               | Tagline bar, frame caption       |
 | **Soundscape**       | A pluggable sound design for the sound engine: params, layers and reactions to scene events, with a pitch root per theme                          | Track, sound theme, audio preset |
 
 ---

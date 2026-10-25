@@ -13,7 +13,6 @@ import { Pager } from "#/components/pager/index.ts";
 import { Panel } from "#/components/panel/index.ts";
 import { Pill } from "#/components/pill/index.ts";
 import { RichText } from "#/components/rich-text/index.ts";
-import { Rule } from "#/components/rule/index.ts";
 import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
@@ -52,7 +51,7 @@ function LiveryPage() {
         <main>
             <Section variant="hero">
                 <SceneAnchor variant="hole" />
-                <Panel variant="backdrop" isFitted>
+                <Panel variant="hero" isFitted>
                     <AppIcon src={liveryIcon.src} alt="" />
                     <Breadcrumbs
                         label="Breadcrumbs"
@@ -61,8 +60,7 @@ function LiveryPage() {
                             { label: livery.kicker },
                         ]}
                     />
-                    <Heading variant="display">{livery.name}</Heading>
-                    <Rule />
+                    <Heading variant="display-sm">{livery.name}</Heading>
                     <Text variant="lead">
                         <RichText segments={livery.lead} />
                     </Text>

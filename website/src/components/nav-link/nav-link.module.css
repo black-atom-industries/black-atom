@@ -20,6 +20,12 @@
     }
 }
 
+.chip {
+    min-height: 40px;
+    padding: 0 14px;
+    background: var(--ba-chip-bg);
+}
+
 .number {
     font-style: normal;
     color: var(--ba-accent);

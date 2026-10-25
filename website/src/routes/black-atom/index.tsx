@@ -12,7 +12,6 @@ import { Pager } from "#/components/pager/index.ts";
 import { Panel } from "#/components/panel/index.ts";
 import { Pill } from "#/components/pill/index.ts";
 import { RichText } from "#/components/rich-text/index.ts";
-import { Rule } from "#/components/rule/index.ts";
 import { SceneAnchor } from "#/components/scene-anchor/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
@@ -71,13 +70,12 @@ function BlackAtomPage() {
         <main>
             <Section variant="hero">
                 <SceneAnchor variant="hole" />
-                <Panel variant="backdrop" isFitted>
+                <Panel variant="hero" isFitted>
                     <Stack direction="row" gap="md" align="baseline">
                         <Caption tone="accent">{blackAtom.number}</Caption>
                         <Caption tone="subtle">{blackAtom.kicker}</Caption>
                     </Stack>
-                    <Heading variant="display">{blackAtom.name}</Heading>
-                    <Rule />
+                    <Heading variant="display-sm">{blackAtom.name}</Heading>
                     <Text variant="lead">
                         <RichText segments={blackAtom.lead} />
                     </Text>

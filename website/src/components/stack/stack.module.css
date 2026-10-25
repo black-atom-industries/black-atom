@@ -69,6 +69,10 @@
     align-items: flex-end;
 }
 
+.justifyCenter {
+    justify-content: center;
+}
+
 .justifyBetween {
     justify-content: space-between;
 }

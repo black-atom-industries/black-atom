@@ -2,7 +2,11 @@ import { themeCatalog } from "@black-atom/core";
 import { expect, test, type Page } from "@playwright/test";
 
 const routes = [
-    { path: "/", h1: "Black AtomIndustries", title: "Black Atom Industries" },
+    {
+        path: "/",
+        h1: "Open source tools for the developer's workbench",
+        title: "Black Atom Industries",
+    },
     { path: "/black-atom", h1: "Black Atom", title: "Black Atom · Black Atom Industries" },
     { path: "/black-atom/livery", h1: "Livery", title: /^Livery · / },
     {

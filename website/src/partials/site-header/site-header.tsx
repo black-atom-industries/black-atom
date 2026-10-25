@@ -30,18 +30,18 @@ export function SiteHeader({ brand, navLabel, items }: Props) {
             <Stack
                 render={<nav aria-label={navLabel} />}
                 direction="row"
-                gap="xl"
+                gap="sm"
                 isWrapped
                 data-partial="SiteHeader"
             >
                 {primary.map((item) => (
-                    <NavLink key={item.label} number={item.number} render={item.render}>
+                    <NavLink key={item.label} number={item.number} render={item.render} isChip>
                         {item.label}
                     </NavLink>
                 ))}
                 {primary.length > 0 && secondary.length > 0 && <Rule orientation="vertical" />}
                 {secondary.map((item) => (
-                    <NavLink key={item.label} number={item.number} render={item.render}>
+                    <NavLink key={item.label} number={item.number} render={item.render} isChip>
                         {item.label}
                     </NavLink>
                 ))}

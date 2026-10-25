@@ -19,12 +19,40 @@
 
 .hero {
     min-height: 100vh;
+    isolation: isolate;
+    --ba-fg-subtle: color-mix(in srgb, var(--ba-fg) 75%, var(--ba-bg));
     align-content: end;
     padding-bottom: 11vh;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+        mask-image: linear-gradient(to bottom, black 80%, transparent);
+        background: radial-gradient(
+            ellipse 75% 85% at 0% 100%,
+            color-mix(in srgb, var(--ba-bg) 92%, transparent),
+            color-mix(in srgb, var(--ba-bg) 55%, transparent) 45%,
+            transparent 80%
+        );
+    }
 
     & .wrap {
         gap: 28px;
         max-width: none;
+    }
+}
+
+.centered {
+    &::before {
+        content: none;
+    }
+
+    & .wrap {
+        justify-items: center;
+        text-align: center;
     }
 }
 

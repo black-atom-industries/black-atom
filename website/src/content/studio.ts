@@ -9,8 +9,7 @@ export const studio = {
 } as const;
 
 export const home = {
-    kicker: "A personal development studio from Germany",
-    lead: "Tools for people who spend the day in a terminal and an editor. A theme system that colours every tool on your desktop the same way, and Neovim plugins for reviewing changes and moving between the files you work on.",
+    lead: "Open source tools for the developer's workbench",
     /** The illustrations beside each product on the studio page. */
     art: {
         palette: { label: "The active theme's palette" },

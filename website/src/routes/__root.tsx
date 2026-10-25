@@ -17,11 +17,12 @@ import { BackgroundLayer } from "#/background/background-layer.tsx";
 import { blackAtom, blackAtomLinks } from "#/content/products/black-atom.ts";
 import { iter } from "#/content/products/iter.ts";
 import { radar } from "#/content/products/radar.ts";
-import { studio } from "#/content/studio.ts";
+import { home, studio } from "#/content/studio.ts";
 import { useSound } from "#/hooks/use-sound.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { fromShortKey, toShortKey } from "#/lib/theme-precedence.ts";
 import { themeToCustomProperties } from "#/lib/theme-vars.ts";
+import { ViewportFrame } from "#/components/viewport-frame/index.ts";
 import { Dock } from "#/partials/dock/index.ts";
 import { SiteFooter } from "#/partials/site-footer/index.ts";
 import { SiteHeader } from "#/partials/site-header/index.ts";
@@ -74,24 +75,63 @@ function RootLayout() {
     return (
         <>
             <BackgroundLayer theme={theme} />
-            <SiteHeader
-                brand={{
-                    title: "Black Atom",
-                    subtitle: "Industries",
-                    render: <Link to="/" activeOptions={{ exact: true }} />,
-                }}
-                navLabel="Main"
-                items={[
-                    {
-                        label: blackAtom.name,
-                        number: blackAtom.number,
-                        render: <Link to="/black-atom" />,
-                    },
-                    { label: iter.name, number: iter.number, render: <Link to="/iter" /> },
-                    { label: radar.name, number: radar.number, render: <Link to="/radar" /> },
-                    { label: "Changelog", isSecondary: true, render: <Link to="/changelog" /> },
-                    { label: "About", isSecondary: true, render: <Link to="/about" /> },
-                ]}
+            <ViewportFrame
+                header={
+                    <SiteHeader
+                        brand={{
+                            title: "Black Atom",
+                            subtitle: "Industries",
+                            render: <Link to="/" activeOptions={{ exact: true }} />,
+                        }}
+                        navLabel="Main"
+                        items={[
+                            {
+                                label: blackAtom.name,
+                                number: blackAtom.number,
+                                render: <Link to="/black-atom" />,
+                            },
+                            { label: iter.name, number: iter.number, render: <Link to="/iter" /> },
+                            {
+                                label: radar.name,
+                                number: radar.number,
+                                render: <Link to="/radar" />,
+                            },
+                            {
+                                label: "Changelog",
+                                isSecondary: true,
+                                render: <Link to="/changelog" />,
+                            },
+                            { label: "About", isSecondary: true, render: <Link to="/about" /> },
+                        ]}
+                    />
+                }
+                dock={
+                    <Dock
+                        themeLabel="Theme"
+                        closeLabel="Close"
+                        themePanel={
+                            <ThemePanel
+                                themeKey={theme.meta.key}
+                                onSelect={setTheme}
+                                sharePath={pathname}
+                                documentation={{
+                                    label: "Theme documentation →",
+                                    render: (
+                                        <Link
+                                            to="/black-atom/themes/$theme"
+                                            params={{ theme: toShortKey(theme.meta.key) }}
+                                        />
+                                    ),
+                                }}
+                            />
+                        }
+                        soundLabel="Sound"
+                        soundPanel={
+                            <SoundPanel settings={sound.settings} onChange={sound.onChange} />
+                        }
+                    />
+                }
+                label={pathname === "/" ? home.lead : undefined}
             />
             <Outlet />
             <SiteFooter
@@ -140,28 +180,6 @@ function RootLayout() {
                     { label: "Impressum", render: <Link to="/impressum" /> },
                     { label: "Privacy", render: <Link to="/privacy" /> },
                 ]}
-            />
-            <Dock
-                themeLabel="Theme"
-                closeLabel="Close"
-                themePanel={
-                    <ThemePanel
-                        themeKey={theme.meta.key}
-                        onSelect={setTheme}
-                        sharePath={pathname}
-                        documentation={{
-                            label: "Theme documentation →",
-                            render: (
-                                <Link
-                                    to="/black-atom/themes/$theme"
-                                    params={{ theme: toShortKey(theme.meta.key) }}
-                                />
-                            ),
-                        }}
-                    />
-                }
-                soundLabel="Sound"
-                soundPanel={<SoundPanel settings={sound.settings} onChange={sound.onChange} />}
             />
         </>
     );

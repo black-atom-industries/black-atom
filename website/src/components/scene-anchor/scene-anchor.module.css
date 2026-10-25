@@ -25,3 +25,16 @@
     width: min(22vw, 36vh);
     aspect-ratio: 1;
 }
+
+.centerHole {
+    position: absolute;
+    top: 8vh;
+    left: 50%;
+    width: min(44vw, 58vh);
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+
+    @media (max-width: 900px) {
+        width: min(70vw, 52vh);
+    }
+}

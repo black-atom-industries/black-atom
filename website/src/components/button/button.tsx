@@ -8,6 +8,10 @@ const buttonVariants = cva({
     variants: {
         variant: {
             cta: styles.cta,
+            /** Filled with the accent, for the one main action on the background scene. */
+            primary: styles.primary,
+            /** On a backing without a border, for actions on the background scene. */
+            solid: styles.solid,
             link: styles.link,
             chip: styles.chip,
             square: styles.square,

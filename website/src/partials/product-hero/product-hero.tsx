@@ -3,7 +3,6 @@ import { Caption } from "#/components/caption/index.ts";
 import { Heading } from "#/components/heading/index.ts";
 import { MetaList, type MetaItem } from "#/components/meta-list/index.ts";
 import { Panel } from "#/components/panel/index.ts";
-import { Rule } from "#/components/rule/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
@@ -25,18 +24,15 @@ export function ProductHero({ number, kicker, title, tagline, lead, meta, action
     return (
         <Section variant="hero" data-partial="ProductHero">
             {art}
-            <Panel variant="backdrop" isFitted>
+            <Panel variant="hero" isFitted>
                 <Stack gap="lg">
                     <Stack direction="row" gap="md" align="baseline">
                         <Caption tone="accent">{number}</Caption>
                         <Caption tone="subtle">{kicker}</Caption>
                     </Stack>
                     <Heading variant="display-sm">{title}</Heading>
-                    <Rule />
                     <Text variant="tagline">{tagline}</Text>
-                    <Text variant="lead" tone="subtle">
-                        {lead}
-                    </Text>
+                    <Text variant="lead">{lead}</Text>
                     <MetaList items={meta} />
                     <Stack direction="row" gap="xl" isWrapped>
                         {actions}
