@@ -10,7 +10,7 @@
     --ba-label-case: uppercase;
 
     /* Backing for controls that sit straight on the background scene. */
-    --ba-chip-bg: color-mix(in srgb, var(--ba-bg) 92%, transparent);
+    --ba-chip-bg: transparent;
 
     /* The viewport frame: its distance from the window edge, and from the content inside it. */
     --ba-frame-inset: 24px;

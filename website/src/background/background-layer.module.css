@@ -14,4 +14,17 @@
         width: 100%;
         height: 100%;
     }
+
+    /* Pulls the scene toward the theme background, most at the edges where the controls sit. */
+    &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            ellipse 75% 70% at 50% 42%,
+            transparent 30%,
+            color-mix(in srgb, var(--ba-bg) 60%, transparent) 62%,
+            color-mix(in srgb, var(--ba-bg) 88%, transparent)
+        );
+    }
 }

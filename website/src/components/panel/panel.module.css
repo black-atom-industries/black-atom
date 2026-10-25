@@ -5,7 +5,7 @@
     display: grid;
     gap: 14px;
     align-content: start;
-    background: color-mix(in srgb, var(--ba-bg) 95%, transparent);
+    background: color-mix(in srgb, var(--ba-bg) 85%, transparent);
     border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 70%, transparent);
     padding: 28px 30px 26px;
 
