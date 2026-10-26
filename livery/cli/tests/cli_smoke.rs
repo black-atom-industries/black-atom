@@ -13,7 +13,7 @@ use std::os::unix::fs::PermissionsExt;
 use livery_core::config::types::{AppName, Config};
 
 const BINARY: &str = env!("CARGO_BIN_EXE_livery");
-/// The theme `setup` applies when it is not asked interactively.
+/// The theme `setup --yes` applies when no theme is recorded.
 const DEFAULT_THEME: &str = "black-atom-default-dark";
 
 const THEME: &str = "black-atom-jpn-koyo-dark";
@@ -316,8 +316,21 @@ fn cli_end_to_end() {
         reported
             .lines()
             .next()
-            .is_some_and(|line| line.starts_with("theme") && line.contains(DEFAULT_THEME)),
-        "setup must apply and record the default theme:\n{reported}"
+            .is_some_and(|line| line.starts_with("theme") && line.contains(THEME)),
+        "setup --yes must keep the active theme:\n{reported}"
+    );
+
+    let unknown = sandbox.run(&["setup", "--yes", "--theme", "not-a-theme"]);
+    assert!(
+        !unknown.status.success(),
+        "setup must reject an unknown --theme: {unknown:?}"
+    );
+    let chosen = sandbox.run(&["setup", "--yes", "--theme", DEFAULT_THEME]);
+    assert!(chosen.status.success(), "setup --theme failed: {chosen:?}");
+    assert_eq!(
+        livery_core::config::commands::get_active_theme().as_deref(),
+        Some(DEFAULT_THEME),
+        "setup --theme must apply the given theme"
     );
     for app in ["tmux", "ghostty", "obsidian"] {
         let line = reported

@@ -165,8 +165,11 @@ pub fn status() -> Result<(), String> {
     Ok(())
 }
 
-pub fn setup(yes: bool) -> Result<(), String> {
+pub fn setup(yes: bool, theme: Option<&str>) -> Result<(), String> {
     unpacked()?;
+    if let Some(key) = theme {
+        catalog::find(key).ok_or_else(|| format!("unknown theme '{key}' — run `livery list`"))?;
+    }
 
     let mut detections = block_on(detect::detect_apps());
     let found_count = detections
@@ -287,7 +290,7 @@ pub fn setup(yes: bool) -> Result<(), String> {
     // theme on the machine. That also makes the Active Theme record a
     // reading of something livery did, rather than an assumption.
     println!();
-    apply(&choose_setup_theme(yes)?)
+    apply(&choose_setup_theme(yes, theme)?)
 }
 
 /// Ask whether each app's discovered config folders are complete, and take the missing ones by
@@ -365,11 +368,18 @@ fn ask(message: &str, default: bool) -> Result<bool, String> {
     }
 }
 
-/// The theme setup applies as its last step. `--yes` has to stay
-/// non-interactive, so it takes the default rather than opening the picker.
-fn choose_setup_theme(yes: bool) -> Result<String, String> {
+/// The theme setup applies as its last step: `--theme` when given. `--yes`
+/// has to stay non-interactive, so it keeps the Active Theme, or takes the
+/// default when none is recorded, rather than opening the picker.
+fn choose_setup_theme(yes: bool, theme: Option<&str>) -> Result<String, String> {
+    if let Some(key) = theme {
+        return Ok(key.to_string());
+    }
     if yes {
-        return Ok(DEFAULT_THEME_KEY.to_string());
+        let active = livery_core::config::commands::get_config()
+            .active_theme
+            .filter(|key| catalog::find(key).is_some());
+        return Ok(active.unwrap_or_else(|| DEFAULT_THEME_KEY.to_string()));
     }
     pick_theme("Pick a theme to apply")
 }

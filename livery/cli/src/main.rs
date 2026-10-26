@@ -36,6 +36,9 @@ enum Command {
         /// Accept every prompt
         #[arg(short, long)]
         yes: bool,
+        /// Theme to apply at the end, instead of the picker or the active theme
+        #[arg(long)]
+        theme: Option<String>,
     },
     /// Switch the system between dark and light mode
     Appearance {
@@ -101,7 +104,7 @@ fn main() -> std::process::ExitCode {
         Some(Command::Reapply) => commands::reapply(),
         Some(Command::List) => commands::list(),
         Some(Command::Status) => commands::status(),
-        Some(Command::Setup { yes }) => commands::setup(yes),
+        Some(Command::Setup { yes, theme }) => commands::setup(yes, theme.as_deref()),
         Some(Command::Appearance { mode }) => commands::appearance(&mode),
         Some(Command::NvimSettings) => commands::nvim_settings(),
         Some(Command::Adapter {
