@@ -21,6 +21,7 @@ return {
             DiagnosticHint = { fg = ui.fg.hint },
             DiagnosticInfo = { fg = ui.fg.info },
             DiagnosticWarn = { fg = ui.fg.warn },
+            DiagnosticOk = { fg = ui.fg.positive },
 
             -- Diagnostic Virtual Text
             DiagnosticVirtualTextError = {
@@ -47,6 +48,12 @@ return {
                 }),
                 fg = ui.fg.hint,
             },
+            DiagnosticVirtualTextOk = {
+                bg = cond_hl(colors.none, {
+                    [styles.diagnostics.background] = ui.bg.positive,
+                }),
+                fg = ui.fg.positive,
+            },
 
             -- Diagnostic Underlines
             DiagnosticUnderlineError = {
@@ -63,6 +70,10 @@ return {
             },
             DiagnosticUnderlineWarn = {
                 sp = ui.fg.warn,
+                config.styles.diagnostics.undercurl and { undercurl = true },
+            },
+            DiagnosticUnderlineOk = {
+                sp = ui.fg.positive,
                 config.styles.diagnostics.undercurl and { undercurl = true },
             },
 
