@@ -209,6 +209,9 @@ where
                 };
                 diagnostics.push(format!("{}: {detail}", socket.display()));
             }
+            Err(error) if error.contains("server_not_running") => {
+                log::info!("Skipped stale Herdr socket {}", socket.display());
+            }
             Err(error) => diagnostics.push(format!("{}: {error}", socket.display())),
         }
     }
@@ -390,6 +393,28 @@ mod tests {
         assert_eq!(report.status, "partial");
         assert_eq!(report.diagnostics.len(), 1);
         assert!(report.diagnostics[0].contains("two.sock"));
+    }
+
+    #[test]
+    fn stale_socket_of_a_stopped_session_is_skipped_quietly() {
+        let sockets = vec![PathBuf::from("live.sock"), PathBuf::from("stale.sock")];
+        let report = reload_sessions_with(&sockets, |socket| {
+            if socket == Path::new("live.sock") {
+                Ok(ReloadReport {
+                    status: "applied".to_string(),
+                    diagnostics: vec![],
+                })
+            } else {
+                Err(
+                    r#"herdr exited with exit status: 1: {"error":{"code":"server_not_running"}}"#
+                        .to_string(),
+                )
+            }
+        })
+        .unwrap();
+
+        assert_eq!(report.status, "applied");
+        assert!(report.diagnostics.is_empty());
     }
 
     #[test]

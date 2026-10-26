@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 use crate::config::types::AppConfig;
@@ -34,30 +33,12 @@ where
         return UpdateResult::error(app_str, "No Obsidian config folders configured");
     }
 
-    let mut basenames = HashMap::new();
-    for folder in &folders {
-        if let Some(name) = Path::new(folder)
-            .parent()
-            .and_then(Path::file_name)
-            .and_then(|name| name.to_str())
-        {
-            *basenames.entry(name.to_string()).or_insert(0usize) += 1;
-        }
-    }
-
     let mut outcomes = Vec::with_capacity(folders.len());
     for folder in &folders {
-        let duplicate_basename = Path::new(folder)
-            .parent()
-            .and_then(Path::file_name)
-            .and_then(|name| name.to_str())
-            .and_then(|name| basenames.get(name))
-            .is_some_and(|count| *count > 1);
         outcomes.push(update_config_folder(
             folder,
             obsidian_theme,
             ctx,
-            duplicate_basename,
             &live_reload,
         ));
     }
@@ -109,7 +90,6 @@ fn update_config_folder(
     folder: &str,
     obsidian_theme: &str,
     ctx: &UpdateContext,
-    duplicate_basename: bool,
     live_reload: &impl Fn(&Path) -> Option<String>,
 ) -> ConfigFolderOutcome {
     let config_folder = PathBuf::from(shellexpand::tilde(folder).to_string());
@@ -154,18 +134,7 @@ fn update_config_folder(
         }
     }
 
-    let reload_warning = if duplicate_basename {
-        let vault = Path::new(folder)
-            .parent()
-            .and_then(Path::file_name)
-            .map(|name| name.to_string_lossy().into_owned())
-            .unwrap_or_default();
-        Some(format!(
-            "Reload skipped: more than one vault is named \"{vault}\""
-        ))
-    } else {
-        live_reload(&config_folder)
-    };
+    let reload_warning = live_reload(&config_folder);
     ConfigFolderOutcome {
         config_folder: folder.to_string(),
         status: UpdateStatus::Done,
@@ -194,36 +163,28 @@ fn is_running() -> bool {
 }
 
 /// The Obsidian CLI accepts a vault selector before the command. The vault root
-/// is derived from the configuration folder, and the selector is its basename.
+/// is derived from the configuration folder, and the selector is its registry ID.
 fn reload(vault_root: &Path) -> Result<(), String> {
-    let name = vault_root
-        .file_name()
-        .and_then(|name| name.to_str())
-        .ok_or_else(|| {
-            format!(
-                "Cannot determine Obsidian vault name for {}",
-                vault_root.display()
-            )
-        })?;
+    let id = crate::config::io::obsidian_vault_id(vault_root).ok_or_else(|| {
+        format!(
+            "Reload skipped: {} is not in Obsidian's vault list",
+            vault_root.display()
+        )
+    })?;
     let output = std::process::Command::new("obsidian")
-        .args([&format!("vault={name}"), "reload"])
+        .args([&format!("vault={id}"), "reload"])
         .output()
         .map_err(|error| format!("Failed to run obsidian reload: {error}"))?;
     if output.status.success() {
         Ok(())
     } else {
-        Err(format!("obsidian vault={name} reload returned non-zero"))
+        Err(format!("obsidian vault={id} reload returned non-zero"))
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_reload_name_uses_derived_config_folder_root_basename() {
-        assert_eq!(Path::new("/notes").file_name().unwrap(), "notes");
-    }
 
     #[test]
     fn test_updates_config_folders_independently_and_reports_missing_folder() {

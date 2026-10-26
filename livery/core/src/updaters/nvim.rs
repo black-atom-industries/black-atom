@@ -366,6 +366,27 @@ fn find_nvim_sockets(tmpdir: &Path) -> Vec<PathBuf> {
     sockets
 }
 
+/// Whether an nvim command line skips the user's config (`--clean`, `-u NONE`).
+/// Such an instance never has the colorscheme, so a reload can only fail.
+fn skips_user_config(args: &str) -> bool {
+    let args: Vec<&str> = args.split_whitespace().collect();
+    args.contains(&"--clean") || args.windows(2).any(|pair| pair == ["-u", "NONE"])
+}
+
+fn socket_skips_user_config(socket_path: &Path) -> bool {
+    let Some(pid) = socket_path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .and_then(|name| name.rsplit('.').nth(1))
+    else {
+        return false;
+    };
+    Command::new("ps")
+        .args(["-o", "args=", "-p", pid])
+        .output()
+        .is_ok_and(|output| skips_user_config(&String::from_utf8_lossy(&output.stdout)))
+}
+
 const RELOAD_TIMEOUT: Duration = Duration::from_secs(5);
 
 /// Reload all running Neovim instances via `--remote-expr execute("colorscheme …")`.
@@ -381,6 +402,7 @@ fn reload(theme_key: &str, max_sockets: Option<usize>) -> Result<ReloadSummary, 
 
     let tmpdir = std::env::var("TMPDIR").unwrap_or_else(|_| "/tmp".to_string());
     let mut sockets = find_nvim_sockets(Path::new(&tmpdir));
+    sockets.retain(|socket| !socket_skips_user_config(socket));
     if let Some(limit) = max_sockets {
         sockets.truncate(limit);
     }
@@ -706,6 +728,14 @@ vim.g.black_atom_core_config = {
         assert!(is_nvim_socket_name("nvim.12345.0"));
         assert!(is_nvim_socket_name("nvim-edit.12345.0"));
         assert!(is_nvim_socket_name("lazyvim.1.0"));
+    }
+
+    #[test]
+    fn instances_without_user_config_are_recognised() {
+        assert!(skips_user_config("nvim --clean --headless -c qa"));
+        assert!(skips_user_config("/usr/bin/nvim -u NONE file.txt"));
+        assert!(!skips_user_config("nvim --embed"));
+        assert!(!skips_user_config("nvim -u ~/.config/nvim/init.lua"));
     }
 
     #[test]

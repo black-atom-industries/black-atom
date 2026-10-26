@@ -84,7 +84,7 @@ verify — always ending with verification, so the row reflects the true state.
 - **Switch pointer:** `cssTheme` in `appearance.json` + the variant key in the Style Settings plugin
   data.
 - **Variant:** set only when the Style Settings plugin's `data.json` exists in the folder.
-- **Reload:** `obsidian vault=<name> reload` through the `obsidian` command, when Obsidian is running.
+- **Reload:** `obsidian vault=<id> reload` through the `obsidian` command, when Obsidian is running. The ID comes from Obsidian's vault registry, so vaults with the same folder name stay apart.
   Skipped when two vaults share a name; deferred to the next launch when Obsidian is not running.
 - **Precondition:** none for vaults in Obsidian's registry (`obsidian.json`): setup discovers their
   configuration folders. Add any other folder, such as a renamed override folder, by hand. Livery

@@ -185,6 +185,26 @@ pub fn discovered_obsidian_config_folders() -> Vec<String> {
         .unwrap_or_default()
 }
 
+/// Find the registry ID of the vault at `vault_root`. Vault names can repeat;
+/// the ID cannot.
+pub fn obsidian_vault_id_from_registry(path: &Path, vault_root: &Path) -> Option<String> {
+    let content = fs::read_to_string(path).ok()?;
+    let registry = serde_json::from_str::<serde_json::Value>(&content).ok()?;
+    registry
+        .get("vaults")?
+        .as_object()?
+        .iter()
+        .find_map(|(id, vault)| {
+            let path = vault.get("path")?.as_str()?;
+            (PathBuf::from(shellexpand::tilde(path).to_string()) == vault_root).then(|| id.clone())
+        })
+}
+
+/// Find the registry ID of the vault at `vault_root` in the platform registry.
+pub fn obsidian_vault_id(vault_root: &Path) -> Option<String> {
+    obsidian_vault_id_from_registry(&obsidian_registry_path()?, vault_root)
+}
+
 /// Claude Code config folders in `home`: directories named `.claude*` that hold a
 /// `settings.json`. `CLAUDE_CONFIG_DIR` profiles such as `~/.claude-work` live here too.
 pub fn claude_config_folders_in(home: &Path) -> Vec<String> {
@@ -674,6 +694,30 @@ mod tests {
         assert_eq!(
             obsidian_config_folders_from_registry(&registry),
             vec![valid.join(".obsidian").to_string_lossy().into_owned()]
+        );
+    }
+
+    #[test]
+    fn obsidian_registry_tells_apart_vaults_with_the_same_name() {
+        let dir = tempfile::TempDir::new().unwrap();
+        let private = dir.path().join("private/notes");
+        let work = dir.path().join("work/notes");
+        let registry = dir.path().join("obsidian.json");
+        let json = serde_json::json!({
+            "vaults": {
+                "aaaa": { "path": private },
+                "bbbb": { "path": work }
+            }
+        });
+        fs::write(&registry, serde_json::to_vec(&json).unwrap()).unwrap();
+
+        assert_eq!(
+            obsidian_vault_id_from_registry(&registry, &work).as_deref(),
+            Some("bbbb")
+        );
+        assert_eq!(
+            obsidian_vault_id_from_registry(&registry, &dir.path().join("other")),
+            None
         );
     }
 
