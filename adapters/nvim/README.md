@@ -128,6 +128,10 @@ This theme supports the following plugins:
     - 2 Highlight(s)
     - Last updated: 2026-06-05
     - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+- [iter.nvim](https://github.com/black-atom-industries/iter.nvim)
+    - 1 Highlight(s)
+    - Last updated: 2026-10-27
+    - Last commit: fix(nvim): give the iter drawer the panel background
 - [mini.nvim](https://github.com/echasnovski/mini.nvim)
     - 178 Highlight(s)
     - Last updated: 2026-06-06
