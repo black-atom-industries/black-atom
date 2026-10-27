@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.12.0](https://github.com/black-atom-industries/black-atom/compare/v0.11.0...v0.12.0) (2026-10-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **minium:** black-atom-minium-polymer-dark and black-atom-minium-polymer-light are now black-atom-minium-sienna-dark and black-atom-minium-sienna-light. Update the theme key in livery, nvim, and any config that names it.
+* the clay collection and its themes black-atom-clay-dark and black-atom-clay-light are gone from every adapter and from livery. Switch to black-atom-minium-polymer-dark or black-atom-minium-polymer-light.
+
+### Features
+
+* add jpn Murasaki Light theme [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([4614926](https://github.com/black-atom-industries/black-atom/commit/46149263d7c16aa09a7baa0de8d4b2da23353062))
+* **core:** retune Minium Sienna's accents and light syntax [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([cf80217](https://github.com/black-atom-industries/black-atom/commit/cf80217498a63c65260121301eb7e6e64ba9a7b3))
+* **kagi:** invert the keyboard-selected result title [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([5d51a3d](https://github.com/black-atom-industries/black-atom/commit/5d51a3de78d35706618d0ee6b467a0d113473f19))
+* remove the clay collection [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([fb1199c](https://github.com/black-atom-industries/black-atom/commit/fb1199c08652686e48810c752a26e78639745993))
+* retune Murasaki accents to lime and shift Viridian toward teal [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([291bb17](https://github.com/black-atom-industries/black-atom/commit/291bb179e80f894ebe3d650bc0bdcac3505a3567))
+
+
+### Refactors
+
+* **livery:** give every hotkey one owner [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([5f2ce81](https://github.com/black-atom-industries/black-atom/commit/5f2ce816e160f1daa25a549e18c844e7e8c9635e))
+* **minium:** rename the polymer theme to sienna [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([36ee09b](https://github.com/black-atom-industries/black-atom/commit/36ee09b4755b70a5dc53101d83d909f4980916e4))
+* **themes:** adjust polymer themes ([63334be](https://github.com/black-atom-industries/black-atom/commit/63334bedb927f3c5c2bcb9e1b48a904a6bf3576e))
+
+
+### Bug Fixes
+
+* **kagi:** give the search page room and fix crowded mobile layout [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([c41efd0](https://github.com/black-atom-industries/black-atom/commit/c41efd0e4316a1557262136ba870b2c29774d992))
+* **livery:** sync a wired app's theme links on apply [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([b2821a7](https://github.com/black-atom-industries/black-atom/commit/b2821a75891271eded455e173d60500dab7a9859))
+* **nvim:** give the iter drawer the panel background [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([e7a3b32](https://github.com/black-atom-industries/black-atom/commit/e7a3b32b7ae978e9e5844b8572b26d9be7f3aac8))
+
+
+### Documentation
+
+* state the Node version the install is tested on [#22](https://github.com/black-atom-industries/black-atom/issues/22) ([1f3d99a](https://github.com/black-atom-industries/black-atom/commit/1f3d99a6d4e85bf4c8bced0b1fc7830ce0b2338f))
+
 ## [0.11.0](https://github.com/black-atom-industries/black-atom/compare/v0.10.0...v0.11.0) (2026-10-15)
 
 ### Highlights
