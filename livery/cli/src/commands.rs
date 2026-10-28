@@ -560,8 +560,14 @@ fn pick_theme(prompt: &str) -> Result<String, String> {
         .position(|theme| theme.key == cursor_key)
         .unwrap_or(0);
 
+    // inquire never checks the terminal height, and the prompt and help lines
+    // take two rows beside the list. A taller page scrolls the prompt away.
+    let page_size = crossterm::terminal::size()
+        .map(|(_, rows)| usize::from(rows).saturating_sub(2).clamp(1, 15))
+        .unwrap_or(15);
+
     let choice = inquire::Select::new(prompt, options)
-        .with_page_size(15)
+        .with_page_size(page_size)
         .with_starting_cursor(starting_cursor)
         .raw_prompt()
         .map_err(|e| format!("no theme picked: {e}"))?;
