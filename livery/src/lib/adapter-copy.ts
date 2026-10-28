@@ -7,6 +7,6 @@ import type { ThemeProvisioning } from "../bindings.ts";
 export const provisioningCopy: Record<ThemeProvisioning, string> = {
     external:
         "Theme files are provided outside of livery, by a plugin, a binary, or you. Livery only switches between them.",
-    linked: "Theme files ship with livery and are unpacked on first run, then symlinked into a location the app itself reads; switching selects one via a pointer in the app's config.",
+    linked: "Theme files ship with livery and are unpacked on first run, then symlinked into a location the app itself reads; switching selects one via a pointer in the app's config, or by handing the linked file to the app's own import.",
     merged: "The app cannot read external theme files. Livery writes the theme's values into its config on every switch.",
 };

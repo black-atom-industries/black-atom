@@ -5,6 +5,7 @@ mod herdr;
 mod lazygit;
 pub mod nvim;
 mod obsidian;
+mod rex;
 pub mod system_appearance;
 mod tmux;
 mod zed;
@@ -232,6 +233,7 @@ pub fn dispatch_update(
         AppName::ClaudeCode => claude_code::update(app_str, app_config, ctx),
         AppName::Zed => zed::update(app_str, app_config, ctx),
         AppName::Obsidian => obsidian::update(app_str, app_config, ctx),
+        AppName::Rex => rex::update(app_str, app_config, ctx),
     }
 }
 

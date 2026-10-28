@@ -9,17 +9,18 @@ themes directory** (`$XDG_DATA_HOME/black-atom/themes/<adapter>/`, falling back 
 `~/.local/share`). What happens next depends on one question — **who consumes those files** — and
 every adapter falls into exactly one class:
 
-| Class        | Adapters                                         | Definition                                                                                                                                                                       |
-| ------------ | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **External** | helm-tmux                                        | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching.                                                                 |
-| **Linked**   | ghostty, zed, tmux, delta, obsidian, nvim, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once.        |
-| **Merged**   | lazygit, herdr, claude-code                      | The app cannot read the managed theme files where they are, so on every switch livery reads the managed theme and writes it into the app's config or a theme file the app reads. |
+| Class        | Adapters                                              | Definition                                                                                                                                                                                                                        |
+| ------------ | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **External** | helm-tmux                                             | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching.                                                                                                                  |
+| **Linked**   | ghostty, zed, tmux, delta, obsidian, nvim, rex, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once — or by handing the linked file to the app's own import. |
+| **Merged**   | lazygit, herdr, claude-code                           | The app cannot read the managed theme files where they are, so on every switch livery reads the managed theme and writes it into the app's config or a theme file the app reads.                                                  |
 
 Two per-adapter properties are deliberately **not** classes:
 
 - **Setup precondition** — a one-time manual step livery cannot automate (tell livery which config folders to manage). Orthogonal to who consumes the files.
-- **Switch pointer** — the config line or property that selects the active theme. Every adapter has
-  one; livery's apply step rewrites it and never adds it, so an apply fails until the pointer exists.
+- **Switch pointer** — the config line or property that selects the active theme. Every adapter
+  except rex has one; livery's apply step rewrites it and never adds it, so an apply fails until the
+  pointer exists. Rex switches by import instead.
 
 In the settings screen, **AUTO-DETECT** checks which apps exist (conservatively: does the configured
 config file exist?), and **SET UP** runs the class-appropriate chain — enable → link (Linked only) →
@@ -153,6 +154,23 @@ verify — always ending with verification, so the row reflects the true state.
   plugin's defaults declare it or the user turned it on — writing `bold = false` unasked would
   strip the hardcoded bold on `@function.call` and `@method.call`. New options land after a Neovim
   restart.
+
+### rex — Linked
+
+- **Files:** the Ghostty themes, flat-symlinked into `$XDG_DATA_HOME/black-atom/themes/rex/`
+  without their `.conf` extension. Rex names an imported theme after the file it is handed only
+  when the name has no extension; otherwise every import arrives as "Imported Theme".
+- **Switch:** no pointer. Rex keeps imported themes in its own settings and reads no theme folder,
+  so every apply runs `rex -C <client> do client.theme.import path=<link>` for each connected Rex
+  app. Importing a name Rex already holds updates that theme in place and selects it, in the dark
+  or light slot by the theme's background.
+- **Appearance:** after the import, `client.appearance.switch_mode` sets Rex to the theme's
+  appearance. Rex then no longer follows the system appearance; its command line cannot set it
+  back to Auto.
+- **Command:** `config_path` is the `rex` binary inside Rex's support folder, called with
+  `--autostart=false` so livery never starts a Rex server.
+- **Precondition:** Rex open, with Remote Control on (Settings → Rex Server). With Rex closed the
+  apply is skipped and the next one catches up; with Remote Control off it fails.
 
 ### helm-tmux — External
 

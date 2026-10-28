@@ -46,7 +46,7 @@ pub(crate) fn is_linked(app: AppName) -> bool {
     let Some(placement) = registry::linked_placement(app) else {
         return false;
     };
-    let managed_dir = crate::paths::themes_root().join(app.as_str());
+    let managed_dir = managed_dir(app);
     if !managed_dir.is_dir() {
         return false;
     }
@@ -58,6 +58,12 @@ pub(crate) fn is_linked(app: AppName) -> bool {
             };
             symlinks::has_managed_links(&dir, &managed_dir, extensions)
         }
+        registry::LinkedPlacement::FlatWithoutExtension(extensions) => {
+            let Some(dir) = configured_themes_dir(app) else {
+                return false;
+            };
+            symlinks::has_managed_links_without_extension(&dir, &managed_dir, extensions)
+        }
         registry::LinkedPlacement::ConfigFolderThemeDir => configured_themes_dirs(app)
             .map(|dirs| {
                 !dirs.is_empty()
@@ -67,6 +73,15 @@ pub(crate) fn is_linked(app: AppName) -> bool {
             })
             .unwrap_or(false),
     }
+}
+
+/// Where the app's adapter unpacks — an app reusing another adapter's themes
+/// reads that adapter's dir.
+fn managed_dir(app: AppName) -> std::path::PathBuf {
+    let dir_name = app
+        .adapter()
+        .map_or(app.as_str(), |adapter| adapter.dir_name());
+    crate::paths::themes_root().join(dir_name)
 }
 
 /// The adapter's own themes directory as its config points at it today.
@@ -186,8 +201,7 @@ fn link_app_themes_inner(
     app: AppName,
     placement: registry::LinkedPlacement,
 ) -> Result<symlinks::SymlinkSyncStats, String> {
-    let root = crate::paths::themes_root();
-    let managed_dir = root.join(app.as_str());
+    let managed_dir = managed_dir(app);
     if !managed_dir.is_dir() {
         return Err(format!(
             "No managed themes for {} — the themes directory is missing",
@@ -222,6 +236,9 @@ fn link_app_themes_inner(
     match placement {
         registry::LinkedPlacement::FlatByExtensions(extensions) => {
             symlinks::sync_flat_symlinks(&managed_dir, &themes_dir, extensions)
+        }
+        registry::LinkedPlacement::FlatWithoutExtension(extensions) => {
+            symlinks::sync_flat_symlinks_without_extension(&managed_dir, &themes_dir, extensions)
         }
         registry::LinkedPlacement::ConfigFolderThemeDir => {
             symlinks::sync_config_folder_theme_links(&managed_dir, &themes_dir)

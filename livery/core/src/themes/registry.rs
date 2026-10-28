@@ -5,7 +5,8 @@ use crate::config::types::AppName;
 /// - `External`: the app's theme files are provided outside of livery (plugin,
 ///   compiled binary, or the user), so livery only performs switching.
 /// - `Linked`: livery symlinks the unpacked theme files into a location the app
-///   itself reads; switching selects one via a pointer in the app's config.
+///   itself reads; switching selects one via a pointer in the app's config, or by
+///   handing the linked file to the app's own import.
 /// - `Merged`: the app cannot read the managed theme files where they are, so on every switch
 ///   livery reads the unpacked theme file and writes it into the app's config or a theme file
 ///   the app reads.
@@ -26,6 +27,7 @@ pub fn provisioning(app: AppName) -> ThemeProvisioning {
         | AppName::Tmux
         | AppName::Obsidian
         | AppName::Nvim
+        | AppName::Rex
         | AppName::Tuicr => ThemeProvisioning::Linked,
         AppName::Lazygit | AppName::Herdr | AppName::ClaudeCode => ThemeProvisioning::Merged,
     }
@@ -44,6 +46,7 @@ pub fn config_folder_marker(app: AppName) -> Option<&'static str> {
         | AppName::Delta
         | AppName::Lazygit
         | AppName::Herdr
+        | AppName::Rex
         | AppName::Tuicr
         | AppName::HelmTmux => None,
     }
@@ -58,6 +61,9 @@ pub enum LinkedPlacement {
     /// `source-file` target). Theme keys are globally unique, so flattening
     /// the collection nesting loses nothing.
     FlatByExtensions(&'static [&'static str]),
+    /// `FlatByExtensions` with the extension dropped from each link name — Rex
+    /// names an imported theme after its file only when the file has none.
+    FlatWithoutExtension(&'static [&'static str]),
     /// Each configuration folder's `themes/Black Atom/` dir gets the merged `theme.css` +
     /// `manifest.json` pair — Obsidian scans per-theme subdirectories.
     ConfigFolderThemeDir,
@@ -79,6 +85,7 @@ pub fn linked_placement(app: AppName) -> Option<LinkedPlacement> {
         AppName::Tuicr => Some(LinkedPlacement::FlatByExtensions(&[".toml", ".tmTheme"])),
         AppName::Obsidian => Some(LinkedPlacement::ConfigFolderThemeDir),
         AppName::Nvim => Some(LinkedPlacement::PackDir),
+        AppName::Rex => Some(LinkedPlacement::FlatWithoutExtension(&[".conf"])),
         AppName::HelmTmux | AppName::Lazygit | AppName::Herdr | AppName::ClaudeCode => None,
     }
 }
@@ -120,7 +127,7 @@ pub fn editable_fields(app: AppName) -> Vec<AdapterEditableField> {
         }
         AppName::Zed => vec![ConfigPath],
         AppName::Obsidian => vec![],
-        AppName::Lazygit | AppName::Herdr => vec![ConfigPath, ThemesPath],
+        AppName::Lazygit | AppName::Herdr | AppName::Rex => vec![ConfigPath, ThemesPath],
         AppName::ClaudeCode => vec![ThemesPath],
     }
 }
@@ -172,6 +179,7 @@ mod tests {
             editable_fields(AppName::Herdr),
             vec![ConfigPath, ThemesPath]
         );
+        assert_eq!(editable_fields(AppName::Rex), vec![ConfigPath, ThemesPath]);
         assert_eq!(editable_fields(AppName::ClaudeCode), vec![ThemesPath]);
     }
 

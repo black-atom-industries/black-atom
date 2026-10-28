@@ -83,6 +83,7 @@ impl crate::config::types::AppName {
             AppName::Lazygit => Some(Adapter::Lazygit),
             AppName::Nvim => Some(Adapter::Nvim),
             AppName::Obsidian => Some(Adapter::Obsidian),
+            AppName::Rex => Some(Adapter::Ghostty),
             AppName::Tmux => Some(Adapter::Tmux),
             AppName::Tuicr => Some(Adapter::Tuicr),
             AppName::Zed => Some(Adapter::Zed),

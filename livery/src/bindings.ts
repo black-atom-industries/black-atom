@@ -152,7 +152,7 @@ config_folders?: string[] | null; found: boolean }
 /**
  * Supported app names. TypeScript bindings are auto-generated via tauri-specta.
  */
-export type AppName = "nvim" | "tmux" | "ghostty" | "zed" | "delta" | "lazygit" | "herdr" | "obsidian" | "tuicr" | "claude-code" | "helm-tmux"
+export type AppName = "nvim" | "tmux" | "ghostty" | "zed" | "delta" | "lazygit" | "herdr" | "obsidian" | "rex" | "tuicr" | "claude-code" | "helm-tmux"
 /**
  * Result of `verify_app_path` — backs the settings screen's [ VERIFY PATH ].
  */
@@ -244,7 +244,8 @@ export type ThemeContext = { theme_key: string; appearance: string; collection_k
  * - `External`: the app's theme files are provided outside of livery (plugin,
  * compiled binary, or the user), so livery only performs switching.
  * - `Linked`: livery symlinks the unpacked theme files into a location the app
- * itself reads; switching selects one via a pointer in the app's config.
+ * itself reads; switching selects one via a pointer in the app's config, or by
+ * handing the linked file to the app's own import.
  * - `Merged`: the app cannot read the managed theme files where they are, so on every switch
  * livery reads the unpacked theme file and writes it into the app's config or a theme file
  * the app reads.

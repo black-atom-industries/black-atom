@@ -11,6 +11,7 @@ import { LazygitSettings } from "./lazygit.tsx";
 import { HerdrSettings } from "./herdr.tsx";
 import { ClaudeCodeSettings } from "./claude-code.tsx";
 import { ObsidianSettings } from "./obsidian.tsx";
+import { RexSettings } from "./rex.tsx";
 import { TuicrSettings } from "./tuicr.tsx";
 
 export type { AdapterField, AdapterPageProps } from "./types.ts";
@@ -28,5 +29,6 @@ export const adapterSettingsPages: Record<AppName, (props: AdapterPageProps) => 
     herdr: HerdrSettings,
     "claude-code": ClaudeCodeSettings,
     obsidian: ObsidianSettings,
+    rex: RexSettings,
     tuicr: TuicrSettings,
 };

@@ -114,6 +114,26 @@ impl Default for Config {
             },
         );
         apps.insert(
+            AppName::Rex,
+            AppConfig {
+                enabled: false,
+                config_folders: None,
+                // The `rex` binary itself: Rex has no config file, and the GUI
+                // app's PATH does not reach it.
+                config_path: Some(
+                    "~/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex"
+                        .to_string(),
+                ),
+                // Linked placement: the Ghostty themes, linked without their
+                // extension, because Rex names an import after its file name.
+                themes_path: Some(themes_path("rex")),
+                match_pattern: None,
+                replace_template: None,
+                settings_path: None,
+                settings: None,
+            },
+        );
+        apps.insert(
             AppName::ClaudeCode,
             AppConfig {
                 enabled: false,
