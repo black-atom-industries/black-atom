@@ -32,7 +32,7 @@ self-hosted through `@fontsource` in `src/styles/fonts.css`.
   pure logic.
 - `server/`, `api/`: GitHub server functions, response schemas and the hooks that read them.
 - `background/`, `audio/`: the background layer and the sound engine, below.
-- `dev/`: development-only pages (`/dev/sound`), added in code and absent from the production build.
+- `dev/`: development-only pages (`/dev/sound`, `/dev/themes`), added in code and absent from the production build.
 - `styles/`: `tokens.css` and `global.css`. Chrome gets color, type, spacing and motion from `--ba-*`
   custom properties and nothing else.
 

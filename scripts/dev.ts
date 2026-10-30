@@ -1,3 +1,4 @@
+import { execFile } from "node:child_process";
 import { watch } from "node:fs";
 import { readdir, readFile, rm, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
@@ -60,6 +61,21 @@ const processes = createDevProcesses({
     env: session.env,
     stopGraceMs: 1000,
 });
+const themeLabUrl = "http://localhost:3000/dev/themes";
+
+/** Opens `url` in the browser once the server behind it answers. */
+async function openWhenReady(url: string) {
+    for (let attempt = 0; attempt < 120; attempt++) {
+        try {
+            await fetch(url, { method: "HEAD" });
+            execFile("open", [url], () => {});
+            return;
+        } catch {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+    }
+}
+
 const finished = Promise.withResolvers<number>();
 let stopping = false;
 let initial = true;
@@ -122,9 +138,10 @@ const cycle = createDevCycle({
         if (status.startsWith("failed:")) console.error(status);
         if (status === "ready" && !servicesStarted) {
             servicesStarted = true;
-            for (const packagePath of ["core/monitor", "livery"]) {
+            for (const packagePath of ["core/monitor", "livery", "website"]) {
                 processes.startService(["npm", "run", "dev"], join(root, packagePath));
             }
+            void openWhenReady(themeLabUrl);
         }
     },
 });

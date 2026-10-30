@@ -28,8 +28,13 @@ From the repo root:
 # Regenerate every adapter
 node core/src/tasks/generate.ts
 
-# Watch core and every adapter's templates, regenerate and reapply the active theme on change
+# Watch core and every adapter's templates, regenerate and reapply the active theme on change,
+# and open the theme lab (http://localhost:3000/dev/themes): every theme as a mock editor with
+# its contrast ratios, next to the theme at the last commit
 npm run dev
+
+# WCAG contrast of every theme's UI, syntax and terminal colors; pass a theme key for every pair
+npm run contrast
 ```
 
 From inside a single adapter directory (`adapters/<name>/`):
