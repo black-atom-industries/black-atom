@@ -1,1 +1,0 @@
-export { ContrastDisplay } from "./ContrastDisplay";

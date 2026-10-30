@@ -1,1 +1,0 @@
-export { LightnessBar } from "./LightnessBar";

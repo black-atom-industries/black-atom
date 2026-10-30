@@ -3,8 +3,7 @@
 ## Layout
 
 - `core/` — theme definitions (`core/src/themes/<collection>/`), the generator CLI
-  (`core/src/cli/index.ts`), the adapter schema (`core/adapter.schema.json`), and a preview app
-  (`core/monitor/`)
+  (`core/src/cli/index.ts`), and the adapter schema (`core/adapter.schema.json`)
 - `adapters/<name>/` — one directory per tool, with its templates and generated theme files
 - `livery/` — the desktop app that applies a theme across the tools on a machine. GUI binary
   `livery-gui`, terminal client `livery`
@@ -18,7 +17,7 @@
 git clone https://github.com/black-atom-industries/black-atom.git
 cd black-atom
 npm install
-npm run dev           # GUI, monitor, generation watcher, development CLI
+npm run dev           # GUI, website with the theme lab, generation watcher, development CLI
 npm run check         # type check, lint, format, Rust format and Clippy (all targets)
 npm run test          # Vitest and Rust workspace tests
 npm run build         # release GUI bundle and CLI
