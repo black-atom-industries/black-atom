@@ -19,18 +19,18 @@ html.theme_calm_blue[class] {
   --ba-fg-subtle: #676261;
   --ba-fg-accent: #ff7b26;
   --ba-fg-disabled: #a49c9a;
-  --ba-fg-negative: #f14d4c;
-  --ba-fg-positive: #819e00;
-  --ba-fg-info: #00a3e9;
-  --ba-syntax-comment: #a49c9a;
+  --ba-fg-negative: #db0017;
+  --ba-fg-positive: #638000;
+  --ba-fg-info: #0073c7;
+  --ba-syntax-comment: #847f7e;
   --ba-syntax-comment-doc: #847f7e;
-  --ba-syntax-keyword: #4a352b;
+  --ba-syntax-keyword: #676261;
   --ba-syntax-import: #473727;
-  --ba-syntax-string: #6c93bc;
+  --ba-syntax-string: #3c7ebe;
   --ba-syntax-string-doc: #847f7e;
   --ba-syntax-string-escape: #ff7b26;
   --ba-syntax-string-regexp: #ff7b26;
-  --ba-syntax-number: #6c93bc;
+  --ba-syntax-number: #3c7ebe;
   --ba-syntax-constant: #3d393a;
   --ba-syntax-function: #ff7b26;
   --ba-syntax-builtin: #4a352b;
@@ -39,7 +39,7 @@ html.theme_calm_blue[class] {
   --ba-syntax-property: #676261;
   --ba-syntax-module: #4a4747;
   --ba-syntax-attribute: #4a352b;
-  --ba-syntax-tag: #6c93bc;
+  --ba-syntax-tag: #3c7ebe;
   --ba-syntax-operator: #3d393a;
   color-scheme: light;
 }

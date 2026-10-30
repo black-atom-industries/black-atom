@@ -4,15 +4,15 @@
     light = true
     syntax-theme = ansi
 
-    minus-style = syntax "#ece1dd"
-    minus-emph-style = syntax "#fdd1cc"
-    minus-empty-line-marker-style = normal "#ece1dd"
-    plus-style = syntax "#daead9"
-    plus-emph-style = syntax "#d9e2c5"
-    plus-empty-line-marker-style = normal "#daead9"
+    minus-style = syntax "#ede8e4"
+    minus-emph-style = syntax "#ffdeda"
+    minus-empty-line-marker-style = normal "#ede8e4"
+    plus-style = syntax "#d7ecd1"
+    plus-emph-style = syntax "#d4e7b4"
+    plus-empty-line-marker-style = normal "#d7ecd1"
 
-    line-numbers-minus-style = "#f14d4c"
-    line-numbers-plus-style = "#819e00"
+    line-numbers-minus-style = "#db0017"
+    line-numbers-plus-style = "#638000"
     line-numbers-zero-style = "#308176"
     line-numbers-left-style = "#67b5a9"
     line-numbers-right-style = "#67b5a9"
@@ -20,4 +20,4 @@
     file-style = "#ee560c" bold
     file-decoration-style = "#67b5a9" ul
     hunk-header-decoration-style = "#67b5a9" box
-    hunk-header-line-number-style = "#00a3e9"
+    hunk-header-line-number-style = "#0073c7"
