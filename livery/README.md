@@ -40,7 +40,7 @@ the CLI, in a window.
 ## Development
 
 ```sh
-npm run dev   # from the repo root: GUI, CLI, monitor, generation
+npm run dev   # from the repo root: GUI, CLI, website, generation
 npm run test  # from the repo root: prepares frontend, runs Vitest and Rust tests
 ```
 
@@ -58,8 +58,9 @@ From the root, `npm run build` builds both app and CLI;
 `npm run install:macos` installs both. The package-local `install:macos`
 installs only the app.
 
-Automated tests and agent-run development, setup, and apply commands use
-temporary fixture homes and XDG directories. See the Sandbox section in the root
+`npm run dev` runs in your normal environment and reapplies every theme change.
+Automated tests, and agent runs of setup and apply outside it, use temporary
+fixture homes and XDG directories. See the Sandbox section in the root
 `AGENTS.md`.
 
 ## Architecture

@@ -110,9 +110,11 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 ## Theme Display
 
-| Term           | Definition                                                                                                                        | Aliases to avoid  |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| **ThemeGroup** | A frontend display structure that pairs a Collection Key with its sorted list of Theme Definitions — used to render the picker UI | Category, section |
+| Term              | Definition                                                                                                                                                                                 | Aliases to avoid      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
+| **ThemeGroup**    | A frontend display structure that pairs a Collection Key with its sorted list of Theme Definitions — used to render the picker UI                                                          | Category, section     |
+| **Contrast Pair** | A foreground and background token that occur together in real UI (`fg.default` on `bg.panel`, `syntax.string.default` on `bg.default`), measured as a WCAG ratio by `analyzeThemeContrast` | Color pair, combo     |
+| **Theme Lab**     | The website's dev-only page `/dev/themes`: every theme as a mock editor with its Contrast Pairs, next to the same theme at a git revision                                                  | Monitor, preview page |
 
 ## Configuration
 
