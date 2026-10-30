@@ -21,12 +21,15 @@ const LABEL_SCROLL_SHARE = 0.3;
  * comes from `--ba-frame-inset` and `--ba-frame-gap` alone.
  */
 export function ViewportFrame({ header, dock, label }: Props) {
-    const isNearTop = useIsNearTop();
+    const isScrolled = useIsScrolledPast(0);
+    const isNearTop = !useIsScrolledPast(LABEL_SCROLL_SHARE);
 
     return (
         <div data-component="ViewportFrame" className={styles.root}>
             <div className={styles.frame}>
-                <div className={styles.top}>{header}</div>
+                <div className={styles.top} data-scrolled={isScrolled || undefined}>
+                    {header}
+                </div>
                 <div className={styles.bottom}>{dock}</div>
                 <div className={styles.edge}>
                     <span className={styles.rule} aria-hidden />
@@ -42,15 +45,16 @@ export function ViewportFrame({ header, dock, label }: Props) {
     );
 }
 
-function useIsNearTop() {
-    const [isNearTop, setIsNearTop] = useState(true);
+/** Whether the page has scrolled further than `share` of the viewport height. */
+function useIsScrolledPast(share: number) {
+    const [isPast, setIsPast] = useState(false);
 
     useEffect(() => {
-        const update = () => setIsNearTop(scrollY < innerHeight * LABEL_SCROLL_SHARE);
+        const update = () => setIsPast(scrollY > innerHeight * share);
         update();
         addEventListener("scroll", update, { passive: true });
         return () => removeEventListener("scroll", update);
-    }, []);
+    }, [share]);
 
-    return isNearTop;
+    return isPast;
 }

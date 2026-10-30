@@ -54,7 +54,41 @@
 }
 
 .top {
+    position: relative;
+    isolation: isolate;
     padding: var(--ba-frame-gap);
+
+    /* Once the page scrolls, a frosted band from the window edge holds the header off the content. */
+    &::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: calc(-1 * var(--ba-frame-inset)) calc(-1 * var(--ba-frame-inset)) 0;
+        background: color-mix(in srgb, var(--ba-bg) 70%, transparent);
+        backdrop-filter: blur(10px);
+    }
+
+    /* The band closes on a rule between the frame's sides. */
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: var(--line);
+    }
+
+    &::before,
+    &::after {
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    &[data-scrolled]::before,
+    &[data-scrolled]::after {
+        opacity: 1;
+    }
 
     & > * {
         pointer-events: auto;
