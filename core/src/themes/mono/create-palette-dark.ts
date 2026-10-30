@@ -8,7 +8,7 @@ export default function (
     return createPalette(
         {
             black: primaries.d40,
-            gray: primaries.m10,
+            gray: primaries.m30,
 
             darkRed: primaries.m40,
             red: primaries.m40,

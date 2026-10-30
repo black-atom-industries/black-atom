@@ -27,7 +27,7 @@ local theme = {
         },
         palette = {
             black = "#2b2826",
-            gray = "#4a4745",
+            gray = "#82807d",
             dark_red = "#a09e9b",
             red = "#a09e9b",
             dark_green = "#82807d",

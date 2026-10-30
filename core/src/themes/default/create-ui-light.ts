@@ -1,9 +1,14 @@
 import type * as Theme from "../../types/theme.ts";
-import { tint } from "../../utils/color.ts";
+import { oklch as toOklch } from "culori";
+import { oklch, tint } from "../../utils/color.ts";
 
 export default function ({ primaries, feedback, accents }: Theme.CreatorContext): Theme.Ui {
     function t(color: string) {
         return tint({ color, with: primaries.l40, amount: 0.15 });
+    }
+
+    function pastel(color: string, lightness = 0.9, chroma = 0.07) {
+        return oklch(lightness, chroma, toOklch(color)?.h ?? 0);
     }
 
     const sharedFg = {
@@ -23,9 +28,9 @@ export default function ({ primaries, feedback, accents }: Theme.CreatorContext)
         hint: t(feedback.warning),
         warn: t(feedback.warning),
         positive: t(feedback.success),
-        add: t(feedback.success),
-        delete: t(feedback.negative),
-        modify: t(feedback.info),
+        add: pastel(feedback.success),
+        delete: pastel(feedback.negative, 0.93, 0.04),
+        modify: pastel(feedback.info),
     };
 
     return {

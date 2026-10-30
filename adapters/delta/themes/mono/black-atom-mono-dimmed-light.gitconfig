@@ -4,20 +4,20 @@
     light = true
     syntax-theme = ansi
 
-    minus-style = syntax "#e9d3d1"
-    minus-emph-style = syntax "#f3c7c3"
-    minus-empty-line-marker-style = normal "#e9d3d1"
-    plus-style = syntax "#d7dbcd"
-    plus-emph-style = syntax "#cfd8bc"
-    plus-empty-line-marker-style = normal "#d7dbcd"
+    minus-style = syntax "#efdedd"
+    minus-emph-style = syntax "#ffdedb"
+    minus-empty-line-marker-style = normal "#efdedd"
+    plus-style = syntax "#dae2c9"
+    plus-emph-style = syntax "#d5e6b3"
+    plus-empty-line-marker-style = normal "#dae2c9"
 
-    line-numbers-minus-style = "#f14d4c"
-    line-numbers-plus-style = "#819e00"
-    line-numbers-zero-style = "#5d5d5d"
-    line-numbers-left-style = "#8c8c8c"
-    line-numbers-right-style = "#8c8c8c"
+    line-numbers-minus-style = "#c21725"
+    line-numbers-plus-style = "#5d7600"
+    line-numbers-zero-style = "#525252"
+    line-numbers-left-style = "#696969"
+    line-numbers-right-style = "#696969"
 
     file-style = "#5f5155" bold
-    file-decoration-style = "#8c8c8c" ul
-    hunk-header-decoration-style = "#8c8c8c" box
-    hunk-header-line-number-style = "#00a3e9"
+    file-decoration-style = "#696969" ul
+    hunk-header-decoration-style = "#696969" box
+    hunk-header-line-number-style = "#0079bd"
