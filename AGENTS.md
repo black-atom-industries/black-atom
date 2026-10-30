@@ -19,9 +19,10 @@ second one.
 
 ## Sandbox
 
-Agent executions and automated tests must run livery, `tauri dev`, `livery apply`, `livery setup`, and
-updaters with a temporary fixture `$HOME` and XDG directories. Updaters write to config files.
-User-started development inherits the user's normal environment and existing configuration.
+`npm run dev` runs in the user's normal environment, whoever starts it: it reapplies every theme
+change to the real configs, so the user sees it live in their tools. Automated tests, and agent runs
+of livery, `tauri dev`, `livery apply`, `livery setup`, and updaters outside `npm run dev`, use a
+temporary fixture `$HOME` and XDG directories, because updaters write to config files.
 
 Trust the real mise config and point Playwright at the real browser cache before swapping `$HOME`.
 Under a fixture home, mise reads its config as an untrusted project config and every shimmed tool
