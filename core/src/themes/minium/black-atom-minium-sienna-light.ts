@@ -27,7 +27,7 @@ export default defineThemeColors({
         a10: oklch(0.75, 0.2, 45),
         a20: oklch(0.35, 0.035, 45),
         a30: oklch(0.35, 0.035, 65),
-        a40: oklch(0.65, 0.075, 250),
+        a40: oklch(0.58, 0.12, 250),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
@@ -51,10 +51,10 @@ export default defineThemeColors({
             number: { default: accents.a40! },
             constant: { ...syntax.constant, builtin: accents.a40! },
             type: { default: primaries.d40, builtin: primaries.m10 },
-            comment: { ...syntax.comment, default: primaries.m30 },
+            comment: { ...syntax.comment, default: primaries.m20 },
             tag: { ...syntax.tag, default: accents.a40! },
             keyword: {
-                default: accents.a20,
+                default: primaries.m10,
                 import: accents.a30 ?? accents.a20,
                 export: accents.a30 ?? accents.a20,
             },

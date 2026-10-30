@@ -19,8 +19,8 @@
 
 
   /* Extended Colors */
-  --color-red: #80cfc2;
-  --color-red-rgb: 128, 207, 194;
+  --color-red: #4d9c91;
+  --color-red-rgb: 77, 156, 145;
   --color-orange: #ee560c;
   --color-orange-rgb: 238, 86, 12;
   --color-yellow: #ee560c;
@@ -29,8 +29,8 @@
   --color-green-rgb: 0, 175, 68;
   --color-cyan: #00b39b;
   --color-cyan-rgb: 0, 179, 155;
-  --color-blue: #80cfc2;
-  --color-blue-rgb: 128, 207, 194;
+  --color-blue: #4d9c91;
+  --color-blue-rgb: 77, 156, 145;
   --color-purple: #bb929a;
   --color-purple-rgb: 187, 146, 154;
   --color-pink: #ab838b;
@@ -46,12 +46,12 @@
   --background-modifier-border: #f0fbf9;
   --background-modifier-border-hover: #bfdfd9;
   --background-modifier-border-focus: #ee560c;
-  --background-modifier-error-rgb: 253, 209, 204;
-  --background-modifier-error: #fdd1cc;
-  --background-modifier-error-hover: #fdd1cc;
-  --background-modifier-success-rgb: 217, 226, 197;
-  --background-modifier-success: #d9e2c5;
-  --background-modifier-message: #c9e4f6;
+  --background-modifier-error-rgb: 250, 219, 215;
+  --background-modifier-error: #fadbd7;
+  --background-modifier-error-hover: #fadbd7;
+  --background-modifier-success-rgb: 224, 230, 215;
+  --background-modifier-success: #e0e6d7;
+  --background-modifier-message: #d8e4f2;
   --background-modifier-form-field: #daf1ed;
 
   /* Text */
@@ -62,9 +62,9 @@
   --text-accent-hover: #ee560c;
   --text-on-accent: #bfdfd9;
   --text-on-accent-inverted: #13403a;
-  --text-error: #f14d4c;
-  --text-warning: #cd7b00;
-  --text-success: #819e00;
+  --text-error: #db0017;
+  --text-warning: #b65300;
+  --text-success: #638000;
   --text-selection: #abd5cd;
   --text-highlight-bg: #abd5cd;
 
