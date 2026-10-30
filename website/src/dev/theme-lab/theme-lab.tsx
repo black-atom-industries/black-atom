@@ -1,6 +1,6 @@
 import { useState, type SyntheticEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter, useSearch } from "@tanstack/react-router";
+import { Link, useRouter, useSearch } from "@tanstack/react-router";
 import { collectionOrder, themeCatalog, themeKeys } from "@black-atom/core";
 import type * as Theme from "@black-atom/core";
 import { Button } from "#/components/button/index.ts";
@@ -13,6 +13,7 @@ import { Rule } from "#/components/rule/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
+import { toShortKey } from "#/lib/theme-precedence.ts";
 import { themesAt } from "./get-themes-at.ts";
 import { themeLabSearch } from "./theme-lab-search.ts";
 import { contrastPairs, ThemePanel } from "./theme-panel.tsx";
@@ -186,6 +187,18 @@ export function ThemeLab() {
                                             {after.meta.collection.label} · {after.meta.appearance}{" "}
                                             · under 3:1 {lowSummary(old, after)}
                                         </Caption>
+                                        <Button
+                                            variant="link"
+                                            render={
+                                                <Link
+                                                    to="/black-atom/themes/$theme"
+                                                    params={{ theme: toShortKey(key) }}
+                                                    search={{ theme: toShortKey(key) }}
+                                                />
+                                            }
+                                        >
+                                            Theme page →
+                                        </Button>
                                     </Stack>
                                     <div className={styles.pair}>
                                         {old ? (
