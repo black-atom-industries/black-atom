@@ -11,7 +11,7 @@ gui:
     inactiveBorderColor:
       - "#676261"
     optionsTextColor:
-      - "#847f7e"
+      - "#3c7ebe"
     selectedLineBgColor:
       - "#d2c9c1"
     cherryPickedCommitBgColor:

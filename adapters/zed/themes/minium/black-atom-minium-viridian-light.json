@@ -75,15 +75,15 @@
                 "terminal.ansi.black": "#00564d",
                 "terminal.ansi.bright_black": "#007468",
                 "terminal.ansi.dim_black": "#007468",
-                "terminal.ansi.red": "#2b8c7f",
-                "terminal.ansi.bright_red": "#2b8c7f",
-                "terminal.ansi.dim_red": "#007468",
+                "terminal.ansi.red": "#ee560c",
+                "terminal.ansi.bright_red": "#ee560c",
+                "terminal.ansi.dim_red": "#ee560c",
                 "terminal.ansi.green": "#00982d",
                 "terminal.ansi.bright_green": "#00982d",
                 "terminal.ansi.dim_green": "#00982d",
-                "terminal.ansi.yellow": "#ee560c",
-                "terminal.ansi.bright_yellow": "#ee560c",
-                "terminal.ansi.dim_yellow": "#ee560c",
+                "terminal.ansi.yellow": "#d97100",
+                "terminal.ansi.bright_yellow": "#d97100",
+                "terminal.ansi.dim_yellow": "#d97100",
                 "terminal.ansi.blue": "#2b8c7f",
                 "terminal.ansi.bright_blue": "#2b8c7f",
                 "terminal.ansi.dim_blue": "#007468",
@@ -173,9 +173,9 @@
                         "selection": "#a366743d"
                     },
                     {
-                        "cursor": "#ee560c",
-                        "background": "#ee560c",
-                        "selection": "#ee560c3d"
+                        "cursor": "#d97100",
+                        "background": "#d97100",
+                        "selection": "#d971003d"
                     },
                     {
                         "cursor": "#009983",
@@ -188,9 +188,9 @@
                         "selection": "#2b8c7f3d"
                     },
                     {
-                        "cursor": "#2b8c7f",
-                        "background": "#2b8c7f",
-                        "selection": "#2b8c7f3d"
+                        "cursor": "#ee560c",
+                        "background": "#ee560c",
+                        "selection": "#ee560c3d"
                     },
                     {
                         "cursor": "#00982d",

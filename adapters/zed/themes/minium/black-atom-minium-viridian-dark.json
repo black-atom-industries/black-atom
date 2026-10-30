@@ -75,9 +75,9 @@
                 "terminal.ansi.black": "#00564d",
                 "terminal.ansi.bright_black": "#67b5a9",
                 "terminal.ansi.dim_black": "#67b5a9",
-                "terminal.ansi.red": "#80cfc2",
-                "terminal.ansi.bright_red": "#80cfc2",
-                "terminal.ansi.dim_red": "#80cfc2",
+                "terminal.ansi.red": "#e69173",
+                "terminal.ansi.bright_red": "#e69173",
+                "terminal.ansi.dim_red": "#e69173",
                 "terminal.ansi.green": "#6fc483",
                 "terminal.ansi.bright_green": "#6fc483",
                 "terminal.ansi.dim_green": "#6fc483",
@@ -188,9 +188,9 @@
                         "selection": "#80cfc23d"
                     },
                     {
-                        "cursor": "#80cfc2",
-                        "background": "#80cfc2",
-                        "selection": "#80cfc23d"
+                        "cursor": "#e69173",
+                        "background": "#e69173",
+                        "selection": "#e691733d"
                     },
                     {
                         "cursor": "#6fc483",

@@ -34,6 +34,8 @@ export default defineThemeColors({
             debug: false,
             override: (palette) => ({
                 ...palette,
+                red: accents.a10,
+                darkRed: accents.a10,
                 green: accents.a20,
                 darkGreen: accents.a20,
                 yellow: accents.a30!,

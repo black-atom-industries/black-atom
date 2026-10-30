@@ -36,6 +36,8 @@ export default defineThemeColors({
                 ...palette,
                 yellow: accents.a10,
                 darkYellow: accents.a20,
+                blue: accents.a40!,
+                darkBlue: accents.a40!,
             }),
         }),
     feedback: ({ accents }) => createFeedback(accents),

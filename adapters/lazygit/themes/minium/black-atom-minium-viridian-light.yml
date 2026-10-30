@@ -23,7 +23,7 @@ gui:
     defaultFgColor:
       - "#13403a"
     searchingActiveBorderColor:
-      - "#ee560c"
+      - "#d97100"
 
   authorColors:
     "*": "#a36674"

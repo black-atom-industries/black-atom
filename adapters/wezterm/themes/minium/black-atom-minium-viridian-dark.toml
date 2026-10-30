@@ -16,7 +16,7 @@ scrollbar_thumb = "#67b5a9"
 
 ansi = [
   "#00564d", # black
-  "#80cfc2", # dark_red
+  "#e69173", # dark_red
   "#6fc483", # dark_green
   "#e09f4d", # dark_yellow
   "#80cfc2", # dark_blue
@@ -27,7 +27,7 @@ ansi = [
 
 brights = [
   "#67b5a9", # gray
-  "#80cfc2", # red
+  "#e69173", # red
   "#6fc483", # green
   "#e09f4d", # yellow
   "#80cfc2", # blue

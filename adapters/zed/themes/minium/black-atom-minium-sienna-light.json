@@ -84,9 +84,9 @@
                 "terminal.ansi.yellow": "#ff7b26",
                 "terminal.ansi.bright_yellow": "#ff7b26",
                 "terminal.ansi.dim_yellow": "#4a352b",
-                "terminal.ansi.blue": "#847f7e",
-                "terminal.ansi.bright_blue": "#847f7e",
-                "terminal.ansi.dim_blue": "#676261",
+                "terminal.ansi.blue": "#3c7ebe",
+                "terminal.ansi.bright_blue": "#3c7ebe",
+                "terminal.ansi.dim_blue": "#3c7ebe",
                 "terminal.ansi.magenta": "#847f7e",
                 "terminal.ansi.bright_magenta": "#847f7e",
                 "terminal.ansi.dim_magenta": "#676261",
@@ -183,9 +183,9 @@
                         "selection": "#847f7e3d"
                     },
                     {
-                        "cursor": "#847f7e",
-                        "background": "#847f7e",
-                        "selection": "#847f7e3d"
+                        "cursor": "#3c7ebe",
+                        "background": "#3c7ebe",
+                        "selection": "#3c7ebe3d"
                     },
                     {
                         "cursor": "#847f7e",
