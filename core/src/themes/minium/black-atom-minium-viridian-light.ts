@@ -13,8 +13,8 @@ export default defineThemeColors({
         d30: oklch(0.38, 0.055, 183),
         d40: oklch(0.407, 0.073, 183),
 
-        m10: oklch(0.55, 0.08, 183),
-        m20: oklch(0.64, 0.08, 183),
+        m10: oklch(0.5, 0.09, 183),
+        m20: oklch(0.58, 0.09, 183),
         m30: oklch(0.72, 0.08, 183),
         m40: oklch(0.8, 0.08, 183),
 
@@ -25,9 +25,9 @@ export default defineThemeColors({
     },
     accents: {
         a10: oklch(0.65, 0.2, 40),
-        a20: oklch(0.65, 0.2, 150),
+        a20: oklch(0.58, 0.2, 150),
         a30: oklch(0.65, 0.2, 70),
-        a40: oklch(0.65, 0.2, 183),
+        a40: oklch(0.57, 0.2, 183),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
@@ -40,8 +40,8 @@ export default defineThemeColors({
                 darkYellow: accents.a10,
                 darkCyan: accents.a40!,
                 cyan: accents.a40!,
-                magenta: oklch(0.7, 0.05, 365),
-                darkMagenta: oklch(0.65, 0.05, 365),
+                magenta: oklch(0.58, 0.08, 365),
+                darkMagenta: oklch(0.52, 0.08, 365),
             }),
         }),
     feedback: ({ accents }) => createFeedback(accents),

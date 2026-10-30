@@ -12,27 +12,27 @@ selection_bg = "#abd5cd"
 selection_fg = "#13403a"
 split = "#ee560c"
 compose_cursor = "#db0017"
-scrollbar_thumb = "#308176"
+scrollbar_thumb = "#007468"
 
 ansi = [
   "#00564d", # black
-  "#308176", # dark_red
-  "#00af44", # dark_green
+  "#007468", # dark_red
+  "#00982d", # dark_green
   "#ee560c", # dark_yellow
-  "#308176", # dark_blue
-  "#ab838b", # dark_magenta
-  "#00b39b", # dark_cyan
+  "#007468", # dark_blue
+  "#905563", # dark_magenta
+  "#009983", # dark_cyan
   "#80cfc2" # light_gray
 ]
 
 brights = [
-  "#308176", # gray
-  "#4d9c91", # red
-  "#00af44", # green
+  "#007468", # gray
+  "#2b8c7f", # red
+  "#00982d", # green
   "#ee560c", # yellow
-  "#4d9c91", # blue
-  "#bb929a", # magenta
-  "#00b39b", # cyan
+  "#2b8c7f", # blue
+  "#a36674", # magenta
+  "#009983", # cyan
   "#80cfc2" # white
 ]
 

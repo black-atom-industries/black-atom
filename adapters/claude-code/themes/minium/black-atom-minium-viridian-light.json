@@ -4,7 +4,7 @@
     "overrides": {
         "text": "#13403a",
         "inverseText": "#bfdfd9",
-        "inactive": "#308176",
+        "inactive": "#007468",
         "subtle": "#67b5a9",
         "suggestion": "#0073c7",
         "claude": "#ee560c",
