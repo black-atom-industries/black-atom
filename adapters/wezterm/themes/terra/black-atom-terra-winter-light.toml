@@ -11,28 +11,28 @@ cursor_fg = "#ebeff5"
 selection_bg = "#f6f9fc"
 selection_fg = "#1e2a37"
 split = "#fa9916"
-compose_cursor = "#6e6ab2"
+compose_cursor = "#6964ac"
 scrollbar_thumb = "#4f667c"
 
 ansi = [
   "#3c4f62", # black
-  "#5d5292", # dark_red
-  "#17687d", # dark_green
-  "#fa6c14", # dark_yellow
-  "#2e5e9a", # dark_blue
-  "#665189", # dark_magenta
-  "#007283", # dark_cyan
+  "#62559c", # dark_red
+  "#006a84", # dark_green
+  "#e95d00", # dark_yellow
+  "#2460a8", # dark_blue
+  "#8b73b4", # dark_magenta
+  "#078b9c", # dark_cyan
   "#94a6be" # light_gray
 ]
 
 brights = [
   "#4f667c", # gray
-  "#6e6ab2", # red
-  "#208295", # green
-  "#fa9916", # yellow
-  "#3578b8", # blue
-  "#7968a9", # magenta
-  "#008c99", # cyan
+  "#6964ac", # red
+  "#007a92", # green
+  "#cf7100", # yellow
+  "#2c70af", # blue
+  "#9080c3", # magenta
+  "#0098a5", # cyan
   "#ebeff5" # white
 ]
 
@@ -55,7 +55,7 @@ bg_color = "#cfd8e5"
 
 [colors.tab_bar.new_tab]
 fg_color = "#ebeff5"
-bg_color = "#208295"
+bg_color = "#007a92"
 
 [colors.tab_bar.new_tab_hover]
 fg_color = "#ebeff5"

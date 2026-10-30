@@ -28,33 +28,33 @@ export default defineThemeColors({
     },
     accents: {
         a10: oklch(0.7661, 0.1674, 65.0),
-        a20: oklch(0.6963, 0.1929, 45.0),
+        a20: oklch(0.65, 0.193, 45.0),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
             // Cold violet/mauve - red shifted toward blue (lower L for light bg)
-            darkRed: oklch(0.48, 0.1, 290),
-            red: oklch(0.56, 0.11, 285),
+            darkRed: oklch(0.496, 0.11, 290),
+            red: oklch(0.541, 0.11, 285),
 
             // Icy teal - green shifted cold
-            darkGreen: oklch(0.48, 0.08, 220),
-            green: oklch(0.56, 0.09, 215),
+            darkGreen: oklch(0.48, 0.1, 220),
+            green: oklch(0.526, 0.11, 215),
 
             // Warm amber - lamplight in the cold
             darkYellow: accents.a20,
-            yellow: accents.a10,
+            yellow: oklch(0.641, 0.167, 65),
 
             // Signature blue - slightly more present
-            darkBlue: oklch(0.48, 0.11, 255),
-            blue: oklch(0.56, 0.12, 250),
+            darkBlue: oklch(0.489, 0.13, 255),
+            blue: oklch(0.532, 0.12, 250),
 
             // Cold purple
-            darkMagenta: oklch(0.48, 0.09, 300),
-            magenta: oklch(0.56, 0.1, 295),
+            darkMagenta: oklch(0.604, 0.1, 300),
+            magenta: oklch(0.64, 0.1, 295),
 
             // Ice cyan - frost accent
-            darkCyan: oklch(0.5, 0.1, 210),
-            cyan: oklch(0.58, 0.11, 205),
+            darkCyan: oklch(0.585, 0.1, 210),
+            cyan: oklch(0.618, 0.11, 205),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,

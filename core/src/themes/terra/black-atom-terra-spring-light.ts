@@ -8,44 +8,55 @@ import createUi from "./create-ui-light.ts";
 
 export default defineThemeColors({
     primaries: {
-        d10: oklch(0.384, 0.037, 166.2),
-        d20: oklch(0.422, 0.042, 163.02),
-        d30: oklch(0.468, 0.047, 163.55),
-        d40: oklch(0.546, 0.057, 163.19),
+        // Ink: deep leaf green, the text color of new growth
+        d10: oklch(0.26, 0.06, 160),
+        d20: oklch(0.41, 0.07, 155),
+        d30: oklch(0.47, 0.07, 155),
+        d40: oklch(0.52, 0.07, 155),
 
-        m10: oklch(0.564, 0.061, 160.83),
-        m20: oklch(0.621, 0.065, 161.49),
-        m30: oklch(0.68, 0.058, 162.67),
-        m40: oklch(0.727, 0.05, 163.21),
+        // Mid: stem and moss, subtle text and comments
+        m10: oklch(0.51, 0.09, 150),
+        m20: oklch(0.62, 0.08, 150),
+        m30: oklch(0.8, 0.06, 150),
+        m40: oklch(0.86, 0.05, 150),
 
-        l10: oklch(0.815, 0.017, 162.65),
-        l20: oklch(0.852, 0.013, 164.74),
-        l30: oklch(0.887, 0.01, 164.84),
-        l40: oklch(0.93, 0.01, 164.86),
+        // Surfaces: pale spring air, a green-white that warms toward cream
+        l10: oklch(0.9, 0.035, 135),
+        l20: oklch(0.93, 0.03, 130),
+        l30: oklch(0.96, 0.025, 125),
+        l40: oklch(0.985, 0.015, 120),
     },
     accents: {
-        a10: oklch(0.751, 0.152, 76.47),
-        a20: oklch(0.68, 0.155, 56.64),
+        // Sprout yellow-green, cursor and badges
+        a10: oklch(0.86, 0.19, 115),
+        // Apricot, the warm tone of spring blossom
+        a20: oklch(0.648, 0.18, 70),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
-            darkRed: oklch(0.634, 0.127, 40.02),
-            red: oklch(0.69, 0.127, 39.78),
+            // Cherry blossom
+            darkRed: oklch(0.513, 0.15, 15),
+            red: oklch(0.56, 0.15, 15),
 
-            darkGreen: oklch(0.606, 0.151, 153.55),
-            green: oklch(0.667, 0.162, 154.9),
+            // New leaf
+            darkGreen: oklch(0.481, 0.16, 150),
+            green: oklch(0.526, 0.16, 150),
 
+            // Daffodil, apricot
             darkYellow: accents.a20,
-            yellow: accents.a10,
+            yellow: oklch(0.641, 0.17, 95),
 
-            darkBlue: oklch(0.545, 0.118, 250.9),
-            blue: oklch(0.628, 0.097, 249.18),
+            // Spring sky
+            darkBlue: oklch(0.491, 0.1, 245),
+            blue: oklch(0.539, 0.1, 245),
 
-            darkMagenta: oklch(0.653, 0.094, 329.18),
-            magenta: oklch(0.672, 0.098, 306.1),
+            // Lilac
+            darkMagenta: oklch(0.614, 0.1, 315),
+            magenta: oklch(0.646, 0.1, 310),
 
-            darkCyan: oklch(0.588, 0.134, 158.02),
-            cyan: oklch(0.654, 0.152, 157.29),
+            // Pond water
+            darkCyan: oklch(0.589, 0.1, 192),
+            cyan: oklch(0.624, 0.1, 190),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,

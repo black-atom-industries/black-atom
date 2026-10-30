@@ -73,8 +73,8 @@
                 "terminal.bright_foreground": "#dfcbaa",
                 "terminal.dim_foreground": "#94a585",
                 "terminal.ansi.black": "#2a433a",
-                "terminal.ansi.bright_black": "#2e503e",
-                "terminal.ansi.dim_black": "#2e503e",
+                "terminal.ansi.bright_black": "#71886c",
+                "terminal.ansi.dim_black": "#71886c",
                 "terminal.ansi.red": "#c88f7b",
                 "terminal.ansi.bright_red": "#c88f7b",
                 "terminal.ansi.dim_red": "#c88b94",
@@ -215,7 +215,7 @@
                         "font_weight": null
                     },
                     "comment": {
-                        "color": "#2e503e",
+                        "color": "#71886c",
                         "font_style": "italic",
                         "font_weight": null
                     },
