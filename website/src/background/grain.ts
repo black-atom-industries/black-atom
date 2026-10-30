@@ -5,6 +5,8 @@ export const grainFrameMs = 83;
 
 export interface Grain {
     setLight(isLight: boolean): void;
+    /** Fades the grain out, or back in. */
+    setHidden(isHidden: boolean): void;
     /** Steps the film grain to another frame at most every `grainFrameMs`. */
     tick(now: number): void;
     dispose(): void;
@@ -58,15 +60,17 @@ export function createGrain(): Grain {
     const frames = renderFrames();
     const element = document.createElement("div");
     element.setAttribute("aria-hidden", "true");
-    element.style.cssText = `position:fixed;inset:0;z-index:2147483000;pointer-events:none;background-size:calc(${tileSize}px * var(--grain-size, .9))`;
+    element.style.cssText = `position:fixed;inset:0;z-index:2147483000;pointer-events:none;background-size:calc(${tileSize}px * var(--grain-size, .9));transition:opacity .6s ease`;
     let isLight = false;
+    let isHidden = false;
     let index = 0;
     let lastStep = 0;
 
     function show() {
         element.style.mixBlendMode = isLight ? "multiply" : "soft-light";
         element.style.backgroundImage = (isLight ? frames.light : frames.dark)[index] ?? "";
-        element.style.opacity = isLight ? "calc(var(--grain, .22) * .5)" : "var(--grain, .22)";
+        if (isHidden) element.style.opacity = "0";
+        else element.style.opacity = isLight ? "calc(var(--grain, .22) * .5)" : "var(--grain, .22)";
     }
 
     show();
@@ -77,8 +81,12 @@ export function createGrain(): Grain {
             isLight = next;
             show();
         },
+        setHidden(next) {
+            isHidden = next;
+            show();
+        },
         tick(now) {
-            if (now - lastStep < grainFrameMs) return;
+            if (isHidden || now - lastStep < grainFrameMs) return;
             lastStep = now;
             index = (index + 1 + Math.floor(Math.random() * (frameCount - 1))) % frameCount;
             show();

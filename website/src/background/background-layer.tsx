@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "@tanstack/react-router";
 import type * as Theme from "@black-atom/core";
 import { BackgroundFallback } from "#/components/background-fallback/index.ts";
 import { useReducedMotion } from "#/hooks/use-reduced-motion.ts";
@@ -21,6 +22,7 @@ export function BackgroundLayer({ theme }: { theme: Theme.Definition }) {
     const [hasFailed, setHasFailed] = useState(false);
     const state = useRouteBackgroundState();
     const isStill = useReducedMotion();
+    const isDevPage = useLocation({ select: (location) => location.pathname.startsWith("/dev/") });
     const sceneTheme = useMemo(
         () => ({ vars: themeToCustomProperties(theme), appearance: theme.meta.appearance }),
         [theme],
@@ -64,6 +66,10 @@ export function BackgroundLayer({ theme }: { theme: Theme.Definition }) {
     useEffect(() => {
         grainRef.current?.setLight(sceneTheme.appearance === "light");
     }, [sceneTheme.appearance]);
+
+    useEffect(() => {
+        grainRef.current?.setHidden(isDevPage);
+    }, [isDevPage]);
 
     useEffect(() => {
         if (isStill) return;
