@@ -69,6 +69,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | **HexColor** | The constrained color type used throughout the system: a hex string in `#rrggbb` or `#rrggbbaa` format                           | Color string, hex value |
 | **tint()**   | The primary color derivation function: blends a base color toward a target color by a specified amount using OKLCH interpolation | Mix, blend, interpolate |
 | **oklch()**  | Utility that converts an OKLCH color-space value to a HexColor                                                                   | Color convert           |
+| **shade()**  | Derives a lighter or darker color by shifting OKLCH lightness, keeping chroma and hue                                            | Lighten, darken         |
 
 ## Metadata
 

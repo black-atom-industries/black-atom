@@ -16,23 +16,23 @@ scrollbar_thumb = "#43484e"
 
 ansi = [
   "#0e1217", # black
-  "#53595f", # dark_red
-  "#757b81", # dark_green
-  "#646a70", # dark_yellow
-  "#53595f", # dark_blue
-  "#da1d69", # dark_magenta
-  "#008c11", # dark_cyan
+  "#ab3937", # dark_red
+  "#008c11", # dark_green
+  "#8c5b00", # dark_yellow
+  "#325dd4", # dark_blue
+  "#c8005b", # dark_magenta
+  "#007981", # dark_cyan
   "#757b81" # light_gray
 ]
 
 brights = [
   "#43484e", # gray
-  "#53595f", # red
-  "#757b81", # green
-  "#646a70", # yellow
-  "#53595f", # blue
-  "#3f6de5", # magenta
-  "#009044", # cyan
+  "#bc4945", # red
+  "#009044", # green
+  "#9c6a00", # yellow
+  "#3f6de5", # blue
+  "#da1d69", # magenta
+  "#008890", # cyan
   "#a8afb5" # white
 ]
 

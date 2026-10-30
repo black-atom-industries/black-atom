@@ -1,5 +1,5 @@
 import { defineThemeColors } from "../define-theme-colors.ts";
-import { oklch } from "../../utils/color.ts";
+import { oklch, shade } from "../../utils/color.ts";
 
 import createFeedback from "./create-feedback-dark.ts";
 import createPalette from "./create-palette-dark.ts";
@@ -33,10 +33,12 @@ export default defineThemeColors({
         createPalette(primaries, {
             override: (palette) => ({
                 ...palette,
-                cyan: accents.a10,
-                darkCyan: accents.a20,
-                magenta: accents.a30 ?? accents.a10,
-                darkMagenta: accents.a40 ?? accents.a10,
+                green: accents.a10,
+                darkGreen: accents.a20,
+                blue: accents.a30!,
+                darkBlue: shade(accents.a30!, -0.05),
+                magenta: accents.a40!,
+                darkMagenta: shade(accents.a40!, -0.05),
             }),
         }),
     feedback: () => createFeedback(),

@@ -75,24 +75,24 @@
                 "terminal.ansi.black": "#0e1217",
                 "terminal.ansi.bright_black": "#43484e",
                 "terminal.ansi.dim_black": "#43484e",
-                "terminal.ansi.red": "#53595f",
-                "terminal.ansi.bright_red": "#53595f",
-                "terminal.ansi.dim_red": "#53595f",
-                "terminal.ansi.green": "#757b81",
-                "terminal.ansi.bright_green": "#757b81",
-                "terminal.ansi.dim_green": "#757b81",
-                "terminal.ansi.yellow": "#646a70",
-                "terminal.ansi.bright_yellow": "#646a70",
-                "terminal.ansi.dim_yellow": "#646a70",
-                "terminal.ansi.blue": "#53595f",
-                "terminal.ansi.bright_blue": "#53595f",
-                "terminal.ansi.dim_blue": "#53595f",
-                "terminal.ansi.magenta": "#3f6de5",
-                "terminal.ansi.bright_magenta": "#3f6de5",
-                "terminal.ansi.dim_magenta": "#da1d69",
-                "terminal.ansi.cyan": "#009044",
-                "terminal.ansi.bright_cyan": "#009044",
-                "terminal.ansi.dim_cyan": "#008c11",
+                "terminal.ansi.red": "#bc4945",
+                "terminal.ansi.bright_red": "#bc4945",
+                "terminal.ansi.dim_red": "#ab3937",
+                "terminal.ansi.green": "#009044",
+                "terminal.ansi.bright_green": "#009044",
+                "terminal.ansi.dim_green": "#008c11",
+                "terminal.ansi.yellow": "#9c6a00",
+                "terminal.ansi.bright_yellow": "#9c6a00",
+                "terminal.ansi.dim_yellow": "#8c5b00",
+                "terminal.ansi.blue": "#3f6de5",
+                "terminal.ansi.bright_blue": "#3f6de5",
+                "terminal.ansi.dim_blue": "#325dd4",
+                "terminal.ansi.magenta": "#da1d69",
+                "terminal.ansi.bright_magenta": "#da1d69",
+                "terminal.ansi.dim_magenta": "#c8005b",
+                "terminal.ansi.cyan": "#008890",
+                "terminal.ansi.bright_cyan": "#008890",
+                "terminal.ansi.dim_cyan": "#007981",
                 "terminal.ansi.white": "#757b81",
                 "terminal.ansi.bright_white": "#b8bec5",
                 "terminal.ansi.dim_white": "#757b81",
@@ -168,34 +168,34 @@
                         "selection": "#0090443d"
                     },
                     {
+                        "cursor": "#da1d69",
+                        "background": "#da1d69",
+                        "selection": "#da1d693d"
+                    },
+                    {
+                        "cursor": "#9c6a00",
+                        "background": "#9c6a00",
+                        "selection": "#9c6a003d"
+                    },
+                    {
+                        "cursor": "#008890",
+                        "background": "#008890",
+                        "selection": "#0088903d"
+                    },
+                    {
                         "cursor": "#3f6de5",
                         "background": "#3f6de5",
                         "selection": "#3f6de53d"
                     },
                     {
-                        "cursor": "#646a70",
-                        "background": "#646a70",
-                        "selection": "#646a703d"
+                        "cursor": "#bc4945",
+                        "background": "#bc4945",
+                        "selection": "#bc49453d"
                     },
                     {
                         "cursor": "#009044",
                         "background": "#009044",
                         "selection": "#0090443d"
-                    },
-                    {
-                        "cursor": "#53595f",
-                        "background": "#53595f",
-                        "selection": "#53595f3d"
-                    },
-                    {
-                        "cursor": "#53595f",
-                        "background": "#53595f",
-                        "selection": "#53595f3d"
-                    },
-                    {
-                        "cursor": "#757b81",
-                        "background": "#757b81",
-                        "selection": "#757b813d"
                     },
                     {
                         "cursor": "#009044",

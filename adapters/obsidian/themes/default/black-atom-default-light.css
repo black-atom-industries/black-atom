@@ -18,22 +18,22 @@
 
 
   /* Extended Colors */
-  --color-red: #53595f;
-  --color-red-rgb: 83, 89, 95;
-  --color-orange: #646a70;
-  --color-orange-rgb: 100, 106, 112;
-  --color-yellow: #646a70;
-  --color-yellow-rgb: 100, 106, 112;
-  --color-green: #757b81;
-  --color-green-rgb: 117, 123, 129;
-  --color-cyan: #009044;
-  --color-cyan-rgb: 0, 144, 68;
-  --color-blue: #53595f;
-  --color-blue-rgb: 83, 89, 95;
-  --color-purple: #3f6de5;
-  --color-purple-rgb: 63, 109, 229;
-  --color-pink: #da1d69;
-  --color-pink-rgb: 218, 29, 105;
+  --color-red: #bc4945;
+  --color-red-rgb: 188, 73, 69;
+  --color-orange: #8c5b00;
+  --color-orange-rgb: 140, 91, 0;
+  --color-yellow: #9c6a00;
+  --color-yellow-rgb: 156, 106, 0;
+  --color-green: #009044;
+  --color-green-rgb: 0, 144, 68;
+  --color-cyan: #008890;
+  --color-cyan-rgb: 0, 136, 144;
+  --color-blue: #3f6de5;
+  --color-blue-rgb: 63, 109, 229;
+  --color-purple: #da1d69;
+  --color-purple-rgb: 218, 29, 105;
+  --color-pink: #c8005b;
+  --color-pink-rgb: 200, 0, 91;
 
   /* Backgrounds */
   --background-primary: #eff6fd;
@@ -114,8 +114,8 @@
   --graph-line: #f6fdff;
   --graph-node: #009044;
   --graph-node-focused: #009044;
-  --graph-node-tag: #009044;
-  --graph-node-attachment: #757b81;
+  --graph-node-tag: #008890;
+  --graph-node-attachment: #009044;
 
   /* Scrollbar */
   --scrollbar-bg: #eff6fd;
@@ -152,22 +152,22 @@
 
 
   /* Extended Colors */
-  --color-red: #53595f;
-  --color-red-rgb: 83, 89, 95;
-  --color-orange: #646a70;
-  --color-orange-rgb: 100, 106, 112;
-  --color-yellow: #646a70;
-  --color-yellow-rgb: 100, 106, 112;
-  --color-green: #757b81;
-  --color-green-rgb: 117, 123, 129;
-  --color-cyan: #009044;
-  --color-cyan-rgb: 0, 144, 68;
-  --color-blue: #53595f;
-  --color-blue-rgb: 83, 89, 95;
-  --color-purple: #3f6de5;
-  --color-purple-rgb: 63, 109, 229;
-  --color-pink: #da1d69;
-  --color-pink-rgb: 218, 29, 105;
+  --color-red: #bc4945;
+  --color-red-rgb: 188, 73, 69;
+  --color-orange: #8c5b00;
+  --color-orange-rgb: 140, 91, 0;
+  --color-yellow: #9c6a00;
+  --color-yellow-rgb: 156, 106, 0;
+  --color-green: #009044;
+  --color-green-rgb: 0, 144, 68;
+  --color-cyan: #008890;
+  --color-cyan-rgb: 0, 136, 144;
+  --color-blue: #3f6de5;
+  --color-blue-rgb: 63, 109, 229;
+  --color-purple: #da1d69;
+  --color-purple-rgb: 218, 29, 105;
+  --color-pink: #c8005b;
+  --color-pink-rgb: 200, 0, 91;
 
   /* Backgrounds */
   --background-primary: #eff6fd;
@@ -248,8 +248,8 @@
   --graph-line: #f6fdff;
   --graph-node: #009044;
   --graph-node-focused: #009044;
-  --graph-node-tag: #009044;
-  --graph-node-attachment: #757b81;
+  --graph-node-tag: #008890;
+  --graph-node-attachment: #009044;
 
   /* Scrollbar */
   --scrollbar-bg: #eff6fd;

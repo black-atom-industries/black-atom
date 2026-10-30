@@ -59,3 +59,20 @@ export function tint({
     const interpolator = interpolate([baseAdj, color], "oklch");
     return formatHex(interpolator(Math.abs(amount))) as HexColor;
 }
+
+/**
+ * Shifts a color's OKLCH lightness and keeps its chroma and hue.
+ *
+ * @param color - Color to shade (hex)
+ * @param amount - Lightness offset (-1 to 1). Negative = darker, positive = lighter
+ * @returns Shaded hex color
+ * @example
+ * shade('#e69173', -0.05) // A darker coral of the same hue
+ */
+export function shade(color: string, amount: number): HexColor {
+    const base = libOklch(color);
+    if (!base) throw new Error(`Invalid color: ${color}`);
+
+    base.l = Math.min(1, Math.max(0, base.l + amount));
+    return formatHex(base) as HexColor;
+}

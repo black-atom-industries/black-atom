@@ -1,5 +1,6 @@
+import { oklch as libOklch } from "culori";
 import { assert, test } from "vite-plus/test";
-import { tint } from "./color.ts";
+import { oklch, shade, tint } from "./color.ts";
 
 test("tint() - default base (black)", () => {
     // Heavy tint (90% black + 10% red)
@@ -71,4 +72,13 @@ test("tint() - OKLCH perceptual uniformity", () => {
     // Just verify they're valid hex colors (start with # and have 6 hex digits)
     assert.deepEqual(teal.match(/^#[0-9a-f]{6}$/i) !== null, true);
     assert.deepEqual(purple.match(/^#[0-9a-f]{6}$/i) !== null, true);
+});
+
+test("shade() - shifts lightness, keeps chroma and hue", () => {
+    const shaded = libOklch(shade(oklch(0.7, 0.1, 25), -0.1))!;
+    assert.closeTo(shaded.l, 0.6, 0.005);
+    assert.closeTo(shaded.c, 0.1, 0.005);
+    assert.closeTo(shaded.h!, 25, 1);
+
+    assert.deepEqual(shade("#ffffff", 0.2), "#ffffff");
 });

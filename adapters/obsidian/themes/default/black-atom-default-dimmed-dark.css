@@ -19,22 +19,22 @@
 
 
   /* Extended Colors */
-  --color-red: #8d9399;
-  --color-red-rgb: 141, 147, 153;
-  --color-orange: #7b8187;
-  --color-orange-rgb: 123, 129, 135;
-  --color-yellow: #7b8187;
-  --color-yellow-rgb: 123, 129, 135;
-  --color-green: #8d9399;
-  --color-green-rgb: 141, 147, 153;
-  --color-cyan: #4ec983;
-  --color-cyan-rgb: 78, 201, 131;
-  --color-blue: #6a6f76;
-  --color-blue-rgb: 106, 111, 118;
-  --color-purple: #7faaff;
-  --color-purple-rgb: 127, 170, 255;
-  --color-pink: #fb82a1;
-  --color-pink-rgb: 251, 130, 161;
+  --color-red: #ff847d;
+  --color-red-rgb: 255, 132, 125;
+  --color-orange: #c99500;
+  --color-orange-rgb: 201, 149, 0;
+  --color-yellow: #d9a514;
+  --color-yellow-rgb: 217, 165, 20;
+  --color-green: #4ec983;
+  --color-green-rgb: 78, 201, 131;
+  --color-cyan: #2ac4cc;
+  --color-cyan-rgb: 42, 196, 204;
+  --color-blue: #7faaff;
+  --color-blue-rgb: 127, 170, 255;
+  --color-purple: #fb82a1;
+  --color-purple-rgb: 251, 130, 161;
+  --color-pink: #e97292;
+  --color-pink-rgb: 233, 114, 146;
 
   /* Backgrounds */
   --background-primary: #20252a;
@@ -115,8 +115,8 @@
   --graph-line: #2e3339;
   --graph-node: #4ec983;
   --graph-node-focused: #4ec983;
-  --graph-node-tag: #4ec983;
-  --graph-node-attachment: #8d9399;
+  --graph-node-tag: #2ac4cc;
+  --graph-node-attachment: #4ec983;
 
   /* Scrollbar */
   --scrollbar-bg: #20252a;
