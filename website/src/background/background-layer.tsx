@@ -92,6 +92,7 @@ export function BackgroundLayer({ theme }: { theme: Theme.Definition }) {
             className={styles.layer}
             data-state={backgroundStateKey(state)}
             data-mode={state.mode}
+            data-appearance={sceneTheme.appearance}
             aria-hidden
         >
             {hasFailed && (

@@ -27,4 +27,15 @@
             var(--ba-bg)
         );
     }
+
+    /* Dark themes darken through black first, since a veil of the gray background desaturates. */
+    &[data-appearance="dark"]::after {
+        background: radial-gradient(
+            ellipse 75% 70% at 50% 42%,
+            transparent 10%,
+            rgb(0 0 0 / 0.35) 35%,
+            rgb(0 0 0 / 0.7) 60%,
+            var(--ba-bg) 105%
+        );
+    }
 }
