@@ -53,30 +53,26 @@
     }
 }
 
-.top {
+.top,
+.bottom {
     position: relative;
     isolation: isolate;
     padding: var(--ba-frame-gap);
 
-    /* Once the page scrolls, a frosted band from the window edge holds the header off the content. */
+    /* Once the page scrolls, a frosted backing from the window edge holds the header and the dock
+       off the content, and closes on a rule toward the page. */
     &::before {
         content: "";
         position: absolute;
         z-index: -1;
-        inset: calc(-1 * var(--ba-frame-inset)) calc(-1 * var(--ba-frame-inset)) 0;
         background: color-mix(in srgb, var(--ba-bg) 70%, transparent);
         backdrop-filter: blur(10px);
     }
 
-    /* The band closes on a rule between the frame's sides. */
     &::after {
         content: "";
         position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 1px;
-        background: var(--line);
+        pointer-events: none;
     }
 
     &::before,
@@ -95,13 +91,32 @@
     }
 }
 
+.top {
+    &::before {
+        inset: calc(-1 * var(--ba-frame-inset)) calc(-1 * var(--ba-frame-inset)) 0;
+    }
+
+    &::after {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        background: var(--line);
+    }
+}
+
 .bottom {
     align-self: end;
     justify-self: end;
-    padding: var(--ba-frame-gap);
 
-    & > * {
-        pointer-events: auto;
+    &::before {
+        inset: 0 calc(-1 * var(--ba-frame-inset)) calc(-1 * var(--ba-frame-inset)) 0;
+    }
+
+    &::after {
+        inset: 0;
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
     }
 }
 

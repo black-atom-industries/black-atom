@@ -32,7 +32,9 @@ export function ViewportFrame({ header, dock, label }: Props) {
                 <div ref={topRef} className={styles.top} data-scrolled={isScrolled || undefined}>
                     {header}
                 </div>
-                <div className={styles.bottom}>{dock}</div>
+                <div className={styles.bottom} data-scrolled={isScrolled || undefined}>
+                    {dock}
+                </div>
                 <div className={styles.edge}>
                     <span className={styles.rule} aria-hidden />
                     {label !== undefined && (
