@@ -56,6 +56,9 @@ return {
             DiffChange = { bg = ui.bg.modify },
             DiffDelete = { bg = ui.bg.delete },
             DiffText = { bg = ui.bg.info },
+            Added = { fg = ui.fg.add },
+            Changed = { fg = ui.fg.modify },
+            Removed = { fg = ui.fg.delete },
 
             -- Spell Checking
             SpellBad = { fg = ui.fg.negative, undercurl = true },
