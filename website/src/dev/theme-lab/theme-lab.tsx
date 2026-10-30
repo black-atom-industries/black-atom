@@ -6,6 +6,7 @@ import type * as Theme from "@black-atom/core";
 import { Button } from "#/components/button/index.ts";
 import { Caption } from "#/components/caption/index.ts";
 import { Choice } from "#/components/choice/index.ts";
+import { ContrastScore } from "#/components/contrast-score/index.ts";
 import { DataTable } from "#/components/data-table/index.ts";
 import { Heading } from "#/components/heading/index.ts";
 import { Panel } from "#/components/panel/index.ts";
@@ -13,10 +14,11 @@ import { Rule } from "#/components/rule/index.ts";
 import { Section } from "#/components/section/index.ts";
 import { Stack } from "#/components/stack/index.ts";
 import { Text } from "#/components/text/index.ts";
+import { contrastScore, readableRatio } from "#/lib/contrast-score.ts";
 import { toShortKey } from "#/lib/theme-precedence.ts";
 import { themesAt } from "./get-themes-at.ts";
 import { themeLabSearch } from "./theme-lab-search.ts";
-import { contrastPairs, ThemePanel } from "./theme-panel.tsx";
+import { ThemePanel } from "./theme-panel.tsx";
 import styles from "./theme-lab.module.css";
 
 function isCatalog(value: unknown): value is Record<string, Theme.Definition> {
@@ -28,7 +30,7 @@ function isTheme(value: unknown): value is Theme.Definition {
 }
 
 function lowCount(theme: Theme.Definition) {
-    return [...contrastPairs(theme).values()].filter((pair) => pair.ratio < 3).length;
+    return contrastScore(theme).below;
 }
 
 function lowSummary(old: Theme.Definition | undefined, after: Theme.Definition) {
@@ -184,8 +186,7 @@ export function ThemeLab() {
                                             {after.meta.label}
                                         </Heading>
                                         <Caption tone="subtle">
-                                            {after.meta.collection.label} · {after.meta.appearance}{" "}
-                                            · under 3:1 {lowSummary(old, after)}
+                                            {after.meta.collection.label} · {after.meta.appearance}
                                         </Caption>
                                         <Button
                                             variant="link"
@@ -200,6 +201,11 @@ export function ThemeLab() {
                                             Theme page →
                                         </Button>
                                     </Stack>
+                                    <ContrastScore
+                                        {...contrastScore(after)}
+                                        ratio={readableRatio}
+                                        previous={old && contrastScore(old)}
+                                    />
                                     <div className={styles.pair}>
                                         {old ? (
                                             <ThemePanel

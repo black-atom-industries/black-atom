@@ -21,7 +21,7 @@ import styles from "./theme-lab.module.css";
 const lowRatio = 3;
 
 /** Contrast pairs of a theme, keyed `fg|bg` as in the analysis. */
-export function contrastPairs(theme: Theme.Definition): Map<string, ContrastPair> {
+function contrastPairs(theme: Theme.Definition): Map<string, ContrastPair> {
     const pairs = analyzeThemeContrast(theme).categories.flatMap((category) => category.pairs);
     return new Map(pairs.map((pair) => [`${pair.fg.key}|${pair.bg.key}`, pair]));
 }

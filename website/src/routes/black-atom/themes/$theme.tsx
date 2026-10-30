@@ -3,9 +3,11 @@ import { themeCatalog } from "@black-atom/core";
 import { Breadcrumbs } from "#/components/breadcrumbs/index.ts";
 import { Button } from "#/components/button/index.ts";
 import { Caption } from "#/components/caption/index.ts";
+import { ContrastScore } from "#/components/contrast-score/index.ts";
 import { DataTable } from "#/components/data-table/index.ts";
 import { Heading } from "#/components/heading/index.ts";
 import { Pager } from "#/components/pager/index.ts";
+import { contrastScore, readableRatio } from "#/lib/contrast-score.ts";
 import { Pill } from "#/components/pill/index.ts";
 import { RichText } from "#/components/rich-text/index.ts";
 import { SceneAnchor } from "#/components/scene-anchor/index.ts";
@@ -142,6 +144,7 @@ function ThemePage() {
                         ]}
                     />
                 </Text>
+                <ContrastScore {...contrastScore(theme)} ratio={readableRatio} />
                 <ThemeScope vars={themeToCustomProperties(theme)}>
                     <ThemePreview
                         shortKey={shortKey}
