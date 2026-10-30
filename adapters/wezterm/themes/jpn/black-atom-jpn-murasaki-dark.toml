@@ -12,7 +12,7 @@ selection_bg = "#5b3e47"
 selection_fg = "#d4bfd6"
 split = "#d0e08d"
 compose_cursor = "#ff857b"
-scrollbar_thumb = "#946996"
+scrollbar_thumb = "#b386b5"
 
 ansi = [
   "#5b3e47", # black
@@ -22,11 +22,11 @@ ansi = [
   "#7ea5b7", # dark_blue
   "#b9a2d4", # dark_magenta
   "#62adac", # dark_cyan
-  "#946996" # light_gray
+  "#b386b5" # light_gray
 ]
 
 brights = [
-  "#7d5178", # gray
+  "#90638b", # gray
   "#ff857b", # red
   "#80bda2", # green
   "#d0e08d", # yellow
