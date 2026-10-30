@@ -16,15 +16,15 @@
 @define-color ba-fg-contrast #ebeff5;
 
 /* Feedback colors */
-@define-color ba-fg-negative #6e6ab2;
-@define-color ba-fg-positive #208295;
-@define-color ba-fg-warn #fa9916;
-@define-color ba-fg-info #3578b8;
+@define-color ba-fg-negative #6964ac;
+@define-color ba-fg-positive #007a92;
+@define-color ba-fg-warn #cf7100;
+@define-color ba-fg-info #2c70af;
 
 /* Palette colors */
-@define-color ba-red #6e6ab2;
-@define-color ba-green #208295;
-@define-color ba-yellow #fa9916;
-@define-color ba-blue #3578b8;
-@define-color ba-magenta #7968a9;
-@define-color ba-cyan #008c99;
+@define-color ba-red #6964ac;
+@define-color ba-green #007a92;
+@define-color ba-yellow #cf7100;
+@define-color ba-blue #2c70af;
+@define-color ba-magenta #9080c3;
+@define-color ba-cyan #0098a5;

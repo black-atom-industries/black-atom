@@ -27,7 +27,7 @@ local theme = {
         },
         palette = {
             black = "#382a23",
-            gray = "#86563b",
+            gray = "#b58266",
             dark_red = "#c65b4c",
             red = "#e87a69",
             dark_green = "#889776",
@@ -139,7 +139,7 @@ local theme = {
                 special = "#c9a592",
             },
             comment = {
-                default = "#86563b",
+                default = "#b58266",
                 doc = "#889776",
                 todo = "#95a483",
                 error = "#e87a69",

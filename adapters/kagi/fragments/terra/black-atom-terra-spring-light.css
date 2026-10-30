@@ -10,37 +10,37 @@
 html[class],
 html.theme_light[class],
 html.theme_calm_blue[class] {
-  --ba-bg: #d4dcd8;
-  --ba-bg-panel: #c7d1cc;
-  --ba-bg-active: #b9c6bf;
-  --ba-bg-hover: #b9c6bf;
-  --ba-bg-selection: #e2eae6;
-  --ba-fg: #385547;
-  --ba-fg-subtle: #55816a;
-  --ba-fg-accent: #e49f1a;
-  --ba-fg-disabled: #62937a;
-  --ba-fg-negative: #dd7e5d;
-  --ba-fg-positive: #11b066;
-  --ba-fg-info: #588dc1;
-  --ba-syntax-comment: #55816a;
-  --ba-syntax-comment-doc: #0e9b55;
-  --ba-syntax-keyword: #a586c6;
-  --ba-syntax-import: #dd7e5d;
-  --ba-syntax-string: #11b066;
-  --ba-syntax-string-doc: #11b066;
-  --ba-syntax-string-escape: #dd7e5d;
-  --ba-syntax-string-regexp: #dd7e5d;
-  --ba-syntax-number: #0e9b55;
-  --ba-syntax-constant: #de7b1f;
-  --ba-syntax-function: #e49f1a;
-  --ba-syntax-builtin: #e49f1a;
-  --ba-syntax-type: #0fab6a;
-  --ba-syntax-variable: #588dc1;
-  --ba-syntax-property: #3473b2;
-  --ba-syntax-module: #3473b2;
-  --ba-syntax-attribute: #de7b1f;
-  --ba-syntax-tag: #e49f1a;
-  --ba-syntax-operator: #385547;
+  --ba-bg: #eef5e3;
+  --ba-bg-panel: #e1ecd8;
+  --ba-bg-active: #d4e4cd;
+  --ba-bg-hover: #d4e4cd;
+  --ba-bg-selection: #f9fcf1;
+  --ba-fg: #275639;
+  --ba-fg-subtle: #3c744a;
+  --ba-fg-accent: #cede1c;
+  --ba-fg-disabled: #62946c;
+  --ba-fg-negative: #bc4757;
+  --ba-fg-positive: #008232;
+  --ba-fg-info: #3574a4;
+  --ba-syntax-comment: #3c744a;
+  --ba-syntax-comment-doc: #007524;
+  --ba-syntax-keyword: #a17cbc;
+  --ba-syntax-import: #bc4757;
+  --ba-syntax-string: #008232;
+  --ba-syntax-string-doc: #008232;
+  --ba-syntax-string-escape: #bc4757;
+  --ba-syntax-string-regexp: #bc4757;
+  --ba-syntax-number: #007524;
+  --ba-syntax-constant: #d17500;
+  --ba-syntax-function: #ad8800;
+  --ba-syntax-builtin: #ad8800;
+  --ba-syntax-type: #239a95;
+  --ba-syntax-variable: #3574a4;
+  --ba-syntax-property: #266595;
+  --ba-syntax-module: #266595;
+  --ba-syntax-attribute: #d17500;
+  --ba-syntax-tag: #ad8800;
+  --ba-syntax-operator: #275639;
   color-scheme: light;
 }
 

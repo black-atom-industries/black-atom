@@ -18,7 +18,7 @@ layout {
     border {
         active-color "#d9710b"
         inactive-color "#815137"
-        urgent-color "#bf4d3f"
+        urgent-color "#b03f32"
     }
 
     shadow {
