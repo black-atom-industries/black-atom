@@ -26,7 +26,7 @@ ansi = [
 ]
 
 brights = [
-  "#4a4745", # gray
+  "#82807d", # gray
   "#a09e9b", # red
   "#82807d", # green
   "#82807d", # yellow

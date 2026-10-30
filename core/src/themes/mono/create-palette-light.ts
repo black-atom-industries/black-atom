@@ -10,22 +10,22 @@ export default function (
             black: primaries.d40,
             gray: primaries.m10,
 
-            darkRed: primaries.m40,
-            red: primaries.m40,
+            darkRed: primaries.m20,
+            red: primaries.m30,
 
-            darkYellow: primaries.m30,
+            darkYellow: primaries.m20,
             yellow: primaries.m30,
 
-            darkGreen: primaries.m30,
+            darkGreen: primaries.m20,
             green: primaries.m30,
 
-            darkCyan: primaries.m40,
-            cyan: primaries.m40,
+            darkCyan: primaries.m20,
+            cyan: primaries.m30,
 
-            darkBlue: primaries.m40,
-            blue: primaries.m40,
+            darkBlue: primaries.m20,
+            blue: primaries.m30,
 
-            darkMagenta: primaries.m30,
+            darkMagenta: primaries.m20,
             magenta: primaries.m30,
 
             lightGray: primaries.m40,

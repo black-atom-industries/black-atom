@@ -11,29 +11,29 @@ cursor_fg = "#dedede"
 selection_bg = "#c4c4c4"
 selection_fg = "#292929"
 split = "#5f5155"
-compose_cursor = "#f14d4c"
-scrollbar_thumb = "#5d5d5d"
+compose_cursor = "#c21725"
+scrollbar_thumb = "#525252"
 
 ansi = [
   "#4d4d4d", # black
-  "#a4a4a4", # dark_red
-  "#8c8c8c", # dark_green
-  "#8c8c8c", # dark_yellow
-  "#a4a4a4", # dark_blue
-  "#8c8c8c", # dark_magenta
-  "#a4a4a4", # dark_cyan
-  "#a4a4a4" # light_gray
+  "#5d5d5d", # dark_red
+  "#5d5d5d", # dark_green
+  "#5d5d5d", # dark_yellow
+  "#5d5d5d", # dark_blue
+  "#5d5d5d", # dark_magenta
+  "#5d5d5d", # dark_cyan
+  "#747474" # light_gray
 ]
 
 brights = [
-  "#5d5d5d", # gray
-  "#a4a4a4", # red
-  "#8c8c8c", # green
-  "#8c8c8c", # yellow
-  "#a4a4a4", # blue
-  "#8c8c8c", # magenta
-  "#a4a4a4", # cyan
-  "#a4a4a4" # white
+  "#525252", # gray
+  "#696969", # red
+  "#696969", # green
+  "#696969", # yellow
+  "#696969", # blue
+  "#696969", # magenta
+  "#696969", # cyan
+  "#747474" # white
 ]
 
 [colors.tab_bar]
@@ -55,7 +55,7 @@ bg_color = "#d1d1d1"
 
 [colors.tab_bar.new_tab]
 fg_color = "#d1d1d1"
-bg_color = "#819e00"
+bg_color = "#5d7600"
 
 [colors.tab_bar.new_tab_hover]
 fg_color = "#d1d1d1"

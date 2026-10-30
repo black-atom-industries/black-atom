@@ -3,41 +3,41 @@ author = "Black Atom Industries"
 name = "Black Atom — Facility ∷ Dimmed Light"
 
 [colors]
-foreground = "#2e3133"
+foreground = "#222426"
 background = "#e8f0f2"
 cursor_bg = "#b2cd0d"
 cursor_border = "#b2cd0d"
 cursor_fg = "#e8f0f2"
 selection_bg = "#d0d9dc"
-selection_fg = "#2e3133"
+selection_fg = "#222426"
 split = "#b2cd0d"
-compose_cursor = "#cb4c7c"
-scrollbar_thumb = "#839091"
+compose_cursor = "#bb316b"
+scrollbar_thumb = "#4b5b5d"
 
 ansi = [
   "#4e5355", # black
-  "#b54567", # dark_red
-  "#358636", # dark_green
-  "#d7a537", # dark_yellow
-  "#677273", # dark_blue
-  "#7062b8", # dark_magenta
-  "#15874d", # dark_cyan
+  "#ac2857", # dark_red
+  "#026c10", # dark_green
+  "#a47800", # dark_yellow
+  "#546062", # dark_blue
+  "#5e4aab", # dark_magenta
+  "#007034", # dark_cyan
   "#d0d9dc" # light_gray
 ]
 
 brights = [
-  "#5a6465", # gray
-  "#cb4c7c", # red
-  "#3f9640", # green
-  "#b2cd0d", # yellow
-  "#5a6465", # blue
-  "#8074bd", # magenta
-  "#009a52", # cyan
+  "#475253", # gray
+  "#bb316b", # red
+  "#097916", # green
+  "#788b00", # yellow
+  "#475253", # blue
+  "#6a57b3", # magenta
+  "#008239", # cyan
   "#e8f0f2" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#dae5e8"
+inactive_tab_edge = "#dfeaed"
 background = "#e8f0f2"
 
 [colors.tab_bar.active_tab]
@@ -55,7 +55,7 @@ bg_color = "#d0d9dc"
 
 [colors.tab_bar.new_tab]
 fg_color = "#e8f0f2"
-bg_color = "#3f9640"
+bg_color = "#097916"
 
 [colors.tab_bar.new_tab_hover]
 fg_color = "#e8f0f2"
