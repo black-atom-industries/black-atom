@@ -61,7 +61,7 @@ export function ThemeList({ groups, selectedIndex, activeThemeKey, onSelect }: T
     );
 }
 
-const PIP_COUNT = 10;
+const PIP_COUNT = 9;
 
 function themePips(theme: Theme.Definition) {
     const { accents, palette } = theme;
@@ -78,12 +78,8 @@ function themePips(theme: Theme.Definition) {
         palette.cyan,
     ];
 
-    const colors = new Set([theme.ui.bg.default]);
-
-    for (const color of candidates) {
-        if (colors.size === PIP_COUNT) break;
-        if (color) colors.add(color);
-    }
-
-    return [...colors];
+    return [theme.ui.bg.default, ...candidates.filter((color) => color !== undefined)].slice(
+        0,
+        PIP_COUNT,
+    );
 }
