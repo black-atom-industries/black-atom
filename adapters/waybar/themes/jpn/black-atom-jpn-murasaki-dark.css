@@ -10,9 +10,9 @@
 
 /* Foreground colors */
 @define-color ba-fg-default #d4bfd6;
-@define-color ba-fg-subtle #946996;
+@define-color ba-fg-subtle #b386b5;
 @define-color ba-fg-accent #d0e08d;
-@define-color ba-fg-disabled #865f88;
+@define-color ba-fg-disabled #9e76a0;
 @define-color ba-fg-contrast #351b23;
 
 /* Feedback colors */

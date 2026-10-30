@@ -33,8 +33,8 @@
   --color-blue-rgb: 118, 177, 252;
   --color-purple: #e274ab;
   --color-purple-rgb: 226, 116, 171;
-  --color-pink: #c0558d;
-  --color-pink-rgb: 192, 85, 141;
+  --color-pink: #d4679f;
+  --color-pink-rgb: 212, 103, 159;
 
   /* Backgrounds */
   --background-primary: #1d364f;
@@ -46,12 +46,12 @@
   --background-modifier-border: #233c56;
   --background-modifier-border-hover: #233c56;
   --background-modifier-border-focus: #f8ac3d;
-  --background-modifier-error-rgb: 127, 77, 68;
-  --background-modifier-error: #7f4d44;
-  --background-modifier-error-hover: #7f4d44;
-  --background-modifier-success-rgb: 77, 106, 83;
-  --background-modifier-success: #4d6a53;
-  --background-modifier-message: #4f647e;
+  --background-modifier-error-rgb: 89, 65, 60;
+  --background-modifier-error: #59413c;
+  --background-modifier-error-hover: #59413c;
+  --background-modifier-success-rgb: 65, 78, 67;
+  --background-modifier-success: #414e43;
+  --background-modifier-message: #414b58;
   --background-modifier-form-field: #1d364f;
 
   /* Text */

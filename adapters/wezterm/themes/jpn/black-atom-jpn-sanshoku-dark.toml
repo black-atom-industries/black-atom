@@ -16,11 +16,11 @@ scrollbar_thumb = "#8ab2dc"
 
 ansi = [
   "#2a435d", # black
-  "#d44c3b", # dark_red
+  "#ea5f4d", # dark_red
   "#50a465", # dark_green
   "#d78c00", # dark_yellow
   "#5891da", # dark_blue
-  "#c0558d", # dark_magenta
+  "#d4679f", # dark_magenta
   "#2ba1a7", # dark_cyan
   "#8ab2dc" # light_gray
 ]
