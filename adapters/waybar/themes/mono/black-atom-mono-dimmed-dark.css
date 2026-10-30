@@ -22,9 +22,9 @@
 @define-color ba-fg-info #79b5cc;
 
 /* Palette colors */
-@define-color ba-red #a4a4a4;
-@define-color ba-green #8c8c8c;
-@define-color ba-yellow #8c8c8c;
-@define-color ba-blue #a4a4a4;
-@define-color ba-magenta #8c8c8c;
-@define-color ba-cyan #a4a4a4;
+@define-color ba-red #ebebeb;
+@define-color ba-green #bdbdbd;
+@define-color ba-yellow #ebebeb;
+@define-color ba-blue #929292;
+@define-color ba-magenta #929292;
+@define-color ba-cyan #bdbdbd;

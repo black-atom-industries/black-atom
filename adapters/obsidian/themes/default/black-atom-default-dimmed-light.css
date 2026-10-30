@@ -21,8 +21,8 @@
   /* Extended Colors */
   --color-red: #bc4945;
   --color-red-rgb: 188, 73, 69;
-  --color-orange: #8c5b00;
-  --color-orange-rgb: 140, 91, 0;
+  --color-orange: #835300;
+  --color-orange-rgb: 131, 83, 0;
   --color-yellow: #9c6a00;
   --color-yellow-rgb: 156, 106, 0;
   --color-green: #009044;
@@ -33,8 +33,8 @@
   --color-blue-rgb: 63, 109, 229;
   --color-purple: #da1d69;
   --color-purple-rgb: 218, 29, 105;
-  --color-pink: #c8005b;
-  --color-pink-rgb: 200, 0, 91;
+  --color-pink: #bd0053;
+  --color-pink-rgb: 189, 0, 83;
 
   /* Backgrounds */
   --background-primary: #dfe5ec;

@@ -75,26 +75,26 @@
                 "terminal.ansi.black": "#4a4342",
                 "terminal.ansi.bright_black": "#857f7a",
                 "terminal.ansi.dim_black": "#857f7a",
-                "terminal.ansi.red": "#a39d98",
-                "terminal.ansi.bright_red": "#a39d98",
-                "terminal.ansi.dim_red": "#a39d98",
-                "terminal.ansi.green": "#857f7a",
-                "terminal.ansi.bright_green": "#857f7a",
-                "terminal.ansi.dim_green": "#857f7a",
-                "terminal.ansi.yellow": "#ef9369",
-                "terminal.ansi.bright_yellow": "#ef9369",
-                "terminal.ansi.dim_yellow": "#caa594",
+                "terminal.ansi.red": "#ef9369",
+                "terminal.ansi.bright_red": "#ef9369",
+                "terminal.ansi.dim_red": "#caa594",
+                "terminal.ansi.green": "#97b997",
+                "terminal.ansi.bright_green": "#97b997",
+                "terminal.ansi.dim_green": "#799a79",
+                "terminal.ansi.yellow": "#c5a88d",
+                "terminal.ansi.bright_yellow": "#c5a88d",
+                "terminal.ansi.dim_yellow": "#a5896f",
                 "terminal.ansi.blue": "#97b1cd",
                 "terminal.ansi.bright_blue": "#97b1cd",
-                "terminal.ansi.dim_blue": "#97b1cd",
-                "terminal.ansi.magenta": "#857f7a",
-                "terminal.ansi.bright_magenta": "#857f7a",
-                "terminal.ansi.dim_magenta": "#857f7a",
-                "terminal.ansi.cyan": "#a39d98",
-                "terminal.ansi.bright_cyan": "#a39d98",
-                "terminal.ansi.dim_cyan": "#a39d98",
+                "terminal.ansi.dim_blue": "#7992ad",
+                "terminal.ansi.magenta": "#c9a0ba",
+                "terminal.ansi.bright_magenta": "#c9a0ba",
+                "terminal.ansi.dim_magenta": "#a9829b",
+                "terminal.ansi.cyan": "#80babd",
+                "terminal.ansi.bright_cyan": "#80babd",
+                "terminal.ansi.dim_cyan": "#619b9e",
                 "terminal.ansi.white": "#a39d98",
-                "terminal.ansi.bright_white": "#a39d98",
+                "terminal.ansi.bright_white": "#c4b9aa",
                 "terminal.ansi.dim_white": "#a39d98",
                 "link_text.hover": "#ef9369",
                 "version_control.added": "#a9ba78",
@@ -168,19 +168,19 @@
                         "selection": "#ef93693d"
                     },
                     {
-                        "cursor": "#857f7a",
-                        "background": "#857f7a",
-                        "selection": "#857f7a3d"
+                        "cursor": "#c9a0ba",
+                        "background": "#c9a0ba",
+                        "selection": "#c9a0ba3d"
                     },
                     {
-                        "cursor": "#ef9369",
-                        "background": "#ef9369",
-                        "selection": "#ef93693d"
+                        "cursor": "#c5a88d",
+                        "background": "#c5a88d",
+                        "selection": "#c5a88d3d"
                     },
                     {
-                        "cursor": "#a39d98",
-                        "background": "#a39d98",
-                        "selection": "#a39d983d"
+                        "cursor": "#80babd",
+                        "background": "#80babd",
+                        "selection": "#80babd3d"
                     },
                     {
                         "cursor": "#97b1cd",
@@ -188,14 +188,14 @@
                         "selection": "#97b1cd3d"
                     },
                     {
-                        "cursor": "#a39d98",
-                        "background": "#a39d98",
-                        "selection": "#a39d983d"
+                        "cursor": "#ef9369",
+                        "background": "#ef9369",
+                        "selection": "#ef93693d"
                     },
                     {
-                        "cursor": "#857f7a",
-                        "background": "#857f7a",
-                        "selection": "#857f7a3d"
+                        "cursor": "#97b997",
+                        "background": "#97b997",
+                        "selection": "#97b9973d"
                     },
                     {
                         "cursor": "#ef9369",

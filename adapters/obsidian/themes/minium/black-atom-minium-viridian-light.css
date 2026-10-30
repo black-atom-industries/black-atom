@@ -21,20 +21,20 @@
   /* Extended Colors */
   --color-red: #ee560c;
   --color-red-rgb: 238, 86, 12;
-  --color-orange: #d97100;
-  --color-orange-rgb: 217, 113, 0;
+  --color-orange: #be5800;
+  --color-orange-rgb: 190, 88, 0;
   --color-yellow: #d97100;
   --color-yellow-rgb: 217, 113, 0;
   --color-green: #00982d;
   --color-green-rgb: 0, 152, 45;
   --color-cyan: #009983;
   --color-cyan-rgb: 0, 153, 131;
-  --color-blue: #2b8c7f;
-  --color-blue-rgb: 43, 140, 127;
+  --color-blue: #497eb3;
+  --color-blue-rgb: 73, 126, 179;
   --color-purple: #a36674;
   --color-purple-rgb: 163, 102, 116;
-  --color-pink: #905563;
-  --color-pink-rgb: 144, 85, 99;
+  --color-pink: #8a4f5d;
+  --color-pink-rgb: 138, 79, 93;
 
   /* Backgrounds */
   --background-primary: #daf1ed;

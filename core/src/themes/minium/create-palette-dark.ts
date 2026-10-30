@@ -29,7 +29,7 @@ export default function (
             magenta: primaries.m30,
 
             lightGray: primaries.m40,
-            white: primaries.m40,
+            white: primaries.l20,
         },
         opts,
     );

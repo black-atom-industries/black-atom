@@ -16,24 +16,24 @@ scrollbar_thumb = "#525252"
 
 ansi = [
   "#4d4d4d", # black
-  "#5d5d5d", # dark_red
-  "#5d5d5d", # dark_green
-  "#5d5d5d", # dark_yellow
-  "#5d5d5d", # dark_blue
-  "#5d5d5d", # dark_magenta
-  "#5d5d5d", # dark_cyan
+  "#505050", # dark_red
+  "#2b2b2b", # dark_green
+  "#505050", # dark_yellow
+  "#0b0b0b", # dark_blue
+  "#0b0b0b", # dark_magenta
+  "#2b2b2b", # dark_cyan
   "#747474" # light_gray
 ]
 
 brights = [
   "#525252", # gray
-  "#696969", # red
-  "#696969", # green
-  "#696969", # yellow
-  "#696969", # blue
-  "#696969", # magenta
-  "#696969", # cyan
-  "#747474" # white
+  "#636363", # red
+  "#3d3d3d", # green
+  "#636363", # yellow
+  "#1a1a1a", # blue
+  "#1a1a1a", # magenta
+  "#3d3d3d", # cyan
+  "#c4c4c4" # white
 ]
 
 [colors.tab_bar]

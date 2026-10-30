@@ -15,16 +15,16 @@ export default function (
             black: primaries.d40,
             gray: primaries.m20,
 
-            darkRed: shade(red, -0.05),
+            darkRed: shade(red, -0.1),
             red,
 
-            darkYellow: shade(yellow, -0.05),
+            darkYellow: shade(yellow, -0.1),
             yellow,
 
             darkGreen: primaries.m40,
             green: primaries.m40,
 
-            darkCyan: shade(cyan, -0.05),
+            darkCyan: shade(cyan, -0.1),
             cyan,
 
             darkBlue: primaries.m20,

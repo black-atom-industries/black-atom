@@ -75,26 +75,26 @@
                 "terminal.ansi.black": "#2e2e2e",
                 "terminal.ansi.bright_black": "#8c8c8c",
                 "terminal.ansi.dim_black": "#8c8c8c",
-                "terminal.ansi.red": "#a4a4a4",
-                "terminal.ansi.bright_red": "#a4a4a4",
-                "terminal.ansi.dim_red": "#a4a4a4",
-                "terminal.ansi.green": "#8c8c8c",
-                "terminal.ansi.bright_green": "#8c8c8c",
-                "terminal.ansi.dim_green": "#8c8c8c",
-                "terminal.ansi.yellow": "#8c8c8c",
-                "terminal.ansi.bright_yellow": "#8c8c8c",
-                "terminal.ansi.dim_yellow": "#8c8c8c",
-                "terminal.ansi.blue": "#a4a4a4",
-                "terminal.ansi.bright_blue": "#a4a4a4",
-                "terminal.ansi.dim_blue": "#a4a4a4",
-                "terminal.ansi.magenta": "#8c8c8c",
-                "terminal.ansi.bright_magenta": "#8c8c8c",
-                "terminal.ansi.dim_magenta": "#8c8c8c",
-                "terminal.ansi.cyan": "#a4a4a4",
-                "terminal.ansi.bright_cyan": "#a4a4a4",
-                "terminal.ansi.dim_cyan": "#a4a4a4",
+                "terminal.ansi.red": "#ebebeb",
+                "terminal.ansi.bright_red": "#ebebeb",
+                "terminal.ansi.dim_red": "#d4d4d4",
+                "terminal.ansi.green": "#bdbdbd",
+                "terminal.ansi.bright_green": "#bdbdbd",
+                "terminal.ansi.dim_green": "#a7a7a7",
+                "terminal.ansi.yellow": "#ebebeb",
+                "terminal.ansi.bright_yellow": "#ebebeb",
+                "terminal.ansi.dim_yellow": "#d4d4d4",
+                "terminal.ansi.blue": "#929292",
+                "terminal.ansi.bright_blue": "#929292",
+                "terminal.ansi.dim_blue": "#7d7d7d",
+                "terminal.ansi.magenta": "#929292",
+                "terminal.ansi.bright_magenta": "#929292",
+                "terminal.ansi.dim_magenta": "#7d7d7d",
+                "terminal.ansi.cyan": "#bdbdbd",
+                "terminal.ansi.bright_cyan": "#bdbdbd",
+                "terminal.ansi.dim_cyan": "#a7a7a7",
                 "terminal.ansi.white": "#a4a4a4",
-                "terminal.ansi.bright_white": "#a4a4a4",
+                "terminal.ansi.bright_white": "#d1d1d1",
                 "terminal.ansi.dim_white": "#a4a4a4",
                 "link_text.hover": "#d2b5bd",
                 "version_control.added": "#a9ba78",
@@ -168,34 +168,34 @@
                         "selection": "#d2b5bd3d"
                     },
                     {
-                        "cursor": "#8c8c8c",
-                        "background": "#8c8c8c",
-                        "selection": "#8c8c8c3d"
+                        "cursor": "#929292",
+                        "background": "#929292",
+                        "selection": "#9292923d"
                     },
                     {
-                        "cursor": "#8c8c8c",
-                        "background": "#8c8c8c",
-                        "selection": "#8c8c8c3d"
+                        "cursor": "#ebebeb",
+                        "background": "#ebebeb",
+                        "selection": "#ebebeb3d"
                     },
                     {
-                        "cursor": "#a4a4a4",
-                        "background": "#a4a4a4",
-                        "selection": "#a4a4a43d"
+                        "cursor": "#bdbdbd",
+                        "background": "#bdbdbd",
+                        "selection": "#bdbdbd3d"
                     },
                     {
-                        "cursor": "#a4a4a4",
-                        "background": "#a4a4a4",
-                        "selection": "#a4a4a43d"
+                        "cursor": "#929292",
+                        "background": "#929292",
+                        "selection": "#9292923d"
                     },
                     {
-                        "cursor": "#a4a4a4",
-                        "background": "#a4a4a4",
-                        "selection": "#a4a4a43d"
+                        "cursor": "#ebebeb",
+                        "background": "#ebebeb",
+                        "selection": "#ebebeb3d"
                     },
                     {
-                        "cursor": "#8c8c8c",
-                        "background": "#8c8c8c",
-                        "selection": "#8c8c8c3d"
+                        "cursor": "#bdbdbd",
+                        "background": "#bdbdbd",
+                        "selection": "#bdbdbd3d"
                     },
                     {
                         "cursor": "#d2b5bd",
