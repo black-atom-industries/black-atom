@@ -82,96 +82,108 @@ This theme supports the following plugins:
 
 - [arrow.nvim](https://github.com/otavioschwanck/arrow.nvim)
     - 4 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [blink.cmp](https://github.com/saghen/blink.cmp)
     - 8 Highlight(s)
-    - Last updated: 2025-02-16
-    - Last commit: revert: rename `syn` variables to `syntax`
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [codediff.nvim](https://github.com/esmuellert/codediff.nvim)
-    - 31 Highlight(s)
-    - Last updated: 2026-03-31
-    - Last commit: feat(highlights/plugins): add codediff.nvim support
+    - 33 Highlight(s)
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [diffview.nvim](https://github.com/sindrets/diffview.nvim)
     - 24 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
+- [dooing](https://github.com/atiladefreitas/dooing)
+    - 19 Highlight(s)
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [edgy.nvim](https://github.com/folke/edgy.nvim)
     - 5 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [flash.nvim](https://github.com/folke/flash.nvim)
     - 6 Highlight(s)
-    - Last updated: 2025-02-16
-    - Last commit: revert(themes): restore full parameter names
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [flux.nvim](https://github.com/nikbrunner/flux.nvim)
     - 13 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
-- [fyler.nvim](https://github.com/A7Lavinraj/fyler.nvim)
-    - 30 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
+- [fyler.nvim](https://github.com/FylerOrg/fyler.nvim)
+    - 14 Highlight(s)
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [fzf-lua](https://github.com/ibhagwan/fzf-lua)
     - 7 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
     - 9 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [glance.nvim](https://github.com/DNLHC/glance.nvim)
     - 28 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
     - 2 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
+- [iter.nvim](https://github.com/black-atom-industries/iter.nvim)
+    - 10 Highlight(s)
+    - Last updated: 2026-10-30
+    - Last commit: feat(nvim): style iter.nvim diffs and commit rows #22
 - [mini.nvim](https://github.com/echasnovski/mini.nvim)
     - 178 Highlight(s)
-    - Last updated: 2026-06-06
-    - Last commit: feat(highlights/plugins): add MiniCmdline highlight groups
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)
     - 13 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
     - 12 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [nvim-navbuddy](https://github.com/SmiteshP/nvim-navbuddy)
     - 8 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua)
     - 4 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context)
     - 2 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [obsidian.nvim](https://github.com/obsidian-nvim/obsidian.nvim)
     - 11 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)
     - 69 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
+- [plugin-name](https://github.com/username/plugin-name)
+    - 27 Highlight(s)
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
     - 6 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [which-key.nvim](https://github.com/folke/which-key.nvim)
     - 5 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 - [yazi.nvim](https://github.com/mikavilpas/yazi.nvim)
     - 1 Highlight(s)
-    - Last updated: 2026-06-05
-    - Last commit: style(terra/mnml): refine summer and orange-light palette colors
+    - Last updated: 2026-08-16
+    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
 
 </details>
 
