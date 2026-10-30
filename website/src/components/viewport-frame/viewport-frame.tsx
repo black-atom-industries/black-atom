@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import styles from "./viewport-frame.module.css";
 
 type Props = {
@@ -23,11 +23,13 @@ const LABEL_SCROLL_SHARE = 0.3;
 export function ViewportFrame({ header, dock, label }: Props) {
     const isScrolled = useIsScrolledPast(0);
     const isNearTop = !useIsScrolledPast(LABEL_SCROLL_SHARE);
+    const topRef = useRef<HTMLDivElement>(null);
+    useHeaderHeight(topRef);
 
     return (
         <div data-component="ViewportFrame" className={styles.root}>
             <div className={styles.frame}>
-                <div className={styles.top} data-scrolled={isScrolled || undefined}>
+                <div ref={topRef} className={styles.top} data-scrolled={isScrolled || undefined}>
                     {header}
                 </div>
                 <div className={styles.bottom}>{dock}</div>
@@ -57,4 +59,22 @@ function useIsScrolledPast(share: number) {
     }, [share]);
 
     return isPast;
+}
+
+/** Publishes the header row's height as `--ba-header-height`, so anchor jumps land below it. */
+function useHeaderHeight(ref: RefObject<HTMLElement | null>) {
+    useEffect(() => {
+        const element = ref.current;
+        if (element === null) return;
+
+        const root = document.documentElement;
+        const observer = new ResizeObserver(() => {
+            root.style.setProperty("--ba-header-height", `${element.offsetHeight}px`);
+        });
+        observer.observe(element);
+        return () => {
+            observer.disconnect();
+            root.style.removeProperty("--ba-header-height");
+        };
+    }, [ref]);
 }

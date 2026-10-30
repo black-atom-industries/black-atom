@@ -16,6 +16,9 @@
     --ba-frame-inset: 24px;
     --ba-frame-gap: 20px;
 
+    /* The header row's height. The viewport frame measures it; this holds one row until then. */
+    --ba-header-height: 80px;
+
     @media (max-width: 720px) {
         --ba-frame-inset: 12px;
         --ba-frame-gap: 14px;
