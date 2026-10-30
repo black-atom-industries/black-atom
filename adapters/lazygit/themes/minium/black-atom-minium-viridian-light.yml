@@ -9,9 +9,9 @@ gui:
       - "#ee560c"
       - bold
     inactiveBorderColor:
-      - "#308176"
+      - "#007468"
     optionsTextColor:
-      - "#4d9c91"
+      - "#2b8c7f"
     selectedLineBgColor:
       - "#abd5cd"
     cherryPickedCommitBgColor:
@@ -26,4 +26,4 @@ gui:
       - "#ee560c"
 
   authorColors:
-    "*": "#bb929a"
+    "*": "#a36674"
