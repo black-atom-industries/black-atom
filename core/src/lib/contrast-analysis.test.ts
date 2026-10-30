@@ -1,6 +1,7 @@
 import { assert, test } from "vite-plus/test";
 import { analyzeThemeContrast, INTENDED_PAIRINGS } from "./contrast-analysis.ts";
 import type * as Theme from "../types/theme.ts";
+import { themeCatalog } from "../themes/catalog.ts";
 
 test("INTENDED_PAIRINGS has all expected categories", () => {
     const names = INTENDED_PAIRINGS.map((c) => c.name);
@@ -10,17 +11,14 @@ test("INTENDED_PAIRINGS has all expected categories", () => {
         "Feedback",
         "Diff",
         "Contrast inversion",
+        "Syntax",
+        "Terminal palette",
     ]);
 });
 
-test("each pairing has fg and bg keys", () => {
-    for (const category of INTENDED_PAIRINGS) {
-        for (const pair of category.pairs) {
-            assert.deepEqual(typeof pair.fg, "string");
-            assert.deepEqual(typeof pair.bg, "string");
-            assert.deepEqual(pair.fg.startsWith("fg."), true, `${pair.fg} should start with fg.`);
-            assert.deepEqual(pair.bg.startsWith("bg."), true, `${pair.bg} should start with bg.`);
-        }
+test("each pairing resolves in every catalog theme", () => {
+    for (const theme of Object.values(themeCatalog)) {
+        assert.doesNotThrow(() => analyzeThemeContrast(theme), theme.meta.key);
     }
 });
 
@@ -62,6 +60,16 @@ const testTheme = {
             modify: "#8080d0",
         },
     },
+    syntax: Object.fromEntries(
+        INTENDED_PAIRINGS.flatMap((c) => c.pairs)
+            .filter((p) => p.fg.startsWith("syntax."))
+            .map((p) => [p.fg.split(".")[1], { default: "#c5cad0" }]),
+    ),
+    palette: Object.fromEntries(
+        INTENDED_PAIRINGS.flatMap((c) => c.pairs)
+            .filter((p) => p.fg.startsWith("palette."))
+            .map((p) => [p.fg.split(".")[1], "#c5cad0"]),
+    ),
 } as unknown as Theme.Definition;
 
 test("analyzeThemeContrast returns correct structure", () => {

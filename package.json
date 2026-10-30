@@ -17,6 +17,7 @@
         "build": "node scripts/build.ts",
         "install:macos": "node scripts/install-macos.ts",
         "generate": "node core/src/tasks/generate.ts",
+        "contrast": "node core/src/tasks/contrast.ts",
         "eval:skills": "cd .agents && claude plugin eval . --allow-tools Bash Edit Write --scaffold --trust-plugin --no-publish -j 4 --max-cost-usd 25 --judge-model sonnet",
         "build:ui": "npm run generate && vp build livery",
         "check": "npm run build:ui && npm run check:ts && npm run check:rust",
