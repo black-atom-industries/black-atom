@@ -7,17 +7,17 @@
     minus-style = syntax "#282c28"
     minus-emph-style = syntax "#503d36"
     minus-empty-line-marker-style = normal "#282c28"
-    plus-style = syntax "#203024"
-    plus-emph-style = syntax "#3f452d"
-    plus-empty-line-marker-style = normal "#203024"
+    plus-style = syntax "#1e3427"
+    plus-emph-style = syntax "#3c4d33"
+    plus-empty-line-marker-style = normal "#1e3427"
 
     line-numbers-minus-style = "#c88f7b"
-    line-numbers-plus-style = "#96a85e"
+    line-numbers-plus-style = "#8cbf70"
     line-numbers-zero-style = "#94a585"
     line-numbers-left-style = "#71886c"
     line-numbers-right-style = "#71886c"
 
-    file-style = "#bcb067" bold
+    file-style = "#d8bd51" bold
     file-decoration-style = "#71886c" ul
     hunk-header-decoration-style = "#71886c" box
-    hunk-header-line-number-style = "#89a88e"
+    hunk-header-line-number-style = "#80be9d"

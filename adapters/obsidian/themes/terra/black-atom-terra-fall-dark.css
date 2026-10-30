@@ -10,7 +10,7 @@
   --color-base-20: #382a23;
   --color-base-25: #86563b;
   --color-base-30: #a57357;
-  --color-base-35: #b58266;
+  --color-base-35: #a98774;
   --color-base-40: #c59174;
   --color-base-50: #c9a592;
   --color-base-60: #d9b5a2;
@@ -19,8 +19,8 @@
 
 
   /* Extended Colors */
-  --color-red: #e87a69;
-  --color-red-rgb: 232, 122, 105;
+  --color-red: #fd8c7b;
+  --color-red-rgb: 253, 140, 123;
   --color-orange: #e67f3c;
   --color-orange-rgb: 230, 127, 60;
   --color-yellow: #d68c00;
@@ -29,8 +29,8 @@
   --color-green-rgb: 149, 164, 131;
   --color-cyan: #7ea99c;
   --color-cyan-rgb: 126, 169, 156;
-  --color-blue: #d08c62;
-  --color-blue-rgb: 208, 140, 98;
+  --color-blue: #b2ae72;
+  --color-blue-rgb: 178, 174, 114;
   --color-purple: #d4896e;
   --color-purple-rgb: 212, 137, 110;
   --color-pink: #c67a65;
@@ -46,23 +46,23 @@
   --background-modifier-border: #2e2119;
   --background-modifier-border-hover: #2e2119;
   --background-modifier-border-focus: #d68c00;
-  --background-modifier-error-rgb: 95, 57, 51;
-  --background-modifier-error: #5f3933;
-  --background-modifier-error-hover: #5f3933;
+  --background-modifier-error-rgb: 102, 63, 57;
+  --background-modifier-error: #663f39;
+  --background-modifier-error-hover: #663f39;
   --background-modifier-success-rgb: 66, 71, 59;
   --background-modifier-success: #42473b;
-  --background-modifier-message: #563f31;
+  --background-modifier-message: #4b4a36;
   --background-modifier-form-field: #241710;
 
   /* Text */
   --text-normal: #eac5b1;
   --text-muted: #c59174;
-  --text-faint: #b58266;
+  --text-faint: #a98774;
   --text-accent: #d68c00;
   --text-accent-hover: #d68c00;
   --text-on-accent: #241710;
   --text-on-accent-inverted: #eac5b1;
-  --text-error: #e87a69;
+  --text-error: #fd8c7b;
   --text-warning: #d68c00;
   --text-success: #95a483;
   --text-selection: #382a23;
@@ -92,13 +92,13 @@
   --link-external-color-hover: #95a483;
 
   /* Code / Syntax Highlighting */
-  --code-normal: #d08c62;
-  --code-comment: #b58266;
+  --code-normal: #b2ae72;
+  --code-comment: #a98774;
   --code-function: #d68c00;
   --code-important: #d4896e;
   --code-keyword: #d4896e;
   --code-operator: #d4896e;
-  --code-property: #c27e56;
+  --code-property: #99955a;
   --code-punctuation: #c9a592;
   --code-string: #95a483;
   --code-tag: #d68c00;

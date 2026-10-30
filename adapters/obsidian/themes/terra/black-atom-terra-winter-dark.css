@@ -19,8 +19,8 @@
 
 
   /* Extended Colors */
-  --color-red: #a8a6e5;
-  --color-red-rgb: 168, 166, 229;
+  --color-red: #e996a0;
+  --color-red-rgb: 233, 150, 160;
   --color-orange: #eb8656;
   --color-orange-rgb: 235, 134, 86;
   --color-yellow: #fba952;
@@ -46,9 +46,9 @@
   --background-modifier-border: #1a222e;
   --background-modifier-border-hover: #1a222e;
   --background-modifier-border-focus: #fba952;
-  --background-modifier-error-rgb: 68, 68, 89;
-  --background-modifier-error: #444459;
-  --background-modifier-error-hover: #444459;
+  --background-modifier-error-rgb: 91, 63, 66;
+  --background-modifier-error: #5b3f42;
+  --background-modifier-error-hover: #5b3f42;
   --background-modifier-success-rgb: 56, 78, 83;
   --background-modifier-success: #384e53;
   --background-modifier-message: #37495c;
@@ -62,7 +62,7 @@
   --text-accent-hover: #fba952;
   --text-on-accent: #12161d;
   --text-on-accent-inverted: #e2e8f2;
-  --text-error: #a8a6e5;
+  --text-error: #e996a0;
   --text-warning: #fba952;
   --text-success: #82c3d3;
   --text-selection: #212f3f;
