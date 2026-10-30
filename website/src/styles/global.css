@@ -9,6 +9,7 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--ba-frame-inset) + var(--ba-header-height) + var(--ba-frame-gap));
 }
 
 /* While the scene runs, one finger scrolls natively and a pinch reaches the page to zoom the camera. */
