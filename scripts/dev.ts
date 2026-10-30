@@ -138,7 +138,7 @@ const cycle = createDevCycle({
         if (status.startsWith("failed:")) console.error(status);
         if (status === "ready" && !servicesStarted) {
             servicesStarted = true;
-            for (const packagePath of ["core/monitor", "livery", "website"]) {
+            for (const packagePath of ["livery", "website"]) {
                 processes.startService(["npm", "run", "dev"], join(root, packagePath));
             }
             void openWhenReady(themeLabUrl);

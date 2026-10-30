@@ -91,9 +91,6 @@ Run from `core/`:
 # Watch and regenerate every adapter
 npm run dev
 
-# Run the monitor preview app
-(cd monitor && npm run dev)
-
 # Run tests
 npm run test
 

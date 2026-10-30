@@ -1,6 +1,6 @@
 ---
 name: repo-rename-token
-description: Rename a color token across core and every template. Load when renaming a key under theme.ui, theme.syntax, theme.palette, or theme.primaries — anywhere from the type definition down to adapter templates and the monitor app.
+description: Rename a color token across core and every template. Load when renaming a key under theme.ui, theme.syntax, theme.palette, or theme.primaries — anywhere from the type definition down to adapter templates, the contrast analysis, and the website.
 user-invocable: false
 ---
 
@@ -8,10 +8,11 @@ user-invocable: false
 
 A color token is a key under `theme.ui`, `theme.syntax`, `theme.palette`, `theme.primaries`, or
 `theme.feedback` in `ThemeDefinition`. Renaming one touches the type, every collection's color
-creators, every adapter template that reads it, and the monitor app if it displays the raw path.
+creators, every adapter template that reads it, and the TypeScript that names its path: the contrast
+analysis and the website.
 
 Adapter templates never read `theme.primaries.*`; they consume semantic UI, syntax, palette, and
-feedback tokens. The monitor app reads primaries directly.
+feedback tokens.
 
 ## Steps
 
@@ -38,15 +39,14 @@ feedback tokens. The monitor app reads primaries directly.
    herdr, tuicr, waybar), and nvim's
    `adapters/nvim/templates/collection.template.lua`. Edit every hit with
    `theme.<old>` to `theme.<new>`.
-4. Check the monitor app for the same qualified path, in both raw and CSS-var form:
+4. Check the TypeScript that names token paths as strings, where a stale path breaks only at
+   runtime:
    ```
-   grep -rn "<old-qualified-path>" core/monitor/src
-   grep -rn "ba-<group>-<old-leaf>" core/monitor/src
+   grep -rn "<old-qualified-path>" core/src/lib website/src
    ```
-   `core/monitor/src/lib/theme-css-vars.ts` flattens every group into `--ba-<group>-<leaf>` CSS
-   custom properties, so a CSS file consuming the old var name breaks silently, no type error.
-   `core/monitor/src/hooks/use-ui-preview.ts` and `core/monitor/src/routes/preview/ui.tsx` also
-   reference `theme.primaries.*` directly.
+   `core/src/lib/contrast-analysis.ts` lists its pairs as strings (`fg.default`, `syntax.string.default`,
+   `palette.red`), and the theme lab in `website/src/dev/theme-lab/` names UI pairs and palette slots
+   the same way.
 5. Update `GLOSSARY.md` if the renamed token is named in a table or the example
    dialogue.
 6. From the repo root: `npm run generate`, then `npm run check`, then `npm run test`.
@@ -56,6 +56,6 @@ feedback tokens. The monitor app reads primaries directly.
    token name. An empty diff there is normal for most palette and UI renames, not a sign the rename
    missed something. Confirm by checking the template diff instead
    (`git diff adapters/**/collection.template.*`).
-8. One commit through `repo-commit`, spanning core, adapters, and the monitor:
+8. One commit through `repo-commit`, spanning core, adapters, and the website:
    `refactor(core): rename <old> to <new>`. Omit `(core)` if the change reads as spanning the
    whole repo rather than centered on core.
