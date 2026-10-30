@@ -24,28 +24,28 @@ export default defineThemeColors({
         l40: oklch(0.92, 0.05, 75),
     },
     accents: {
-        a10: oklch(0.75, 0.095, 100),
-        a20: oklch(0.75, 0.095, 60),
+        a10: oklch(0.8, 0.13, 95),
+        a20: oklch(0.76, 0.12, 60),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
             darkRed: oklch(0.7, 0.075, 10),
             red: oklch(0.7, 0.075, 40),
 
-            darkGreen: oklch(0.6, 0.1, 130),
-            green: oklch(0.7, 0.1, 120),
+            darkGreen: oklch(0.66, 0.12, 140),
+            green: oklch(0.75, 0.12, 135),
 
             darkYellow: accents.a20,
             yellow: accents.a10,
 
-            darkBlue: oklch(0.6, 0.05, 150),
-            blue: oklch(0.7, 0.05, 150),
+            darkBlue: oklch(0.66, 0.08, 160),
+            blue: oklch(0.75, 0.08, 160),
 
-            darkMagenta: oklch(0.6, 0.05, 330),
-            magenta: oklch(0.7, 0.05, 360),
+            darkMagenta: oklch(0.66, 0.09, 340),
+            magenta: oklch(0.75, 0.09, 355),
 
-            darkCyan: oklch(0.6, 0.075, 175),
-            cyan: oklch(0.7, 0.075, 175),
+            darkCyan: oklch(0.66, 0.085, 188),
+            cyan: oklch(0.76, 0.085, 185),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,
