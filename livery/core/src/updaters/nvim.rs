@@ -71,6 +71,7 @@ pub fn render_settings_lua(settings: &NvimSettings) -> String {
         styles.dark_sidebars
     ));
     out.push_str(&format!("        dark_floats = {},\n", styles.dark_floats));
+    out.push_str(&format!("        dark_gutter = {},\n", styles.dark_gutter));
     out.push_str("        diagnostics = {\n");
     out.push_str(&format!(
         "            undercurl = {},\n",
@@ -513,6 +514,7 @@ mod tests {
                 cmp_kind_color_mode: "fg".to_string(),
                 dark_sidebars: false,
                 dark_floats: false,
+                dark_gutter: true,
                 diagnostics: NvimDiagnostics {
                     undercurl: true,
                     background: true,
@@ -704,6 +706,7 @@ vim.g.black_atom_core_config = {
         cmp_kind_color_mode = "bg",
         dark_sidebars = true,
         dark_floats = true,
+        dark_gutter = false,
         diagnostics = {
             undercurl = false,
             background = false,

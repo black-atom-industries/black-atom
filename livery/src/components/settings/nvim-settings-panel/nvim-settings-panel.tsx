@@ -102,6 +102,12 @@ export function NvimSettingsPanel({
                     onChange={() => setStyles({ dark_floats: !s.dark_floats })}
                 />
                 <ToggleRow
+                    label="DARK_GUTTER"
+                    note="Darken the line number, sign and fold columns."
+                    on={s.dark_gutter ?? false}
+                    onChange={() => setStyles({ dark_gutter: !s.dark_gutter })}
+                />
+                <ToggleRow
                     label="DIAGNOSTICS.UNDERCURL"
                     note="Underline diagnostics with a curl."
                     on={s.diagnostics.undercurl}

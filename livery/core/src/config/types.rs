@@ -99,6 +99,8 @@ pub struct NvimStyles {
     pub cmp_kind_color_mode: String,
     pub dark_sidebars: bool,
     pub dark_floats: bool,
+    #[serde(default)]
+    pub dark_gutter: bool,
     pub diagnostics: NvimDiagnostics,
     pub syntax: NvimSyntax,
 }
@@ -130,6 +132,7 @@ impl Default for NvimSettings {
                 cmp_kind_color_mode: "bg".to_string(),
                 dark_sidebars: true,
                 dark_floats: true,
+                dark_gutter: false,
                 diagnostics: NvimDiagnostics {
                     undercurl: false,
                     background: false,
