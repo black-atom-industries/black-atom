@@ -34,4 +34,14 @@ function M.float(config, colors)
     })
 end
 
+---@param config BlackAtom.Config
+---@param colors BlackAtom.Theme.Colors
+---@return string
+function M.gutter(config, colors)
+    return cond_hl(colors.ui.bg.panel, {
+        [not config.styles.dark_gutter] = M.default(config, colors),
+        [config.styles.dark_gutter and config.styles.transparency == "full"] = colors.none,
+    })
+end
+
 return M

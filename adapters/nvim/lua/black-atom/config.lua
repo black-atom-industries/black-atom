@@ -8,6 +8,7 @@ M.defaults = {
         cmp_kind_color_mode = "bg",
         dark_sidebars = true,
         dark_floats = true,
+        dark_gutter = false,
         transparency = "none",
         diagnostics = {
             undercurl = false,

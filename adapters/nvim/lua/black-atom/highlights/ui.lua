@@ -37,8 +37,11 @@ return {
             CursorLine = { bg = ui.bg.active },
             CursorColumn = { bg = ui.bg.active },
             ColorColumn = { bg = ui.bg.active },
-            LineNr = { fg = ui.fg.subtle },
-            CursorLineNr = { fg = ui.fg.accent, bg = ui.bg.active },
+            LineNr = { fg = ui.fg.subtle, bg = bg.gutter(config, colors) },
+            CursorLineNr = {
+                fg = ui.fg.accent,
+                bg = config.styles.dark_gutter and bg.gutter(config, colors) or ui.bg.active,
+            },
 
             QuickFixLine = { fg = ui.fg.accent },
 
@@ -103,8 +106,8 @@ return {
 
             -- Folds & Columns
             Folded = { fg = ui.fg.subtle, bg = ui.bg.panel },
-            FoldColumn = { fg = ui.fg.subtle },
-            SignColumn = { fg = ui.fg.subtle },
+            FoldColumn = { fg = ui.fg.subtle, bg = bg.gutter(config, colors) },
+            SignColumn = { fg = ui.fg.subtle, bg = bg.gutter(config, colors) },
         }
 
         return highlights_map

@@ -197,6 +197,7 @@
 ---@field cmp_kind_color_mode?                                  "fg" | "bg" (Default: "bg")
 ---@field dark_sidebars?                                        boolean Wether to use dark sidebars (Default: true)
 ---@field dark_floats?                                          boolean Wether to use dark floats (Default: true)
+---@field dark_gutter?                                          boolean Wether to use a dark gutter behind line numbers, signs and folds (Default: false)
 ---@field transparency?                                         "full" | "partial" | "none" Transparency level (Default: "none")
 ---@field diagnostics?                                          BlackAtom.Config.Diagnostics Diagnostics related settings (Default: See Documentation)
 ---@field syntax?                                               BlackAtom.Config.SyntaxStyle Syntax styling options (Default: See Documentation)
