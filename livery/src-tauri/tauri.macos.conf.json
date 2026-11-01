@@ -1,0 +1,19 @@
+{
+    "app": {
+        "windows": [
+            {
+                "title": "Livery",
+                "width": 1280,
+                "height": 860,
+                "minWidth": 980,
+                "minHeight": 640,
+                "resizable": true,
+                "fullscreen": false,
+                "decorations": true,
+                "titleBarStyle": "Overlay",
+                "hiddenTitle": true,
+                "trafficLightPosition": { "x": 12, "y": 27 }
+            }
+        ]
+    }
+}
