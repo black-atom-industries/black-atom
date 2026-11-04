@@ -20,15 +20,15 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": ".claude/hooks/format.sh"
+                        "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format.sh"
                     },
                     {
                         "type": "command",
-                        "command": ".claude/hooks/no-fs-plugin.sh"
+                        "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/no-fs-plugin.sh"
                     },
                     {
                         "type": "command",
-                        "command": ".claude/hooks/check-bindings.sh"
+                        "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-bindings.sh"
                     }
                 ]
             }
