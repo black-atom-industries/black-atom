@@ -36,6 +36,7 @@ capabilities! {
     VerifyAppPath => "verify_app_path",
     UpdateSystemAppearance => "update_system_appearance",
     ReloadNvim => "reload_nvim",
+    FindNvimOverrides => "find_nvim_overrides",
     GetActiveTheme => "get_active_theme",
     SetActiveTheme => "set_active_theme",
 }

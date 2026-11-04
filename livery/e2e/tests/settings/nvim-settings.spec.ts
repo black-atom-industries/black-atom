@@ -1,4 +1,6 @@
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
+import type { Page } from "@playwright/test";
 import { homePath, readLiveryConfig } from "../../lib/fixture-home.ts";
 import { expect, test } from "../../lib/e2e.ts";
 
@@ -38,4 +40,47 @@ test("SET UP links the plugin with no Neovim config to point at", async ({ page 
         .toBe(true);
     expect(existsSync(homePath("~/.config/nvim"))).toBe(false);
     expect(readLiveryConfig().apps.nvim.config_path).toBeUndefined();
+});
+
+function tildesSwitch(page: Page) {
+    return page
+        .locator("div")
+        .filter({ has: page.getByText("ENDING_TILDES", { exact: true }) })
+        .filter({ has: page.getByRole("switch") })
+        .last()
+        .getByRole("switch");
+}
+
+function writeNvimConfig(file: string, content: string) {
+    const path = homePath(`~/.config/nvim/${file}`);
+    mkdirSync(dirname(path), { recursive: true });
+    writeFileSync(path, content);
+}
+
+test("an options override in the Neovim config makes the panel read-only", async ({ page }) => {
+    writeNvimConfig("init.lua", "vim.opt.number = true\nvim.g.black_atom_core_config = {}\n");
+    await page.goto("/settings/adapters/nvim");
+
+    const note = page.getByTestId("nvim-options-override");
+    await expect(note).toContainText("init.lua:2");
+    await expect(tildesSwitch(page)).toBeDisabled();
+    await expect(page.getByRole("radio", { name: "FULL", exact: true })).toBeDisabled();
+    await expect(page.getByRole("button", { name: "SAVE SETTINGS" })).toHaveCount(0);
+
+    writeNvimConfig("init.lua", "vim.opt.number = true\n");
+    await page.evaluate(() => window.dispatchEvent(new Event("focus")));
+    await expect(note).toHaveCount(0);
+    await expect(tildesSwitch(page)).toBeEnabled();
+    await expect(page.getByRole("button", { name: "SAVE SETTINGS" })).toBeVisible();
+});
+
+test("a colorscheme line in the Neovim config gets a note and leaves the panel editable", async ({
+    page,
+}) => {
+    writeNvimConfig("plugin/theme.lua", 'vim.cmd.colorscheme("black-atom-jpn-koyo-dark")\n');
+    await page.goto("/settings/adapters/nvim");
+
+    await expect(page.getByTestId("nvim-colorscheme-override")).toContainText("theme.lua:1");
+    await expect(page.getByTestId("nvim-options-override")).toHaveCount(0);
+    await expect(tildesSwitch(page)).toBeEnabled();
 });

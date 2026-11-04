@@ -96,8 +96,13 @@ and even with no config at all. Livery never edits your Neovim files.
 
 Applying a theme, saving options in Livery's settings page, and editing them in `config.json` while
 Livery runs all reload every running Neovim.
-When your own config sets `vim.g.black_atom_core_config`, the settings page goes read-only and names
-the file and line, because your table would win over anything saved there.
+Livery searches the `.lua` and `.vim` files under `$XDG_CONFIG_HOME/nvim` (symlinks followed,
+`colors/` and hidden directories skipped) for two kinds of line. A line that sets
+`vim.g.black_atom_core_config` makes the settings page read-only and names the file and line,
+because your table would win over anything saved there. A `:colorscheme` with a literal name, such
+as `vim.cmd.colorscheme("black-atom-jpn-koyo-dark")`, gets a note: Neovim starts in the theme from
+that line, and Livery still reloads running instances. A name passed through a variable doesn't
+match. The search reads lines, so a rare false match is possible.
 
 ### Without Livery
 

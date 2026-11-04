@@ -24,6 +24,7 @@ fn specta_builder<R: tauri::Runtime>() -> Builder<R> {
             commands::update_system_appearance,
             commands::verify_app_path,
             commands::reload_nvim,
+            commands::find_nvim_overrides,
             commands::get_active_theme,
             commands::set_active_theme,
         ])

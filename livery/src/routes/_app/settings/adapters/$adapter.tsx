@@ -48,6 +48,7 @@ function AdapterDetailRoute() {
             onSaveNvimSettings={ctx.onSaveNvimSettings}
             savingNvimSettings={ctx.savingNvimSettings}
             nvimSettingsResult={ctx.nvimSettingsResult}
+            nvimOverrides={ctx.nvimOverrides}
             onSetUp={() => ctx.onSetUp(adapter)}
             setUpResult={ctx.setUpResults[adapter]}
             onVerifyPath={() => ctx.onVerifyPath(adapter)}

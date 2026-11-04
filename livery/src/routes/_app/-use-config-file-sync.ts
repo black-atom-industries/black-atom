@@ -6,6 +6,7 @@ import { commands, type ConfigFileChanged, events } from "../../bindings.ts";
 import { createLatestWinsQueue } from "../../lib/latest-wins-queue.ts";
 import { isThemeKey, queryKey as activeThemeKey } from "../../queries/use-active-theme.ts";
 import { queryKey as appStatusKey } from "../../queries/use-app-status.ts";
+import { queryKey as nvimOverridesKey } from "../../queries/use-nvim-overrides.ts";
 import { fileErrorQueryKey, queryKey as configKey } from "../../queries/use-config.ts";
 import { appStore } from "../../store/app.ts";
 import { useRunApply } from "./-use-run-apply.ts";
@@ -34,6 +35,7 @@ export function useConfigFileSync() {
         void queryClient.invalidateQueries({ queryKey: configKey() });
         void queryClient.invalidateQueries({ queryKey: activeThemeKey() });
         void queryClient.invalidateQueries({ queryKey: appStatusKey() });
+        void queryClient.invalidateQueries({ queryKey: nvimOverridesKey() });
 
         if (change.nvim_settings_changed) {
             void commands.reloadNvim().then((result) => {

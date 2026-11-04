@@ -4,6 +4,7 @@ mod ghostty;
 mod herdr;
 mod lazygit;
 pub mod nvim;
+pub mod nvim_overrides;
 mod obsidian;
 mod rex;
 pub mod system_appearance;

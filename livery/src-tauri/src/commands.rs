@@ -97,6 +97,14 @@ pub async fn reload_nvim() -> UpdateResult {
     livery_core::updaters::reload_nvim().await
 }
 
+/// Lines of the user's Neovim config that set the plugin options or pick a
+/// colorscheme by name. Read-only; empty when there is no Neovim config.
+#[tauri::command]
+#[specta::specta]
+pub fn find_nvim_overrides() -> Vec<livery_core::updaters::nvim_overrides::NvimOverride> {
+    livery_core::updaters::nvim_overrides::find_nvim_overrides()
+}
+
 /// Check one adapter's configured location: does it exist, and does its
 /// match_pattern hit? Read-only, never writes.
 #[tauri::command]

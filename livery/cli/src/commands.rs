@@ -1,6 +1,7 @@
 use livery_core::config::types::{AppName, Config};
 use livery_core::themes::registry::{config_folder_marker, ThemeProvisioning};
 use livery_core::themes::{catalog, commands as themes, detect, unpack};
+use livery_core::updaters::nvim_overrides::NvimOverrideKind;
 use livery_core::updaters::{self, ThemeContext, UpdateResult, UpdateStatus};
 
 /// Every core entry point the CLI reaches for is `async` while awaiting
@@ -148,6 +149,13 @@ pub fn status() -> Result<(), String> {
         println!("config     can't be read: {error}");
     }
     println!("theme      {}", active_theme_label());
+    for found in livery_core::updaters::nvim_overrides::find_nvim_overrides() {
+        let what = match found.kind {
+            NvimOverrideKind::Options => "nvim options set at",
+            NvimOverrideKind::Colorscheme => "nvim colorscheme set at",
+        };
+        println!("override   {what} {}:{}", found.file, found.line);
+    }
     println!();
 
     for app_status in statuses {

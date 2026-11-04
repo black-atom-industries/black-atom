@@ -86,6 +86,13 @@ async reloadNvim() : Promise<UpdateResult> {
     return await TAURI_INVOKE("reload_nvim");
 },
 /**
+ * Lines of the user's Neovim config that set the plugin options or pick a
+ * colorscheme by name. Read-only; empty when there is no Neovim config.
+ */
+async findNvimOverrides() : Promise<NvimOverride[]> {
+    return await TAURI_INVOKE("find_nvim_overrides");
+},
+/**
  * The theme livery last applied, as a theme key. `None` on a machine that
  * has never run setup.
  */
@@ -221,6 +228,16 @@ export type Keymappings = { toggle_window: string }
  */
 export type LinkThemesResult = { app: string; status: UpdateStatus; config_folders?: ConfigFolderLinkOutcome[] | null; message?: string | null; linked: number | null; pruned: number | null }
 export type NvimDiagnostics = { undercurl: boolean; background: boolean }
+export type NvimOverride = { kind: NvimOverrideKind; file: string; line: number }
+export type NvimOverrideKind = 
+/**
+ * The config sets the plugin options, which win over `config.json`.
+ */
+"options" | 
+/**
+ * The config picks a colorscheme by name, so the plugin leaves startup alone.
+ */
+"colorscheme"
 /**
  * One field per option `adapters/nvim/lua/black-atom/config.lua` declares. The
  * plugin reads this shape from `apps.nvim.settings`, so a renamed field here

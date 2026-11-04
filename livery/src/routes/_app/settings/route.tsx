@@ -5,6 +5,7 @@ import { themeCatalog } from "@black-atom/core";
 import { Typo } from "../../../components/typo/index.ts";
 import { useConfig } from "../../../queries/use-config.ts";
 import { useAppStatus } from "../../../queries/use-app-status.ts";
+import { useNvimOverrides } from "../../../queries/use-nvim-overrides.ts";
 import { useActiveTheme } from "../../../queries/use-active-theme.ts";
 import { defaultTheme, pickRandomOtherTheme } from "../../../lib/themes.ts";
 import { App } from "../../../components/layouts/app.ts";
@@ -69,6 +70,7 @@ function SettingsRoute() {
         Partial<Record<AppName, VerifyPathResult>>
     >({});
     const appStatus = useAppStatus();
+    const nvimOverrides = useNvimOverrides();
     // Session-local LINK THEMES results per adapter.
     const [linkThemesResults, setLinkThemesResults] = useState<
         Partial<Record<AppName, LinkThemesRowResult>>
@@ -573,6 +575,7 @@ function SettingsRoute() {
         onSaveNvimSettings: saveNvimSettings,
         savingNvimSettings: config.saveNvimSettings.isPending,
         nvimSettingsResult,
+        nvimOverrides: nvimOverrides.data ?? [],
         onOpenUrl: (url) => {
             openUrl(url).catch((error) => console.error(error));
         },

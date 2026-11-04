@@ -80,6 +80,7 @@ fn cli_surface(cap: Capability) -> &'static str {
         Capability::VerifyAppPath => "status",
         Capability::UpdateSystemAppearance => "appearance",
         Capability::ReloadNvim => "apply",
+        Capability::FindNvimOverrides => "status",
         Capability::GetActiveTheme => "status",
         Capability::SetActiveTheme => "apply",
     }

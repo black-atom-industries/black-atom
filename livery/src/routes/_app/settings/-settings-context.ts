@@ -3,6 +3,7 @@ import type { RefObject } from "react";
 import type {
     AdapterEditableField,
     AppName,
+    NvimOverride,
     NvimSettings,
     ThemeProvisioning,
     UpdateResult,
@@ -56,6 +57,7 @@ export type SettingsContextValue = {
     onSaveNvimSettings: (settings: NvimSettings) => void;
     savingNvimSettings: boolean;
     nvimSettingsResult?: UpdateResult;
+    nvimOverrides: NvimOverride[];
 
     firstFieldRef: RefObject<HTMLInputElement | null>;
 };

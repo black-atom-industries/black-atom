@@ -1,4 +1,9 @@
-import type { AdapterEditableField, AppConfig, NvimSettings } from "../../../bindings.ts";
+import type {
+    AdapterEditableField,
+    AppConfig,
+    NvimOverride,
+    NvimSettings,
+} from "../../../bindings.ts";
 import type {
     LinkThemesRowResult,
     PathKind,
@@ -29,6 +34,7 @@ export type AdapterPageProps = {
     onSaveNvimSettings?: (settings: NvimSettings) => void;
     savingNvimSettings?: boolean;
     nvimSettingsResult?: UpdateResult;
+    nvimOverrides?: NvimOverride[];
 
     onSetUp: () => void;
     setUpResult?: SetUpOutcome;

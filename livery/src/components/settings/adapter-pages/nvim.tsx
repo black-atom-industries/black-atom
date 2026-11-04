@@ -23,6 +23,7 @@ export function NvimSettings({
     onSaveNvimSettings,
     savingNvimSettings,
     nvimSettingsResult,
+    nvimOverrides,
 }: AdapterPageProps) {
     // The draft holds only unsaved edits, so the panel follows the config file
     // until the user changes something, and keeps those changes when the file moves.
@@ -55,6 +56,7 @@ export function NvimSettings({
             {settings && onSaveNvimSettings && (
                 <NvimSettingsPanel
                     settings={settings}
+                    overrides={nvimOverrides ?? []}
                     dirty={dirty}
                     saving={savingNvimSettings ?? false}
                     resultMessage={nvimSettingsResult?.message ?? undefined}

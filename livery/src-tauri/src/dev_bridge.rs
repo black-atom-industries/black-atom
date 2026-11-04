@@ -216,6 +216,7 @@ fn dispatch(command: &str, args: Value) -> Result<Value, String> {
                 crate::commands::verify_app_path(app),
             ))
         }
+        "find_nvim_overrides" => to_value(crate::commands::find_nvim_overrides()),
         "reload_nvim" => to_value(tauri::async_runtime::block_on(
             crate::commands::reload_nvim(),
         )),
