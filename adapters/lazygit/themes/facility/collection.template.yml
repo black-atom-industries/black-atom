@@ -11,19 +11,23 @@ gui:
     inactiveBorderColor:
       - "<%= theme.ui.fg.subtle %>"
     optionsTextColor:
-      - "<%= theme.palette.blue %>"
+      - "<%= theme.ui.fg.info %>"
     selectedLineBgColor:
       - "<%= theme.ui.bg.selection %>"
     cherryPickedCommitBgColor:
-      - "<%= theme.ui.bg.hover %>"
+      - "<%= theme.ui.bg.info %>"
     cherryPickedCommitFgColor:
-      - "<%= theme.ui.fg.accent %>"
+      - "<%= theme.ui.fg.info %>"
+    markedBaseCommitBgColor:
+      - "<%= theme.ui.bg.warn %>"
+    markedBaseCommitFgColor:
+      - "<%= theme.ui.fg.default %>"
     unstagedChangesColor:
       - "<%= theme.ui.fg.negative %>"
     defaultFgColor:
       - "<%= theme.ui.fg.default %>"
     searchingActiveBorderColor:
-      - "<%= theme.palette.yellow %>"
+      - "<%= theme.ui.fg.warn %>"
 
   authorColors:
     "*": "<%= theme.palette.magenta %>"
