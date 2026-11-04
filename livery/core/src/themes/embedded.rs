@@ -107,9 +107,11 @@ static WEZTERM: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/wezterm/t
 static ZED: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/zed/themes");
 
 /// The nvim colorschemes are entry points that require the runtime under
-/// `lua/black-atom/`, so both directories ship.
+/// `lua/black-atom/`, so both directories ship, and `plugin/` carries the
+/// startup script that applies the active theme.
 static NVIM_COLORS: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/nvim/colors");
 static NVIM_LUA: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/nvim/lua");
+static NVIM_PLUGIN: Dir = include_dir!("$CARGO_MANIFEST_DIR/../../adapters/nvim/plugin");
 
 /// Obsidian installs a merged theme into a configuration folder as this pair, which lives at
 /// the adapter root rather than under `themes/`.
@@ -134,7 +136,11 @@ pub fn embedded(adapter: Adapter) -> Vec<(&'static str, &'static Dir<'static>)> 
         Adapter::Waybar => vec![("", &WAYBAR)],
         Adapter::Wezterm => vec![("", &WEZTERM)],
         Adapter::Zed => vec![("", &ZED)],
-        Adapter::Nvim => vec![("colors", &NVIM_COLORS), ("lua", &NVIM_LUA)],
+        Adapter::Nvim => vec![
+            ("colors", &NVIM_COLORS),
+            ("lua", &NVIM_LUA),
+            ("plugin", &NVIM_PLUGIN),
+        ],
     }
 }
 
