@@ -62,9 +62,9 @@ pub enum LinkedPlacement {
     /// `source-file` target). Theme keys are globally unique, so flattening
     /// the collection nesting loses nothing.
     FlatByExtensions(&'static [&'static str]),
-    /// `FlatByExtensions` with the extension dropped from each link name — Rex
-    /// names an imported theme after its file only when the file has none.
-    FlatWithoutExtension(&'static [&'static str]),
+    /// `FlatByExtensions` with each link named after the theme's label — Rex
+    /// names an imported theme after the file it is handed.
+    FlatByLabel(&'static [&'static str]),
     /// Each configuration folder's `themes/Black Atom/` dir gets the merged `theme.css` +
     /// `manifest.json` pair — Obsidian scans per-theme subdirectories.
     ConfigFolderThemeDir,
@@ -86,7 +86,7 @@ pub fn linked_placement(app: AppName) -> Option<LinkedPlacement> {
         AppName::Tuicr => Some(LinkedPlacement::FlatByExtensions(&[".toml", ".tmTheme"])),
         AppName::Obsidian => Some(LinkedPlacement::ConfigFolderThemeDir),
         AppName::Nvim => Some(LinkedPlacement::PackDir),
-        AppName::Rex => Some(LinkedPlacement::FlatWithoutExtension(&[".conf"])),
+        AppName::Rex => Some(LinkedPlacement::FlatByLabel(&[".conf"])),
         AppName::HelmTmux | AppName::Lazygit | AppName::Herdr | AppName::ClaudeCode => None,
     }
 }

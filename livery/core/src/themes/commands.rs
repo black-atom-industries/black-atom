@@ -58,11 +58,11 @@ pub(crate) fn is_linked(app: AppName) -> bool {
             };
             symlinks::has_managed_links(&dir, &managed_dir, extensions)
         }
-        registry::LinkedPlacement::FlatWithoutExtension(extensions) => {
+        registry::LinkedPlacement::FlatByLabel(extensions) => {
             let Some(dir) = configured_themes_dir(app) else {
                 return false;
             };
-            symlinks::has_managed_links_without_extension(&dir, &managed_dir, extensions)
+            symlinks::has_managed_links_by_label(&dir, &managed_dir, extensions)
         }
         registry::LinkedPlacement::ConfigFolderThemeDir => configured_themes_dirs(app)
             .map(|dirs| {
@@ -237,8 +237,8 @@ fn link_app_themes_inner(
         registry::LinkedPlacement::FlatByExtensions(extensions) => {
             symlinks::sync_flat_symlinks(&managed_dir, &themes_dir, extensions)
         }
-        registry::LinkedPlacement::FlatWithoutExtension(extensions) => {
-            symlinks::sync_flat_symlinks_without_extension(&managed_dir, &themes_dir, extensions)
+        registry::LinkedPlacement::FlatByLabel(extensions) => {
+            symlinks::sync_flat_symlinks_by_label(&managed_dir, &themes_dir, extensions)
         }
         registry::LinkedPlacement::ConfigFolderThemeDir => {
             symlinks::sync_config_folder_theme_links(&managed_dir, &themes_dir)

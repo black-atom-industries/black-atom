@@ -1,6 +1,7 @@
 use std::path::{Path, PathBuf};
 
 use crate::config::types::AppConfig;
+use crate::themes::catalog;
 
 use super::{UpdateContext, UpdateResult};
 
@@ -19,7 +20,8 @@ pub fn update(app_str: &str, app_config: &AppConfig, ctx: &UpdateContext) -> Upd
 
 /// Rex stores imported themes in its own settings and reads no theme folder,
 /// so the import is the switch: importing a name Rex already holds updates
-/// that theme in place and selects it.
+/// that theme in place and selects it. Rex takes the name from the file, so
+/// the link carries the theme's label.
 fn update_with<F>(
     app_str: &str,
     app_config: &AppConfig,
@@ -32,7 +34,8 @@ where
     let Some(themes_path) = &app_config.themes_path else {
         return UpdateResult::error(app_str, "Missing themes_path");
     };
-    let link = PathBuf::from(shellexpand::tilde(themes_path).to_string()).join(ctx.theme_key);
+    let link = PathBuf::from(shellexpand::tilde(themes_path).to_string())
+        .join(catalog::label(ctx.theme_key));
     if !link.exists() {
         return UpdateResult::error(
             app_str,
@@ -154,7 +157,7 @@ mod tests {
     fn fixture() -> Fixture {
         let dir = tempfile::TempDir::new().unwrap();
         std::fs::write(
-            dir.path().join("black-atom-terra-fall-dark"),
+            dir.path().join("Black Atom — TERRA ∷ Fall Dark"),
             "background = #140b06\n",
         )
         .unwrap();
@@ -209,7 +212,7 @@ mod tests {
     fn test_imports_and_switches_appearance_in_every_app() {
         let f = fixture();
         let link = Path::new(f.app_config.themes_path.as_deref().unwrap())
-            .join("black-atom-terra-fall-dark");
+            .join("Black Atom — TERRA ∷ Fall Dark");
 
         let (result, calls) = run(&f, connected);
 

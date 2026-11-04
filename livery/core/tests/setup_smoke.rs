@@ -288,7 +288,7 @@ fn setup_chain_end_to_end() {
         home.join(".config/tmux/themes/black-atom-jpn-koyo-dark.conf"),
         home.join(".config/zed/themes/black-atom-jpn-koyo-dark.json"),
         home.join(".config/tuicr/themes/black-atom-jpn-koyo-dark.toml"),
-        managed_root.join("rex/black-atom-jpn-koyo-dark"),
+        managed_root.join("rex/Black Atom — JPN ∷ Koyo Dark"),
         home.join("config_folder/.obsidian/themes/Black Atom/theme.css"),
         home.join("config_folder/.obsidian/themes/Black Atom/manifest.json"),
     ] {

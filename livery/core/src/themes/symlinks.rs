@@ -28,10 +28,10 @@ pub fn sync_flat_symlinks(
     sync_flat(managed_dir, app_themes_dir, extensions, false)
 }
 
-/// `sync_flat_symlinks`, with each link named after its file minus the
-/// extension — for apps that name a theme after the file it was handed.
+/// `sync_flat_symlinks`, with each link named after the theme's label — for
+/// apps that name a theme after the file it was handed.
 #[cfg(unix)]
-pub fn sync_flat_symlinks_without_extension(
+pub fn sync_flat_symlinks_by_label(
     managed_dir: &Path,
     app_themes_dir: &Path,
     extensions: &[&str],
@@ -44,14 +44,14 @@ fn sync_flat(
     managed_dir: &Path,
     app_themes_dir: &Path,
     extensions: &[&str],
-    strip_extension: bool,
+    by_label: bool,
 ) -> Result<SymlinkSyncStats, String> {
     ensure_under_home(app_themes_dir)?;
     ensure_under_home(managed_dir)?;
     std::fs::create_dir_all(app_themes_dir)
         .map_err(|e| format!("Failed to create {}: {e}", app_themes_dir.display()))?;
 
-    let fresh = fresh_theme_files(managed_dir, extensions, strip_extension)?;
+    let fresh = fresh_theme_files(managed_dir, extensions, by_label)?;
     let mut stats = SymlinkSyncStats::default();
 
     for (name, target) in &fresh {
@@ -64,7 +64,7 @@ fn sync_flat(
     for entry in entries.flatten() {
         let name = entry.file_name();
         let Some(name) = name.to_str() else { continue };
-        if !name.starts_with("black-atom-") || fresh.contains_key(name) {
+        if fresh.contains_key(name) || !(by_label || name.starts_with("black-atom-")) {
             continue;
         }
         let path = entry.path();
@@ -223,7 +223,7 @@ fn link_destination(link: &Path) -> Option<PathBuf> {
 fn fresh_theme_files(
     managed_dir: &Path,
     extensions: &[&str],
-    strip_extension: bool,
+    by_label: bool,
 ) -> Result<HashMap<String, PathBuf>, String> {
     let mut fresh = HashMap::new();
     let collections = std::fs::read_dir(managed_dir)
@@ -244,12 +244,12 @@ fn fresh_theme_files(
             let Some(ext) = extensions.iter().find(|ext| name.ends_with(*ext)) else {
                 continue;
             };
-            let link_name = if strip_extension {
-                &name[..name.len() - ext.len()]
+            let link_name = if by_label {
+                super::catalog::label(&name[..name.len() - ext.len()])
             } else {
-                name
+                name.to_string()
             };
-            fresh.insert(link_name.to_string(), file.path());
+            fresh.insert(link_name, file.path());
         }
     }
     Ok(fresh)
@@ -273,9 +273,9 @@ pub fn has_managed_links(app_themes_dir: &Path, managed_dir: &Path, extensions: 
     has_links(app_themes_dir, managed_dir, extensions, false)
 }
 
-/// `has_managed_links` for links placed by `sync_flat_symlinks_without_extension`.
+/// `has_managed_links` for links placed by `sync_flat_symlinks_by_label`.
 #[cfg(unix)]
-pub fn has_managed_links_without_extension(
+pub fn has_managed_links_by_label(
     app_themes_dir: &Path,
     managed_dir: &Path,
     extensions: &[&str],
@@ -288,9 +288,9 @@ fn has_links(
     app_themes_dir: &Path,
     managed_dir: &Path,
     extensions: &[&str],
-    strip_extension: bool,
+    by_label: bool,
 ) -> bool {
-    let Ok(fresh) = fresh_theme_files(managed_dir, extensions, strip_extension) else {
+    let Ok(fresh) = fresh_theme_files(managed_dir, extensions, by_label) else {
         return false;
     };
     extensions.iter().all(|ext| {
@@ -326,7 +326,7 @@ pub fn has_managed_links(
 }
 
 #[cfg(not(unix))]
-pub fn has_managed_links_without_extension(
+pub fn has_managed_links_by_label(
     _app_themes_dir: &Path,
     _managed_dir: &Path,
     _extensions: &[&str],
@@ -847,16 +847,15 @@ mod tests {
     }
 
     #[test]
-    fn test_links_without_extension_and_prunes_them() {
+    fn test_links_by_label_and_prunes_them() {
         let s = setup(".conf");
 
-        let stats =
-            sync_flat_symlinks_without_extension(&s.managed, &s.app_dir, &[".conf"]).unwrap();
+        let stats = sync_flat_symlinks_by_label(&s.managed, &s.app_dir, &[".conf"]).unwrap();
         assert_eq!(stats.linked, 1);
-        let link = s.app_dir.join("black-atom-jpn-koyo-dark");
+        let link = s.app_dir.join("Black Atom — JPN ∷ Koyo Dark");
         assert_eq!(std::fs::read_to_string(&link).unwrap(), "content");
-        assert!(!s.app_dir.join("black-atom-jpn-koyo-dark.conf").exists());
-        assert!(has_managed_links_without_extension(
+        assert!(!s.app_dir.join("black-atom-jpn-koyo-dark").exists());
+        assert!(has_managed_links_by_label(
             &s.app_dir,
             &s.managed,
             &[".conf"]
@@ -864,9 +863,23 @@ mod tests {
         assert!(!has_managed_links(&s.app_dir, &s.managed, &[".conf"]));
 
         std::fs::remove_file(s.managed.join("jpn").join("black-atom-jpn-koyo-dark.conf")).unwrap();
-        let rerun =
-            sync_flat_symlinks_without_extension(&s.managed, &s.app_dir, &[".conf"]).unwrap();
+        let rerun = sync_flat_symlinks_by_label(&s.managed, &s.app_dir, &[".conf"]).unwrap();
         assert_eq!(rerun.pruned, 1);
         assert!(std::fs::symlink_metadata(&link).is_err());
+    }
+
+    #[test]
+    fn test_links_by_label_replace_key_named_links() {
+        let s = setup(".conf");
+        let managed_file = s.managed.join("jpn").join("black-atom-jpn-koyo-dark.conf");
+        let old_link = s.app_dir.join("black-atom-jpn-koyo-dark");
+        std::fs::create_dir_all(&s.app_dir).unwrap();
+        std::os::unix::fs::symlink(&managed_file, &old_link).unwrap();
+
+        let stats = sync_flat_symlinks_by_label(&s.managed, &s.app_dir, &[".conf"]).unwrap();
+
+        assert_eq!(stats.pruned, 1);
+        assert!(std::fs::symlink_metadata(&old_link).is_err());
+        assert!(s.app_dir.join("Black Atom — JPN ∷ Koyo Dark").exists());
     }
 }

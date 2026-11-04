@@ -173,9 +173,10 @@ options and when a user's own colorscheme wins.
 
 ### rex — Linked
 
-- **Files:** the Ghostty themes, flat-symlinked into `$XDG_DATA_HOME/black-atom/themes/rex/`
-  without their `.conf` extension. Rex names an imported theme after the file it is handed only
-  when the name has no extension; otherwise every import arrives as "Imported Theme".
+- **Files:** the Ghostty themes, flat-symlinked into `$XDG_DATA_HOME/black-atom/themes/rex/`, each
+  link named after the theme's label (`Black Atom — JPN ∷ Koyo Dark`). Rex names an imported theme
+  after the file it is handed, and only when the name has no extension; otherwise every import
+  arrives as "Imported Theme".
 - **Switch:** no pointer. Rex keeps imported themes in its own settings and reads no theme folder,
   so every apply runs `rex -C <client> do client.theme.import path=<link>` for each connected Rex
   app. Importing a name Rex already holds updates that theme in place and selects it, in the dark
