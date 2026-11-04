@@ -57,6 +57,7 @@
     overflow: hidden;
     font-family: var(--ba-font-mono);
     font-size: 12px;
+    font-weight: 500;
     border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
     border-radius: 0;
 }
