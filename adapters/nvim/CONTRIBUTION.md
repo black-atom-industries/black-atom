@@ -37,13 +37,8 @@ return {
 }
 ```
 
-This structure is what lets the supported-plugins list in the README be generated
-automatically.
-
 ## Adding Plugin Support
 
 1. Create a new file in `lua/black-atom/highlights/plugins/`, named after the plugin.
 2. Use `__plugin_highlight_template.lua` as a starting point.
 3. Implement the highlight groups inside the `map` function.
-4. From `adapters/nvim/`, run `./update_supported_plugins.sh` to update the README's plugin
-   list.

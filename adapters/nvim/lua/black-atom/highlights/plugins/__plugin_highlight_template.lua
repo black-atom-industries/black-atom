@@ -22,26 +22,8 @@
     -- `colors` is a table containing the color palette.
     -- `config` is a table containing configuration options.
 
-    IMPORTANT: When you add a new plugin file, and run the `./update_supported_plugins.sh` script,
-    it will be automatically included in the Supported Plugins section of the README.md file.
-    This is a great way to showcase your contribution and help others discover new plugin support!
-
-    To ensure this automatic process works correctly, please follow these guidelines:
-
-    1. Add a @doc comment with the plugin's GitHub URL at the top of the file:
-       ---@doc https://github.com/username/plugin-name
-
-    2. Ensure that the highlight groups are returned in the specific structure:
-
-    ---@type BlackAtom.Highlights
-    return {
-        HighlightGroup1 = { ... }, -- Each line in this block after `---@type BlackAtom.Highlights` will be counted.
-        HighlightGroup2 = { ... },
-        ...
-    }
-
-    This structure allows our script to accurately count the number of highlight groups
-    for each plugin and update the README.md file accordingly.
+    Add a @doc comment with the plugin's GitHub URL at the top of the file:
+    ---@doc https://github.com/username/plugin-name
 
     NAMING CONVENTION: Please name your plugin highlight file name like your plugin name. Replace dots with underscores.
     For example: `telescope.nvim` => `telescope_nvim.lua`

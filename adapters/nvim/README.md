@@ -1,16 +1,13 @@
 # Black Atom for Neovim
 
-> A collection of elegant, cohesive themes for Neovim by Black Atom Industries
+The Neovim adapter for Black Atom. Themes are defined once in [`../../core/`](../../core/),
+and each adapter renders them for one platform through Eta templates, so the colors match
+everywhere and each platform can still tune its own details.
 
-## What is a Black Atom Adapter?
+## Themes
 
-This directory is the **Neovim adapter** for Black Atom. Themes are defined once in
-[`../../core/`](../../core/), and each adapter renders them for one platform through Eta
-templates, keeping colors identical everywhere while leaving room for platform-specific tuning.
-
-## Available Themes
-
-Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.ts) lists the collections and their themes.
+Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.ts) lists the
+collections and their themes.
 
 ## Installation
 
@@ -22,8 +19,8 @@ vim.opt.rtp:prepend("/path/to/black-atom/adapters/nvim")
 vim.cmd.colorscheme("black-atom-jpn-koyo-dark")
 ```
 
-Every theme is a self-contained colorscheme in `colors/`, so `:colorscheme
-black-atom-<collection>-<name>` is all it takes. Tab-complete the list.
+Every theme is a self-contained colorscheme in `colors/`. Load one with `:colorscheme
+black-atom-<collection>-<name>`, and tab-complete to see the list.
 
 ## Configuration
 
@@ -57,8 +54,9 @@ vim.g.black_atom_core_config = {
 }
 ```
 
-The `styles.syntax` entries take any highlight attributes (`bold`, `italic`,
-`underline`, ...), which are merged into the group's definition.
+`dark_sidebars`, `dark_floats` and `dark_gutter` put those areas on the panel background.
+The `styles.syntax` entries take any highlight attributes (`bold`, `italic`, `underline`,
+...), which are merged into the group's definition.
 
 To change the config at runtime, set the global again and re-run
 `:colorscheme`.
@@ -68,125 +66,99 @@ To change the config at runtime, set the global again and re-run
 Black Atom defines the native `LspKind{Function, Class, Variable, ...}` highlight
 groups (one per LSP `CompletionItemKind`) in `lsp.lua`.
 
-- **`blink.cmp` / `nvim-cmp`** consume the shared kind-color mapping directly,
-  no wiring required.
-- **`mini.completion`** needs a small `process_items` callback to route the
-  theme's `LspKind*` groups to the popup. See the recipe:
-  [docs/recipes.md#color-minicompletion-kind-labels](docs/recipes.md#color-minicompletion-kind-labels).
+- `blink.cmp` and `nvim-cmp` use the shared kind-color mapping without any wiring.
+- `mini.completion` needs a small `process_items` callback to route the
+  theme's `LspKind*` groups to the popup. See
+  [the recipe](#color-minicompletion-kind-labels).
 
-## Supported Plugins
+## Plugins
 
-<details>
-<summary>Click to expand supported plugins list</summary>
+Each supported plugin has a file in
+[`lua/black-atom/highlights/plugins/`](lua/black-atom/highlights/plugins/).
 
-This theme supports the following plugins:
+## Recipes
 
-- [arrow.nvim](https://github.com/otavioschwanck/arrow.nvim)
-    - 4 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [blink.cmp](https://github.com/saghen/blink.cmp)
-    - 8 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [codediff.nvim](https://github.com/esmuellert/codediff.nvim)
-    - 33 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [diffview.nvim](https://github.com/sindrets/diffview.nvim)
-    - 24 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [dooing](https://github.com/atiladefreitas/dooing)
-    - 19 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [edgy.nvim](https://github.com/folke/edgy.nvim)
-    - 5 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [flash.nvim](https://github.com/folke/flash.nvim)
-    - 6 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [flux.nvim](https://github.com/nikbrunner/flux.nvim)
-    - 13 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [fyler.nvim](https://github.com/FylerOrg/fyler.nvim)
-    - 14 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [fzf-lua](https://github.com/ibhagwan/fzf-lua)
-    - 7 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)
-    - 9 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [glance.nvim](https://github.com/DNLHC/glance.nvim)
-    - 28 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim)
-    - 2 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [iter.nvim](https://github.com/black-atom-industries/iter.nvim)
-    - 10 Highlight(s)
-    - Last updated: 2026-10-30
-    - Last commit: feat(nvim): style iter.nvim diffs and commit rows #22
-- [mini.nvim](https://github.com/echasnovski/mini.nvim)
-    - 178 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [neo-tree.nvim](https://github.com/nvim-neo-tree/neo-tree.nvim)
-    - 13 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp)
-    - 12 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [nvim-navbuddy](https://github.com/SmiteshP/nvim-navbuddy)
-    - 8 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua)
-    - 4 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [nvim-treesitter-context](https://github.com/nvim-treesitter/nvim-treesitter-context)
-    - 2 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [obsidian.nvim](https://github.com/obsidian-nvim/obsidian.nvim)
-    - 11 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim)
-    - 69 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [plugin-name](https://github.com/username/plugin-name)
-    - 27 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
-    - 6 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [which-key.nvim](https://github.com/folke/which-key.nvim)
-    - 5 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
-- [yazi.nvim](https://github.com/mikavilpas/yazi.nvim)
-    - 1 Highlight(s)
-    - Last updated: 2026-08-16
-    - Last commit: chore: copy core, ten adapters and livery into one tree black-atom-industries/livery#68
+### Pad the dark gutter
 
-</details>
+With `styles.dark_gutter = true`, the gutter sits right against the code. Blank cells in
+`Normal` at the end of the `statuscolumn` separate the two. The built-in columns can't do
+this, because the number column's padding always takes `LineNr`'s background.
+
+The helper adds the cells to any column format, so it works on top of the one you already
+use. Replace the format in `PaddedStatuscolumn` with your own:
+
+```lua
+local function pad_gutter(base)
+    local padding = 2
+    local win = vim.g.statusline_winid
+    local wo = vim.wo[win]
+    local gutter = wo.number or wo.relativenumber or wo.signcolumn ~= "no"
+
+    -- `Normal` would show as a notch on a float's panel background.
+    if not gutter or vim.api.nvim_win_get_config(win).relative ~= "" then
+        return base
+    end
+
+    local on_cursor = wo.cursorline and vim.v.relnum == 0 and vim.v.virtnum <= 0
+    return base .. (on_cursor and "%#CursorLine#" or "%#Normal#") .. string.rep(" ", padding)
+end
+
+function _G.PaddedStatuscolumn()
+    -- The default columns: folds, signs, line number.
+    return pad_gutter("%C%s%=%l ")
+end
+
+vim.o.statuscolumn = "%!v:lua.PaddedStatuscolumn()"
+```
+
+Windows that set their own `statuscolumn` keep it and stay unpadded, such as iter.nvim's
+diff views.
+
+### Color `mini.completion` kind labels
+
+`mini.completion` uses `mini.icons` for kind highlighting by default, so it doesn't pick up
+the theme's `LspKind*` groups. A `process_items` callback can set `kind_hlgroup` before it
+calls `default_process_items`, which keeps any value already on the item.
+
+`item.kind` from the LSP response is a number from 1 to 25, and
+`vim.lsp.protocol.CompletionItemKind` turns it into a name such as `Class`. Copy that table
+before you shorten any names, or the lookup asks for groups that don't exist, such as
+`LspKindCLAS`.
+
+```lua
+local MiniCompletion = require("mini.completion")
+
+-- Capture BEFORE any remap of vim.lsp.protocol.CompletionItemKind, so the
+-- canonical names (Class, Function, ...) are preserved for highlight lookup.
+local lsp_kind_names = vim.deepcopy(vim.lsp.protocol.CompletionItemKind)
+
+local process_items = function(items, base)
+    for _, item in ipairs(items) do
+        local kind_name = lsp_kind_names[item.kind]
+        if kind_name then
+            item.kind_hlgroup = "LspKind" .. kind_name
+        end
+    end
+    return MiniCompletion.default_process_items(items, base, {
+        kind_priority = { Text = -1, Snippet = 99 },
+    })
+end
+
+require("mini.completion").setup({
+    lsp_completion = { process_items = process_items },
+})
+```
+
+For shorter popup labels, remap the global table after that copy. `mini.completion` reads the
+labels from it, so the popup shows `CLAS` and `FUNC` while the highlight groups still use the
+full names:
+
+```lua
+local item_kinds = vim.lsp.protocol.CompletionItemKind
+for i, name in ipairs(item_kinds) do
+    item_kinds[i] = name:sub(1, 4):upper()
+end
+```
 
 ## Development
 
@@ -195,7 +167,7 @@ This theme supports the following plugins:
 - [ ] Minimize default highlight assignments
     - The default assignment and links should be used as far as possible
 - [ ] Make API stable
-- [ ] Dediated Black Atom Colorscheme Picker
+- [ ] Dedicated Black Atom Colorscheme Picker
 
 ### Tooling
 
@@ -208,9 +180,8 @@ mise run setup    # luacheck (via luarocks)
 
 `luacheck` has no prebuilt binary, so it can't be a mise `[tools]` entry. Installing
 `lua` through mise also provides `luarocks` (added to `PATH`), and the `setup` task
-runs `luarocks install luacheck` into that Lua install. Note this lives under the
-shared `lua@5.1` install rather than the repo. Re-run `mise run setup` if you bump
-the pinned Lua version. Building `luacheck`'s dependencies needs a C compiler
+runs `luarocks install luacheck` into that Lua install, which is the shared `lua@5.1`
+one. Re-run `mise run setup` if you bump the pinned Lua version. Building `luacheck`'s dependencies needs a C compiler
 (Xcode Command Line Tools on macOS).
 
 ### Building and Testing
