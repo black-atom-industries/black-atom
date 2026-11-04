@@ -3525,8 +3525,8 @@ settings:
   --color-yellow-rgb: 214, 140, 0;
   --color-green: #95a483;
   --color-green-rgb: 149, 164, 131;
-  --color-cyan: #7ea99c;
-  --color-cyan-rgb: 126, 169, 156;
+  --color-cyan: #a4bfac;
+  --color-cyan-rgb: 164, 191, 172;
   --color-blue: #b2ae72;
   --color-blue-rgb: 178, 174, 114;
   --color-purple: #d4896e;
@@ -3613,7 +3613,7 @@ settings:
   --graph-line: #2e2119;
   --graph-node: #d68c00;
   --graph-node-focused: #d68c00;
-  --graph-node-tag: #7ea99c;
+  --graph-node-tag: #a4bfac;
   --graph-node-attachment: #95a483;
 
   /* Scrollbar */
@@ -3660,8 +3660,8 @@ settings:
   --color-yellow-rgb: 203, 100, 0;
   --color-green: #566b38;
   --color-green-rgb: 86, 107, 56;
-  --color-cyan: #438d7b;
-  --color-cyan-rgb: 67, 141, 123;
+  --color-cyan: #63836d;
+  --color-cyan-rgb: 99, 131, 109;
   --color-blue: #8c583b;
   --color-blue-rgb: 140, 88, 59;
   --color-purple: #b66e53;
@@ -3748,7 +3748,7 @@ settings:
   --graph-line: #e3bfa4;
   --graph-node: #d9710b;
   --graph-node-focused: #d9710b;
-  --graph-node-tag: #438d7b;
+  --graph-node-tag: #63836d;
   --graph-node-attachment: #566b38;
 
   /* Scrollbar */

@@ -38,8 +38,8 @@ local theme = {
             blue = "#b2ae72",
             dark_magenta = "#c67a65",
             magenta = "#d4896e",
-            dark_cyan = "#719b8f",
-            cyan = "#7ea99c",
+            dark_cyan = "#92ac9a",
+            cyan = "#a4bfac",
             light_gray = "#c9a592",
             white = "#eac5b1",
         },
@@ -109,12 +109,12 @@ local theme = {
                 default = "#e67f3c",
             },
             type = {
-                default = "#7ea99c",
-                builtin = "#719b8f",
+                default = "#a4bfac",
+                builtin = "#92ac9a",
             },
             attribute = {
-                default = "#7ea99c",
-                builtin = "#7ea99c",
+                default = "#a4bfac",
+                builtin = "#a4bfac",
             },
             func = {
                 default = "#d68c00",

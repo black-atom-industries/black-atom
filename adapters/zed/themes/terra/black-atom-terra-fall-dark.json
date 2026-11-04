@@ -90,9 +90,9 @@
                 "terminal.ansi.magenta": "#d4896e",
                 "terminal.ansi.bright_magenta": "#d4896e",
                 "terminal.ansi.dim_magenta": "#c67a65",
-                "terminal.ansi.cyan": "#7ea99c",
-                "terminal.ansi.bright_cyan": "#7ea99c",
-                "terminal.ansi.dim_cyan": "#719b8f",
+                "terminal.ansi.cyan": "#a4bfac",
+                "terminal.ansi.bright_cyan": "#a4bfac",
+                "terminal.ansi.dim_cyan": "#92ac9a",
                 "terminal.ansi.white": "#c9a592",
                 "terminal.ansi.bright_white": "#eac5b1",
                 "terminal.ansi.dim_white": "#c9a592",
@@ -178,9 +178,9 @@
                         "selection": "#d68c003d"
                     },
                     {
-                        "cursor": "#7ea99c",
-                        "background": "#7ea99c",
-                        "selection": "#7ea99c3d"
+                        "cursor": "#a4bfac",
+                        "background": "#a4bfac",
+                        "selection": "#a4bfac3d"
                     },
                     {
                         "cursor": "#b2ae72",
@@ -250,7 +250,7 @@
                         "font_weight": 700
                     },
                     "enum": {
-                        "color": "#719b8f",
+                        "color": "#92ac9a",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -270,7 +270,7 @@
                         "font_weight": null
                     },
                     "label": {
-                        "color": "#7ea99c",
+                        "color": "#a4bfac",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -400,7 +400,7 @@
                         "font_weight": 700
                     },
                     "type": {
-                        "color": "#7ea99c",
+                        "color": "#a4bfac",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -415,7 +415,7 @@
                         "font_weight": null
                     },
                     "variant": {
-                        "color": "#719b8f",
+                        "color": "#92ac9a",
                         "font_style": null,
                         "font_weight": null
                     }

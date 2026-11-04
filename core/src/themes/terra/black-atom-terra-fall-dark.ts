@@ -44,8 +44,8 @@ export default defineThemeColors({
             darkMagenta: oklch(0.656, 0.101, 36.23),
             magenta: oklch(0.701, 0.1, 40.54),
 
-            darkCyan: oklch(0.655, 0.049, 175.15),
-            cyan: oklch(0.7, 0.05, 174.22),
+            darkCyan: oklch(0.72, 0.04, 155),
+            cyan: oklch(0.78, 0.04, 155),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,

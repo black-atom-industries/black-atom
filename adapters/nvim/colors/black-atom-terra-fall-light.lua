@@ -38,8 +38,8 @@ local theme = {
             blue = "#8c583b",
             dark_magenta = "#aa6448",
             magenta = "#b66e53",
-            dark_cyan = "#378371",
-            cyan = "#438d7b",
+            dark_cyan = "#577862",
+            cyan = "#63836d",
             light_gray = "#d39e82",
             white = "#f8ddc7",
         },
@@ -109,8 +109,8 @@ local theme = {
                 default = "#495f2c",
             },
             type = {
-                default = "#438d7b",
-                builtin = "#378371",
+                default = "#63836d",
+                builtin = "#577862",
             },
             attribute = {
                 default = "#d95738",

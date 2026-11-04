@@ -90,9 +90,9 @@
                 "terminal.ansi.magenta": "#b66e53",
                 "terminal.ansi.bright_magenta": "#b66e53",
                 "terminal.ansi.dim_magenta": "#aa6448",
-                "terminal.ansi.cyan": "#438d7b",
-                "terminal.ansi.bright_cyan": "#438d7b",
-                "terminal.ansi.dim_cyan": "#378371",
+                "terminal.ansi.cyan": "#63836d",
+                "terminal.ansi.bright_cyan": "#63836d",
+                "terminal.ansi.dim_cyan": "#577862",
                 "terminal.ansi.white": "#d39e82",
                 "terminal.ansi.bright_white": "#f8ddc7",
                 "terminal.ansi.dim_white": "#d39e82",
@@ -178,9 +178,9 @@
                         "selection": "#cb64003d"
                     },
                     {
-                        "cursor": "#438d7b",
-                        "background": "#438d7b",
-                        "selection": "#438d7b3d"
+                        "cursor": "#63836d",
+                        "background": "#63836d",
+                        "selection": "#63836d3d"
                     },
                     {
                         "cursor": "#8c583b",
@@ -250,7 +250,7 @@
                         "font_weight": 700
                     },
                     "enum": {
-                        "color": "#378371",
+                        "color": "#577862",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -400,7 +400,7 @@
                         "font_weight": 700
                     },
                     "type": {
-                        "color": "#438d7b",
+                        "color": "#63836d",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -415,7 +415,7 @@
                         "font_weight": null
                     },
                     "variant": {
-                        "color": "#378371",
+                        "color": "#577862",
                         "font_style": null,
                         "font_weight": null
                     }

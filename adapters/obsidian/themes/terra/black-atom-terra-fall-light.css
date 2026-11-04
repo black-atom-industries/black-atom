@@ -27,8 +27,8 @@
   --color-yellow-rgb: 203, 100, 0;
   --color-green: #566b38;
   --color-green-rgb: 86, 107, 56;
-  --color-cyan: #438d7b;
-  --color-cyan-rgb: 67, 141, 123;
+  --color-cyan: #63836d;
+  --color-cyan-rgb: 99, 131, 109;
   --color-blue: #8c583b;
   --color-blue-rgb: 140, 88, 59;
   --color-purple: #b66e53;
@@ -115,7 +115,7 @@
   --graph-line: #e3bfa4;
   --graph-node: #d9710b;
   --graph-node-focused: #d9710b;
-  --graph-node-tag: #438d7b;
+  --graph-node-tag: #63836d;
   --graph-node-attachment: #566b38;
 
   /* Scrollbar */

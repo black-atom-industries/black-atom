@@ -34,11 +34,11 @@ html.theme_moon_dark[class] {
   --ba-syntax-constant: #e67f3c;
   --ba-syntax-function: #d68c00;
   --ba-syntax-builtin: #d68c00;
-  --ba-syntax-type: #7ea99c;
+  --ba-syntax-type: #a4bfac;
   --ba-syntax-variable: #b2ae72;
   --ba-syntax-property: #99955a;
   --ba-syntax-module: #99955a;
-  --ba-syntax-attribute: #7ea99c;
+  --ba-syntax-attribute: #a4bfac;
   --ba-syntax-tag: #d68c00;
   --ba-syntax-operator: #d4896e;
   color-scheme: dark;
@@ -71,11 +71,11 @@ html.theme_moon_dark[class] {
     --ba-syntax-constant: #e67f3c;
     --ba-syntax-function: #d68c00;
     --ba-syntax-builtin: #d68c00;
-    --ba-syntax-type: #7ea99c;
+    --ba-syntax-type: #a4bfac;
     --ba-syntax-variable: #b2ae72;
     --ba-syntax-property: #99955a;
     --ba-syntax-module: #99955a;
-    --ba-syntax-attribute: #7ea99c;
+    --ba-syntax-attribute: #a4bfac;
     --ba-syntax-tag: #d68c00;
     --ba-syntax-operator: #d4896e;
     color-scheme: dark;
