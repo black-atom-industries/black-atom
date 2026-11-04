@@ -59,6 +59,10 @@ These sites list adapters by name; each needs the new one, in alphabetical order
 - `core/src/lib/adapter-generation.test.ts`: `adapterNames`. The test compares it against the
   discovered adapter dirs.
 - `core/README.md`: the list under "Adapters".
+- `.github/src/labels/config.ts`, in the `black-atom-industries/.github` repo: the
+  `adapter:<name>` label under `black-atom-monorepo`. Commit it there, then create the label with
+  `deno task sync-labels -- black-atom`. The sync deletes labels the config doesn't list, so a
+  label made by hand doesn't last.
 
 ## 6. Embed in livery
 
