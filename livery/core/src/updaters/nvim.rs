@@ -10,7 +10,7 @@ use super::{UpdateContext, UpdateResult};
 /// from Livery's config, so no file of the user's changes here.
 /// `max_sockets` limits how many instances to send to (None = all, Some(1) = benchmark mode).
 pub fn update(app_str: &str, ctx: &UpdateContext, max_sockets: Option<usize>) -> UpdateResult {
-    match reload_failure(ctx.theme_key, max_sockets) {
+    match reload_failure(Some(ctx.theme_key), max_sockets) {
         // The Applied Rule reads this prefix: the run still moves the Active
         // Theme, which is what every Neovim opens with.
         Some(msg) => UpdateResult::skipped(app_str, format!("Theme saved; {msg}")),
@@ -18,15 +18,16 @@ pub fn update(app_str: &str, ctx: &UpdateContext, max_sockets: Option<usize>) ->
     }
 }
 
-/// Reload running instances so they pick up the stored options.
-pub fn reload_options(app_str: &str, theme_key: &str) -> UpdateResult {
-    match reload_failure(theme_key, None) {
+/// Re-run each running instance's own Black Atom colorscheme so it picks up
+/// the stored options. Instances on another scheme stay as they are.
+pub fn reload_options(app_str: &str) -> UpdateResult {
+    match reload_failure(None, None) {
         Some(msg) => UpdateResult::error(app_str, msg),
         None => UpdateResult::done(app_str),
     }
 }
 
-fn reload_failure(theme_key: &str, max_sockets: Option<usize>) -> Option<String> {
+fn reload_failure(theme_key: Option<&str>, max_sockets: Option<usize>) -> Option<String> {
     let failure = match reload(theme_key, max_sockets) {
         Err(msg) => Some(format!("live reload failed: {msg}")),
         Ok(summary) if !summary.failures.is_empty() => Some(reload_failure_message(&summary)),
@@ -239,17 +240,24 @@ fn socket_skips_user_config(socket_path: &Path) -> bool {
         .is_ok_and(|output| skips_user_config(&String::from_utf8_lossy(&output.stdout)))
 }
 
+/// Re-applies the instance's current scheme when it is a Black Atom one.
+const REAPPLY_EXPR: &str =
+    "execute(get(g:, 'colors_name', '') =~# '^black-atom-' ? 'colorscheme ' . g:colors_name : '')";
+
 const RELOAD_TIMEOUT: Duration = Duration::from_secs(5);
 
 /// Reload all running Neovim instances via `--remote-expr execute("colorscheme …")`.
 /// remote-expr (unlike remote-send) never types into an insert-mode buffer,
 /// leaves the user's mode untouched, and reports whether the colorscheme
 /// actually applied — E185 from a live instance comes back as a failure.
+/// `None` as theme key re-applies each instance's own Black Atom scheme.
 /// Returns Err only when reload could not be attempted (invalid theme key).
 /// No sockets found is not an error — nvim picks the theme up on next launch.
-fn reload(theme_key: &str, max_sockets: Option<usize>) -> Result<ReloadSummary, String> {
-    if !is_valid_theme_key(theme_key) {
-        return Err(format!("Invalid theme key for nvim reload: {theme_key}"));
+fn reload(theme_key: Option<&str>, max_sockets: Option<usize>) -> Result<ReloadSummary, String> {
+    if let Some(key) = theme_key {
+        if !is_valid_theme_key(key) {
+            return Err(format!("Invalid theme key for nvim reload: {key}"));
+        }
     }
 
     let tmpdir = std::env::var("TMPDIR").unwrap_or_else(|_| "/tmp".to_string());
@@ -269,7 +277,10 @@ fn reload(theme_key: &str, max_sockets: Option<usize>) -> Result<ReloadSummary, 
     }
 
     // theme_key is validated above — safe inside the quoted expr.
-    let expr = format!(r#"execute("colorscheme {theme_key}")"#);
+    let expr = match theme_key {
+        Some(key) => format!(r#"execute("colorscheme {key}")"#),
+        None => REAPPLY_EXPR.to_string(),
+    };
     let total = sockets.len();
 
     // Send to all sockets in parallel — each is an independent subprocess
@@ -320,7 +331,7 @@ fn reload(theme_key: &str, max_sockets: Option<usize>) -> Result<ReloadSummary, 
 
     log::info!(
         "Applied colorscheme {} on {}/{} nvim sockets ({} stale, {} failed)",
-        theme_key,
+        theme_key.unwrap_or("(own)"),
         summary.sent,
         total,
         summary.stale,

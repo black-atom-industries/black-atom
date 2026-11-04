@@ -588,10 +588,9 @@ fn active_theme_label() -> String {
 fn theme_was_applied(result: &UpdateResult) -> bool {
     result.status == UpdateStatus::Done
         || (result.status == UpdateStatus::Skipped
-            && result
-                .message
-                .as_deref()
-                .is_some_and(|message| message.starts_with("Config patched;")))
+            && result.message.as_deref().is_some_and(|message| {
+                message.starts_with("Config patched;") || message.starts_with("Theme saved;")
+            }))
 }
 
 fn enabled_apps(config: &Config) -> Vec<AppName> {
@@ -714,7 +713,10 @@ impl Notes {
             return;
         }
         if let Some(message) = &result.message {
-            let message = message.strip_prefix("Config patched; ").unwrap_or(message);
+            let message = message
+                .strip_prefix("Config patched; ")
+                .or_else(|| message.strip_prefix("Theme saved; "))
+                .unwrap_or(message);
             self.add(app, message.to_string());
         }
     }
@@ -771,6 +773,10 @@ mod tests {
         assert!(theme_was_applied(&UpdateResult::skipped(
             "ghostty",
             "Config patched; live reload failed"
+        )));
+        assert!(theme_was_applied(&UpdateResult::skipped(
+            "nvim",
+            "Theme saved; live reload failed"
         )));
         assert!(!theme_was_applied(&UpdateResult::skipped(
             "ghostty",

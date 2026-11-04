@@ -91,7 +91,8 @@ export function NvimSettingsPanel({
             ) : (
                 <Typo.Small color="hint">
                     Stored in Livery&apos;s config as <code>apps.nvim.settings</code>, where the
-                    plugin reads them. Running Neovims reload on save.
+                    plugin reads them. On save, each running Neovim re-applies its current Black
+                    Atom theme.
                 </Typo.Small>
             )}
             {colorschemeOverride && (

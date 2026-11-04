@@ -257,7 +257,7 @@ transparency: string; ending_tildes: boolean;
 /**
  * `"fg"` or `"bg"`.
  */
-cmp_kind_color_mode: string; dark_sidebars: boolean; dark_floats: boolean; dark_gutter?: boolean; gutter_padding?: number; diagnostics: NvimDiagnostics; syntax: NvimSyntax }
+cmp_kind_color_mode: string; dark_sidebars: boolean; dark_floats: boolean; dark_gutter: boolean; gutter_padding: number; diagnostics: NvimDiagnostics; syntax: NvimSyntax }
 /**
  * Per-group syntax styling. One entry per group the plugin reads.
  */

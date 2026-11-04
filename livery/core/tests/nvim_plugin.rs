@@ -140,6 +140,29 @@ fn config_json_alone_sets_options_and_theme() {
 }
 
 #[test]
+fn a_disabled_nvim_ignores_the_livery_config() {
+    let fx = fixture_or_skip!();
+    fx.config_json(&format!(
+        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"enabled":false,"settings":{{"styles":{{"dark_gutter":true}}}}}}}}}}"#
+    ));
+    let out = fx.run();
+    assert_eq!(out["colors_name"], Value::Null);
+    assert_eq!(out["notes"], json!([]));
+    assert_eq!(out["config"]["styles"]["dark_gutter"], false);
+}
+
+#[test]
+fn a_missing_enabled_key_counts_as_enabled() {
+    let fx = fixture_or_skip!();
+    fx.config_json(&format!(
+        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"settings":{{"styles":{{"dark_gutter":true}}}}}}}}}}"#
+    ));
+    let out = fx.run();
+    assert_eq!(out["colors_name"], THEME);
+    assert_eq!(out["config"]["styles"]["dark_gutter"], true);
+}
+
+#[test]
 fn null_and_empty_values_leave_defaults() {
     let fx = fixture_or_skip!();
     fx.config_json(r#"{"active_theme":null,"apps":{"nvim":{"settings":null}}}"#);

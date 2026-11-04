@@ -455,10 +455,16 @@ struct RunningNeovim {
 }
 
 impl RunningNeovim {
-    fn start(socket_root: &Path, home: &Path, xdg_config: &Path, xdg_data: &Path) -> Self {
+    fn start(
+        socket_root: &Path,
+        pid: u32,
+        home: &Path,
+        xdg_config: &Path,
+        xdg_data: &Path,
+    ) -> Self {
         let dir = socket_root.join("nvim.fixture/0");
         std::fs::create_dir_all(&dir).unwrap();
-        let socket = dir.join("nvim.999999.0");
+        let socket = dir.join(format!("nvim.{pid}.0"));
         let init = home.join("reload-init.lua");
         write_file(&init, "");
         let child = Command::new("nvim")
@@ -539,7 +545,7 @@ fn reload_reaches_a_running_neovim(
     config.apps.get_mut(&AppName::Nvim).unwrap().enabled = true;
     save_config(config).unwrap();
     let no_theme = block_on(reload_nvim());
-    assert_eq!(no_theme.status, UpdateStatus::Skipped, "{no_theme:?}");
+    assert_eq!(no_theme.status, UpdateStatus::Done, "{no_theme:?}");
 
     set_active_theme(THEME).unwrap();
     let no_instances = block_on(reload_nvim());
@@ -552,8 +558,12 @@ fn reload_reaches_a_running_neovim(
         return;
     }
 
-    let neovim = RunningNeovim::start(socket_root, home, xdg_config, xdg_data);
+    let neovim = RunningNeovim::start(socket_root, 999_999, home, xdg_config, xdg_data);
     assert_eq!(neovim.eval("g:colors_name"), THEME);
+    let own = RunningNeovim::start(socket_root, 999_998, home, xdg_config, xdg_data);
+    own.eval("execute('colorscheme black-atom-jpn-koyo-light')");
+    let foreign = RunningNeovim::start(socket_root, 999_997, home, xdg_config, xdg_data);
+    foreign.eval("execute('colorscheme desert')");
     assert_eq!(neovim.eval(LOADED_GUTTER), "0");
 
     let mut config = get_config();
@@ -563,6 +573,10 @@ fn reload_reaches_a_running_neovim(
     let saved = block_on(reload_nvim());
     assert_eq!(saved.status, UpdateStatus::Done, "{saved:?}");
     assert_eq!(neovim.eval(LOADED_GUTTER), "1");
+    assert_eq!(neovim.eval("g:colors_name"), THEME);
+    assert_eq!(own.eval(LOADED_GUTTER), "1");
+    assert_eq!(own.eval("g:colors_name"), "black-atom-jpn-koyo-light");
+    assert_eq!(foreign.eval("g:colors_name"), "desert");
 }
 
 const STARTUP_THEME: &str = "black-atom-jpn-koyo-dark";

@@ -34,7 +34,7 @@ While the GUI runs it watches `config.json`, through a symlink too, with changes
 Livery's own saves. Otherwise:
 
 - The window refreshes. An unsaved draft on the Neovim settings page stays and shows as unsaved.
-- Changed `apps.nvim.settings` reload running Neovims.
+- Changed `apps.nvim.settings` re-apply each running Neovim's current Black Atom theme.
 - A changed `active_theme` applies to every enabled tool, as if picked in Livery. A `livery apply`
   in a terminal counts as such a change, so the GUI applies that theme a second time. A key that
   names no theme shows an error in the footer and applies nothing.
@@ -161,7 +161,9 @@ names the error.
   config, and Livery edits no Neovim file.
 - **Reload:** `nvim --server <socket> --remote-expr 'execute("colorscheme <themeKey>")'` against
   every running instance whose socket lives under `$TMPDIR/nvim.<user>/`, which covers macOS, on
-  every apply, every save in the settings page, and every change to these options in `config.json`.
+  every apply. A save in the settings page and a change to these options in `config.json` send an
+  expression that re-runs the instance's own `g:colors_name` when it starts with `black-atom-`, and
+  does nothing for other schemes.
   Sockets under `$XDG_RUNTIME_DIR` on Linux are not
   found yet. No running instance is a success.
 - **Precondition:** none. Setup needs the placement above, which verify checks.

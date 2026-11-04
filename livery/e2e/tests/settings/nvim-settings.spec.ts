@@ -9,7 +9,11 @@ test("SAVE SETTINGS stores the options in Livery's config and touches no Neovim 
 }) => {
     await page.goto("/settings/adapters/nvim");
     await expect(page.getByText("CONFIG_PATH", { exact: true })).toHaveCount(0);
-    await expect(page.getByText("Running Neovims reload on save.", { exact: false })).toBeVisible();
+    await expect(
+        page.getByText("each running Neovim re-applies its current Black Atom theme", {
+            exact: false,
+        }),
+    ).toBeVisible();
 
     const row = page
         .locator("div")

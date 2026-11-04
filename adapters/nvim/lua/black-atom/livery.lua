@@ -14,7 +14,8 @@ end
 
 ---Reads Livery's config file fresh, so a `:colorscheme` after a live reload
 ---sees the new values. A missing file is normal and silent. Invalid JSON warns
----once until a read succeeds again.
+---once until a read succeeds again. A config with `apps.nvim.enabled = false`
+---reads as no config at all.
 ---@return BlackAtom.LiveryConfig | nil
 function M.read()
     local file = io.open(M.path(), "r")
@@ -27,6 +28,9 @@ function M.read()
     local ok, decoded = pcall(vim.json.decode, text, { luanil = { object = true, array = true } })
     if ok and type(decoded) == "table" then
         warned = false
+        if vim.tbl_get(decoded, "apps", "nvim", "enabled") == false then
+            return nil
+        end
         return decoded
     end
 

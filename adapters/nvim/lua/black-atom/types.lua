@@ -209,6 +209,7 @@
 ---@field styles?                                               BlackAtom.Config.Styles Various styles related settings (Default: See Documentation)
 
 ---@class BlackAtom.LiveryConfig.Nvim
+---@field enabled?                                              boolean `false` turns the startup theme and the settings layer off
 ---@field settings?                                             BlackAtom.Config Options Livery stores for Neovim
 
 ---@class BlackAtom.LiveryConfig

@@ -67,7 +67,8 @@ fn default_true() -> bool {
 
 /// Bold/italic pair for one syntax group. Mirrors
 /// `BlackAtom.HighlightDefinition` as far as the settings page exposes it.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(default)]
 pub struct NvimStyle {
     pub bold: bool,
     pub italic: bool,
@@ -75,6 +76,7 @@ pub struct NvimStyle {
 
 /// Per-group syntax styling. One entry per group the plugin reads.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(default)]
 pub struct NvimSyntax {
     pub comments: NvimStyle,
     pub keywords: NvimStyle,
@@ -84,13 +86,15 @@ pub struct NvimSyntax {
     pub messages: NvimStyle,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(default)]
 pub struct NvimDiagnostics {
     pub undercurl: bool,
     pub background: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(default)]
 pub struct NvimStyles {
     /// `"none"`, `"partial"`, or `"full"`.
     pub transparency: String,
@@ -99,9 +103,7 @@ pub struct NvimStyles {
     pub cmp_kind_color_mode: String,
     pub dark_sidebars: bool,
     pub dark_floats: bool,
-    #[serde(default)]
     pub dark_gutter: bool,
-    #[serde(default)]
     pub gutter_padding: u8,
     pub diagnostics: NvimDiagnostics,
     pub syntax: NvimSyntax,
@@ -111,6 +113,7 @@ pub struct NvimStyles {
 /// plugin reads this shape from `apps.nvim.settings`, so a renamed field here
 /// silently stops reaching it.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(default)]
 pub struct NvimSettings {
     pub term_colors: bool,
     pub styles: NvimStyles,
@@ -119,49 +122,50 @@ pub struct NvimSettings {
 /// Mirrors `M.defaults` in `adapters/nvim/lua/black-atom/config.lua`. The
 /// plugin merges the stored options over those defaults, so an unfaithful
 /// default here changes highlights for a user who never opened the settings
-/// page.
+/// page. Missing keys in a stored file take these values.
 impl Default for NvimSettings {
     fn default() -> Self {
         Self {
             term_colors: true,
-            styles: NvimStyles {
-                transparency: "none".to_string(),
-                ending_tildes: false,
-                cmp_kind_color_mode: "bg".to_string(),
-                dark_sidebars: true,
-                dark_floats: true,
-                dark_gutter: false,
-                gutter_padding: 0,
-                diagnostics: NvimDiagnostics {
-                    undercurl: false,
-                    background: false,
-                },
-                syntax: NvimSyntax {
-                    comments: NvimStyle {
-                        bold: false,
-                        italic: true,
-                    },
-                    keywords: NvimStyle {
-                        bold: true,
-                        italic: false,
-                    },
-                    functions: NvimStyle {
-                        bold: false,
-                        italic: false,
-                    },
-                    strings: NvimStyle {
-                        bold: false,
-                        italic: false,
-                    },
-                    variables: NvimStyle {
-                        bold: false,
-                        italic: false,
-                    },
-                    messages: NvimStyle {
-                        bold: true,
-                        italic: false,
-                    },
-                },
+            styles: NvimStyles::default(),
+        }
+    }
+}
+
+impl Default for NvimStyles {
+    fn default() -> Self {
+        Self {
+            transparency: "none".to_string(),
+            ending_tildes: false,
+            cmp_kind_color_mode: "bg".to_string(),
+            dark_sidebars: true,
+            dark_floats: true,
+            dark_gutter: false,
+            gutter_padding: 0,
+            diagnostics: NvimDiagnostics::default(),
+            syntax: NvimSyntax::default(),
+        }
+    }
+}
+
+impl Default for NvimSyntax {
+    fn default() -> Self {
+        let plain = NvimStyle::default();
+        Self {
+            comments: NvimStyle {
+                bold: false,
+                italic: true,
+            },
+            keywords: NvimStyle {
+                bold: true,
+                italic: false,
+            },
+            functions: plain,
+            strings: plain,
+            variables: plain,
+            messages: NvimStyle {
+                bold: true,
+                italic: false,
             },
         }
     }
@@ -260,6 +264,26 @@ mod tests {
         assert_eq!(
             serialized["active_theme"],
             serde_json::json!("black-atom-jpn-koyo-dark")
+        );
+    }
+
+    #[test]
+    fn partial_nvim_settings_take_the_defaults_for_missing_keys() {
+        let partial: NvimSettings =
+            serde_json::from_str(r#"{"styles":{"dark_gutter":true}}"#).unwrap();
+
+        let mut expected = NvimSettings::default();
+        expected.styles.dark_gutter = true;
+        assert_eq!(partial, expected);
+
+        let empty: NvimSettings = serde_json::from_str("{}").unwrap();
+        assert_eq!(empty, NvimSettings::default());
+    }
+
+    #[test]
+    fn nvim_settings_with_a_wrong_type_still_fail() {
+        assert!(
+            serde_json::from_str::<NvimSettings>(r#"{"styles":{"dark_gutter":"yes"}}"#).is_err()
         );
     }
 }

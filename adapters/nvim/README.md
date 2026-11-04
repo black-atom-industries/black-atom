@@ -32,8 +32,9 @@ before it:
    `$XDG_CONFIG_HOME/black-atom/livery/config.json` (`~/.config` when `$XDG_CONFIG_HOME` is unset).
 3. `vim.g.black_atom_core_config`, from your own Neovim config.
 
-Your own table always wins, regardless of load order, and only for the keys it names. A partial
-table is fine:
+Your own table always wins, and only for the keys it names. Set before startup ends (in your
+`init.lua`, for example), it applies to the theme Neovim opens with. Set later (in `after/plugin`
+or on `VimEnter`), it applies from the next `:colorscheme`. A partial table is fine:
 
 ```lua
 vim.g.black_atom_core_config = {
@@ -80,7 +81,8 @@ such as the bold on `@function.call`. To turn one off, set it to `false` in your
 Livery stores both flags of every group.
 
 The layers are read at every `:colorscheme`. To change the config at runtime, set the global or
-edit the file, then re-run `:colorscheme`.
+edit the file, then re-run `:colorscheme`. Turning `term_colors` off takes effect in new Neovims,
+because a running one keeps the terminal colors it already set.
 
 ### The theme at startup
 
@@ -90,12 +92,18 @@ from `config.json`. A name it can't apply gives one warning, and Neovim keeps st
 
 ### With Livery
 
-Livery's setup links this directory into `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/`, so
+Livery's setup links its managed copy of this directory into `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/`, so
 Neovim opens in the active theme with its options from `config.json`, with no line in your config
 and even with no config at all. Livery never edits your Neovim files.
 
-Applying a theme, saving options in Livery's settings page, and editing them in `config.json` while
-Livery runs all reload every running Neovim.
+Applying a theme switches every running Neovim to it. Saving options in Livery's settings page, and
+editing them in `config.json` while Livery runs, re-apply each running Neovim's current Black Atom
+theme, and leave an instance on another colorscheme alone.
+
+`apps.nvim.enabled = false` in `config.json` turns all of this off: the plugin then behaves as if
+there were no `config.json`, with no startup theme and no settings layer. A missing key counts as
+enabled.
+
 Livery searches the `.lua` and `.vim` files under `$XDG_CONFIG_HOME/nvim` (symlinks followed,
 `colors/` and hidden directories skipped) for two kinds of line. A line that sets
 `vim.g.black_atom_core_config` makes the settings page read-only and names the file and line,

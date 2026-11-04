@@ -186,8 +186,8 @@ pub async fn update_app(app: AppName, theme: ThemeContext) -> UpdateResult {
     result
 }
 
-/// Reload running Neovims with the Active Theme, so they pick up the plugin
-/// options stored in the config.
+/// Reload running Neovims on their own Black Atom theme, so they pick up the
+/// plugin options stored in the config.
 pub async fn reload_nvim() -> UpdateResult {
     let config = config_io::read_config_from_disk();
     if !config
@@ -200,13 +200,7 @@ pub async fn reload_nvim() -> UpdateResult {
             "Neovim is disabled here, so running instances were not reloaded",
         );
     }
-    let Some(theme_key) = config.active_theme else {
-        return UpdateResult::skipped(
-            "nvim",
-            "No active theme yet, so running instances were not reloaded",
-        );
-    };
-    nvim::reload_options("nvim", &theme_key)
+    nvim::reload_options("nvim")
 }
 
 /// Dispatch an update to the appropriate per-app updater.
