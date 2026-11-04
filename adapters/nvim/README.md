@@ -37,6 +37,7 @@ vim.g.black_atom_core_config = {
         dark_sidebars = true,
         dark_floats = true,
         dark_gutter = false,
+        gutter_padding = 0, -- see "Pad the dark gutter"
         transparency = "none", -- "none" | "partial" | "full"
         diagnostics = {
             undercurl = false,
@@ -84,28 +85,15 @@ With `styles.dark_gutter = true`, the gutter sits right against the code. Blank 
 `Normal` at the end of the `statuscolumn` separate the two. The built-in columns can't do
 this, because the number column's padding always takes `LineNr`'s background.
 
-The helper adds the cells to any column format, so it works on top of the one you already
-use. Replace the format in `PaddedStatuscolumn` with your own:
+`styles.gutter_padding` sets the number of cells, and `pad` from `black-atom.gutter` adds them
+to any column format, so it works on top of the one you already use. It returns the format
+unchanged while `dark_gutter` is off, and in floats and windows without a gutter. Replace the
+format in `PaddedStatuscolumn` with your own:
 
 ```lua
-local function pad_gutter(base)
-    local padding = 2
-    local win = vim.g.statusline_winid
-    local wo = vim.wo[win]
-    local gutter = wo.number or wo.relativenumber or wo.signcolumn ~= "no"
-
-    -- `Normal` would show as a notch on a float's panel background.
-    if not gutter or vim.api.nvim_win_get_config(win).relative ~= "" then
-        return base
-    end
-
-    local on_cursor = wo.cursorline and vim.v.relnum == 0 and vim.v.virtnum <= 0
-    return base .. (on_cursor and "%#CursorLine#" or "%#Normal#") .. string.rep(" ", padding)
-end
-
 function _G.PaddedStatuscolumn()
     -- The default columns: folds, signs, line number.
-    return pad_gutter("%C%s%=%l ")
+    return require("black-atom.gutter").pad("%C%s%=%l ")
 end
 
 vim.o.statuscolumn = "%!v:lua.PaddedStatuscolumn()"

@@ -9,6 +9,7 @@ M.defaults = {
         dark_sidebars = true,
         dark_floats = true,
         dark_gutter = false,
+        gutter_padding = 0,
         transparency = "none",
         diagnostics = {
             undercurl = false,

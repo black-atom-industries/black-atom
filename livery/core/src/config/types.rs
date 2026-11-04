@@ -101,6 +101,8 @@ pub struct NvimStyles {
     pub dark_floats: bool,
     #[serde(default)]
     pub dark_gutter: bool,
+    #[serde(default)]
+    pub gutter_padding: u8,
     pub diagnostics: NvimDiagnostics,
     pub syntax: NvimSyntax,
 }
@@ -133,6 +135,7 @@ impl Default for NvimSettings {
                 dark_sidebars: true,
                 dark_floats: true,
                 dark_gutter: false,
+                gutter_padding: 0,
                 diagnostics: NvimDiagnostics {
                     undercurl: false,
                     background: false,

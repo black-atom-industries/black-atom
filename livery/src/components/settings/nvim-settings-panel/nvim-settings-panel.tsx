@@ -27,6 +27,8 @@ const CMP_KIND_OPTIONS = [
     { value: "bg", label: "BG" },
 ];
 
+const GUTTER_PADDING_OPTIONS = ["0", "1", "2", "3", "4"].map((value) => ({ value, label: value }));
+
 type Props = {
     settings: NvimSettings;
     dirty: boolean;
@@ -142,6 +144,15 @@ export function NvimSettingsPanel({
                     options={TRANSPARENCY_OPTIONS}
                     value={s.transparency}
                     onChange={(value) => setStyles({ transparency: value })}
+                />
+            </div>
+            <div className={styles.choiceRow}>
+                <span className={styles.rowTitle}>GUTTER_PADDING</span>
+                <RadioGroup
+                    name="nvim-gutter-padding"
+                    options={GUTTER_PADDING_OPTIONS}
+                    value={String(s.gutter_padding ?? 0)}
+                    onChange={(value) => setStyles({ gutter_padding: Number(value) })}
                 />
             </div>
             <div className={styles.choiceRow}>
