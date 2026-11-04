@@ -166,6 +166,12 @@
     }
 }
 
+/* Bleeds into the column gap, so a marked row keeps its columns aligned with the rows around it. */
+.changed {
+    margin-inline: -4px;
+    padding-inline: 4px;
+}
+
 .sample {
     padding: 2px 0;
     text-align: center;

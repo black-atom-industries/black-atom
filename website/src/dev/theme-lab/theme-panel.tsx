@@ -187,15 +187,23 @@ function Terminal({ ui, palette }: Theme.Definition) {
     );
 }
 
+function isChanged(pair: ContrastPair, old: ContrastPair | undefined): old is ContrastPair {
+    return old !== undefined && (old.fg.color !== pair.fg.color || old.bg.color !== pair.bg.color);
+}
+
 function RatioColumn({
     title,
     keys,
     pairs,
+    previous,
+    ui,
     label,
 }: {
     title: string;
     keys: string[];
     pairs: Map<string, ContrastPair>;
+    previous: Map<string, ContrastPair> | undefined;
+    ui: Theme.Ui;
     label: (pair: ContrastPair) => string;
 }) {
     return (
@@ -204,8 +212,26 @@ function RatioColumn({
             {keys.flatMap((key) => {
                 const pair = pairs.get(key);
                 if (!pair) return [];
+                const old = previous?.get(key);
+                const changed = isChanged(pair, old);
                 return (
-                    <div key={key} className={styles.token}>
+                    <div
+                        key={key}
+                        className={changed ? `${styles.token} ${styles.changed}` : styles.token}
+                        style={
+                            changed
+                                ? {
+                                      background: ui.bg.modify,
+                                      boxShadow: `-2px 0 0 ${ui.fg.modify}`,
+                                  }
+                                : undefined
+                        }
+                        title={
+                            changed
+                                ? `was ${old.fg.color} on ${old.bg.color}, ${old.ratio.toFixed(1)}`
+                                : undefined
+                        }
+                    >
                         <span
                             className={styles.sample}
                             style={{ color: pair.fg.color, background: pair.bg.color }}
@@ -223,8 +249,9 @@ function RatioColumn({
     );
 }
 
-function Ratios({ theme }: { theme: Theme.Definition }) {
+function Ratios({ theme, previous }: { theme: Theme.Definition; previous?: Theme.Definition }) {
     const pairs = contrastPairs(theme);
+    const previousPairs = previous && contrastPairs(previous);
     const syntaxGroups = [
         ...new Set(
             [...code, ...diff.map(([, text]) => text)].flatMap((text) =>
@@ -238,6 +265,8 @@ function Ratios({ theme }: { theme: Theme.Definition }) {
                 title="UI"
                 keys={uiPairs}
                 pairs={pairs}
+                previous={previousPairs}
+                ui={theme.ui}
                 label={(pair) =>
                     pair.bg.key === "bg.default"
                         ? pair.fg.key.slice(3)
@@ -248,20 +277,32 @@ function Ratios({ theme }: { theme: Theme.Definition }) {
                 title="Syntax"
                 keys={syntaxGroups.map((group) => `syntax.${group}.default|bg.default`)}
                 pairs={pairs}
+                previous={previousPairs}
+                ui={theme.ui}
                 label={(pair) => pair.fg.key.split(".")[1] ?? pair.fg.key}
             />
             <RatioColumn
                 title="Terminal"
                 keys={terminalSlots.map((slot) => `palette.${slot}|bg.default`)}
                 pairs={pairs}
+                previous={previousPairs}
+                ui={theme.ui}
                 label={(pair) => pair.fg.key.slice("palette.".length)}
             />
         </div>
     );
 }
 
-/** One theme rendered as a mock editor with its contrast ratios. */
-export function ThemePanel({ theme, label }: { theme: Theme.Definition; label: string }) {
+/** One theme rendered as a mock editor with its contrast ratios, marking the pairs that differ from `previous`. */
+export function ThemePanel({
+    theme,
+    label,
+    previous,
+}: {
+    theme: Theme.Definition;
+    label: string;
+    previous?: Theme.Definition;
+}) {
     const { ui } = theme;
     const style: CSSProperties = { background: ui.bg.default, color: ui.fg.default };
     return (
@@ -277,7 +318,7 @@ export function ThemePanel({ theme, label }: { theme: Theme.Definition; label: s
             </div>
             <Statusline {...theme} />
             <Terminal {...theme} />
-            <Ratios theme={theme} />
+            <Ratios theme={theme} previous={previous} />
         </div>
     );
 }

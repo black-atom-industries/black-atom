@@ -108,7 +108,8 @@ export function ThemeLab() {
                         <Text variant="intro" tone="subtle">
                             Each theme as a mock editor: before at the base revision, after in the
                             working tree. Contrast ratios are WCAG. Red marks a pair under 3:1, the
-                            minimum for UI components and large text.
+                            minimum for UI components and large text. A tinted row changed since the
+                            base revision; hover it for the old colors and ratio.
                         </Text>
                     </Stack>
 
@@ -215,7 +216,11 @@ export function ThemeLab() {
                                         ) : (
                                             <div />
                                         )}
-                                        <ThemePanel theme={after} label="after · working tree" />
+                                        <ThemePanel
+                                            theme={after}
+                                            label="after · working tree"
+                                            previous={old}
+                                        />
                                     </div>
                                 </Stack>
                             </section>
