@@ -6,7 +6,7 @@ export default function ({ primaries, palette, feedback }: Theme.CreatorContext)
             default: palette.blue,
             builtin: palette.darkBlue,
             member: palette.darkBlue,
-            parameter: palette.darkYellow,
+            parameter: palette.red,
         },
         property: {
             default: palette.darkBlue,
@@ -21,7 +21,7 @@ export default function ({ primaries, palette, feedback }: Theme.CreatorContext)
         string: {
             default: palette.green,
             doc: palette.green,
-            regexp: palette.darkYellow,
+            regexp: palette.red,
             escape: palette.red,
         },
         boolean: {

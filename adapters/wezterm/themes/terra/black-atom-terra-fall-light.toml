@@ -3,61 +3,61 @@ author = "Black Atom Industries"
 name = "Black Atom — TERRA ∷ Fall Light"
 
 [colors]
-foreground = "#422617"
-background = "#f8ddc7"
-cursor_bg = "#d9710b"
-cursor_border = "#d9710b"
-cursor_fg = "#f8ddc7"
-selection_bg = "#ffe6d2"
-selection_fg = "#422617"
-split = "#d9710b"
-compose_cursor = "#af4125"
-scrollbar_thumb = "#815137"
+foreground = "#422616"
+background = "#ffddbb"
+cursor_bg = "#d47421"
+cursor_border = "#d47421"
+cursor_fg = "#ffddbb"
+selection_bg = "#ffe7bf"
+selection_fg = "#422616"
+split = "#d47421"
+compose_cursor = "#ce5d42"
+scrollbar_thumb = "#815136"
 
 ansi = [
   "#694a39", # black
-  "#9f3215", # dark_red
+  "#b8492e", # dark_red
   "#495f2c", # dark_green
-  "#d95738", # dark_yellow
+  "#d26045", # dark_yellow
   "#784d34", # dark_blue
-  "#6a427b", # dark_magenta
+  "#654872", # dark_magenta
   "#577862", # dark_cyan
-  "#d39e82" # light_gray
+  "#d39e81" # light_gray
 ]
 
 brights = [
-  "#815137", # gray
-  "#af4125", # red
+  "#815136", # gray
+  "#ce5d42", # red
   "#566b38", # green
-  "#cb6400", # yellow
+  "#d47421", # yellow
   "#8c583b", # blue
-  "#875f9a", # magenta
+  "#826490", # magenta
   "#63836d", # cyan
-  "#f8ddc7" # white
+  "#ffddbb" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#eeceb6"
-background = "#f8ddc7"
+inactive_tab_edge = "#ffd5b3"
+background = "#ffddbb"
 
 [colors.tab_bar.active_tab]
-fg_color = "#f8ddc7"
-bg_color = "#d9710b"
+fg_color = "#ffddbb"
+bg_color = "#d47421"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#f8ddc7"
-bg_color = "#b78368"
+fg_color = "#ffddbb"
+bg_color = "#b68367"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#f8ddc7"
-bg_color = "#e3bfa4"
+fg_color = "#ffddbb"
+bg_color = "#eec5a3"
 
 [colors.tab_bar.new_tab]
-fg_color = "#f8ddc7"
+fg_color = "#ffddbb"
 bg_color = "#566b38"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#f8ddc7"
-bg_color = "#e3bfa4"
+fg_color = "#ffddbb"
+bg_color = "#eec5a3"
 intensity = "Bold"

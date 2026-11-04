@@ -29,7 +29,7 @@ html.theme_moon_dark[class] {
   --ba-syntax-string: #82c3d3;
   --ba-syntax-string-doc: #82c3d3;
   --ba-syntax-string-escape: #e996a0;
-  --ba-syntax-string-regexp: #eb8656;
+  --ba-syntax-string-regexp: #e996a0;
   --ba-syntax-number: #64b3c0;
   --ba-syntax-constant: #eb8656;
   --ba-syntax-function: #fba952;
@@ -66,7 +66,7 @@ html.theme_moon_dark[class] {
     --ba-syntax-string: #82c3d3;
     --ba-syntax-string-doc: #82c3d3;
     --ba-syntax-string-escape: #e996a0;
-    --ba-syntax-string-regexp: #eb8656;
+    --ba-syntax-string-regexp: #e996a0;
     --ba-syntax-number: #64b3c0;
     --ba-syntax-constant: #eb8656;
     --ba-syntax-function: #fba952;

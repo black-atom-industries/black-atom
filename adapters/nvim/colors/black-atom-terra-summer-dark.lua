@@ -84,7 +84,7 @@ local theme = {
                 default = "#80be9d",
                 builtin = "#65a281",
                 member = "#65a281",
-                parameter = "#e99e5e",
+                parameter = "#c88f7b",
             },
             property = {
                 default = "#65a281",
@@ -92,7 +92,7 @@ local theme = {
             string = {
                 default = "#8cbf70",
                 doc = "#8cbf70",
-                regexp = "#e99e5e",
+                regexp = "#c88f7b",
                 escape = "#c88f7b",
             },
             constant = {

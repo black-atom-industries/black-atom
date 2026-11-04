@@ -1,30 +1,30 @@
 /* Black Atom — TERRA ∷ Fall Light */
 
 /* Background colors */
-@define-color ba-bg-default #f8ddc7;
-@define-color ba-bg-panel #eeceb6;
-@define-color ba-bg-hover #e3bfa4;
-@define-color ba-bg-active #e3bfa4;
-@define-color ba-bg-selection #ffe6d2;
-@define-color ba-bg-contrast #422617;
+@define-color ba-bg-default #ffddbb;
+@define-color ba-bg-panel #ffd5b3;
+@define-color ba-bg-hover #eec5a3;
+@define-color ba-bg-active #eec5a3;
+@define-color ba-bg-selection #ffe7bf;
+@define-color ba-bg-contrast #422616;
 
 /* Foreground colors */
-@define-color ba-fg-default #422617;
-@define-color ba-fg-subtle #815137;
-@define-color ba-fg-accent #d9710b;
+@define-color ba-fg-default #422616;
+@define-color ba-fg-subtle #815136;
+@define-color ba-fg-accent #d47421;
 @define-color ba-fg-disabled #9b6a4f;
-@define-color ba-fg-contrast #f8ddc7;
+@define-color ba-fg-contrast #ffddbb;
 
 /* Feedback colors */
-@define-color ba-fg-negative #af4125;
+@define-color ba-fg-negative #ce5d42;
 @define-color ba-fg-positive #566b38;
-@define-color ba-fg-warn #cb6400;
+@define-color ba-fg-warn #d47421;
 @define-color ba-fg-info #8c583b;
 
 /* Palette colors */
-@define-color ba-red #af4125;
+@define-color ba-red #ce5d42;
 @define-color ba-green #566b38;
-@define-color ba-yellow #cb6400;
+@define-color ba-yellow #d47421;
 @define-color ba-blue #8c583b;
-@define-color ba-magenta #875f9a;
+@define-color ba-magenta #826490;
 @define-color ba-cyan #63836d;

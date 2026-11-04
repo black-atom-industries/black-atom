@@ -4,21 +4,21 @@ name = "Black Atom — TERRA ∷ Fall Dark"
 
 [colors]
 foreground = "#eac5b1"
-background = "#241710"
-cursor_bg = "#d68c00"
-cursor_border = "#d68c00"
-cursor_fg = "#241710"
-selection_bg = "#382a23"
+background = "#241711"
+cursor_bg = "#ce903a"
+cursor_border = "#ce903a"
+cursor_fg = "#241711"
+selection_bg = "#392a23"
 selection_fg = "#eac5b1"
-split = "#d68c00"
-compose_cursor = "#fd8c7b"
+split = "#ce903a"
+compose_cursor = "#f69181"
 scrollbar_thumb = "#c59174"
 
 ansi = [
-  "#382a23", # black
-  "#d36757", # dark_red
+  "#392a23", # black
+  "#cd6c5d", # dark_red
   "#889776", # dark_green
-  "#e67f3c", # dark_yellow
+  "#dc8652", # dark_yellow
   "#c49a83", # dark_blue
   "#8c7895", # dark_magenta
   "#92ac9a", # dark_cyan
@@ -27,9 +27,9 @@ ansi = [
 
 brights = [
   "#a98774", # gray
-  "#fd8c7b", # red
+  "#f69181", # red
   "#95a483", # green
-  "#d68c00", # yellow
+  "#ce903a", # yellow
   "#e2baa5", # blue
   "#9e89a8", # magenta
   "#a4bfac", # cyan
@@ -37,27 +37,27 @@ brights = [
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#1b0e08"
-background = "#241710"
+inactive_tab_edge = "#20120c"
+background = "#241711"
 
 [colors.tab_bar.active_tab]
-fg_color = "#241710"
-bg_color = "#d68c00"
+fg_color = "#241711"
+bg_color = "#ce903a"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#241710"
+fg_color = "#241711"
 bg_color = "#86563b"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#241710"
-bg_color = "#2e2119"
+fg_color = "#241711"
+bg_color = "#2e201a"
 
 [colors.tab_bar.new_tab]
-fg_color = "#241710"
+fg_color = "#241711"
 bg_color = "#95a483"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#241710"
-bg_color = "#2e2119"
+fg_color = "#241711"
+bg_color = "#2e201a"
 intensity = "Bold"
