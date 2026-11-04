@@ -20,4 +20,4 @@
     file-style = "#d68c00" bold
     file-decoration-style = "#a98774" ul
     hunk-header-decoration-style = "#a98774" box
-    hunk-header-line-number-style = "#b2ae72"
+    hunk-header-line-number-style = "#e2baa5"

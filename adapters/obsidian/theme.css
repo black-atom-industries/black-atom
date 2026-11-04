@@ -3527,12 +3527,12 @@ settings:
   --color-green-rgb: 149, 164, 131;
   --color-cyan: #a4bfac;
   --color-cyan-rgb: 164, 191, 172;
-  --color-blue: #b2ae72;
-  --color-blue-rgb: 178, 174, 114;
-  --color-purple: #d4896e;
-  --color-purple-rgb: 212, 137, 110;
-  --color-pink: #c67a65;
-  --color-pink-rgb: 198, 122, 101;
+  --color-blue: #e2baa5;
+  --color-blue-rgb: 226, 186, 165;
+  --color-purple: #9e89a8;
+  --color-purple-rgb: 158, 137, 168;
+  --color-pink: #8c7895;
+  --color-pink-rgb: 140, 120, 149;
 
   /* Backgrounds */
   --background-primary: #241710;
@@ -3549,7 +3549,7 @@ settings:
   --background-modifier-error-hover: #663f39;
   --background-modifier-success-rgb: 66, 71, 59;
   --background-modifier-success: #42473b;
-  --background-modifier-message: #4b4a36;
+  --background-modifier-message: #5c4e47;
   --background-modifier-form-field: #241710;
 
   /* Text */
@@ -3590,13 +3590,13 @@ settings:
   --link-external-color-hover: #95a483;
 
   /* Code / Syntax Highlighting */
-  --code-normal: #b2ae72;
+  --code-normal: #e2baa5;
   --code-comment: #a98774;
   --code-function: #d68c00;
-  --code-important: #d4896e;
-  --code-keyword: #d4896e;
-  --code-operator: #d4896e;
-  --code-property: #99955a;
+  --code-important: #9e89a8;
+  --code-keyword: #9e89a8;
+  --code-operator: #c9a592;
+  --code-property: #c49a83;
   --code-punctuation: #c9a592;
   --code-string: #95a483;
   --code-tag: #d68c00;
@@ -3652,8 +3652,8 @@ settings:
 
 
   /* Extended Colors */
-  --color-red: #b03f32;
-  --color-red-rgb: 176, 63, 50;
+  --color-red: #af4125;
+  --color-red-rgb: 175, 65, 37;
   --color-orange: #d95738;
   --color-orange-rgb: 217, 87, 56;
   --color-yellow: #cb6400;
@@ -3664,10 +3664,10 @@ settings:
   --color-cyan-rgb: 99, 131, 109;
   --color-blue: #8c583b;
   --color-blue-rgb: 140, 88, 59;
-  --color-purple: #b66e53;
-  --color-purple-rgb: 182, 110, 83;
-  --color-pink: #aa6448;
-  --color-pink-rgb: 170, 100, 72;
+  --color-purple: #875f9a;
+  --color-purple-rgb: 135, 95, 154;
+  --color-pink: #6a427b;
+  --color-pink-rgb: 106, 66, 123;
 
   /* Backgrounds */
   --background-primary: #f8ddc7;
@@ -3679,9 +3679,9 @@ settings:
   --background-modifier-border: #e3bfa4;
   --background-modifier-border-hover: #e3bfa4;
   --background-modifier-border-focus: #d9710b;
-  --background-modifier-error-rgb: 229, 210, 206;
-  --background-modifier-error: #e5d2ce;
-  --background-modifier-error-hover: #e5d2ce;
+  --background-modifier-error-rgb: 229, 210, 205;
+  --background-modifier-error: #e5d2cd;
+  --background-modifier-error-hover: #e5d2cd;
   --background-modifier-success-rgb: 211, 215, 207;
   --background-modifier-success: #d3d7cf;
   --background-modifier-message: #ddd4cf;
@@ -3695,7 +3695,7 @@ settings:
   --text-accent-hover: #d9710b;
   --text-on-accent: #f8ddc7;
   --text-on-accent-inverted: #422617;
-  --text-error: #b03f32;
+  --text-error: #af4125;
   --text-warning: #cb6400;
   --text-success: #566b38;
   --text-selection: #ffe6d2;
@@ -3728,8 +3728,8 @@ settings:
   --code-normal: #8c583b;
   --code-comment: #815137;
   --code-function: #cb6400;
-  --code-important: #b66e53;
-  --code-keyword: #b66e53;
+  --code-important: #875f9a;
+  --code-keyword: #875f9a;
   --code-operator: #422617;
   --code-property: #784d34;
   --code-punctuation: #815137;
@@ -3865,7 +3865,7 @@ settings:
   --code-function: #c8a500;
   --code-important: #c198e0;
   --code-keyword: #c198e0;
-  --code-operator: #c198e0;
+  --code-operator: #a0b291;
   --code-property: #63a1d5;
   --code-punctuation: #a0b291;
   --code-string: #62bb77;
@@ -4135,7 +4135,7 @@ settings:
   --code-function: #d8bd51;
   --code-important: #dc96b1;
   --code-keyword: #dc96b1;
-  --code-operator: #dc96b1;
+  --code-operator: #baad8a;
   --code-property: #65a281;
   --code-punctuation: #baad8a;
   --code-string: #8cbf70;
@@ -4405,7 +4405,7 @@ settings:
   --code-function: #fba952;
   --code-important: #b4a7df;
   --code-keyword: #b4a7df;
-  --code-operator: #b4a7df;
+  --code-operator: #c0ccdb;
   --code-property: #729bcf;
   --code-punctuation: #c0ccdb;
   --code-string: #82c3d3;

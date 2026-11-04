@@ -103,10 +103,10 @@ local theme = {
                 default = "#729bcf",
             },
             boolean = {
-                default = "#eb8656",
+                default = "#64b3c0",
             },
             number = {
-                default = "#eb8656",
+                default = "#64b3c0",
             },
             type = {
                 default = "#71cfd9",
@@ -130,7 +130,7 @@ local theme = {
                 export = "#e996a0",
             },
             operator = {
-                default = "#b4a7df",
+                default = "#c0ccdb",
             },
             punctuation = {
                 default = "#c0ccdb",

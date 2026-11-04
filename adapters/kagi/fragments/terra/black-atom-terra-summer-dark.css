@@ -30,7 +30,7 @@ html.theme_moon_dark[class] {
   --ba-syntax-string-doc: #8cbf70;
   --ba-syntax-string-escape: #c88f7b;
   --ba-syntax-string-regexp: #e99e5e;
-  --ba-syntax-number: #e99e5e;
+  --ba-syntax-number: #4ba39c;
   --ba-syntax-constant: #e99e5e;
   --ba-syntax-function: #d8bd51;
   --ba-syntax-builtin: #d8bd51;
@@ -40,7 +40,7 @@ html.theme_moon_dark[class] {
   --ba-syntax-module: #65a281;
   --ba-syntax-attribute: #6dc3b8;
   --ba-syntax-tag: #d8bd51;
-  --ba-syntax-operator: #dc96b1;
+  --ba-syntax-operator: #baad8a;
   color-scheme: dark;
 }
 
@@ -67,7 +67,7 @@ html.theme_moon_dark[class] {
     --ba-syntax-string-doc: #8cbf70;
     --ba-syntax-string-escape: #c88f7b;
     --ba-syntax-string-regexp: #e99e5e;
-    --ba-syntax-number: #e99e5e;
+    --ba-syntax-number: #4ba39c;
     --ba-syntax-constant: #e99e5e;
     --ba-syntax-function: #d8bd51;
     --ba-syntax-builtin: #d8bd51;
@@ -77,7 +77,7 @@ html.theme_moon_dark[class] {
     --ba-syntax-module: #65a281;
     --ba-syntax-attribute: #6dc3b8;
     --ba-syntax-tag: #d8bd51;
-    --ba-syntax-operator: #dc96b1;
+    --ba-syntax-operator: #baad8a;
     color-scheme: dark;
   }
 }

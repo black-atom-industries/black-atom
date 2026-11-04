@@ -38,11 +38,11 @@ export default defineThemeColors({
             darkYellow: accents.a20,
             yellow: accents.a10,
 
-            darkBlue: oklch(0.66, 0.08, 105),
-            blue: oklch(0.74, 0.08, 105),
+            darkBlue: oklch(0.72, 0.06, 50),
+            blue: oklch(0.82, 0.055, 50),
 
-            darkMagenta: oklch(0.656, 0.101, 36.23),
-            magenta: oklch(0.701, 0.1, 40.54),
+            darkMagenta: oklch(0.6, 0.05, 315),
+            magenta: oklch(0.66, 0.05, 315),
 
             darkCyan: oklch(0.72, 0.04, 155),
             cyan: oklch(0.78, 0.04, 155),

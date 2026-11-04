@@ -21,26 +21,26 @@ html.theme_moon_dark[class] {
   --ba-fg-disabled: #a98774;
   --ba-fg-negative: #fd8c7b;
   --ba-fg-positive: #95a483;
-  --ba-fg-info: #b2ae72;
+  --ba-fg-info: #e2baa5;
   --ba-syntax-comment: #a98774;
   --ba-syntax-comment-doc: #889776;
-  --ba-syntax-keyword: #d4896e;
+  --ba-syntax-keyword: #9e89a8;
   --ba-syntax-import: #fd8c7b;
   --ba-syntax-string: #95a483;
   --ba-syntax-string-doc: #95a483;
   --ba-syntax-string-escape: #fd8c7b;
   --ba-syntax-string-regexp: #e67f3c;
-  --ba-syntax-number: #e67f3c;
+  --ba-syntax-number: #92ac9a;
   --ba-syntax-constant: #e67f3c;
   --ba-syntax-function: #d68c00;
   --ba-syntax-builtin: #d68c00;
   --ba-syntax-type: #a4bfac;
-  --ba-syntax-variable: #b2ae72;
-  --ba-syntax-property: #99955a;
-  --ba-syntax-module: #99955a;
+  --ba-syntax-variable: #e2baa5;
+  --ba-syntax-property: #c49a83;
+  --ba-syntax-module: #c49a83;
   --ba-syntax-attribute: #a4bfac;
   --ba-syntax-tag: #d68c00;
-  --ba-syntax-operator: #d4896e;
+  --ba-syntax-operator: #c9a592;
   color-scheme: dark;
 }
 
@@ -58,26 +58,26 @@ html.theme_moon_dark[class] {
     --ba-fg-disabled: #a98774;
     --ba-fg-negative: #fd8c7b;
     --ba-fg-positive: #95a483;
-    --ba-fg-info: #b2ae72;
+    --ba-fg-info: #e2baa5;
     --ba-syntax-comment: #a98774;
     --ba-syntax-comment-doc: #889776;
-    --ba-syntax-keyword: #d4896e;
+    --ba-syntax-keyword: #9e89a8;
     --ba-syntax-import: #fd8c7b;
     --ba-syntax-string: #95a483;
     --ba-syntax-string-doc: #95a483;
     --ba-syntax-string-escape: #fd8c7b;
     --ba-syntax-string-regexp: #e67f3c;
-    --ba-syntax-number: #e67f3c;
+    --ba-syntax-number: #92ac9a;
     --ba-syntax-constant: #e67f3c;
     --ba-syntax-function: #d68c00;
     --ba-syntax-builtin: #d68c00;
     --ba-syntax-type: #a4bfac;
-    --ba-syntax-variable: #b2ae72;
-    --ba-syntax-property: #99955a;
-    --ba-syntax-module: #99955a;
+    --ba-syntax-variable: #e2baa5;
+    --ba-syntax-property: #c49a83;
+    --ba-syntax-module: #c49a83;
     --ba-syntax-attribute: #a4bfac;
     --ba-syntax-tag: #d68c00;
-    --ba-syntax-operator: #d4896e;
+    --ba-syntax-operator: #c9a592;
     color-scheme: dark;
   }
 }

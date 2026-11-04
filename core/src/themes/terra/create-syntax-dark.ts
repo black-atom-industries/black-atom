@@ -25,10 +25,10 @@ export default function ({ primaries, palette, feedback }: Theme.CreatorContext)
             escape: palette.red,
         },
         boolean: {
-            default: palette.darkYellow,
+            default: palette.darkCyan,
         },
         number: {
-            default: palette.darkYellow,
+            default: palette.darkCyan,
         },
         type: {
             default: palette.cyan,
@@ -47,7 +47,7 @@ export default function ({ primaries, palette, feedback }: Theme.CreatorContext)
             default: palette.yellow,
         },
         operator: {
-            default: palette.magenta,
+            default: palette.lightGray,
         },
         keyword: {
             default: palette.magenta,

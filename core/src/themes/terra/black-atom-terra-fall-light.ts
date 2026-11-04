@@ -29,8 +29,8 @@ export default defineThemeColors({
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
-            darkRed: oklch(0.476, 0.15, 29.67),
-            red: oklch(0.523, 0.15, 29.5),
+            darkRed: oklch(0.476, 0.15, 35),
+            red: oklch(0.523, 0.15, 35),
 
             darkGreen: oklch(0.453, 0.08, 128.52),
             green: oklch(0.499, 0.08, 127.36),
@@ -41,8 +41,8 @@ export default defineThemeColors({
             darkBlue: oklch(0.464, 0.07, 51.31),
             blue: oklch(0.512, 0.08, 49.91),
 
-            darkMagenta: oklch(0.575, 0.1, 41.63),
-            magenta: oklch(0.61, 0.1, 40.86),
+            darkMagenta: oklch(0.45, 0.1, 315),
+            magenta: oklch(0.55, 0.1, 315),
 
             darkCyan: oklch(0.54, 0.05, 155),
             cyan: oklch(0.58, 0.05, 155),

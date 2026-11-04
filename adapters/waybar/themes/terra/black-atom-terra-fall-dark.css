@@ -19,12 +19,12 @@
 @define-color ba-fg-negative #fd8c7b;
 @define-color ba-fg-positive #95a483;
 @define-color ba-fg-warn #d68c00;
-@define-color ba-fg-info #b2ae72;
+@define-color ba-fg-info #e2baa5;
 
 /* Palette colors */
 @define-color ba-red #fd8c7b;
 @define-color ba-green #95a483;
 @define-color ba-yellow #d68c00;
-@define-color ba-blue #b2ae72;
-@define-color ba-magenta #d4896e;
+@define-color ba-blue #e2baa5;
+@define-color ba-magenta #9e89a8;
 @define-color ba-cyan #a4bfac;

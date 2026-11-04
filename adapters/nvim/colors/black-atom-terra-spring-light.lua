@@ -103,18 +103,18 @@ local theme = {
                 default = "#266595",
             },
             boolean = {
-                default = "#007524",
+                default = "#078f8c",
             },
             number = {
-                default = "#007524",
+                default = "#078f8c",
             },
             type = {
                 default = "#239a95",
                 builtin = "#078f8c",
             },
             attribute = {
-                default = "#d17500",
-                builtin = "#d17500",
+                default = "#239a95",
+                builtin = "#239a95",
             },
             func = {
                 default = "#ad8800",

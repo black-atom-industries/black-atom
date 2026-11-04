@@ -30,7 +30,7 @@ html.theme_calm_blue[class] {
   --ba-syntax-string-doc: #008232;
   --ba-syntax-string-escape: #bc4757;
   --ba-syntax-string-regexp: #bc4757;
-  --ba-syntax-number: #007524;
+  --ba-syntax-number: #078f8c;
   --ba-syntax-constant: #d17500;
   --ba-syntax-function: #ad8800;
   --ba-syntax-builtin: #ad8800;
@@ -38,7 +38,7 @@ html.theme_calm_blue[class] {
   --ba-syntax-variable: #3574a4;
   --ba-syntax-property: #266595;
   --ba-syntax-module: #266595;
-  --ba-syntax-attribute: #d17500;
+  --ba-syntax-attribute: #239a95;
   --ba-syntax-tag: #ad8800;
   --ba-syntax-operator: #275639;
   color-scheme: light;

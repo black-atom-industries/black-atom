@@ -210,7 +210,7 @@
                         "font_weight": null
                     },
                     "boolean": {
-                        "color": "#ea9602",
+                        "color": "#3aaba8",
                         "font_style": null,
                         "font_weight": null
                     },
@@ -290,12 +290,12 @@
                         "font_weight": null
                     },
                     "number": {
-                        "color": "#ea9602",
+                        "color": "#3aaba8",
                         "font_style": null,
                         "font_weight": null
                     },
                     "operator": {
-                        "color": "#c198e0",
+                        "color": "#a0b291",
                         "font_style": null,
                         "font_weight": null
                     },
