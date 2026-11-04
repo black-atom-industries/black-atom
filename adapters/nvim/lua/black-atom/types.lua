@@ -193,7 +193,8 @@
 ---@field undercurl?                                            boolean Wether to use undercurls for diagnostics (Default: false)
 ---@field background?                                           boolean Wether to use background color for virtual text (Default: false)
 
----@class BlackAtom.Config.Styles
+---@class BlackAtom.Config
+---@field term_colors?                                          boolean Wether to enable terminal colors (Default: true)
 ---@field cmp_kind_color_mode?                                  "fg" | "bg" (Default: "bg")
 ---@field dark_sidebars?                                        boolean Wether to use dark sidebars (Default: true)
 ---@field dark_floats?                                          boolean Wether to use dark floats (Default: true)
@@ -203,10 +204,6 @@
 ---@field diagnostics?                                          BlackAtom.Config.Diagnostics Diagnostics related settings (Default: See Documentation)
 ---@field syntax?                                               BlackAtom.Config.SyntaxStyle Syntax styling options (Default: See Documentation)
 ---@field ending_tildes?                                        boolean Wether to show the end-of-buffer tildes (Default: false)
-
----@class BlackAtom.Config
----@field term_colors?                                          boolean Wether to enable terminal colors (Default: true)
----@field styles?                                               BlackAtom.Config.Styles Various styles related settings (Default: See Documentation)
 
 ---@class BlackAtom.LiveryConfig.Nvim
 ---@field enabled?                                              boolean `false` turns the startup theme and the settings layer off

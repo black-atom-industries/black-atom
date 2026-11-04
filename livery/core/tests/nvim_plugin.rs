@@ -5,9 +5,7 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use livery_core::config::types::{
-    NvimDiagnostics, NvimSettings, NvimStyle, NvimStyles, NvimSyntax,
-};
+use livery_core::config::types::{NvimDiagnostics, NvimSettings, NvimStyle, NvimSyntax};
 use serde_json::{json, Value};
 use tempfile::TempDir;
 
@@ -73,7 +71,7 @@ impl Fixture {
                 "-u",
                 init.to_str().unwrap(),
                 "-c",
-                "lua io.write(vim.json.encode({ colors_name = vim.g.colors_name or vim.NIL, notes = _G.notes, config = require('black-atom.config').resolve(), defaults = require('black-atom.config').defaults, function_call_bold = vim.api.nvim_get_hl(0, { name = '@function.call' }).bold or false }))",
+                "lua if _G.before_report then _G.before_report() end io.write(vim.json.encode({ colors_name = vim.g.colors_name or vim.NIL, notes = _G.notes, config = require('black-atom.config').resolve(), defaults = require('black-atom.config').defaults, function_call_bold = vim.api.nvim_get_hl(0, { name = '@function.call' }).bold or false, statuscolumn = vim.o.statuscolumn, rendered_column = vim.api.nvim_eval_statusline(vim.wo.statuscolumn, { use_statuscol_lnum = 1 }).str, backgrounds = vim.iter({ 'Normal', 'NormalFloat', 'FloatBorder', 'Pmenu', 'IterSidebar', 'RadarHud', 'BlinkCmpKindFunction' }):fold({}, function(all, name) all[name] = vim.api.nvim_get_hl(0, { name = name, link = false }).bg or vim.NIL; return all end) }))",
                 "-c",
                 "qa!",
             ])
@@ -110,8 +108,8 @@ fn no_file_leaves_defaults_and_no_theme() {
     let out = fx.run();
     assert_eq!(out["colors_name"], Value::Null);
     assert_eq!(out["notes"], json!([]));
-    assert_eq!(out["config"]["styles"]["dark_gutter"], false);
-    assert_eq!(out["config"]["styles"]["gutter_padding"], 0);
+    assert_eq!(out["config"]["dark_gutter"], false);
+    assert_eq!(out["config"]["gutter_padding"], 0);
 }
 
 #[test]
@@ -120,7 +118,7 @@ fn broken_file_warns_once_and_keeps_defaults() {
     fx.config_json("{ not json");
     let out = fx.run();
     assert_eq!(out["colors_name"], Value::Null);
-    assert_eq!(out["config"]["styles"]["dark_gutter"], false);
+    assert_eq!(out["config"]["dark_gutter"], false);
     let notes = out["notes"].as_array().unwrap();
     assert_eq!(notes.len(), 1, "{notes:?}");
     assert!(notes[0].as_str().unwrap().contains("invalid JSON"));
@@ -130,36 +128,121 @@ fn broken_file_warns_once_and_keeps_defaults() {
 fn config_json_alone_sets_options_and_theme() {
     let fx = fixture_or_skip!();
     fx.config_json(&format!(
-        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"enabled":true,"settings":{{"styles":{{"dark_gutter":true,"gutter_padding":2}}}}}}}}}}"#
+        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"enabled":true,"settings":{{"dark_gutter":true,"gutter_padding":2}}}}}}}}"#
     ));
     let out = fx.run();
     assert_eq!(out["colors_name"], THEME);
-    assert_eq!(out["config"]["styles"]["dark_gutter"], true);
-    assert_eq!(out["config"]["styles"]["gutter_padding"], 2);
-    assert_eq!(out["config"]["styles"]["dark_floats"], true);
+    assert_eq!(out["config"]["dark_gutter"], true);
+    assert_eq!(out["config"]["gutter_padding"], 2);
+    assert_eq!(out["config"]["dark_floats"], true);
+}
+
+#[test]
+fn dark_floats_and_sidebars_reach_core_and_plugin_groups() {
+    let fx = fixture_or_skip!();
+    let config = |dark: bool| {
+        format!(
+            r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"settings":{{"dark_floats":{dark},"dark_sidebars":{dark}}}}}}}}}"#
+        )
+    };
+    let groups = [
+        "NormalFloat",
+        "FloatBorder",
+        "Pmenu",
+        "IterSidebar",
+        "RadarHud",
+    ];
+
+    fx.config_json(&config(false));
+    let flat = fx.run();
+    let normal = &flat["backgrounds"]["Normal"];
+    for group in groups {
+        assert_eq!(&flat["backgrounds"][group], normal, "{group} stays dark");
+    }
+
+    fx.config_json(&config(true));
+    let dark = fx.run();
+    let normal = &dark["backgrounds"]["Normal"];
+    for group in groups {
+        assert_ne!(&dark["backgrounds"][group], normal, "{group} isn't dark");
+    }
+}
+
+#[test]
+fn gutter_padding_sets_up_the_column_and_removes_it_again() {
+    let fx = fixture_or_skip!();
+    fx.config_json(&format!(
+        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"settings":{{"dark_gutter":true,"gutter_padding":3}}}}}}}}"#
+    ));
+    fx.init_lua("vim.o.number = true\n");
+    let out = fx.run();
+    assert!(out["statuscolumn"]
+        .as_str()
+        .unwrap()
+        .contains("black-atom.gutter"));
+    assert!(
+        out["rendered_column"].as_str().unwrap().ends_with("1    "),
+        "{:?}",
+        out["rendered_column"]
+    );
+
+    fx.init_lua(&format!(
+        r#"_G.before_report = function()
+    vim.g.black_atom_core_config = {{ gutter_padding = 0 }}
+    vim.cmd.colorscheme("{THEME}")
+end
+"#
+    ));
+    assert_eq!(fx.run()["statuscolumn"], "");
+}
+
+#[test]
+fn a_users_statuscolumn_stays_with_gutter_padding_on() {
+    let fx = fixture_or_skip!();
+    fx.config_json(&format!(
+        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"settings":{{"dark_gutter":true,"gutter_padding":3}}}}}}}}"#
+    ));
+    fx.init_lua("vim.o.statuscolumn = '%l '\n");
+    assert_eq!(fx.run()["statuscolumn"], "%l ");
+}
+
+#[test]
+fn cmp_kind_color_mode_reaches_blink() {
+    let fx = fixture_or_skip!();
+    let config = |mode: &str| {
+        format!(
+            r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"settings":{{"cmp_kind_color_mode":"{mode}"}}}}}}}}"#
+        )
+    };
+
+    fx.config_json(&config("bg"));
+    assert!(fx.run()["backgrounds"]["BlinkCmpKindFunction"].is_number());
+
+    fx.config_json(&config("fg"));
+    assert!(fx.run()["backgrounds"]["BlinkCmpKindFunction"].is_null());
 }
 
 #[test]
 fn a_disabled_nvim_ignores_the_livery_config() {
     let fx = fixture_or_skip!();
     fx.config_json(&format!(
-        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"enabled":false,"settings":{{"styles":{{"dark_gutter":true}}}}}}}}}}"#
+        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"enabled":false,"settings":{{"dark_gutter":true}}}}}}}}"#
     ));
     let out = fx.run();
     assert_eq!(out["colors_name"], Value::Null);
     assert_eq!(out["notes"], json!([]));
-    assert_eq!(out["config"]["styles"]["dark_gutter"], false);
+    assert_eq!(out["config"]["dark_gutter"], false);
 }
 
 #[test]
 fn a_missing_enabled_key_counts_as_enabled() {
     let fx = fixture_or_skip!();
     fx.config_json(&format!(
-        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"settings":{{"styles":{{"dark_gutter":true}}}}}}}}}}"#
+        r#"{{"active_theme":"{THEME}","apps":{{"nvim":{{"settings":{{"dark_gutter":true}}}}}}}}"#
     ));
     let out = fx.run();
     assert_eq!(out["colors_name"], THEME);
-    assert_eq!(out["config"]["styles"]["dark_gutter"], true);
+    assert_eq!(out["config"]["dark_gutter"], true);
 }
 
 #[test]
@@ -169,23 +252,34 @@ fn null_and_empty_values_leave_defaults() {
     let out = fx.run();
     assert_eq!(out["colors_name"], Value::Null);
     assert_eq!(out["notes"], json!([]));
-    assert_eq!(out["config"]["styles"]["dark_gutter"], false);
+    assert_eq!(out["config"]["dark_gutter"], false);
 
-    fx.config_json(r#"{"apps":{"nvim":{"settings":{"styles":{}}}}}"#);
+    fx.config_json(r#"{"apps":{"nvim":{"settings":{}}}}"#);
     let out = fx.run();
-    assert_eq!(out["config"]["styles"]["dark_floats"], true);
+    assert_eq!(out["config"]["dark_floats"], true);
+}
+
+#[test]
+fn a_leftover_styles_key_is_ignored() {
+    let fx = fixture_or_skip!();
+    fx.config_json(
+        r#"{"apps":{"nvim":{"settings":{"dark_gutter":true,"styles":{"dark_gutter":false,"dark_floats":false}}}}}"#,
+    );
+    let out = fx.run();
+    assert_eq!(out["config"]["dark_gutter"], true);
+    assert_eq!(out["config"]["dark_floats"], true);
 }
 
 #[test]
 fn vim_g_overrides_only_the_keys_it_names() {
     let fx = fixture_or_skip!();
     fx.config_json(
-        r#"{"apps":{"nvim":{"settings":{"term_colors":false,"styles":{"dark_gutter":true,"gutter_padding":3}}}}}"#,
+        r#"{"apps":{"nvim":{"settings":{"term_colors":false,"dark_gutter":true,"gutter_padding":3}}}}"#,
     );
-    fx.init_lua("vim.g.black_atom_core_config = { styles = { dark_gutter = false } }");
+    fx.init_lua("vim.g.black_atom_core_config = { dark_gutter = false }");
     let out = fx.run();
-    assert_eq!(out["config"]["styles"]["dark_gutter"], false);
-    assert_eq!(out["config"]["styles"]["gutter_padding"], 3);
+    assert_eq!(out["config"]["dark_gutter"], false);
+    assert_eq!(out["config"]["gutter_padding"], 3);
     assert_eq!(out["config"]["term_colors"], false);
 }
 
@@ -233,8 +327,8 @@ fn wrong_shape_layers_resolve_to_defaults() {
         fx.config_json(contents);
         let out = fx.run();
         assert_eq!(out["colors_name"], Value::Null, "{contents}");
-        assert_eq!(out["config"]["styles"]["dark_gutter"], false, "{contents}");
-        assert_eq!(out["config"]["styles"]["dark_floats"], true, "{contents}");
+        assert_eq!(out["config"]["dark_gutter"], false, "{contents}");
+        assert_eq!(out["config"]["dark_floats"], true, "{contents}");
         assert_eq!(out["config"]["term_colors"], true, "{contents}");
     }
 }
@@ -271,26 +365,24 @@ fn stored_settings_round_trip_through_the_plugin() {
     };
     let settings = NvimSettings {
         term_colors: false,
-        styles: NvimStyles {
-            transparency: "full".to_string(),
-            ending_tildes: true,
-            cmp_kind_color_mode: "fg".to_string(),
-            dark_sidebars: false,
-            dark_floats: false,
-            dark_gutter: true,
-            gutter_padding: 3,
-            diagnostics: NvimDiagnostics {
-                undercurl: true,
-                background: true,
-            },
-            syntax: NvimSyntax {
-                comments: on,
-                keywords: on,
-                functions: on,
-                strings: on,
-                variables: on,
-                messages: on,
-            },
+        transparency: "full".to_string(),
+        ending_tildes: true,
+        cmp_kind_color_mode: "fg".to_string(),
+        dark_sidebars: false,
+        dark_floats: false,
+        dark_gutter: true,
+        gutter_padding: 3,
+        diagnostics: NvimDiagnostics {
+            undercurl: true,
+            background: true,
+        },
+        syntax: NvimSyntax {
+            comments: on,
+            keywords: on,
+            functions: on,
+            strings: on,
+            variables: on,
+            messages: on,
         },
     };
     fx.config_json(&config_with_settings(&settings));
@@ -302,15 +394,15 @@ fn stored_settings_round_trip_through_the_plugin() {
 fn stored_off_flags_apply_only_where_the_defaults_declare_them() {
     let fx = fixture_or_skip!();
     fx.config_json(
-        r#"{"apps":{"nvim":{"settings":{"styles":{"syntax":{"comments":{"italic":false,"bold":false},"functions":{"bold":false,"italic":true}}}}}}}"#,
+        r#"{"apps":{"nvim":{"settings":{"syntax":{"comments":{"italic":false,"bold":false},"functions":{"bold":false,"italic":true}}}}}}"#,
     );
     let out = fx.run();
     assert_eq!(
-        out["config"]["styles"]["syntax"]["comments"],
+        out["config"]["syntax"]["comments"],
         json!({ "italic": false })
     );
     assert_eq!(
-        out["config"]["styles"]["syntax"]["functions"],
+        out["config"]["syntax"]["functions"],
         json!({ "italic": true })
     );
 }
@@ -318,12 +410,10 @@ fn stored_off_flags_apply_only_where_the_defaults_declare_them() {
 #[test]
 fn vim_g_can_still_turn_a_flag_off() {
     let fx = fixture_or_skip!();
-    fx.init_lua(
-        "vim.g.black_atom_core_config = { styles = { syntax = { functions = { bold = false } } } }",
-    );
+    fx.init_lua("vim.g.black_atom_core_config = { syntax = { functions = { bold = false } } }");
     let out = fx.run();
     assert_eq!(
-        out["config"]["styles"]["syntax"]["functions"],
+        out["config"]["syntax"]["functions"],
         json!({ "bold": false })
     );
 }

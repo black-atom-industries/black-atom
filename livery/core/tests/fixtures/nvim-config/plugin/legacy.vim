@@ -1,5 +1,5 @@
 " let g:black_atom_core_config = {}
-let g:black_atom_core_config = {'styles': {}}
+let g:black_atom_core_config = {}
 " colorscheme commented
 colorscheme black-atom-jpn-koyo-dark
 set number

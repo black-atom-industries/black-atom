@@ -243,13 +243,7 @@ export type NvimOverrideKind =
  * plugin reads this shape from `apps.nvim.settings`, so a renamed field here
  * silently stops reaching it.
  */
-export type NvimSettings = { term_colors: boolean; styles: NvimStyles }
-/**
- * Bold/italic pair for one syntax group. Mirrors
- * `BlackAtom.HighlightDefinition` as far as the settings page exposes it.
- */
-export type NvimStyle = { bold: boolean; italic: boolean }
-export type NvimStyles = { 
+export type NvimSettings = { term_colors: boolean; 
 /**
  * `"none"`, `"partial"`, or `"full"`.
  */
@@ -258,6 +252,11 @@ transparency: string; ending_tildes: boolean;
  * `"fg"` or `"bg"`.
  */
 cmp_kind_color_mode: string; dark_sidebars: boolean; dark_floats: boolean; dark_gutter: boolean; gutter_padding: number; diagnostics: NvimDiagnostics; syntax: NvimSyntax }
+/**
+ * Bold/italic pair for one syntax group. Mirrors
+ * `BlackAtom.HighlightDefinition` as far as the settings page exposes it.
+ */
+export type NvimStyle = { bold: boolean; italic: boolean }
 /**
  * Per-group syntax styling. One entry per group the plugin reads.
  */

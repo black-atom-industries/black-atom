@@ -520,8 +520,7 @@ impl Drop for RunningNeovim {
 }
 
 /// The option as of the last `:colorscheme`, so it only moves when a reload ran.
-const LOADED_GUTTER: &str =
-    "luaeval(\"require('black-atom').config.styles.dark_gutter and 1 or 0\")";
+const LOADED_GUTTER: &str = "luaeval(\"require('black-atom').config.dark_gutter and 1 or 0\")";
 
 fn reload_reaches_a_running_neovim(
     socket_root: &Path,
@@ -568,7 +567,7 @@ fn reload_reaches_a_running_neovim(
 
     let mut config = get_config();
     let nvim = config.apps.get_mut(&AppName::Nvim).unwrap();
-    nvim.settings.as_mut().unwrap().styles.dark_gutter = true;
+    nvim.settings.as_mut().unwrap().dark_gutter = true;
     save_config(config).unwrap();
     let saved = block_on(reload_nvim());
     assert_eq!(saved.status, UpdateStatus::Done, "{saved:?}");
@@ -633,17 +632,16 @@ impl Machine {
 
         unpack::ensure_unpacked().unwrap();
         let mut config = get_config();
-        let styles = &mut config
+        let options = config
             .apps
             .get_mut(&AppName::Nvim)
             .unwrap()
             .settings
             .as_mut()
-            .unwrap()
-            .styles;
-        styles.dark_gutter = true;
-        styles.gutter_padding = 2;
-        styles.ending_tildes = true;
+            .unwrap();
+        options.dark_gutter = true;
+        options.gutter_padding = 2;
+        options.ending_tildes = true;
         save_config(config).unwrap();
 
         let found: Vec<AppName> = block_on(detect::detect_apps())
@@ -699,7 +697,7 @@ impl Machine {
             .args([
                 "--headless",
                 "-c",
-                "lua io.write(vim.json.encode({ colors_name = vim.g.colors_name or vim.NIL, styles = require('black-atom.config').resolve().styles }))",
+                "lua io.write(vim.json.encode({ colors_name = vim.g.colors_name or vim.NIL, options = require('black-atom.config').resolve() }))",
                 "-c",
                 "qa!",
             ])
@@ -769,10 +767,10 @@ macro_rules! machine_or_skip {
 }
 
 fn assert_stored_options_reached(neovim: &serde_json::Value, dark_gutter: bool) {
-    let styles = &neovim["styles"];
-    assert_eq!(styles["dark_gutter"], dark_gutter, "{styles}");
-    assert_eq!(styles["gutter_padding"], 2, "{styles}");
-    assert_eq!(styles["ending_tildes"], true, "{styles}");
+    let options = &neovim["options"];
+    assert_eq!(options["dark_gutter"], dark_gutter, "{options}");
+    assert_eq!(options["gutter_padding"], 2, "{options}");
+    assert_eq!(options["ending_tildes"], true, "{options}");
 }
 
 /// Puts the plugin on the runtime path before the user's colorscheme line
@@ -815,7 +813,7 @@ fn a_users_own_options_and_colorscheme_win_over_the_stored_ones() {
     machine.plant(
         "init.lua",
         &format!(
-            "{PLUGIN_ON_RTP}vim.g.black_atom_core_config = {{ styles = {{ dark_gutter = false }} }}\nvim.cmd.colorscheme(\"{OWN_THEME}\")\n"
+            "{PLUGIN_ON_RTP}vim.g.black_atom_core_config = {{ dark_gutter = false }}\nvim.cmd.colorscheme(\"{OWN_THEME}\")\n"
         ),
     );
     machine.plant("lua/user/theme.lua", "vim.cmd.colorscheme(vim.g.picked)\n");

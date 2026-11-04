@@ -27,6 +27,7 @@ function M.load(theme)
     vim.opt.background = theme.meta.appearance
 
     highlights.apply(theme.colors, config)
+    require("black-atom.gutter").apply(config)
 end
 
 return M

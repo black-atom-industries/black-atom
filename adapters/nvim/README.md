@@ -1,253 +1,177 @@
 # Black Atom for Neovim
 
-The Neovim adapter for Black Atom. Themes are defined once in [`../../core/`](../../core/),
-and each adapter renders them for one platform through Eta templates, so the colors match
-everywhere and each platform can still tune its own details.
+The Black Atom themes for Neovim. The colors are defined once in [`core/`](../../core/) and generated here, so they match every other Black Atom tool.
 
 ## Themes
 
-Every Black Atom theme ships here. [`catalog.ts`](../../core/src/themes/catalog.ts) lists the
-collections and their themes.
+All Black Atom themes are included. [`catalog.ts`](../../core/src/themes/catalog.ts) lists them.
 
 ## Installation
 
-Put this directory on the runtimepath. Any plugin manager that can point at a
-directory works, or do it by hand:
-
-```lua
-vim.opt.rtp:prepend("/path/to/black-atom/adapters/nvim")
-vim.cmd.colorscheme("black-atom-jpn-koyo-dark")
-```
-
-Every theme is a self-contained colorscheme in `colors/`. Load one with `:colorscheme
-black-atom-<collection>-<name>`, and tab-complete to see the list.
-
-## Configuration
-
-There is no `setup()`. The options come from three layers, merged key by key, each over the one
-before it:
-
-1. The defaults in `lua/black-atom/config.lua`.
-2. `apps.nvim.settings` in Livery's `config.json`, at
-   `$XDG_CONFIG_HOME/black-atom/livery/config.json` (`~/.config` when `$XDG_CONFIG_HOME` is unset).
-3. `vim.g.black_atom_core_config`, from your own Neovim config.
-
-Your own table always wins, and only for the keys it names. Set before startup ends (in your
-`init.lua`, for example), it applies to the theme Neovim opens with. Set later (in `after/plugin`
-or on `VimEnter`), it applies from the next `:colorscheme`. A partial table is fine:
-
-```lua
-vim.g.black_atom_core_config = {
-    styles = {
-        dark_gutter = true,
-    },
-}
-```
-
-The full set, with its defaults:
-
-```lua
-vim.g.black_atom_core_config = {
-    term_colors = true,
-    styles = {
-        ending_tildes = false,
-        cmp_kind_color_mode = "bg", -- "fg" | "bg"
-        dark_sidebars = true,
-        dark_floats = true,
-        dark_gutter = false,
-        gutter_padding = 0, -- see "Pad the dark gutter"
-        transparency = "none", -- "none" | "partial" | "full"
-        diagnostics = {
-            undercurl = false,
-            background = false,
-        },
-        syntax = {
-            comments = { italic = true },
-            keywords = { bold = true },
-            functions = {},
-            strings = { italic = false },
-            variables = {},
-            messages = { bold = true },
-        },
-    },
-}
-```
-
-`dark_sidebars`, `dark_floats` and `dark_gutter` put those areas on the panel background.
-The `styles.syntax` entries take any highlight attributes (`bold`, `italic`, `underline`,
-...), which are merged into the group's definition. Some highlights set their own attributes,
-such as the bold on `@function.call`. To turn one off, set it to `false` in your own table. In
-`config.json`, a `false` only applies when the group's defaults name that attribute, because
-Livery stores both flags of every group.
-
-The layers are read at every `:colorscheme`. To change the config at runtime, set the global or
-edit the file, then re-run `:colorscheme`. Turning `term_colors` off takes effect in new Neovims,
-because a running one keeps the terminal colors it already set.
-
-### The theme at startup
-
-Once your config and the start packages have loaded, the plugin checks whether a colorscheme is
-set. If you called `:colorscheme` yourself, yours stays. If not, the plugin applies `active_theme`
-from `config.json`. A name it can't apply gives one warning, and Neovim keeps starting.
-
-### With Livery
-
-Livery's setup links its managed copy of this directory into `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/`, so
-Neovim opens in the active theme with its options from `config.json`, with no line in your config
-and even with no config at all. Livery never edits your Neovim files.
-
-Applying a theme switches every running Neovim to it. Saving options in Livery's settings page, and
-editing them in `config.json` while Livery runs, re-apply each running Neovim's current Black Atom
-theme, and leave an instance on another colorscheme alone.
-
-`apps.nvim.enabled = false` in `config.json` turns all of this off: the plugin then behaves as if
-there were no `config.json`, with no startup theme and no settings layer. A missing key counts as
-enabled.
-
-Livery searches the `.lua` and `.vim` files under `$XDG_CONFIG_HOME/nvim` (symlinks followed,
-`colors/` and hidden directories skipped) for two kinds of line. A line that sets
-`vim.g.black_atom_core_config` makes the settings page read-only and names the file and line,
-because your table would win over anything saved there. A `:colorscheme` with a literal name, such
-as `vim.cmd.colorscheme("black-atom-jpn-koyo-dark")`, gets a note: Neovim starts in the theme from
-that line, and Livery still reloads running instances. A name passed through a variable doesn't
-match. The search reads lines, so a rare false match is possible.
+Each theme is a normal colorscheme, named `black-atom-<collection>-<name>`. Press tab after `:colorscheme black-atom-` to see them all.
 
 ### Without Livery
 
-There is no `config.json`, so the defaults and your own table are all there is. Nothing applies a
-theme for you, so call `:colorscheme` as in [Installation](#installation).
+Install it with your plugin manager, then set a colorscheme. The adapter is a subdirectory of the Black Atom repository, so the manager clones the whole repository and you add `adapters/nvim` to the runtimepath.
 
-## LSP completion
-
-Black Atom defines the native `LspKind{Function, Class, Variable, ...}` highlight
-groups (one per LSP `CompletionItemKind`) in `lsp.lua`.
-
-- `blink.cmp` and `nvim-cmp` use the shared kind-color mapping without any wiring.
-- `mini.completion` needs a small `process_items` callback to route the
-  theme's `LspKind*` groups to the popup. See
-  [the recipe](#color-minicompletion-kind-labels).
-
-## Plugins
-
-Each supported plugin has a file in
-[`lua/black-atom/highlights/plugins/`](lua/black-atom/highlights/plugins/).
-
-## Recipes
-
-### Pad the dark gutter
-
-With `styles.dark_gutter = true`, the gutter sits right against the code. Blank cells in
-`Normal` at the end of the `statuscolumn` separate the two. The built-in columns can't do
-this, because the number column's padding always takes `LineNr`'s background.
-
-`styles.gutter_padding` sets the number of cells, and `pad` from `black-atom.gutter` adds them
-to any column format, so it works on top of the one you already use. It returns the format
-unchanged while `dark_gutter` is off, and in floats and windows without a gutter. Replace the
-format in `PaddedStatuscolumn` with your own:
+With [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
-function _G.PaddedStatuscolumn()
-    -- The default columns: folds, signs, line number.
+{
+    "black-atom-industries/black-atom",
+    lazy = false,
+    priority = 1000,
+    config = function(plugin)
+        vim.opt.rtp:prepend(plugin.dir .. "/adapters/nvim")
+        vim.cmd.colorscheme("black-atom-jpn-koyo-dark")
+    end,
+}
+```
+
+With `vim.pack`:
+
+```lua
+vim.pack.add({ "https://github.com/black-atom-industries/black-atom" })
+vim.opt.rtp:prepend(vim.fn.stdpath("data") .. "/site/pack/core/opt/black-atom/adapters/nvim")
+vim.cmd.colorscheme("black-atom-jpn-koyo-dark")
+```
+
+To change options, set your [config table](#configuration) before the `:colorscheme` call.
+
+### With Livery
+
+[Livery](../../livery/) installs the adapter and stores your theme and options in its `config.json`. Neovim opens in your theme without any config of its own. Livery never edits your Neovim files.
+
+**Changes apply live.** Save an option or pick a theme in Livery, and every running Neovim updates right away. You don't restart anything or run a command.
+
+```mermaid
+flowchart TD
+    Page["Livery settings page"] <-->|"saves and follows"| Json["Livery Config"]
+    Json -->|"theme and options"| Plugin["Black Atom plugin"]
+    Own["Your Neovim config"] -->|"overrides, if set"| Plugin
+    Plugin -->|"highlights"| Nvim["Neovim"]
+    Page -.->|"reloads running instances"| Nvim
+```
+
+- **Startup:** the plugin applies Livery's theme, unless your config already set a colorscheme. A theme name it can't load gives a warning.
+- **Switching themes:** every running Neovim changes to the new theme.
+- **Changing options:** every running Neovim on a Black Atom theme reloads that theme. Other colorschemes aren't touched.
+- **Your own settings:** if your config sets `vim.g.black_atom_core_config`, the settings page turns read-only and shows the file and line. If your config sets a fixed `:colorscheme`, the page shows a note. Livery finds these by searching the `.lua` and `.vim` files in `$XDG_CONFIG_HOME/nvim`, so it can occasionally match the wrong line.
+- **Turning it off:** set `apps.nvim.enabled = false` in `config.json`. The plugin then ignores that file.
+
+## Configuration
+
+There is no `setup()`. Options come from three places. Each one overrides the one before it, key by key:
+
+1. The defaults in `lua/black-atom/config.lua`.
+2. `apps.nvim.settings` in Livery's config, `$XDG_CONFIG_HOME/black-atom/livery/config.json` (or `~/.config/black-atom/livery/config.json`).
+3. `vim.g.black_atom_core_config` in your Neovim config.
+
+Only set the keys you want to change:
+
+```lua
+vim.g.black_atom_core_config = {
+    dark_gutter = true,
+}
+```
+
+Set this in `init.lua` to have it apply at startup. If you set it later, it applies at the next `:colorscheme`.
+
+All options, which use the same keys in `vim.g.black_atom_core_config` and `apps.nvim.settings`:
+
+| Option                   | Values                          | Default              | What it does                                                                              |
+| ------------------------ | ------------------------------- | -------------------- | ----------------------------------------------------------------------------------------- |
+| `term_colors`            | boolean                         | `true`               | Sets the 16 terminal colors for `:terminal`.                                              |
+| `transparency`           | `"none"`, `"partial"`, `"full"` | `"none"`             | `partial` removes the editor background. `full` also removes it from sidebars and floats. |
+| `ending_tildes`          | boolean                         | `false`              | Shows `~` on the empty lines after a buffer ends.                                         |
+| `cmp_kind_color_mode`    | `"fg"`, `"bg"`                  | `"bg"`               | Colors a completion kind's text or its background, in `nvim-cmp` and `blink.cmp`.         |
+| `dark_sidebars`          | boolean                         | `true`               | Gives sidebars the darker panel background.                                               |
+| `dark_floats`            | boolean                         | `true`               | Gives floating windows and popups the darker panel background.                            |
+| `dark_gutter`            | boolean                         | `false`              | Gives the line number, sign and fold columns the darker panel background.                 |
+| `gutter_padding`         | number of cells                 | `0`                  | Adds space between a dark gutter and the code. See [Gutter padding](#gutter-padding).     |
+| `diagnostics.undercurl`  | boolean                         | `false`              | Uses a curly underline for diagnostics.                                                   |
+| `diagnostics.background` | boolean                         | `false`              | Adds a background behind diagnostic virtual text.                                         |
+| `syntax.comments`        | highlight attributes            | `{ italic = true }`  | Styles comments.                                                                          |
+| `syntax.keywords`        | highlight attributes            | `{ bold = true }`    | Styles keywords.                                                                          |
+| `syntax.functions`       | highlight attributes            | `{}`                 | Styles functions.                                                                         |
+| `syntax.strings`         | highlight attributes            | `{ italic = false }` | Styles strings.                                                                           |
+| `syntax.variables`       | highlight attributes            | `{}`                 | Styles variables.                                                                         |
+| `syntax.messages`        | highlight attributes            | `{ bold = true }`    | Styles messages, such as errors and warnings.                                             |
+
+### Syntax attributes
+
+A `syntax` group takes any highlight attribute, such as `bold`, `italic` or `underline`.
+
+Some highlights have attributes built in, such as the bold on `@function.call`. To remove one, set it to `false` in your own table. In `config.json`, `false` only works for attributes the group sets by default.
+
+### Changing options at runtime
+
+Change the table or `config.json`, then run `:colorscheme` again. Turning `term_colors` off only affects new Neovims.
+
+### Gutter padding
+
+A dark gutter sits right against the code. `gutter_padding` adds blank cells between them. Set `dark_gutter = true` and a padding above 0, and the plugin sets up `statuscolumn` for you.
+
+If you set `statuscolumn` yourself, the plugin leaves it alone. Wrap your format in `pad` to get the padding:
+
+```lua
+function _G.MyStatuscolumn()
     return require("black-atom.gutter").pad("%C%s%=%l ")
 end
 
-vim.o.statuscolumn = "%!v:lua.PaddedStatuscolumn()"
+vim.o.statuscolumn = "%!v:lua.MyStatuscolumn()"
 ```
 
-Windows that set their own `statuscolumn` keep it and stay unpadded, such as iter.nvim's
-diff views.
+Windows with their own `statuscolumn`, such as iter.nvim's diff views, get no padding.
 
-### Color `mini.completion` kind labels
+## LSP completion
 
-`mini.completion` uses `mini.icons` for kind highlighting by default, so it doesn't pick up
-the theme's `LspKind*` groups. A `process_items` callback can set `kind_hlgroup` before it
-calls `default_process_items`, which keeps any value already on the item.
+Each LSP completion kind has an `LspKind` highlight group, such as `LspKindFunction`.
 
-`item.kind` from the LSP response is a number from 1 to 25, and
-`vim.lsp.protocol.CompletionItemKind` turns it into a name such as `Class`. Copy that table
-before you shorten any names, or the lookup asks for groups that don't exist, such as
-`LspKindCLAS`.
+- `nvim-cmp` and `blink.cmp` work without any setup.
+- `mini.completion` needs a `process_items` callback that sets each item's `kind_hlgroup` to `LspKind<Kind>`.
 
-```lua
-local MiniCompletion = require("mini.completion")
+## Plugins
 
--- Capture BEFORE any remap of vim.lsp.protocol.CompletionItemKind, so the
--- canonical names (Class, Function, ...) are preserved for highlight lookup.
-local lsp_kind_names = vim.deepcopy(vim.lsp.protocol.CompletionItemKind)
-
-local process_items = function(items, base)
-    for _, item in ipairs(items) do
-        local kind_name = lsp_kind_names[item.kind]
-        if kind_name then
-            item.kind_hlgroup = "LspKind" .. kind_name
-        end
-    end
-    return MiniCompletion.default_process_items(items, base, {
-        kind_priority = { Text = -1, Snippet = 99 },
-    })
-end
-
-require("mini.completion").setup({
-    lsp_completion = { process_items = process_items },
-})
-```
-
-For shorter popup labels, remap the global table after that copy. `mini.completion` reads the
-labels from it, so the popup shows `CLAS` and `FUNC` while the highlight groups still use the
-full names:
-
-```lua
-local item_kinds = vim.lsp.protocol.CompletionItemKind
-for i, name in ipairs(item_kinds) do
-    item_kinds[i] = name:sub(1, 4):upper()
-end
-```
+Supported plugins each have a file in [`lua/black-atom/highlights/plugins/`](lua/black-atom/highlights/plugins/).
 
 ## Development
 
 ### Roadmap
 
-Open work lives in the
-[issues labeled `adapter:nvim`](https://github.com/black-atom-industries/black-atom/issues?q=is%3Aissue%20state%3Aopen%20label%3Aadapter%3Anvim).
+See the [issues labeled `adapter:nvim`](https://github.com/black-atom-industries/black-atom/issues?q=is%3Aissue%20state%3Aopen%20label%3Aadapter%3Anvim).
 
 ### Tooling
 
-Dev tooling is managed with [mise](https://mise.jdx.dev):
+Install the tools with [mise](https://mise.jdx.dev):
 
 ```bash
 mise install      # lua, lua-language-server, stylua
 mise run setup    # luacheck (via luarocks)
 ```
 
-`luacheck` has no prebuilt binary, so it can't be a mise `[tools]` entry. Installing
-`lua` through mise also provides `luarocks` (added to `PATH`), and the `setup` task
-runs `luarocks install luacheck` into that Lua install, which is the shared `lua@5.1`
-one. Re-run `mise run setup` if you bump the pinned Lua version. Building `luacheck`'s dependencies needs a C compiler
-(Xcode Command Line Tools on macOS).
+`luacheck` needs its own step because it has no prebuilt binary. Building it needs a C compiler (Xcode Command Line Tools on macOS). Run `mise run setup` again when you change the pinned Lua version.
 
 ### Building and Testing
 
-Run all checks (luacheck, lua-language-server, stylua):
+Run all checks, the same ones CI runs:
 
 ```bash
 mise run check
 ```
 
-Individual tasks are also available: `mise run lint`, `mise run typecheck`,
-`mise run fmt-check`, and `mise run fmt` (formats in place). CI runs the same
-`mise run check`, so a green local run matches CI.
+Or run one at a time: `mise run lint`, `mise run typecheck`, `mise run fmt-check`. `mise run fmt` formats the files.
 
 ### Working with Templates
 
-Theme files are generated from templates through the Black Atom core CLI. You need
-[Node.js](https://nodejs.org/) 24+ installed.
+Theme files are generated from a template, and you need [Node.js](https://nodejs.org/) 24+.
 
-1. Edit the template in `templates/collection.template.lua` (one template, all collections)
-2. Generate theme files:
+1. Edit `templates/collection.template.lua`.
+2. Generate the theme files:
     ```bash
     node ../../core/src/cli/index.ts generate
     ```
-3. Or use watch mode for live regeneration:
+3. Or regenerate on every change:
     ```bash
     node ../../core/src/cli/index.ts generate --watch
     ```

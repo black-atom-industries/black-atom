@@ -2,9 +2,10 @@
 ---@type BlackAtom.HighlightsSpec
 return {
     enabled = true,
-    map = function(colors)
+    map = function(colors, config)
         local ui = colors.ui
         local syntax = colors.syntax
+        local bg = require("black-atom.lib.bg")
 
         ---Mixes `amount` of `color` into `base`.
         ---@param color string
@@ -28,6 +29,7 @@ return {
         -- some of the git color on top of the tint, with default text for contrast.
         ---@type BlackAtom.Highlights
         return {
+            IterSidebar = { fg = ui.fg.default, bg = bg.panel(config, colors) },
             IterDiffAdd = { bg = blend(ui.bg.add, ui.bg.default, 0.6) },
             IterDiffDelete = { bg = blend(ui.bg.delete, ui.bg.default, 0.6) },
             IterDiffAddText = { bg = blend(ui.fg.add, ui.bg.add, 0.12) },

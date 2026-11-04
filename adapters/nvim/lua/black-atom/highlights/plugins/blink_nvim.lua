@@ -14,7 +14,11 @@ return {
         }
 
         for kind, color in pairs(lsp_kinds.colors(syntax, ui)) do
-            highlights_map["BlinkCmpKind" .. kind] = { fg = color }
+            if config.cmp_kind_color_mode == "fg" then
+                highlights_map["BlinkCmpKind" .. kind] = { fg = color }
+            else
+                highlights_map["BlinkCmpKind" .. kind] = { fg = ui.fg.contrast, bg = color }
+            end
         end
 
         return highlights_map

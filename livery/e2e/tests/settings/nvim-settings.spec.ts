@@ -23,9 +23,7 @@ test("SAVE SETTINGS stores the options in Livery's config and touches no Neovim 
     await row.getByRole("switch").click();
     await page.getByRole("button", { name: "SAVE SETTINGS" }).click();
 
-    await expect
-        .poll(() => readLiveryConfig().apps.nvim?.settings?.styles.ending_tildes)
-        .toBe(true);
+    await expect.poll(() => readLiveryConfig().apps.nvim?.settings?.ending_tildes).toBe(true);
     await expect(
         page.getByText("running instances were not reloaded", { exact: false }),
     ).toBeVisible();

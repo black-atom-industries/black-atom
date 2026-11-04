@@ -6,7 +6,7 @@ import { Toggle } from "../../primitives/toggle/toggle.tsx";
 import { Typo } from "../../typo/index.ts";
 import styles from "./nvim-settings-panel.module.css";
 
-/** Group order matches the plugin's `styles.syntax` table. */
+/** Group order matches the plugin's `syntax` table. */
 const SYNTAX_GROUPS = [
     "comments",
     "keywords",
@@ -66,17 +66,18 @@ export function NvimSettingsPanel({
     onSave,
     onReset,
 }: Props) {
-    const { styles: s } = settings;
     const optionsOverride = overrides.find((o) => o.kind === "options");
     const colorschemeOverride = overrides.find((o) => o.kind === "colorscheme");
     const readOnly = optionsOverride !== undefined;
 
-    function setStyles(patch: Partial<NvimSettings["styles"]>) {
-        onChange({ ...settings, styles: { ...s, ...patch } });
+    function setOptions(patch: Partial<NvimSettings>) {
+        onChange({ ...settings, ...patch });
     }
 
     function setSyntax(group: keyof NvimSyntax, patch: Partial<NvimStyle>) {
-        setStyles({ syntax: { ...s.syntax, [group]: { ...s.syntax[group], ...patch } } });
+        setOptions({
+            syntax: { ...settings.syntax, [group]: { ...settings.syntax[group], ...patch } },
+        });
     }
 
     return (
@@ -108,46 +109,46 @@ export function NvimSettingsPanel({
                     label="TERM_COLORS"
                     note="Set the 16 terminal colors from the theme."
                     on={settings.term_colors}
-                    onChange={() => onChange({ ...settings, term_colors: !settings.term_colors })}
+                    onChange={() => setOptions({ term_colors: !settings.term_colors })}
                 />
                 <ToggleRow
                     disabled={readOnly}
                     label="ENDING_TILDES"
                     note="Show the end-of-buffer tildes."
-                    on={s.ending_tildes}
-                    onChange={() => setStyles({ ending_tildes: !s.ending_tildes })}
+                    on={settings.ending_tildes}
+                    onChange={() => setOptions({ ending_tildes: !settings.ending_tildes })}
                 />
                 <ToggleRow
                     disabled={readOnly}
                     label="DARK_SIDEBARS"
                     note="Darken sidebars and the statusline."
-                    on={s.dark_sidebars}
-                    onChange={() => setStyles({ dark_sidebars: !s.dark_sidebars })}
+                    on={settings.dark_sidebars}
+                    onChange={() => setOptions({ dark_sidebars: !settings.dark_sidebars })}
                 />
                 <ToggleRow
                     disabled={readOnly}
                     label="DARK_FLOATS"
                     note="Darken floating windows and popups."
-                    on={s.dark_floats}
-                    onChange={() => setStyles({ dark_floats: !s.dark_floats })}
+                    on={settings.dark_floats}
+                    onChange={() => setOptions({ dark_floats: !settings.dark_floats })}
                 />
                 <ToggleRow
                     disabled={readOnly}
                     label="DARK_GUTTER"
                     note="Darken the line number, sign and fold columns."
-                    on={s.dark_gutter ?? false}
-                    onChange={() => setStyles({ dark_gutter: !s.dark_gutter })}
+                    on={settings.dark_gutter ?? false}
+                    onChange={() => setOptions({ dark_gutter: !settings.dark_gutter })}
                 />
                 <ToggleRow
                     disabled={readOnly}
                     label="DIAGNOSTICS.UNDERCURL"
                     note="Underline diagnostics with a curl."
-                    on={s.diagnostics.undercurl}
+                    on={settings.diagnostics.undercurl}
                     onChange={() =>
-                        setStyles({
+                        setOptions({
                             diagnostics: {
-                                ...s.diagnostics,
-                                undercurl: !s.diagnostics.undercurl,
+                                ...settings.diagnostics,
+                                undercurl: !settings.diagnostics.undercurl,
                             },
                         })
                     }
@@ -156,12 +157,12 @@ export function NvimSettingsPanel({
                     disabled={readOnly}
                     label="DIAGNOSTICS.BACKGROUND"
                     note="Tint the background behind diagnostic virtual text."
-                    on={s.diagnostics.background}
+                    on={settings.diagnostics.background}
                     onChange={() =>
-                        setStyles({
+                        setOptions({
                             diagnostics: {
-                                ...s.diagnostics,
-                                background: !s.diagnostics.background,
+                                ...settings.diagnostics,
+                                background: !settings.diagnostics.background,
                             },
                         })
                     }
@@ -173,8 +174,8 @@ export function NvimSettingsPanel({
                 <RadioGroup
                     name="nvim-transparency"
                     options={withDisabled(TRANSPARENCY_OPTIONS, readOnly)}
-                    value={s.transparency}
-                    onChange={(value) => setStyles({ transparency: value })}
+                    value={settings.transparency}
+                    onChange={(value) => setOptions({ transparency: value })}
                 />
             </div>
             <div className={styles.choiceRow}>
@@ -182,8 +183,8 @@ export function NvimSettingsPanel({
                 <RadioGroup
                     name="nvim-gutter-padding"
                     options={withDisabled(GUTTER_PADDING_OPTIONS, readOnly)}
-                    value={String(s.gutter_padding ?? 0)}
-                    onChange={(value) => setStyles({ gutter_padding: Number(value) })}
+                    value={String(settings.gutter_padding ?? 0)}
+                    onChange={(value) => setOptions({ gutter_padding: Number(value) })}
                 />
             </div>
             <div className={styles.choiceRow}>
@@ -191,8 +192,8 @@ export function NvimSettingsPanel({
                 <RadioGroup
                     name="nvim-cmp-kind"
                     options={withDisabled(CMP_KIND_OPTIONS, readOnly)}
-                    value={s.cmp_kind_color_mode}
-                    onChange={(value) => setStyles({ cmp_kind_color_mode: value })}
+                    value={settings.cmp_kind_color_mode}
+                    onChange={(value) => setOptions({ cmp_kind_color_mode: value })}
                 />
             </div>
 
@@ -205,9 +206,11 @@ export function NvimSettingsPanel({
                     <GridRow
                         key={group}
                         group={group}
-                        style={s.syntax[group]}
+                        style={settings.syntax[group]}
                         disabled={readOnly}
-                        onToggle={(flag) => setSyntax(group, { [flag]: !s.syntax[group][flag] })}
+                        onToggle={(flag) =>
+                            setSyntax(group, { [flag]: !settings.syntax[group][flag] })
+                        }
                     />
                 ))}
             </div>

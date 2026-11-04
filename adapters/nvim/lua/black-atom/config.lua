@@ -3,33 +3,31 @@ local M = {}
 ---@type BlackAtom.Config
 M.defaults = {
     term_colors = true,
-    styles = {
-        ending_tildes = false,
-        cmp_kind_color_mode = "bg",
-        dark_sidebars = true,
-        dark_floats = true,
-        dark_gutter = false,
-        gutter_padding = 0,
-        transparency = "none",
-        diagnostics = {
-            undercurl = false,
-            background = false,
+    ending_tildes = false,
+    cmp_kind_color_mode = "bg",
+    dark_sidebars = true,
+    dark_floats = true,
+    dark_gutter = false,
+    gutter_padding = 0,
+    transparency = "none",
+    diagnostics = {
+        undercurl = false,
+        background = false,
+    },
+    syntax = {
+        comments = {
+            italic = true,
         },
-        syntax = {
-            comments = {
-                italic = true,
-            },
-            keywords = {
-                bold = true,
-            },
-            functions = {},
-            strings = {
-                italic = false,
-            },
-            variables = {},
-            messages = {
-                bold = true,
-            },
+        keywords = {
+            bold = true,
+        },
+        functions = {},
+        strings = {
+            italic = false,
+        },
+        variables = {},
+        messages = {
+            bold = true,
         },
     },
 }
@@ -52,10 +50,10 @@ end
 ---@param settings table
 ---@return table
 local function without_undeclared_off_flags(settings)
-    local groups = as_dict(as_dict(settings.styles).syntax)
+    local groups = as_dict(settings.syntax)
 
     for name, style in pairs(groups) do
-        local declared = as_dict(M.defaults.styles.syntax[name])
+        local declared = as_dict(M.defaults.syntax[name])
         for flag, value in pairs(as_dict(style)) do
             if value == false and declared[flag] == nil then
                 style[flag] = nil

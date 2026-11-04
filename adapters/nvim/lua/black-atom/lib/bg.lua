@@ -7,8 +7,8 @@ local M = {}
 ---@return string
 function M.default(config, colors)
     return cond_hl(colors.ui.bg.default, {
-        [config.styles.transparency == "partial"] = colors.none,
-        [config.styles.transparency == "full"] = colors.none,
+        [config.transparency == "partial"] = colors.none,
+        [config.transparency == "full"] = colors.none,
     })
 end
 
@@ -17,9 +17,9 @@ end
 ---@return string
 function M.panel(config, colors)
     return cond_hl(colors.ui.bg.panel, {
-        [not config.styles.dark_sidebars] = colors.ui.bg.default,
-        [config.styles.dark_sidebars and config.styles.transparency == "partial"] = colors.ui.bg.panel,
-        [config.styles.transparency == "full"] = colors.none,
+        [not config.dark_sidebars] = colors.ui.bg.default,
+        [config.dark_sidebars and config.transparency == "partial"] = colors.ui.bg.panel,
+        [config.transparency == "full"] = colors.none,
     })
 end
 
@@ -28,9 +28,9 @@ end
 ---@return string
 function M.float(config, colors)
     return cond_hl(colors.ui.bg.panel, {
-        [not config.styles.dark_floats] = colors.ui.bg.default,
-        [config.styles.dark_floats and config.styles.transparency == "partial"] = colors.ui.bg.panel,
-        [config.styles.transparency == "full"] = colors.none,
+        [not config.dark_floats] = colors.ui.bg.default,
+        [config.dark_floats and config.transparency == "partial"] = colors.ui.bg.panel,
+        [config.transparency == "full"] = colors.none,
     })
 end
 
@@ -39,8 +39,8 @@ end
 ---@return string
 function M.gutter(config, colors)
     return cond_hl(colors.ui.bg.panel, {
-        [not config.styles.dark_gutter] = M.default(config, colors),
-        [config.styles.dark_gutter and config.styles.transparency == "full"] = colors.none,
+        [not config.dark_gutter] = M.default(config, colors),
+        [config.dark_gutter and config.transparency == "full"] = colors.none,
     })
 end
 

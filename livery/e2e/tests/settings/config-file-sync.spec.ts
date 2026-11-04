@@ -49,9 +49,9 @@ test.describe("the nvim settings page", () => {
         writeLiveryConfigText(JSON.stringify(config, null, 4));
     };
     const toggleEndingTildes = (config: Config) => {
-        const styles = config.apps.nvim?.settings?.styles;
-        if (!styles) throw new Error("The merged config carries nvim settings");
-        styles.ending_tildes = !styles.ending_tildes;
+        const options = config.apps.nvim?.settings;
+        if (!options) throw new Error("The merged config carries nvim settings");
+        options.ending_tildes = !options.ending_tildes;
     };
 
     test("follows an edit of the file and reloads Neovims once", async ({ page, request }) => {

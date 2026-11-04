@@ -93,9 +93,13 @@ pub struct NvimDiagnostics {
     pub background: bool,
 }
 
+/// One field per option `adapters/nvim/lua/black-atom/config.lua` declares. The
+/// plugin reads this shape from `apps.nvim.settings`, so a renamed field here
+/// silently stops reaching it.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
 #[serde(default)]
-pub struct NvimStyles {
+pub struct NvimSettings {
+    pub term_colors: bool,
     /// `"none"`, `"partial"`, or `"full"`.
     pub transparency: String,
     pub ending_tildes: bool,
@@ -109,16 +113,6 @@ pub struct NvimStyles {
     pub syntax: NvimSyntax,
 }
 
-/// One field per option `adapters/nvim/lua/black-atom/config.lua` declares. The
-/// plugin reads this shape from `apps.nvim.settings`, so a renamed field here
-/// silently stops reaching it.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
-#[serde(default)]
-pub struct NvimSettings {
-    pub term_colors: bool,
-    pub styles: NvimStyles,
-}
-
 /// Mirrors `M.defaults` in `adapters/nvim/lua/black-atom/config.lua`. The
 /// plugin merges the stored options over those defaults, so an unfaithful
 /// default here changes highlights for a user who never opened the settings
@@ -127,14 +121,6 @@ impl Default for NvimSettings {
     fn default() -> Self {
         Self {
             term_colors: true,
-            styles: NvimStyles::default(),
-        }
-    }
-}
-
-impl Default for NvimStyles {
-    fn default() -> Self {
-        Self {
             transparency: "none".to_string(),
             ending_tildes: false,
             cmp_kind_color_mode: "bg".to_string(),
@@ -269,11 +255,12 @@ mod tests {
 
     #[test]
     fn partial_nvim_settings_take_the_defaults_for_missing_keys() {
-        let partial: NvimSettings =
-            serde_json::from_str(r#"{"styles":{"dark_gutter":true}}"#).unwrap();
+        let partial: NvimSettings = serde_json::from_str(r#"{"dark_gutter":true}"#).unwrap();
 
-        let mut expected = NvimSettings::default();
-        expected.styles.dark_gutter = true;
+        let expected = NvimSettings {
+            dark_gutter: true,
+            ..NvimSettings::default()
+        };
         assert_eq!(partial, expected);
 
         let empty: NvimSettings = serde_json::from_str("{}").unwrap();
@@ -281,9 +268,14 @@ mod tests {
     }
 
     #[test]
+    fn a_leftover_styles_key_is_ignored() {
+        let parsed: NvimSettings =
+            serde_json::from_str(r#"{"styles":{"dark_gutter":true}}"#).unwrap();
+        assert_eq!(parsed, NvimSettings::default());
+    }
+
+    #[test]
     fn nvim_settings_with_a_wrong_type_still_fail() {
-        assert!(
-            serde_json::from_str::<NvimSettings>(r#"{"styles":{"dark_gutter":"yes"}}"#).is_err()
-        );
+        assert!(serde_json::from_str::<NvimSettings>(r#"{"dark_gutter":"yes"}"#).is_err());
     }
 }
