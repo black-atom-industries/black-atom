@@ -164,10 +164,8 @@ end
 
 ### Roadmap
 
-- [ ] Minimize default highlight assignments
-    - The default assignment and links should be used as far as possible
-- [ ] Make API stable
-- [ ] Dedicated Black Atom Colorscheme Picker
+Open work lives in the
+[issues labeled `adapter:nvim`](https://github.com/black-atom-industries/black-atom/issues?q=is%3Aissue%20state%3Aopen%20label%3Aadapter%3Anvim).
 
 ### Tooling
 
