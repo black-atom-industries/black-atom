@@ -10,7 +10,9 @@ developer tools. Pick a theme once, apply it everywhere.
 Livery embeds every adapter's generated theme files in its binary and unpacks
 them into `$XDG_DATA_HOME/black-atom/themes/<adapter>/` (`~/.local/share` if
 `XDG_DATA_HOME` is unset). Livery's own settings live in
-`$XDG_CONFIG_HOME/black-atom/livery/config.json`.
+`$XDG_CONFIG_HOME/black-atom/livery/config.json`. The GUI follows that file: a
+hand edit or a `git pull` shows up in the window, and a changed `active_theme`
+applies to every tool.
 
 Each supported app falls into one provisioning class: Linked, Merged, or
 External. See [ADAPTERS.md](ADAPTERS.md) for the class definitions and per-app

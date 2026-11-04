@@ -34,6 +34,7 @@ import { Chip } from "../../components/primitives/chip/chip.tsx";
 import { EmptyState } from "../../components/empty-state/index.ts";
 import { ApplyRail } from "../../components/apply-rail/index.ts";
 import { useDisplayedTheme } from "./-use-displayed-theme.ts";
+import { useRunApply } from "./-use-run-apply.ts";
 import styles from "./index.module.css";
 
 export const Route = createFileRoute("/_app/")({
@@ -52,6 +53,8 @@ function Component() {
     const updaterResults = useStore(appStore, (s) => s.updaterResults);
     const applyingTheme = useStore(appStore, (s) => s.applyingTheme);
     const displayedTheme = useDisplayedTheme();
+    const runApply = useRunApply();
+    const followThemeKey = useStore(appStore, (s) => s.followThemeKey);
 
     const [query, setQuery] = useState("");
     // Filter sets — empty set = no filter (ALL).
@@ -111,6 +114,13 @@ function Component() {
         const index = themes.findIndex((theme) => theme.meta.key === key);
         if (index >= 0) setPickedIndex(index);
     }, [activeTheme.query.isPending, activeTheme.theme, themes]);
+
+    useEffect(() => {
+        if (!followThemeKey) return;
+        const index = themes.findIndex((theme) => theme.meta.key === followThemeKey);
+        if (index >= 0) setPickedIndex(index);
+        appStore.setState((s) => ({ ...s, followThemeKey: null }));
+    }, [followThemeKey, themes]);
 
     // Filter mode: a state-driven cursor over the chips (rendered via the
     // Chip `focused` prop) — deliberately not DOM focus, which WebKit's
@@ -304,51 +314,7 @@ function Component() {
         if (!config.query.data) return;
         if (!pickedEntry) return;
 
-        const enabledApps = getEnabledApps(config.query.data.apps);
-        const updaters = createUpdaters(enabledApps, pickedEntry.meta);
-
-        if (updaters.length === 0 && !config.query.data.system_appearance) return;
-
-        appStore.setState((s) => ({ ...s, applyingTheme: pickedEntry, phase: "applying" }));
-
-        try {
-            const results = await applyTheme(updaters, (partial) => {
-                appStore.setState((s) => ({ ...s, updaterResults: partial }));
-            });
-            let applied = results.filter(themeWasApplied).length;
-
-            if (config.query.data.system_appearance) {
-                const result = await commands
-                    .updateSystemAppearance(pickedEntry.meta.appearance)
-                    .catch((error) => commandErrorResult(SYSTEM_APPEARANCE_APP, error));
-                appStore.setState((s) => ({
-                    ...s,
-                    updaterResults: [...s.updaterResults, result],
-                }));
-                if (themeWasApplied(result)) applied += 1;
-            }
-
-            // One updater landing is enough to change what the user is looking
-            // at, so the record follows the machine. A run that only skipped or
-            // errored wrote nothing, and leaves the record standing.
-            if (applied > 0) {
-                try {
-                    await activeTheme.set.mutateAsync(pickedEntry.meta.key);
-                } catch (error) {
-                    appStore.setState((s) => ({
-                        ...s,
-                        updaterResults: [
-                            ...s.updaterResults.filter(
-                                (result) => result.app !== ACTIVE_THEME_PERSISTENCE_APP,
-                            ),
-                            activeThemePersistenceError(error),
-                        ],
-                    }));
-                }
-            }
-        } finally {
-            appStore.setState((s) => ({ ...s, phase: "done" }));
-        }
+        await runApply(pickedEntry, config.query.data);
     };
 
     useHotkey("Enter", () => {

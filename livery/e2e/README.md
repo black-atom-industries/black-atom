@@ -42,6 +42,11 @@ nvim, herdr (talk to running apps) and Obsidian stay disabled and are never appl
 settings page saves into the fixture's Livery config, and the reload that follows finds only sockets
 under the fixture `$TMPDIR`.
 
+The bridge has no Tauri event channel. `livery-bridge` runs the real config watcher and queues its
+events, and `src/lib/dev-bridge.ts` polls that queue and replays each one into the same `listen()`
+callback the app uses. Before every test, `reset_config_watch` starts the watcher over from the
+fixture home, so the reset itself reports nothing.
+
 ## Layout
 
 - `fixtures/<scenario>/` — a `$HOME` snapshot: `existing-installation` (configured adapters and an
@@ -62,4 +67,7 @@ version shown in the header; regenerate them with `--update-snapshots` and revie
   are not covered.
 - Updaters that signal running apps (ghostty, tmux, nvim, herdr), Obsidian, and the system
   appearance switch are not exercised.
+- Config file events reach the page through the bridge's polling. The Tauri emit into a real
+  webview is not exercised. A Rust test covers the emit against a mock runtime, and
+  `core:default` grants the listen permission.
 - Linked/unlinked status is read from `get_app_status` on the bridge; the UI does not render it.

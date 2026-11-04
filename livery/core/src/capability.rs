@@ -27,6 +27,7 @@ macro_rules! capabilities {
 
 capabilities! {
     GetConfig => "get_config",
+    GetConfigFileError => "get_config_file_error",
     SaveConfig => "save_config",
     DetectApps => "detect_apps",
     GetAppStatus => "get_app_status",

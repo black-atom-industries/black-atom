@@ -399,6 +399,42 @@ fn setup_chain_end_to_end() {
 
     // 7. A saved option reaches a running Neovim through a reload.
     reload_reaches_a_running_neovim(socket_root.path(), home, &xdg_config, &xdg_data);
+
+    // 8. A config file that can't be read is never replaced.
+    a_broken_config_is_left_as_written();
+}
+
+fn a_broken_config_is_left_as_written() {
+    use livery_core::config::commands::{
+        get_active_theme, get_config, get_config_file_error, save_config, set_active_theme,
+    };
+    use livery_core::config::io::{config_path, ensure_config_exists};
+
+    const THEME: &str = "black-atom-jpn-koyo-yoru";
+    const BROKEN: &str = "{ \"apps\": half-typed";
+
+    set_active_theme(THEME).unwrap();
+    let good = get_config();
+    let path = config_path();
+    let good_content = std::fs::read_to_string(&path).unwrap();
+    assert_eq!(get_config_file_error(), None);
+
+    std::fs::write(&path, BROKEN).unwrap();
+
+    assert!(get_config_file_error().is_some());
+    assert_eq!(get_active_theme().as_deref(), Some(THEME));
+    let error = save_config(good).unwrap_err();
+    assert!(error.contains("left as it is"), "{error}");
+    assert!(set_active_theme("black-atom-jpn-koyo-dark").is_err());
+    ensure_config_exists();
+    assert_eq!(std::fs::read_to_string(&path).unwrap(), BROKEN);
+
+    std::fs::write(&path, &good_content).unwrap();
+    assert_eq!(get_config_file_error(), None);
+    set_active_theme("black-atom-jpn-koyo-dark").unwrap();
+    let unchanged = std::fs::read_to_string(&path).unwrap();
+    set_active_theme("black-atom-jpn-koyo-dark").unwrap();
+    assert_eq!(std::fs::read_to_string(&path).unwrap(), unchanged);
 }
 
 /// Serves a headless Neovim on a socket Livery's reload finds, as a session would.

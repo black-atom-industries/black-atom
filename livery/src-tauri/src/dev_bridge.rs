@@ -1,10 +1,11 @@
+use livery_core::config::file_tracker::ConfigFileEvent;
 use serde::de::DeserializeOwned;
 use serde_json::{json, Value};
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::sync::{
     atomic::{AtomicBool, Ordering},
-    Arc,
+    Arc, Mutex, OnceLock,
 };
 use std::thread::{self, JoinHandle};
 use std::time::Duration;
@@ -77,6 +78,54 @@ pub fn start() -> Option<DevBridge> {
     })
 }
 
+static CONFIG_WATCHER: OnceLock<crate::config_watcher::ConfigWatcher> = OnceLock::new();
+static CONFIG_EVENTS: Mutex<Vec<ConfigFileEvent>> = Mutex::new(Vec::new());
+
+/// Follow the config file for a browser on the bridge, which has no Tauri
+/// events: changes queue up here for `config_file_events` to hand out. Only the
+/// headless bridge does this. In the app, Tauri events carry them to the window.
+pub fn start_config_watcher() {
+    livery_core::config::io::ensure_config_exists();
+    let watcher = crate::config_watcher::ConfigWatcher::start(
+        livery_core::config::io::config_path(),
+        livery_core::config::file_tracker::config_file_tracker(),
+        |event| {
+            CONFIG_EVENTS
+                .lock()
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .push(event);
+        },
+    );
+    match watcher {
+        Ok(watcher) => {
+            let _ = CONFIG_WATCHER.set(watcher);
+        }
+        Err(error) => eprintln!("livery-bridge: could not watch the config file: {error}"),
+    }
+}
+
+/// Events after the position `after` names, and the position to ask from next.
+/// Without a position, the answer starts from now.
+fn config_file_events(after: Option<usize>) -> Value {
+    let events = CONFIG_EVENTS
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner);
+    let from = after.unwrap_or(events.len()).min(events.len());
+    json!({ "next": events.len(), "events": events[from..] })
+}
+
+/// A fixture home replaced under the watcher is no change anyone made: start
+/// over from what's on disk.
+fn reset_config_watch() {
+    if let Some(watcher) = CONFIG_WATCHER.get() {
+        watcher.rebaseline();
+    }
+    CONFIG_EVENTS
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+        .clear();
+}
+
 struct Request {
     method: String,
     path: String,
@@ -121,6 +170,16 @@ fn dispatch(command: &str, args: Value) -> Result<Value, String> {
         "get_config" => to_value(crate::commands::get_config()),
         "save_config" => {
             crate::commands::save_config(argument(&args, "config")?)?;
+            Ok(Value::Null)
+        }
+        "get_config_file_error" => to_value(crate::commands::get_config_file_error()),
+        "config_file_events" => Ok(config_file_events(
+            args.get("after")
+                .and_then(Value::as_u64)
+                .map(|n| n as usize),
+        )),
+        "reset_config_watch" => {
+            reset_config_watch();
             Ok(Value::Null)
         }
         "get_active_theme" => to_value(crate::commands::get_active_theme()),

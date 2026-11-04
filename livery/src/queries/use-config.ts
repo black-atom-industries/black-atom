@@ -10,7 +10,8 @@ import {
 } from "../bindings.ts";
 
 const TOPIC = "config" as const;
-const queryKey = (keys: string[] = []) => [TOPIC, ...keys] as const;
+export const queryKey = (keys: string[] = []) => [TOPIC, ...keys] as const;
+export const fileErrorQueryKey = () => queryKey(["file-error"]);
 
 type ConfigChange = (config: Config) => Config;
 
@@ -29,7 +30,7 @@ export const useConfig = () => {
     const query = useQuery({
         queryKey: queryKey(),
         queryFn: () => commands.getConfig(),
-        staleTime: Infinity, // Config only changes via our own save mutation
+        staleTime: Infinity, // Changes arrive through our own saves and the config file listener
     });
 
     const enabledApps = useMemo(
@@ -71,3 +72,11 @@ export const useConfig = () => {
         saveNvimSettings,
     };
 };
+
+/** Why the config file can't be read right now, `null` while it's good. */
+export const useConfigFileError = () =>
+    useQuery({
+        queryKey: fileErrorQueryKey(),
+        queryFn: () => commands.getConfigFileError(),
+        staleTime: Infinity,
+    });

@@ -4,10 +4,10 @@ import { themeCatalog } from "@black-atom/core";
 import { commands } from "../bindings.ts";
 
 const TOPIC = "active-theme" as const;
-const queryKey = (keys: string[] = []) => [TOPIC, ...keys] as const;
+export const queryKey = (keys: string[] = []) => [TOPIC, ...keys] as const;
 
 /** A stored key outlives a theme rename, so the catalogue is the authority. */
-const isThemeKey = (key: string): key is keyof typeof themeCatalog =>
+export const isThemeKey = (key: string): key is keyof typeof themeCatalog =>
     Object.hasOwn(themeCatalog, key);
 
 /**

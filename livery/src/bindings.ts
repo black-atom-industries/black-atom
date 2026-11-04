@@ -8,6 +8,13 @@ export const commands = {
 async getConfig() : Promise<Config> {
     return await TAURI_INVOKE("get_config");
 },
+/**
+ * Why the config file can't be read as a Config. `None` for a good file and
+ * for a missing one, which first run creates.
+ */
+async getConfigFileError() : Promise<string | null> {
+    return await TAURI_INVOKE("get_config_file_error");
+},
 async saveConfig(config: Config) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("save_config", { config }) };
@@ -101,6 +108,11 @@ async setActiveTheme(key: string) : Promise<Result<null, string>> {
 /** user-defined events **/
 
 
+export const events = __makeEvents__<{
+configFileChanged: ConfigFileChanged
+}>({
+configFileChanged: "config-file-changed"
+})
 
 /** user-defined constants **/
 
@@ -183,6 +195,15 @@ export type Config = {
  * Versioned configuration schema. Missing on disk means legacy v1.
  */
 version?: number; system_appearance: boolean; active_theme?: string | null; keymappings?: Keymappings; apps: { [key in AppName]: AppConfig } }
+/**
+ * The config file changed outside Livery, or can't be read.
+ */
+export type ConfigFileChanged = ConfigFileEvent
+/**
+ * What a look at the config file found. `error` is set while the file can't
+ * be read as a Config, and every other field is then false or empty.
+ */
+export type ConfigFileEvent = { error: string | null; nvim_settings_changed: boolean; active_theme_changed: boolean; active_theme: string | null }
 export type ConfigFolderLinkOutcome = { config_folder: string; status: UpdateStatus; message?: string | null; linked: number; pruned: number }
 export type ConfigFolderOutcome = { config_folder: string; status: UpdateStatus; message?: string | null; reload_warning?: string | null }
 export type ConfigFolderPathVerification = { 

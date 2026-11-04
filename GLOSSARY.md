@@ -122,6 +122,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | Term                 | Definition                                                                                                                                        | Aliases to avoid             |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
 | **Config**           | The user's livery configuration file (`$XDG_CONFIG_HOME/black-atom/livery/config.json`) containing a SystemAppearance toggle and per-app settings | Settings, preferences        |
+| **Config Watcher**   | The GUI's watch on the Config file, which reports a change made outside Livery or a file that can't be read as a `config-file-changed` event      | File watcher                 |
 | **AppConfig**        | The per-app configuration block — enabled flag, config_path, themes_path, match_pattern, replace_template, and for Neovim the plugin settings     | App settings, app entry      |
 | **AppName**          | An enum of supported applications that livery can update; `AppName::all()` in `core/src/config/types.rs` is the list                              | App, tool, target            |
 | **ConfigPath**       | The filesystem path to an app's configuration file that livery will patch                                                                         | Target file, output path     |
@@ -147,11 +148,11 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 ## Theme Application
 
-| Term               | Definition                                                                                                                                                                                                  | Aliases to avoid                     |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| **Active Theme**   | The theme livery last applied, recorded as `active_theme` in `$XDG_CONFIG_HOME/black-atom/livery/config.json`. A record of what livery did, not a reading of the app configs. Neovim's plugin opens with it | Current theme, applied theme, record |
-| **Applying Theme** | The theme a run is currently writing, held in the frontend store for the duration of the run and the retry that may follow it                                                                               | Current theme, selected theme        |
-| **Applied Rule**   | The condition that moves the **Active Theme**: at least one updater returned `done`, or a degraded result that reports `Config patched` or, for Neovim, `Theme saved`. A run that only skipped or errored leaves the record standing      | Success check                        |
+| Term               | Definition                                                                                                                                                                                                                                                                                 | Aliases to avoid                     |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| **Active Theme**   | The theme livery last applied, recorded as `active_theme` in `$XDG_CONFIG_HOME/black-atom/livery/config.json`. A record of what livery did or the config file was edited to say, not a reading of the app configs. Livery applies a key changed in the file. Neovim's plugin opens with it | Current theme, applied theme, record |
+| **Applying Theme** | The theme a run is currently writing, held in the frontend store for the duration of the run and the retry that may follow it                                                                                                                                                              | Current theme, selected theme        |
+| **Applied Rule**   | The condition that moves the **Active Theme**: at least one updater returned `done`, or a degraded result that reports `Config patched` or, for Neovim, `Theme saved`. A run that only skipped or errored leaves the record standing                                                       | Success check                        |
 
 ## Updater Pipeline
 

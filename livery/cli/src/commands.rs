@@ -144,6 +144,9 @@ pub fn status() -> Result<(), String> {
     let config = livery_core::config::commands::get_config();
     let statuses = block_on(themes::get_app_status())?;
 
+    if let Some(error) = livery_core::config::commands::get_config_file_error() {
+        println!("config     can't be read: {error}");
+    }
     println!("theme      {}", active_theme_label());
     println!();
 

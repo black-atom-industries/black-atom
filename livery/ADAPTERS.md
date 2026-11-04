@@ -27,6 +27,23 @@ In the settings screen, **AUTO-DETECT** checks which apps exist (conservatively:
 config file exist? For nvim, its config directory or the binary on `PATH`), and **SET UP** runs the class-appropriate chain — enable → link (Linked only) →
 verify — always ending with verification, so the row reflects the true state.
 
+## The config file
+
+While the GUI runs it watches `config.json`, through a symlink too, with changes settling for about
+200 ms. Nothing happens for content that means the same as what Livery last saw, which covers
+Livery's own saves. Otherwise:
+
+- The window refreshes. An unsaved draft on the Neovim settings page stays and shows as unsaved.
+- Changed `apps.nvim.settings` reload running Neovims.
+- A changed `active_theme` applies to every enabled tool, as if picked in Livery. A `livery apply`
+  in a terminal counts as such a change, so the GUI applies that theme a second time. A key that
+  names no theme shows an error in the footer and applies nothing.
+
+A file that can't be read as a Config shows an error in the footer. Livery keeps working from the
+last good Config it saw and every config write refuses to replace the file, so a half-saved edit
+never gets overwritten. The CLI has no last good Config and reads the defaults, and `livery status`
+names the error.
+
 ## Per-adapter contracts
 
 ### ghostty — Linked
@@ -144,7 +161,8 @@ verify — always ending with verification, so the row reflects the true state.
   config, and Livery edits no Neovim file.
 - **Reload:** `nvim --server <socket> --remote-expr 'execute("colorscheme <themeKey>")'` against
   every running instance whose socket lives under `$TMPDIR/nvim.<user>/`, which covers macOS, on
-  every apply and every save in the settings page. Sockets under `$XDG_RUNTIME_DIR` on Linux are not
+  every apply, every save in the settings page, and every change to these options in `config.json`.
+  Sockets under `$XDG_RUNTIME_DIR` on Linux are not
   found yet. No running instance is a success.
 - **Precondition:** none. Setup needs the placement above, which verify checks.
 

@@ -17,6 +17,9 @@ export const test = base.extend<{ scenario: Scenario; fixtureHome: void }>({
             // The app unpacks its themes at launch. Doing it here keeps later
             // unpack checks read-only, so no test leaves a write in flight.
             await invokeBridge(request, "get_app_status");
+            // The reset is no change anyone made. The watcher starts over from it,
+            // or the next page would apply the difference to the previous test.
+            await invokeBridge(request, "reset_config_watch");
             await use();
         },
         { auto: true },

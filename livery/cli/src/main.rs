@@ -71,6 +71,7 @@ enum AdapterCommand {
 fn cli_surface(cap: Capability) -> &'static str {
     match cap {
         Capability::GetConfig => "status",
+        Capability::GetConfigFileError => "status",
         Capability::SaveConfig => "setup",
         Capability::DetectApps => "setup",
         Capability::GetAppStatus => "status",

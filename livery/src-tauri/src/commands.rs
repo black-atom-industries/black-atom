@@ -18,6 +18,14 @@ pub fn save_config(config: Config) -> Result<(), String> {
     livery_core::config::commands::save_config(config)
 }
 
+/// Why the config file can't be read as a Config. `None` for a good file and
+/// for a missing one, which first run creates.
+#[tauri::command]
+#[specta::specta]
+pub fn get_config_file_error() -> Option<String> {
+    livery_core::config::commands::get_config_file_error()
+}
+
 /// The theme livery last applied, as a theme key. `None` on a machine that
 /// has never run setup.
 #[tauri::command]

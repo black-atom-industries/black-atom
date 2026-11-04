@@ -24,13 +24,13 @@ export function NvimSettings({
     savingNvimSettings,
     nvimSettingsResult,
 }: AdapterPageProps) {
-    // The adapters route remounts this page on every adapter switch, so the
-    // draft starts from the saved settings each time it appears.
+    // The draft holds only unsaved edits, so the panel follows the config file
+    // until the user changes something, and keeps those changes when the file moves.
     const saved = appConfig.settings ?? null;
-    const [draft, setDraft] = useState<NvimPluginSettings | null>(saved);
+    const [draft, setDraft] = useState<NvimPluginSettings | null>(null);
     const settings = draft ?? saved;
-    const dirty =
-        settings !== null && saved !== null && JSON.stringify(settings) !== JSON.stringify(saved);
+    const dirty = draft !== null && JSON.stringify(draft) !== JSON.stringify(saved);
+    if (draft !== null && !dirty) setDraft(null);
 
     return (
         <div className={styles.root}>
@@ -61,7 +61,7 @@ export function NvimSettings({
                     resultFailed={nvimSettingsResult?.status === "error"}
                     onChange={setDraft}
                     onSave={() => onSaveNvimSettings(settings)}
-                    onReset={() => setDraft(saved)}
+                    onReset={() => setDraft(null)}
                 />
             )}
             <ClassDefinition provisioning="linked" />

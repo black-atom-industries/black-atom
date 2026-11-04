@@ -2,10 +2,11 @@ use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
+use super::file_tracker::{config_file_tracker, ConfigFileTracker};
 use super::types::{AppConfig, AppName, Config};
 
 /// Path to the livery config file.
-fn config_path() -> PathBuf {
+pub fn config_path() -> PathBuf {
     crate::paths::livery_config_dir().join("config.json")
 }
 
@@ -78,7 +79,7 @@ fn copy_atomic(source: &Path, target: &Path) -> std::io::Result<()> {
 /// This intentionally hydrates the user's config with all default apps (disabled).
 /// When save_config is called, all apps are written to disk — this ensures the config
 /// file always contains the full list of supported apps for the settings UI.
-fn merge_with_defaults(mut user_config: Config) -> Config {
+pub(super) fn merge_with_defaults(mut user_config: Config) -> Config {
     let defaults = Config::default();
 
     for (name, default_app) in &defaults.apps {
@@ -103,7 +104,8 @@ fn merge_with_defaults(mut user_config: Config) -> Config {
     user_config
 }
 
-/// Read config from disk and merge with defaults.
+/// Read config from disk and merge with defaults. A file that can't be read as
+/// a Config yields the last good Config this process saw, then the defaults.
 pub fn read_config_from_disk() -> Config {
     migrate_legacy_config();
     let path = config_path();
@@ -114,14 +116,38 @@ pub fn read_config_from_disk() -> Config {
                 config
             }
             Err(e) => {
-                log::warn!("Failed to parse config, using defaults: {e}");
-                Config::default()
+                log::warn!("Failed to parse config: {e}");
+                last_good_or_default()
             }
         },
-        Err(_) => Config::default(),
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => Config::default(),
+        Err(e) => {
+            log::warn!("Failed to read config: {e}");
+            last_good_or_default()
+        }
     };
 
     merge_with_defaults(user_config)
+}
+
+fn lock_tracker() -> std::sync::MutexGuard<'static, ConfigFileTracker> {
+    config_file_tracker()
+        .lock()
+        .unwrap_or_else(std::sync::PoisonError::into_inner)
+}
+
+fn last_good_or_default() -> Config {
+    lock_tracker().last_good().cloned().unwrap_or_default()
+}
+
+/// Why the config file can't be read as a Config. `None` for a good file and
+/// for a missing one, which first run creates.
+pub fn config_file_error(path: &Path) -> Option<String> {
+    match fs::read_to_string(path) {
+        Ok(content) => super::file_tracker::parse_config(&content).err(),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => None,
+        Err(error) => Some(error.to_string()),
+    }
 }
 
 /// Return the platform-specific Obsidian global vault registry.
@@ -371,9 +397,20 @@ pub fn write_config_to_disk(config: &Config) -> Result<(), String> {
     write_config_atomic(&path, config).map_err(|e| format!("Failed to write config: {e}"))
 }
 
+/// Every config write ends here. An existing file that can't be read as a
+/// Config stays as it is: it may be a hand edit in progress, and replacing it
+/// would lose that edit.
 fn write_config_atomic(path: &Path, config: &Config) -> std::io::Result<()> {
     let json = serde_json::to_string_pretty(config)
         .map_err(|e| std::io::Error::other(format!("Failed to serialize: {e}")))?;
+    let mut tracker = lock_tracker();
+    let before = fs::read_to_string(path).ok();
+    if let Some(error) = config_file_error(path) {
+        return Err(std::io::Error::other(format!(
+            "{} can't be read, so it was left as it is: {error}",
+            path.display()
+        )));
+    }
     let destination = atomic_destination(path)?;
     let parent = destination.parent().ok_or_else(|| {
         std::io::Error::new(
@@ -384,6 +421,7 @@ fn write_config_atomic(path: &Path, config: &Config) -> std::io::Result<()> {
     let mut tmp = tempfile::NamedTempFile::new_in(parent)?;
     tmp.write_all(json.as_bytes())?;
     tmp.persist(destination).map_err(|error| error.error)?;
+    tracker.record_write(before.as_deref(), &json);
     Ok(())
 }
 
@@ -498,6 +536,45 @@ mod tests {
             .file_type()
             .is_symlink());
         assert!(serde_json::from_str::<Config>(&fs::read_to_string(&link).unwrap()).is_ok());
+    }
+
+    #[test]
+    fn write_config_atomic_refuses_to_replace_a_file_that_is_no_config() {
+        let dir = tempfile::TempDir::new().unwrap();
+        for broken in ["{ broken", r#"{"apps": 1}"#, ""] {
+            let path = dir.path().join("config.json");
+            fs::write(&path, broken).unwrap();
+
+            let error = write_config_atomic(&path, &Config::default()).unwrap_err();
+
+            assert!(error.to_string().contains("can't be read"), "{error}");
+            assert_eq!(fs::read_to_string(&path).unwrap(), broken);
+        }
+    }
+
+    #[test]
+    fn write_config_atomic_creates_a_missing_file() {
+        let dir = tempfile::TempDir::new().unwrap();
+        let path = dir.path().join("config.json");
+
+        write_config_atomic(&path, &Config::default()).unwrap();
+
+        assert!(config_file_error(&path).is_none());
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn write_config_atomic_refuses_through_a_symlink_too() {
+        use std::os::unix::fs::symlink;
+
+        let dir = tempfile::TempDir::new().unwrap();
+        let target = dir.path().join("tracked.json");
+        let link = dir.path().join("config.json");
+        fs::write(&target, "{ broken").unwrap();
+        symlink(&target, &link).unwrap();
+
+        assert!(write_config_atomic(&link, &Config::default()).is_err());
+        assert_eq!(fs::read_to_string(&target).unwrap(), "{ broken");
     }
 
     #[test]

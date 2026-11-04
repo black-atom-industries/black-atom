@@ -94,7 +94,8 @@ Livery's setup links this directory into `$XDG_DATA_HOME/nvim/site/pack/black-at
 Neovim opens in the active theme with its options from `config.json`, with no line in your config
 and even with no config at all. Livery never edits your Neovim files.
 
-Applying a theme and saving options in Livery's settings page both reload every running Neovim.
+Applying a theme, saving options in Livery's settings page, and editing them in `config.json` while
+Livery runs all reload every running Neovim.
 When your own config sets `vim.g.black_atom_core_config`, the settings page goes read-only and names
 the file and line, because your table would win over anything saved there.
 
