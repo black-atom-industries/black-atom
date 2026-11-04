@@ -40,9 +40,11 @@ for (const abandoned of findAbandonedLaunchers(process.env.PATH ?? "")) {
             `  status   ${abandoned.status}`,
         ].join("\n"),
     );
-    if (await confirm("Remove its link and session directory?")) {
-        removeAbandonedLauncher(abandoned);
+    if (!(await confirm("Remove its link and session directory?"))) {
+        console.error(`Dev session not started: ${abandoned.command} is still linked.`);
+        process.exit(1);
     }
+    removeAbandonedLauncher(abandoned);
 }
 const session = await createDevEnvironment(binary);
 const launcherLink = await (async () => {
@@ -195,10 +197,10 @@ try {
     process.exitCode = await finished.promise;
 } finally {
     await stop(1);
-    process.off("SIGINT", interrupt);
-    process.off("SIGTERM", terminate);
-    process.off("SIGHUP", hangup);
     session.setState("stopped");
     launcherLink.remove();
     await rm(session.directory, { recursive: true });
+    process.off("SIGINT", interrupt);
+    process.off("SIGTERM", terminate);
+    process.off("SIGHUP", hangup);
 }
