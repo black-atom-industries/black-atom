@@ -123,6 +123,8 @@ impl Sandbox {
             .env("HOME", self.path())
             .env("XDG_CONFIG_HOME", self.config_home())
             .env("XDG_DATA_HOME", self.data_home())
+            // Neovim's updater reloads every instance whose socket is under here.
+            .env("TMPDIR", self.path())
             .env("LIVERY_APPEARANCE_LOG", self.appearance_log())
             .env("PATH", std::env::join_paths(paths).unwrap())
             .output()
@@ -424,6 +426,11 @@ fn cli_end_to_end() {
     std::fs::write(&ghostty_config, "# no switch pointer here\n").unwrap();
     #[cfg(any(target_os = "linux", target_os = "macos"))]
     sandbox.install_system_appearance_stub(1);
+    // Setup enables nvim wherever the binary is on PATH, and its updater has no
+    // file to fail on.
+    let mut config = livery_core::config::commands::get_config();
+    config.apps.get_mut(&AppName::Nvim).unwrap().enabled = false;
+    livery_core::config::commands::save_config(config).unwrap();
 
     let broken = sandbox.run(&["apply", THEME]);
     assert!(
@@ -473,14 +480,7 @@ fn help_lists_every_subcommand() {
     let output = Command::new(BINARY).arg("--help").output().unwrap();
     assert!(output.status.success());
     let help = stdout(&output);
-    for command in [
-        "apply",
-        "list",
-        "status",
-        "setup",
-        "appearance",
-        "nvim-settings",
-    ] {
+    for command in ["apply", "list", "status", "setup", "appearance"] {
         assert!(help.contains(command), "--help omits {command}:\n{help}");
     }
     assert!(

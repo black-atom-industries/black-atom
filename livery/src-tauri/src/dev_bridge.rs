@@ -157,12 +157,9 @@ fn dispatch(command: &str, args: Value) -> Result<Value, String> {
                 crate::commands::verify_app_path(app),
             ))
         }
-        "write_nvim_settings" => {
-            let settings = argument(&args, "settings")?;
-            to_value(tauri::async_runtime::block_on(
-                crate::commands::write_nvim_settings(settings),
-            ))
-        }
+        "reload_nvim" => to_value(tauri::async_runtime::block_on(
+            crate::commands::reload_nvim(),
+        )),
         "plugin:path|resolve_directory" => {
             let directory: u8 = argument(&args, "directory")?;
             if directory == 21 {

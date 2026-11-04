@@ -165,7 +165,6 @@ mod tests {
             themes_path: Some(dir.path().to_string_lossy().into_owned()),
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         Fixture {

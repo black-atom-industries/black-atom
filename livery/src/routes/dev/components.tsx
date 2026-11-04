@@ -28,7 +28,7 @@ import type { AdapterEditableField, AppConfig, AppName, Config } from "../../bin
 const SETTINGS_ADAPTERS_FIXTURE: Config = {
     system_appearance: false,
     apps: {
-        nvim: { enabled: true, config_path: "~/.config/nvim/lua/theme.lua" },
+        nvim: { enabled: true },
         ghostty: {
             enabled: true,
             config_path: "~/.config/ghostty/config",
@@ -66,7 +66,7 @@ const SETTINGS_ADAPTERS_FIXTURE: Config = {
 };
 
 const SETTINGS_EDITABLE_FIELDS: Record<AppName, AdapterEditableField[]> = {
-    nvim: ["config_path", "match_pattern", "replace_template"],
+    nvim: [],
     ghostty: ["config_path", "match_pattern", "replace_template"],
     "helm-tmux": ["config_path", "match_pattern", "replace_template"],
     delta: ["config_path", "themes_path", "match_pattern", "replace_template"],

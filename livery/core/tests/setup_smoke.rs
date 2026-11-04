@@ -7,6 +7,8 @@
 //! must stay sequential.
 
 use std::path::Path;
+use std::process::{Command, Stdio};
+use std::time::Duration;
 
 use tokio::runtime::Runtime;
 
@@ -91,6 +93,10 @@ fn setup_chain_end_to_end() {
     let xdg_data = home.join("xdg-data");
     std::env::set_var("XDG_CONFIG_HOME", &xdg_config);
     std::env::set_var("XDG_DATA_HOME", &xdg_data);
+    // Neovim's updater reloads every instance whose socket is under `$TMPDIR`. Short, because
+    // a socket path has a length limit.
+    let socket_root = tempfile::TempDir::new_in("/tmp").unwrap();
+    std::env::set_var("TMPDIR", socket_root.path());
     assert_eq!(
         paths::themes_root(),
         xdg_data.join("black-atom/themes"),
@@ -192,6 +198,7 @@ fn setup_chain_end_to_end() {
     assert!(config.apps.values().all(|app| !app.enabled));
 
     // 2. Conservative detection: planted configured locations are found, everything else not.
+    std::fs::create_dir_all(xdg_config.join("nvim")).unwrap();
     let detections = block_on(detect::detect_apps());
     let mut found: Vec<&str> = detections
         .iter()
@@ -201,7 +208,7 @@ fn setup_chain_end_to_end() {
     found.sort_unstable();
     assert_eq!(
         found,
-        ["claude-code", "ghostty", "herdr", "tmux", "zed"],
+        ["claude-code", "ghostty", "herdr", "nvim", "tmux", "zed"],
         "detected apps"
     );
     let obsidian = detections
@@ -373,37 +380,140 @@ fn setup_chain_end_to_end() {
         Some(1)
     );
 
+    // nvim has no config path: its verdict follows the pack link, removed above.
     let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
-    assert!(!nvim.exists, "no nvim config was planted");
+    assert!(!nvim.exists, "the pack link was unwired above");
+    let relink = block_on(themes::link_app_themes(AppName::Nvim));
+    assert!(matches!(relink.status, UpdateStatus::Done));
+    let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
+    assert!(nvim.exists, "a wired pack link needs nothing else");
 
-    // 7. Settings only get persisted once the Lua block was actually
-    // written. A settings_path in a directory that does not exist fails the
-    // write, so the stored settings must still be the previous ones.
+    // A config_path left in an old config.json plays no part in that verdict.
     let mut config = livery_core::config::commands::get_config();
     let nvim_config = config.apps.get_mut(&AppName::Nvim).unwrap();
-    nvim_config.settings_path = Some(
-        home.join("no/such/dir/init.lua")
-            .to_string_lossy()
-            .into_owned(),
-    );
-    let before = nvim_config.settings.clone();
+    nvim_config.config_path = Some("~/no/such/config.lua".to_string());
+    nvim_config.match_pattern = Some("no such line".to_string());
     livery_core::config::commands::save_config(config).unwrap();
+    let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
+    assert!(nvim.exists && nvim.pattern_matches.is_none(), "{nvim:?}");
 
-    let mut wanted = before.clone().unwrap_or_default();
-    wanted.term_colors = !wanted.term_colors;
-    let result = block_on(livery_core::updaters::write_nvim_settings(wanted));
-    assert_eq!(
-        result.status,
-        UpdateStatus::Error,
-        "a settings_path in a missing directory must fail"
-    );
+    // 7. A saved option reaches a running Neovim through a reload.
+    reload_reaches_a_running_neovim(socket_root.path(), home, &xdg_config, &xdg_data);
+}
 
-    let stored = livery_core::config::commands::get_config()
-        .apps
-        .get(&AppName::Nvim)
-        .and_then(|app| app.settings.clone());
-    assert_eq!(
-        stored, before,
-        "a failed settings write must leave the config untouched"
-    );
+/// Serves a headless Neovim on a socket Livery's reload finds, as a session would.
+struct RunningNeovim {
+    child: std::process::Child,
+    socket: std::path::PathBuf,
+}
+
+impl RunningNeovim {
+    fn start(socket_root: &Path, home: &Path, xdg_config: &Path, xdg_data: &Path) -> Self {
+        let dir = socket_root.join("nvim.fixture/0");
+        std::fs::create_dir_all(&dir).unwrap();
+        let socket = dir.join("nvim.999999.0");
+        let init = home.join("reload-init.lua");
+        write_file(&init, "");
+        let child = Command::new("nvim")
+            .env("HOME", home)
+            .env("XDG_CONFIG_HOME", xdg_config)
+            .env("XDG_DATA_HOME", xdg_data)
+            .env("XDG_STATE_HOME", home.join("state"))
+            .env("XDG_CACHE_HOME", home.join("cache"))
+            .env_remove("VIMINIT")
+            .args(["--headless", "-u"])
+            .arg(&init)
+            .arg("--listen")
+            .arg(&socket)
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .unwrap();
+        let neovim = Self { child, socket };
+        for _ in 0..200 {
+            if neovim.socket.exists() && neovim.try_eval("1").is_some() {
+                return neovim;
+            }
+            std::thread::sleep(Duration::from_millis(50));
+        }
+        panic!("headless nvim never opened {}", neovim.socket.display());
+    }
+
+    fn try_eval(&self, expr: &str) -> Option<String> {
+        let output = Command::new("nvim")
+            .arg("--server")
+            .arg(&self.socket)
+            .args(["--remote-expr", expr])
+            .output()
+            .unwrap();
+        output
+            .status
+            .success()
+            .then(|| String::from_utf8_lossy(&output.stdout).trim().to_string())
+    }
+
+    fn eval(&self, expr: &str) -> String {
+        self.try_eval(expr)
+            .unwrap_or_else(|| panic!("nvim refused {expr}"))
+    }
+}
+
+impl Drop for RunningNeovim {
+    fn drop(&mut self) {
+        let _ = self.child.kill();
+        let _ = self.child.wait();
+    }
+}
+
+/// The option as of the last `:colorscheme`, so it only moves when a reload ran.
+const LOADED_GUTTER: &str =
+    "luaeval(\"require('black-atom').config.styles.dark_gutter and 1 or 0\")";
+
+fn reload_reaches_a_running_neovim(
+    socket_root: &Path,
+    home: &Path,
+    xdg_config: &Path,
+    xdg_data: &Path,
+) {
+    use livery_core::config::commands::{get_config, save_config, set_active_theme};
+    use livery_core::updaters::reload_nvim;
+
+    const THEME: &str = "black-atom-jpn-koyo-dark";
+
+    let mut config = get_config();
+    config.apps.get_mut(&AppName::Nvim).unwrap().enabled = false;
+    save_config(config).unwrap();
+    let disabled = block_on(reload_nvim());
+    assert_eq!(disabled.status, UpdateStatus::Skipped, "{disabled:?}");
+
+    let mut config = get_config();
+    config.active_theme = None;
+    config.apps.get_mut(&AppName::Nvim).unwrap().enabled = true;
+    save_config(config).unwrap();
+    let no_theme = block_on(reload_nvim());
+    assert_eq!(no_theme.status, UpdateStatus::Skipped, "{no_theme:?}");
+
+    set_active_theme(THEME).unwrap();
+    let no_instances = block_on(reload_nvim());
+    assert_eq!(no_instances.status, UpdateStatus::Done, "{no_instances:?}");
+
+    if !std::env::split_paths(&std::env::var_os("PATH").unwrap_or_default())
+        .any(|dir| dir.join("nvim").is_file())
+    {
+        eprintln!("skipped: nvim not on PATH");
+        return;
+    }
+
+    let neovim = RunningNeovim::start(socket_root, home, xdg_config, xdg_data);
+    assert_eq!(neovim.eval("g:colors_name"), THEME);
+    assert_eq!(neovim.eval(LOADED_GUTTER), "0");
+
+    let mut config = get_config();
+    let nvim = config.apps.get_mut(&AppName::Nvim).unwrap();
+    nvim.settings.as_mut().unwrap().styles.dark_gutter = true;
+    save_config(config).unwrap();
+    let saved = block_on(reload_nvim());
+    assert_eq!(saved.status, UpdateStatus::Done, "{saved:?}");
+    assert_eq!(neovim.eval(LOADED_GUTTER), "1");
 }

@@ -38,6 +38,15 @@ test("themeWasApplied counts patched reload skips but not no-op skips", () => {
     );
     assert.deepEqual(
         themeWasApplied({
+            app: "nvim",
+            status: "skipped",
+            message: "Theme saved; reload failed",
+            duration_ms: null,
+        }),
+        true,
+    );
+    assert.deepEqual(
+        themeWasApplied({
             app: "ghostty",
             status: "skipped",
             message: "App is disabled",

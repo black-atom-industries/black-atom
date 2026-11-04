@@ -5,6 +5,9 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+use livery_core::config::types::{
+    NvimDiagnostics, NvimSettings, NvimStyle, NvimStyles, NvimSyntax,
+};
 use serde_json::{json, Value};
 use tempfile::TempDir;
 
@@ -70,7 +73,7 @@ impl Fixture {
                 "-u",
                 init.to_str().unwrap(),
                 "-c",
-                "lua io.write(vim.json.encode({ colors_name = vim.g.colors_name or vim.NIL, notes = _G.notes, config = require('black-atom.config').resolve() }))",
+                "lua io.write(vim.json.encode({ colors_name = vim.g.colors_name or vim.NIL, notes = _G.notes, config = require('black-atom.config').resolve(), defaults = require('black-atom.config').defaults, function_call_bold = vim.api.nvim_get_hl(0, { name = '@function.call' }).bold or false }))",
                 "-c",
                 "qa!",
             ])
@@ -211,4 +214,93 @@ fn wrong_shape_layers_resolve_to_defaults() {
         assert_eq!(out["config"]["styles"]["dark_floats"], true, "{contents}");
         assert_eq!(out["config"]["term_colors"], true, "{contents}");
     }
+}
+
+fn config_with_settings(settings: &NvimSettings) -> String {
+    json!({
+        "active_theme": THEME,
+        "apps": { "nvim": { "enabled": true, "settings": settings } },
+    })
+    .to_string()
+}
+
+/// `NvimSettings::default()` claims to mirror the plugin's `M.defaults`, and
+/// every config Livery stores carries it, so storing it must change nothing.
+#[test]
+fn stored_default_settings_resolve_to_the_plugin_defaults() {
+    let fx = fixture_or_skip!();
+    fx.config_json(&config_with_settings(&NvimSettings::default()));
+    let out = fx.run();
+    assert_eq!(out["colors_name"], THEME);
+    assert_eq!(out["config"], out["defaults"]);
+    assert_eq!(
+        out["function_call_bold"], true,
+        "stored off flags strip the bold highlights hardcode"
+    );
+}
+
+#[test]
+fn stored_settings_round_trip_through_the_plugin() {
+    let fx = fixture_or_skip!();
+    let on = NvimStyle {
+        bold: true,
+        italic: true,
+    };
+    let settings = NvimSettings {
+        term_colors: false,
+        styles: NvimStyles {
+            transparency: "full".to_string(),
+            ending_tildes: true,
+            cmp_kind_color_mode: "fg".to_string(),
+            dark_sidebars: false,
+            dark_floats: false,
+            dark_gutter: true,
+            gutter_padding: 3,
+            diagnostics: NvimDiagnostics {
+                undercurl: true,
+                background: true,
+            },
+            syntax: NvimSyntax {
+                comments: on,
+                keywords: on,
+                functions: on,
+                strings: on,
+                variables: on,
+                messages: on,
+            },
+        },
+    };
+    fx.config_json(&config_with_settings(&settings));
+    let out = fx.run();
+    assert_eq!(out["config"], serde_json::to_value(&settings).unwrap());
+}
+
+#[test]
+fn stored_off_flags_apply_only_where_the_defaults_declare_them() {
+    let fx = fixture_or_skip!();
+    fx.config_json(
+        r#"{"apps":{"nvim":{"settings":{"styles":{"syntax":{"comments":{"italic":false,"bold":false},"functions":{"bold":false,"italic":true}}}}}}}"#,
+    );
+    let out = fx.run();
+    assert_eq!(
+        out["config"]["styles"]["syntax"]["comments"],
+        json!({ "italic": false })
+    );
+    assert_eq!(
+        out["config"]["styles"]["syntax"]["functions"],
+        json!({ "italic": true })
+    );
+}
+
+#[test]
+fn vim_g_can_still_turn_a_flag_off() {
+    let fx = fixture_or_skip!();
+    fx.init_lua(
+        "vim.g.black_atom_core_config = { styles = { syntax = { functions = { bold = false } } } }",
+    );
+    let out = fx.run();
+    assert_eq!(
+        out["config"]["styles"]["syntax"]["functions"],
+        json!({ "bold": false })
+    );
 }

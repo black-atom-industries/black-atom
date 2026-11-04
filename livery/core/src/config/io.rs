@@ -90,9 +90,6 @@ fn merge_with_defaults(mut user_config: Config) -> Config {
                 if app.replace_template.is_none() {
                     app.replace_template = default_app.replace_template.clone();
                 }
-                if app.settings_path.is_none() {
-                    app.settings_path = default_app.settings_path.clone();
-                }
                 if app.settings.is_none() {
                     app.settings = default_app.settings.clone();
                 }
@@ -557,7 +554,6 @@ mod tests {
             .get_mut(&crate::config::types::AppName::Nvim)
             .unwrap();
         nvim.settings = None;
-        nvim.settings_path = None;
 
         let merged = merge_with_defaults(config);
         let nvim = merged
@@ -566,13 +562,34 @@ mod tests {
             .unwrap();
 
         assert_eq!(
-            nvim.settings_path.as_deref(),
-            Some(crate::config::types::NVIM_SETTINGS_PATH)
-        );
-        assert_eq!(
             nvim.settings,
             Some(crate::config::types::NvimSettings::default())
         );
+    }
+
+    #[test]
+    fn a_config_with_old_nvim_fields_loads_and_merge_adds_none_of_them() {
+        let json = serde_json::json!({
+            "version": 2,
+            "system_appearance": false,
+            "apps": {
+                "nvim": {
+                    "enabled": true,
+                    "config_path": "~/.config/nvim/lua/config.lua",
+                    "match_pattern": "colorscheme",
+                    "replace_template": "colorscheme = \"{themeKey}\"",
+                    "settings_path": "~/.config/nvim/init.lua"
+                }
+            }
+        });
+        let config: Config = serde_json::from_value(json).unwrap();
+        assert!(config.apps[&AppName::Nvim].enabled);
+
+        let merged = merge_with_defaults(Config::default());
+        let nvim = &merged.apps[&AppName::Nvim];
+        assert!(nvim.config_path.is_none());
+        assert!(nvim.match_pattern.is_none());
+        assert!(nvim.replace_template.is_none());
     }
 
     #[test]
@@ -736,7 +753,6 @@ mod tests {
             themes_path: None,
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
 

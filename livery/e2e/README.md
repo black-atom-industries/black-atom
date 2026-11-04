@@ -39,7 +39,8 @@ Vite server keeps its dependency cache in `e2e/.vite`.
 Scenarios enable only adapters whose updaters stay inside the fixture home: zed, delta, lazygit,
 claude-code, and tuicr for setup. `system_appearance` is `false`. Ghostty (signals running instances), tmux,
 nvim, herdr (talk to running apps) and Obsidian stay disabled and are never applied. The nvim
-settings page only writes its managed block into the fixture `init.lua`.
+settings page saves into the fixture's Livery config, and the reload that follows finds only sockets
+under the fixture `$TMPDIR`.
 
 ## Layout
 

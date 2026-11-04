@@ -1,7 +1,7 @@
 /* =============================================================
-   NvimSettingsPanel — the Neovim plugin options Livery renders
-   into the managed Lua block. Toggle rows, two segmented choices,
-   and the six-group bold/italic grid.
+   NvimSettingsPanel — the Neovim plugin options Livery stores in
+   its config. Toggle rows, two segmented choices, and the
+   six-group bold/italic grid.
    ============================================================= */
 
 .root {

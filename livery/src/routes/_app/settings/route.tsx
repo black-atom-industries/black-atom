@@ -139,9 +139,12 @@ function SettingsRoute() {
         if (!current || !provisioningClass) return;
 
         const configuredByFolders = usesConfigFolders(current.apps[appName]);
-        let configPath = configuredByFolders
+        const needsConfigPath = editableFieldsByApp[appName]?.has("config_path") ?? true;
+        let configPath: string | null = configuredByFolders
             ? (current.apps[appName]?.config_folders?.[0] ?? "")
-            : (current.apps[appName]?.config_path ?? "");
+            : needsConfigPath
+              ? (current.apps[appName]?.config_path ?? "")
+              : null;
         if (configuredByFolders) {
             const discovered = detectedConfigFolders[appName] ?? [];
             if (discovered.length > 0) {
@@ -493,9 +496,9 @@ function SettingsRoute() {
         void navigate({ to: "/" });
     }
 
-    /** nvim's plugin options: one backend write for config + Lua block. */
-    function writeNvimSettings(settings: NvimSettings) {
-        config.writeNvimSettings.mutate(settings, {
+    /** nvim's plugin options: save them, then reload running Neovims. */
+    function saveNvimSettings(settings: NvimSettings) {
+        config.saveNvimSettings.mutate(settings, {
             onSuccess: setNvimSettingsResult,
             onError: (error) =>
                 setNvimSettingsResult({
@@ -567,8 +570,8 @@ function SettingsRoute() {
         onRemoveConfigFolder: removeConfigFolder,
         configFoldersSaving,
         onPickPath: pickPath,
-        onWriteNvimSettings: writeNvimSettings,
-        writingNvimSettings: config.writeNvimSettings.isPending,
+        onSaveNvimSettings: saveNvimSettings,
+        savingNvimSettings: config.saveNvimSettings.isPending,
         nvimSettingsResult,
         onOpenUrl: (url) => {
             openUrl(url).catch((error) => console.error(error));

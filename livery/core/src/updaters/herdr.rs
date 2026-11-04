@@ -471,7 +471,6 @@ mod tests {
             themes_path: Some(portable_themes_path),
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let ctx = UpdateContext {
@@ -516,7 +515,6 @@ mod tests {
             themes_path: Some(themes.path().to_string_lossy().to_string()),
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let ctx = UpdateContext {
@@ -551,7 +549,6 @@ mod tests {
             themes_path: Some(themes.path().to_string_lossy().to_string()),
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let ctx = UpdateContext {

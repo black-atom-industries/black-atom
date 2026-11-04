@@ -45,8 +45,6 @@ enum Command {
         /// dark or light
         mode: String,
     },
-    /// Write the stored Neovim plugin settings into nvim's managed Lua block
-    NvimSettings,
     /// Copy an adapter's theme file to the clipboard
     Adapter {
         #[command(subcommand)]
@@ -80,7 +78,7 @@ fn cli_surface(cap: Capability) -> &'static str {
         Capability::UpdateApp => "apply",
         Capability::VerifyAppPath => "status",
         Capability::UpdateSystemAppearance => "appearance",
-        Capability::WriteNvimSettings => "nvim-settings",
+        Capability::ReloadNvim => "apply",
         Capability::GetActiveTheme => "status",
         Capability::SetActiveTheme => "apply",
     }
@@ -106,7 +104,6 @@ fn main() -> std::process::ExitCode {
         Some(Command::Status) => commands::status(),
         Some(Command::Setup { yes, theme }) => commands::setup(yes, theme.as_deref()),
         Some(Command::Appearance { mode }) => commands::appearance(&mode),
-        Some(Command::NvimSettings) => commands::nvim_settings(),
         Some(Command::Adapter {
             adapter: AdapterCommand::Kagi { theme, font },
         }) => commands::kagi(theme.as_deref(), font.as_deref()),

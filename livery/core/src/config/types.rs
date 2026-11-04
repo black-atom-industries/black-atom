@@ -107,13 +107,9 @@ pub struct NvimStyles {
     pub syntax: NvimSyntax,
 }
 
-/// Where the managed Lua block goes when the user has not chosen a file.
-pub const NVIM_SETTINGS_PATH: &str = "~/.config/nvim/init.lua";
-
-/// The plugin's `vim.g.black_atom_core_config` table, one field per option
-/// `adapters/nvim/lua/black-atom/config.lua` declares. The shape is the
-/// contract: it is rendered back into Lua verbatim, so a renamed field here
-/// silently stops reaching the plugin.
+/// One field per option `adapters/nvim/lua/black-atom/config.lua` declares. The
+/// plugin reads this shape from `apps.nvim.settings`, so a renamed field here
+/// silently stops reaching it.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
 pub struct NvimSettings {
     pub term_colors: bool,
@@ -121,9 +117,9 @@ pub struct NvimSettings {
 }
 
 /// Mirrors `M.defaults` in `adapters/nvim/lua/black-atom/config.lua`. The
-/// plugin deep-merges the global over those defaults, so every field the
-/// block writes overrides the plugin — an unfaithful default here changes
-/// highlights for a user who never opened the settings page.
+/// plugin merges the stored options over those defaults, so an unfaithful
+/// default here changes highlights for a user who never opened the settings
+/// page.
 impl Default for NvimSettings {
     fn default() -> Self {
         Self {
@@ -188,10 +184,7 @@ pub struct AppConfig {
     pub match_pattern: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub replace_template: Option<String>,
-    /// nvim only: the file the managed Lua block is written into.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub settings_path: Option<String>,
-    /// nvim only: the plugin options the managed Lua block renders.
+    /// nvim only: the plugin options, read by the plugin itself.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub settings: Option<NvimSettings>,
 }

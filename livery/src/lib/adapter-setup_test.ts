@@ -43,6 +43,14 @@ test("linked runs the full chain in order and ends ok", async () => {
     assert(outcome.verify?.exists);
 });
 
+test("an adapter with no location to set runs the chain unblocked", async () => {
+    const { deps, calls } = fakeDeps();
+    const outcome = await setUpAdapter("nvim", "linked", null, deps);
+
+    assert.deepEqual(outcome.blocked, null);
+    assert.deepEqual(calls, ["enable:nvim", "link:nvim", "verify:nvim"]);
+});
+
 test("external skips link", async () => {
     const { deps, calls } = fakeDeps();
     const outcome = await setUpAdapter("delta", "external", "~/.config/delta/config.ini", deps);

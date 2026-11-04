@@ -41,14 +41,13 @@ type Props = {
 };
 
 /**
- * The Neovim plugin's options — everything Livery renders into the managed
- * Lua block. Scalars as toggles and segmented choices, the six syntax groups
- * as a bold/italic grid.
+ * The Neovim plugin's options, stored as `apps.nvim.settings` in Livery's
+ * config. Scalars as toggles and segmented choices, the six syntax groups as a
+ * bold/italic grid.
  *
- * SAVE stays live after a failed write even though the draft is clean: the
- * backend stores the settings in config before patching the block, so a
- * failure (usually a SETTINGS_PATH pointing nowhere) leaves nothing dirty to
- * re-trigger it, and retrying would otherwise be impossible.
+ * SAVE stays live after a failure even though the draft is clean: a failed
+ * reload follows a successful save, so nothing is dirty to re-trigger it, and
+ * retrying would otherwise be impossible.
  */
 export function NvimSettingsPanel({
     settings,
@@ -74,8 +73,8 @@ export function NvimSettingsPanel({
         <div className={styles.root}>
             <SectionHeader meta={dirty ? "UNSAVED" : undefined}>PLUGIN OPTIONS</SectionHeader>
             <Typo.Small color="hint">
-                Written into a managed block in SETTINGS_PATH as{" "}
-                <code>vim.g.black_atom_core_config</code>. Restart Neovim to pick up a change.
+                Stored in Livery&apos;s config as <code>apps.nvim.settings</code>, where the plugin
+                reads them. Running Neovims reload on save.
             </Typo.Small>
 
             <div className={styles.rows}>

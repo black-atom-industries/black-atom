@@ -47,17 +47,18 @@ function stepsFor(provisioning: ThemeProvisioning): SetUpStep[] {
  * into the location they read; Merged adapters have the theme's content
  * written into their own config instead, so they only enable and verify;
  * External adapters bring their own theme files. A failed enable aborts;
- * verify always runs last so the row ends in a truthful state. Apps configured
- * by config folders require at least one before the chain can start.
+ * verify always runs last so the row ends in a truthful state. `location` is
+ * the config path or first config folder; an empty one blocks the chain, and
+ * null means the adapter needs none.
  */
 export async function setUpAdapter(
     app: AppName,
     provisioning: ThemeProvisioning,
-    configPath: string,
+    location: string | null,
     deps: SetUpDeps,
     onUpdate?: (outcome: SetUpOutcome) => void,
 ): Promise<SetUpOutcome> {
-    if (!configPath.trim()) {
+    if (location !== null && !location.trim()) {
         return {
             steps: [],
             blocked: "Set CONFIG_PATH or add a config folder first — livery cannot guess it",

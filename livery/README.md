@@ -28,7 +28,6 @@ livery setup [--yes] [--theme <key>]
                              # enable detected apps, link their themes, verify config paths,
                              #   then apply --theme, else the picker (--yes keeps the active theme)
 livery appearance <dark|light>  # switch the system between dark and light mode
-livery nvim-settings         # write stored Neovim plugin settings into nvim's managed Lua block
 livery adapter kagi [theme] [--font <family>]  # copy a Kagi theme to the clipboard
 ```
 

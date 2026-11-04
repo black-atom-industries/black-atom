@@ -23,11 +23,13 @@ export function activeThemePersistenceError(error: unknown): UpdateResult {
     };
 }
 
-/** A done result or a config patch that only failed to reload live. */
+/** A done result, or a theme that reached disk and only failed to reload live. */
 export function themeWasApplied(result: UpdateResult): boolean {
     return (
         result.status === "done" ||
-        (result.status === "skipped" && result.message?.startsWith("Config patched;") === true)
+        (result.status === "skipped" &&
+            (result.message?.startsWith("Config patched;") === true ||
+                result.message?.startsWith("Theme saved;") === true))
     );
 }
 

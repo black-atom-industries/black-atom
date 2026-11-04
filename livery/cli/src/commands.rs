@@ -389,19 +389,6 @@ pub fn appearance(mode: &str) -> Result<(), String> {
     report("appearance", &result)
 }
 
-/// The settings live in the config; the subcommand only pushes them into
-/// nvim's managed block, so an untouched config writes the defaults.
-pub fn nvim_settings() -> Result<(), String> {
-    let settings = livery_core::config::commands::get_config()
-        .apps
-        .get(&AppName::Nvim)
-        .and_then(|app_config| app_config.settings.clone())
-        .unwrap_or_default();
-
-    let result = block_on(updaters::write_nvim_settings(settings));
-    report("nvim", &result)
-}
-
 fn report(label: &str, result: &updaters::UpdateResult) -> Result<(), String> {
     let detail = result
         .message

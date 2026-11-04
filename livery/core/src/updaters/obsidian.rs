@@ -214,7 +214,6 @@ mod tests {
             themes_path: None,
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let context = UpdateContext {
@@ -274,7 +273,6 @@ mod tests {
             themes_path: None,
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let context = UpdateContext {
@@ -309,7 +307,6 @@ mod tests {
             themes_path: None,
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let context = UpdateContext {
@@ -335,7 +332,6 @@ mod tests {
             themes_path: None,
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let context = UpdateContext {

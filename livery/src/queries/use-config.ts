@@ -51,20 +51,23 @@ export const useConfig = () => {
             return result;
         });
 
-    // Neovim's plugin options are stored in config AND projected into a
-    // managed Lua block, so the backend owns both halves — the frontend must
-    // not saveConfig them separately. Same ["config", ...] topic, so the
-    // MutationCache refetches the config query on success.
-    const writeNvimSettings = useMutation({
+    // Same ["config", ...] topic, so the MutationCache refetches the config
+    // query on success.
+    const saveNvimSettings = useMutation({
         mutationKey: queryKey(["nvim-settings"]),
-        mutationFn: (settings: NvimSettings) =>
-            enqueueConfigWrite(() => commands.writeNvimSettings(settings)),
+        mutationFn: async (settings: NvimSettings) => {
+            await saveLatest((latest) => ({
+                ...latest,
+                apps: { ...latest.apps, nvim: { ...latest.apps.nvim, settings } },
+            }));
+            return commands.reloadNvim();
+        },
     });
 
     return {
         query,
         enabledApps,
         saveLatest,
-        writeNvimSettings,
+        saveNvimSettings,
     };
 };

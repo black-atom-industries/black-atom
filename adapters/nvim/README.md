@@ -24,9 +24,26 @@ black-atom-<collection>-<name>`, and tab-complete to see the list.
 
 ## Configuration
 
-There is no `setup()`. Set `vim.g.black_atom_core_config` before the
-`:colorscheme` call and the values below get merged over the defaults. A partial
-table is fine, anything you leave out keeps its default.
+There is no `setup()`. The options come from three layers, merged key by key, each over the one
+before it:
+
+1. The defaults in `lua/black-atom/config.lua`.
+2. `apps.nvim.settings` in Livery's `config.json`, at
+   `$XDG_CONFIG_HOME/black-atom/livery/config.json` (`~/.config` when `$XDG_CONFIG_HOME` is unset).
+3. `vim.g.black_atom_core_config`, from your own Neovim config.
+
+Your own table always wins, regardless of load order, and only for the keys it names. A partial
+table is fine:
+
+```lua
+vim.g.black_atom_core_config = {
+    styles = {
+        dark_gutter = true,
+    },
+}
+```
+
+The full set, with its defaults:
 
 ```lua
 vim.g.black_atom_core_config = {
@@ -57,10 +74,34 @@ vim.g.black_atom_core_config = {
 
 `dark_sidebars`, `dark_floats` and `dark_gutter` put those areas on the panel background.
 The `styles.syntax` entries take any highlight attributes (`bold`, `italic`, `underline`,
-...), which are merged into the group's definition.
+...), which are merged into the group's definition. Some highlights set their own attributes,
+such as the bold on `@function.call`. To turn one off, set it to `false` in your own table. In
+`config.json`, a `false` only applies when the group's defaults name that attribute, because
+Livery stores both flags of every group.
 
-To change the config at runtime, set the global again and re-run
-`:colorscheme`.
+The layers are read at every `:colorscheme`. To change the config at runtime, set the global or
+edit the file, then re-run `:colorscheme`.
+
+### The theme at startup
+
+Once your config and the start packages have loaded, the plugin checks whether a colorscheme is
+set. If you called `:colorscheme` yourself, yours stays. If not, the plugin applies `active_theme`
+from `config.json`. A name it can't apply gives one warning, and Neovim keeps starting.
+
+### With Livery
+
+Livery's setup links this directory into `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/`, so
+Neovim opens in the active theme with its options from `config.json`, with no line in your config
+and even with no config at all. Livery never edits your Neovim files.
+
+Applying a theme and saving options in Livery's settings page both reload every running Neovim.
+When your own config sets `vim.g.black_atom_core_config`, the settings page goes read-only and names
+the file and line, because your table would win over anything saved there.
+
+### Without Livery
+
+There is no `config.json`, so the defaults and your own table are all there is. Nothing applies a
+theme for you, so call `:colorscheme` as in [Installation](#installation).
 
 ## LSP completion
 

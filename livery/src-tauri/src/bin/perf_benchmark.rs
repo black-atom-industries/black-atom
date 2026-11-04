@@ -102,7 +102,7 @@ fn main() {
             let start = Instant::now();
             // For nvim, send to only one instance so timing is independent of open instance count
             let result = if app == AppName::Nvim {
-                nvim::update(app.as_str(), &app_config, &ctx, Some(1))
+                nvim::update(app.as_str(), &ctx, Some(1))
             } else {
                 dispatch_update(app, &app_config, &ctx)
             };

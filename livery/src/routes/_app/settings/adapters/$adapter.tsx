@@ -45,8 +45,8 @@ function AdapterDetailRoute() {
             firstFieldRef={ctx.firstFieldRef}
             onPickPath={ctx.onPickPath}
             onOpenUrl={ctx.onOpenUrl}
-            onWriteNvimSettings={ctx.onWriteNvimSettings}
-            writingNvimSettings={ctx.writingNvimSettings}
+            onSaveNvimSettings={ctx.onSaveNvimSettings}
+            savingNvimSettings={ctx.savingNvimSettings}
             nvimSettingsResult={ctx.nvimSettingsResult}
             onSetUp={() => ctx.onSetUp(adapter)}
             setUpResult={ctx.setUpResults[adapter]}

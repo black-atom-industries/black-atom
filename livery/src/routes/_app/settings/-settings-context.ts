@@ -53,8 +53,8 @@ export type SettingsContextValue = {
     onPickPath: (kind: PathKind) => Promise<string | null>;
     onOpenUrl: (url: string) => void;
 
-    onWriteNvimSettings: (settings: NvimSettings) => void;
-    writingNvimSettings: boolean;
+    onSaveNvimSettings: (settings: NvimSettings) => void;
+    savingNvimSettings: boolean;
     nvimSettingsResult?: UpdateResult;
 
     firstFieldRef: RefObject<HTMLInputElement | null>;

@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-use super::types::{AppConfig, AppName, Config, Keymappings, NvimSettings, NVIM_SETTINGS_PATH};
+use super::types::{AppConfig, AppName, Config, Keymappings, NvimSettings};
 
 /// A Merged adapter points at the unpacked theme files directly. Stored
 /// absolute: the themes root follows `$XDG_DATA_HOME`, so a `~`-relative
@@ -27,7 +27,6 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: Some(r"^theme\s*=\s*.+$".to_string()),
                 replace_template: Some("theme = {themeKey}.conf".to_string()),
-                settings_path: None,
                 settings: None,
             },
         );
@@ -36,11 +35,10 @@ impl Default for Config {
             AppConfig {
                 enabled: false,
                 config_folders: None,
-                config_path: Some("~/.config/nvim/lua/config.lua".to_string()),
+                config_path: None,
                 themes_path: None,
-                match_pattern: Some(r#"colorscheme\s*=\s*"[^"]*""#.to_string()),
-                replace_template: Some(r#"colorscheme = "{themeKey}""#.to_string()),
-                settings_path: Some(NVIM_SETTINGS_PATH.to_string()),
+                match_pattern: None,
+                replace_template: None,
                 settings: Some(NvimSettings::default()),
             },
         );
@@ -57,7 +55,6 @@ impl Default for Config {
                 themes_path: Some("~/.config/tmux/themes".to_string()),
                 match_pattern: Some(r"^source-file\s+.+/themes/.+\.conf$".to_string()),
                 replace_template: Some("source-file {themesPath}/{themeKey}.conf".to_string()),
-                settings_path: None,
                 settings: None,
             },
         );
@@ -70,7 +67,6 @@ impl Default for Config {
                 themes_path: Some("~/.config/delta/themes".to_string()),
                 match_pattern: Some(r"path\s*=\s*\S+/black-atom-[\w-]+\.gitconfig".to_string()),
                 replace_template: Some("path = {themesPath}/{themeKey}.gitconfig".to_string()),
-                settings_path: None,
                 settings: None,
             },
         );
@@ -83,7 +79,6 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: None, // not used — JSONC editing is structural
                 replace_template: None,
-                settings_path: None,
                 settings: None,
             },
         );
@@ -96,7 +91,6 @@ impl Default for Config {
                 themes_path: Some(themes_path("lazygit")),
                 match_pattern: None,
                 replace_template: None,
-                settings_path: None,
                 settings: None,
             },
         );
@@ -109,7 +103,6 @@ impl Default for Config {
                 themes_path: Some(themes_path("herdr")),
                 match_pattern: None,
                 replace_template: None,
-                settings_path: None,
                 settings: None,
             },
         );
@@ -129,7 +122,6 @@ impl Default for Config {
                 themes_path: Some(themes_path("rex")),
                 match_pattern: None,
                 replace_template: None,
-                settings_path: None,
                 settings: None,
             },
         );
@@ -142,7 +134,6 @@ impl Default for Config {
                 themes_path: Some(themes_path("claude-code")),
                 match_pattern: None,
                 replace_template: None,
-                settings_path: None,
                 settings: None,
             },
         );
@@ -155,7 +146,6 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: None,
                 replace_template: None,
-                settings_path: None,
                 settings: None,
             },
         );
@@ -168,7 +158,6 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: Some(r"^theme\s*=\s*.+$".to_string()),
                 replace_template: Some(r#"theme = "{themeKey}""#.to_string()),
-                settings_path: None,
                 settings: None,
             },
         );
@@ -181,7 +170,6 @@ impl Default for Config {
                 themes_path: None,
                 match_pattern: Some(r"^theme:\s*\S*$".to_string()),
                 replace_template: Some("theme: {themeKey}".to_string()),
-                settings_path: None,
                 settings: None,
             },
         );

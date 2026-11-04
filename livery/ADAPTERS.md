@@ -9,21 +9,22 @@ themes directory** (`$XDG_DATA_HOME/black-atom/themes/<adapter>/`, falling back 
 `~/.local/share`). What happens next depends on one question — **who consumes those files** — and
 every adapter falls into exactly one class:
 
-| Class        | Adapters                                              | Definition                                                                                                                                                                                                                        |
-| ------------ | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **External** | helm-tmux                                             | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching.                                                                                                                  |
-| **Linked**   | ghostty, zed, tmux, delta, obsidian, nvim, rex, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once — or by handing the linked file to the app's own import. |
-| **Merged**   | lazygit, herdr, claude-code                           | The app cannot read the managed theme files where they are, so on every switch livery reads the managed theme and writes it into the app's config or a theme file the app reads.                                                  |
+| Class        | Adapters                                              | Definition                                                                                                                                                                                                                                                                             |
+| ------------ | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **External** | helm-tmux                                             | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching.                                                                                                                                                                       |
+| **Linked**   | ghostty, zed, tmux, delta, obsidian, nvim, rex, tuicr | Livery symlinks the managed theme files into a location the app itself reads, and switching selects one via a pointer in the app's config — a pointer the user adds once — by handing the linked file to the app's own import, or through Livery's config, which the app reads itself. |
+| **Merged**   | lazygit, herdr, claude-code                           | The app cannot read the managed theme files where they are, so on every switch livery reads the managed theme and writes it into the app's config or a theme file the app reads.                                                                                                       |
 
 Two per-adapter properties are deliberately **not** classes:
 
 - **Setup precondition** — a one-time manual step livery cannot automate (tell livery which config folders to manage). Orthogonal to who consumes the files.
 - **Switch pointer** — the config line or property that selects the active theme. Every adapter
-  except rex has one; livery's apply step rewrites it and never adds it, so an apply fails until the
-  pointer exists. Rex switches by import instead.
+  except rex and nvim has one; livery's apply step rewrites it and never adds it, so an apply fails
+  until the pointer exists. Rex switches by import, and nvim reads the active theme from Livery's
+  config.
 
 In the settings screen, **AUTO-DETECT** checks which apps exist (conservatively: does the configured
-config file exist?), and **SET UP** runs the class-appropriate chain — enable → link (Linked only) →
+config file exist? For nvim, its config directory or the binary on `PATH`), and **SET UP** runs the class-appropriate chain — enable → link (Linked only) →
 verify — always ending with verification, so the row reflects the true state.
 
 ## Per-adapter contracts
@@ -139,21 +140,16 @@ verify — always ending with verification, so the row reflects the true state.
 - **Placement:** one directory symlink,
   `$XDG_DATA_HOME/nvim/site/pack/black-atom/start/black-atom` → the managed `nvim` dir. Neovim puts
   `pack/*/start/*` on the runtimepath itself, so no plugin manager is involved.
-- **Switch pointer:** a `colorscheme = "<themeKey>"` assignment in `config_path` (default
-  `~/.config/nvim/lua/config.lua`). A `vim.cmd.colorscheme(...)` call does not match.
-- **Reload:** `nvim --server <socket> --remote-expr` against every running instance whose socket lives
-  under `$TMPDIR/nvim.<user>/`, which covers macOS. Sockets under `$XDG_RUNTIME_DIR` on Linux are not
-  found yet.
-- **Precondition:** the `colorscheme = "..."` line must exist (any value).
-- **Plugin options:** the settings page writes `vim.g.black_atom_core_config` into a managed block
-  in `settings_path` (default `~/.config/nvim/init.lua`), between
-  `-- BEGIN BLACK ATOM LIVERY CONFIG` and `-- END BLACK ATOM LIVERY CONFIG`. The file must already
-  exist; Livery patches a Neovim entry point, it never creates one. Options are stored in
-  `apps.nvim.settings` and the block is their projection, so config stays the source of truth.
-  The plugin deep-merges the block over its own defaults, so a flag is only written when the
-  plugin's defaults declare it or the user turned it on — writing `bold = false` unasked would
-  strip the hardcoded bold on `@function.call` and `@method.call`. New options land after a Neovim
-  restart.
+- **Switch:** no pointer. The plugin reads `active_theme` and `apps.nvim.settings` from Livery's
+  config, and Livery edits no Neovim file.
+- **Reload:** `nvim --server <socket> --remote-expr 'execute("colorscheme <themeKey>")'` against
+  every running instance whose socket lives under `$TMPDIR/nvim.<user>/`, which covers macOS, on
+  every apply and every save in the settings page. Sockets under `$XDG_RUNTIME_DIR` on Linux are not
+  found yet. No running instance is a success.
+- **Precondition:** none. Setup needs the placement above, which verify checks.
+
+[`adapters/nvim/README.md`](../adapters/nvim/README.md) documents how the plugin merges those
+options and when a user's own colorscheme wins.
 
 ### rex — Linked
 

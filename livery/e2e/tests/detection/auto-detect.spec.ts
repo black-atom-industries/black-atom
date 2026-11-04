@@ -1,10 +1,14 @@
+import { mkdirSync } from "node:fs";
+import { homePath } from "../../lib/fixture-home.ts";
 import { expect, test } from "../../lib/e2e.ts";
 
 test("AUTO-DETECT finds the adapters whose config files exist", async ({ page }) => {
+    // Neovim counts by its config directory or its binary, and only the first is the fixture's.
+    mkdirSync(homePath("~/.config/nvim"), { recursive: true });
     await page.goto("/settings/adapters");
     await page.getByRole("button", { name: "AUTO-DETECT" }).click();
 
-    await expect(page.getByText(/^5 OF \d+ FOUND$/)).toBeVisible();
+    await expect(page.getByText(/^6 OF \d+ FOUND$/)).toBeVisible();
 });
 
 test("a found but disabled adapter is flagged in the sidebar", async ({ page }) => {

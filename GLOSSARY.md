@@ -122,7 +122,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | Term                 | Definition                                                                                                                                        | Aliases to avoid             |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
 | **Config**           | The user's livery configuration file (`$XDG_CONFIG_HOME/black-atom/livery/config.json`) containing a SystemAppearance toggle and per-app settings | Settings, preferences        |
-| **AppConfig**        | The per-app configuration block — enabled flag, config_path, themes_path, match_pattern, and replace_template                                     | App settings, app entry      |
+| **AppConfig**        | The per-app configuration block — enabled flag, config_path, themes_path, match_pattern, replace_template, and for Neovim the plugin settings     | App settings, app entry      |
 | **AppName**          | An enum of supported applications that livery can update; `AppName::all()` in `core/src/config/types.rs` is the list                              | App, tool, target            |
 | **ConfigPath**       | The filesystem path to an app's configuration file that livery will patch                                                                         | Target file, output path     |
 | **ThemesPath**       | An optional directory path where an app stores its theme files — used as a template variable, not expanded by Rust                                | Theme directory              |
@@ -134,24 +134,24 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 > The full per-adapter setup contracts live in [ADAPTERS.md](ADAPTERS.md).
 
-| Term                   | Definition                                                                                                                                                                                                                     | Aliases to avoid               |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------ |
-| **Theme Provisioning** | The classification of who consumes livery's managed theme files for an adapter — External, Linked, or Merged                                                                                                                   | Adapter type, integration mode |
-| **External**           | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching                                                                                                                | Unmanaged, manual              |
-| **Linked**             | Livery symlinks the managed theme files into a location the app itself reads; switching selects one via a pointer in the app's config, which setup may need to add once, or by handing the linked file to the app's own import | Symlinked, placed              |
-| **Merged**             | The app cannot read the managed theme files where they are, so on every switch livery reads the unpacked theme file and writes it into the app's config or a theme file the app reads                                          | Inline, embedded               |
-| **Managed Themes Dir** | `$XDG_DATA_HOME/black-atom/themes/<adapter>/` — where the themes bundled in the binary unpack; the single source Linked placements point at and Merged reads from                                                              | Theme cache, staging dir       |
-| **Config Folder**      | A directory that holds one copy of an app's configuration, for apps livery configures by a list of them instead of one config file — Obsidian (`.obsidian`), Claude Code (`.claude`, `.claude-work`)                           | Vault, profile                 |
-| **Setup Precondition** | A one-time manual prerequisite livery cannot automate — a Config Folder discovery missed, or a Switch Pointer the app sets itself                                                                                              | Requirement, dependency        |
-| **Switch Pointer**     | The line or property in an app's config that selects the active theme — the thing MatchPattern finds and ReplaceTemplate rewrites                                                                                              | Theme line, theme setting      |
+| Term                   | Definition                                                                                                                                                                                                                                                                              | Aliases to avoid               |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Theme Provisioning** | The classification of who consumes livery's managed theme files for an adapter — External, Linked, or Merged                                                                                                                                                                            | Adapter type, integration mode |
+| **External**           | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching                                                                                                                                                                         | Unmanaged, manual              |
+| **Linked**             | Livery symlinks the managed theme files into a location the app itself reads; switching selects one via a pointer in the app's config, which setup may need to add once, by handing the linked file to the app's own import, or through Livery's **Config**, which the app reads itself | Symlinked, placed              |
+| **Merged**             | The app cannot read the managed theme files where they are, so on every switch livery reads the unpacked theme file and writes it into the app's config or a theme file the app reads                                                                                                   | Inline, embedded               |
+| **Managed Themes Dir** | `$XDG_DATA_HOME/black-atom/themes/<adapter>/` — where the themes bundled in the binary unpack; the single source Linked placements point at and Merged reads from                                                                                                                       | Theme cache, staging dir       |
+| **Config Folder**      | A directory that holds one copy of an app's configuration, for apps livery configures by a list of them instead of one config file — Obsidian (`.obsidian`), Claude Code (`.claude`, `.claude-work`)                                                                                    | Vault, profile                 |
+| **Setup Precondition** | A one-time manual prerequisite livery cannot automate — a Config Folder discovery missed, or a Switch Pointer the app sets itself                                                                                                                                                       | Requirement, dependency        |
+| **Switch Pointer**     | The line or property in an app's config that selects the active theme — the thing MatchPattern finds and ReplaceTemplate rewrites. Rex and Neovim have none                                                                                                                             | Theme line, theme setting      |
 
 ## Theme Application
 
-| Term               | Definition                                                                                                                                                                                                     | Aliases to avoid                     |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| **Active Theme**   | The theme livery last applied, recorded as `active_theme` in `$XDG_CONFIG_HOME/black-atom/livery/config.json`. A record of what livery did, not a reading of the app configs                                   | Current theme, applied theme, record |
-| **Applying Theme** | The theme a run is currently writing, held in the frontend store for the duration of the run and the retry that may follow it                                                                                  | Current theme, selected theme        |
-| **Applied Rule**   | The condition that moves the **Active Theme**: at least one updater wrote its config, including a degraded result that reports `Config patched`. A run that only skipped or errored leaves the record standing | Success check                        |
+| Term               | Definition                                                                                                                                                                                                  | Aliases to avoid                     |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| **Active Theme**   | The theme livery last applied, recorded as `active_theme` in `$XDG_CONFIG_HOME/black-atom/livery/config.json`. A record of what livery did, not a reading of the app configs. Neovim's plugin opens with it | Current theme, applied theme, record |
+| **Applying Theme** | The theme a run is currently writing, held in the frontend store for the duration of the run and the retry that may follow it                                                                               | Current theme, selected theme        |
+| **Applied Rule**   | The condition that moves the **Active Theme**: at least one updater returned `done`, or a degraded result that reports `Config patched` or, for Neovim, `Theme saved`. A run that only skipped or errored leaves the record standing      | Success check                        |
 
 ## Updater Pipeline
 
@@ -167,15 +167,15 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 ## File Operations
 
-| Term                 | Definition                                                                                                                           | Aliases to avoid             |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
-| **FileOp**           | One of three config-patching strategies: text (regex), YAML (lossless merge), or JSONC (CST edit)                                    | Write strategy, patch method |
-| **patch_text_file**  | A FileOp that uses regex match-and-replace with template variable substitution                                                       | Text replace, regex patch    |
-| **patch_yaml_file**  | A FileOp that performs lossless YAML merging while preserving comments                                                               | YAML update, YAML write      |
-| **patch_jsonc_file** | A FileOp that edits JSONC via CST manipulation, preserving comments and formatting                                                   | JSON edit, JSONC update      |
-| **TemplateVariable** | A `{name}` placeholder in a ReplaceTemplate — resolved from themeKey, appearance, collectionKey, or themesPath                       | Placeholder, token           |
-| **AtomicWrite**      | The write strategy used by all FileOps — write to a temp file, then persist (rename) to the target path                              | Safe write                   |
-| **Reload**           | The optional post-patch action that signals a running app to re-read its config (e.g., SIGUSR2 for ghostty, socket command for nvim) | Refresh, restart, notify     |
+| Term                 | Definition                                                                                                                                 | Aliases to avoid             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
+| **FileOp**           | One of three config-patching strategies: text (regex), YAML (lossless merge), or JSONC (CST edit)                                          | Write strategy, patch method |
+| **patch_text_file**  | A FileOp that uses regex match-and-replace with template variable substitution                                                             | Text replace, regex patch    |
+| **patch_yaml_file**  | A FileOp that performs lossless YAML merging while preserving comments                                                                     | YAML update, YAML write      |
+| **patch_jsonc_file** | A FileOp that edits JSONC via CST manipulation, preserving comments and formatting                                                         | JSON edit, JSONC update      |
+| **TemplateVariable** | A `{name}` placeholder in a ReplaceTemplate — resolved from themeKey, appearance, collectionKey, or themesPath                             | Placeholder, token           |
+| **AtomicWrite**      | The write strategy used by all FileOps — write to a temp file, then persist (rename) to the target path                                    | Safe write                   |
+| **Reload**           | The optional action that signals a running app to re-read its config (e.g., SIGUSR2 for ghostty, socket command for nvim), after any patch | Refresh, restart, notify     |
 
 ## UI Lifecycle
 
@@ -235,7 +235,8 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 - An apply sets the **Applying Theme**, and moves the **Active Theme** only when the
   **Applied Rule** holds
 - The **Active Theme** and an app's **Switch Pointer** answer different questions: the record says
-  what livery wrote, the pointer says what the app reads today
+  what livery wrote, the pointer says what the app reads today. Neovim has no pointer, so it opens
+  with the record unless the user's own config set a colorscheme
 
 ## Example dialogue
 
@@ -250,7 +251,8 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 >
 > **Domain expert:** "The **Phase** changes to `applying` and the **Applying Theme** is set. The
 > frontend builds an **UpdaterEntry** per enabled **AppName**; each **Updater** picks a **FileOp**
-> and rewrites the **Switch Pointer** in that app's **ConfigPath**."
+> and rewrites the **Switch Pointer** in that app's **ConfigPath**. Neovim's **Updater** only
+> performs a **Reload**."
 >
 > **Dev:** "So after the run, the **Active Theme** is whatever I picked?"
 >
