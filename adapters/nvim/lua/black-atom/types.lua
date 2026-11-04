@@ -207,3 +207,10 @@
 ---@class BlackAtom.Config
 ---@field term_colors?                                          boolean Wether to enable terminal colors (Default: true)
 ---@field styles?                                               BlackAtom.Config.Styles Various styles related settings (Default: See Documentation)
+
+---@class BlackAtom.LiveryConfig.Nvim
+---@field settings?                                             BlackAtom.Config Options Livery stores for Neovim
+
+---@class BlackAtom.LiveryConfig
+---@field active_theme?                                         string Key of the theme Livery has applied
+---@field apps?                                                 { nvim?: BlackAtom.LiveryConfig.Nvim }

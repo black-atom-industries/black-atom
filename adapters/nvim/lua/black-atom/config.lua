@@ -34,11 +34,27 @@ M.defaults = {
     },
 }
 
----Merges `vim.g.black_atom_core_config` over the defaults.
----The global is never written back, so a user's partial table stays partial.
+---A JSON object or Lua table that can take part in a merge; anything else
+---(`vim.NIL`, a scalar, an array) counts as absent.
+---@param value any
+---@return table
+local function as_dict(value)
+    if type(value) == "table" and (next(value) == nil or not vim.islist(value)) then
+        return value
+    end
+
+    return {}
+end
+
+---Merges, in increasing precedence, the defaults, `apps.nvim.settings` from
+---Livery's `config.json`, and `vim.g.black_atom_core_config`. Neither source is
+---written back, so a user's partial table stays partial.
 ---@return BlackAtom.Config
 function M.resolve()
-    return vim.tbl_deep_extend("force", M.defaults, vim.g.black_atom_core_config or {})
+    local livery = require("black-atom.livery").read()
+    local settings = as_dict(vim.tbl_get(livery or {}, "apps", "nvim", "settings"))
+
+    return vim.tbl_deep_extend("force", M.defaults, settings, as_dict(vim.g.black_atom_core_config))
 end
 
 return M
