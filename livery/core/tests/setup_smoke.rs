@@ -90,7 +90,8 @@ fn assert_managed_symlink(link: &Path, managed_root: &Path) {
 #[test]
 fn setup_chain_end_to_end() {
     let _env = env_lock();
-    let fake_home = tempfile::TempDir::new().unwrap();
+    // `TMPDIR` is not consulted: an earlier test leaves it pointing at a deleted directory.
+    let fake_home = tempfile::TempDir::new_in(Path::new("/tmp").canonicalize().unwrap()).unwrap();
     let home = fake_home.path();
     std::env::set_var("HOME", home);
     assert_eq!(
