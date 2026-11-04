@@ -69,6 +69,24 @@ pub fn patch_yaml_file(target_path: String, source_path: String) -> Result<(), S
     // Apply overlay — yaml_edit handles all value types including block sequences
     apply_overlay(&target_mapping, &source_mapping, &overlay)?;
 
+    // yaml_edit misplaces new nested blocks in some mapping shapes, so its output
+    // is only kept when it holds the merged values. Otherwise those values are
+    // written plainly, which drops comments but keeps the file correct.
+    let mut expected: yaml_serde::Value = yaml_serde::from_str(&target_content)
+        .map_err(|e| format!("Failed to parse target YAML: {e}"))?;
+    merge_values(&mut expected, overlay);
+    let lossless = target_file.to_string();
+    let merged = if yaml_serde::from_str::<yaml_serde::Value>(&lossless)
+        .ok()
+        .as_ref()
+        == Some(&expected)
+    {
+        lossless
+    } else {
+        yaml_serde::to_string(&expected)
+            .map_err(|e| format!("Failed to serialize merged YAML: {e}"))?
+    };
+
     // Atomic write: temp file + persist
     // Use resolved_target (not target_path) so rename() writes through symlinks
     // rather than replacing the symlink itself with a new regular file.
@@ -77,12 +95,28 @@ pub fn patch_yaml_file(target_path: String, source_path: String) -> Result<(), S
         .ok_or_else(|| format!("No parent directory for {target_path}"))?;
     let mut tmp = tempfile::NamedTempFile::new_in(parent)
         .map_err(|e| format!("Failed to create temp file: {e}"))?;
-    tmp.write_all(target_file.to_string().as_bytes())
+    tmp.write_all(merged.as_bytes())
         .map_err(|e| format!("Failed to write temp file: {e}"))?;
     tmp.persist(&resolved_target)
         .map_err(|e| format!("Failed to persist to {target_path}: {e}"))?;
 
     Ok(())
+}
+
+fn merge_values(target: &mut yaml_serde::Value, overlay: yaml_serde::Value) {
+    match (target, overlay) {
+        (yaml_serde::Value::Mapping(target), yaml_serde::Value::Mapping(overlay)) => {
+            for (key, value) in overlay {
+                match target.get_mut(&key) {
+                    Some(existing) => merge_values(existing, value),
+                    None => {
+                        target.insert(key, value);
+                    }
+                }
+            }
+        }
+        (target, overlay) => *target = overlay,
+    }
 }
 
 /// Recursively apply overlay values onto a target mapping.
@@ -124,7 +158,12 @@ fn apply_overlay(
         if let Some(entry) = target_mapping.find_entry_by_key(key_str) {
             entry.set_value(&source_node, false);
         } else {
+            // `set` leaves a block sequence's items at column 0 in a nested
+            // mapping; `set_value` indents them from the entry.
             target_mapping.set(key_str, &source_node);
+            if let Some(entry) = target_mapping.find_entry_by_key(key_str) {
+                entry.set_value(&source_node, false);
+            }
         }
     }
 
@@ -341,6 +380,57 @@ mod tests {
         assert_eq!(
             after_first, after_second,
             "Applying the merge twice should produce the same result.\n\n--- FIRST ---\n{after_first}\n--- SECOND ---\n{after_second}"
+        );
+    }
+
+    #[test]
+    fn test_new_sequence_key_in_a_nested_mapping_stays_valid() {
+        let target = make_temp_file(
+            "gui:\n  theme:\n    activeBorderColor:\n      - \"#111111\"\n    defaultFgColor:\n      - \"#111111\"\n\n  authorColors:\n    \"*\": \"#222222\"\n",
+        );
+        let source = make_temp_file(
+            "gui:\n  theme:\n    activeBorderColor:\n      - \"#333333\"\n    markedBaseCommitBgColor:\n      - \"#444444\"\n    markedBaseCommitFgColor:\n      - \"#555555\"\n",
+        );
+        let target_path = target.path().to_str().unwrap().to_string();
+        let source_path = source.path().to_str().unwrap().to_string();
+
+        patch_yaml_file(target_path.clone(), source_path).unwrap();
+
+        let result = std::fs::read_to_string(&target_path).unwrap();
+        let parsed: yaml_serde::Value = yaml_serde::from_str(&result)
+            .unwrap_or_else(|e| panic!("merged file is invalid: {e}\n{result}"));
+        let theme = &parsed["gui"]["theme"];
+        assert_eq!(theme["activeBorderColor"][0].as_str(), Some("#333333"));
+        assert_eq!(
+            theme["markedBaseCommitBgColor"][0].as_str(),
+            Some("#444444")
+        );
+        assert_eq!(
+            theme["markedBaseCommitFgColor"][0].as_str(),
+            Some("#555555")
+        );
+        assert_eq!(parsed["gui"]["authorColors"]["*"].as_str(), Some("#222222"));
+    }
+
+    #[test]
+    fn test_new_nested_block_in_a_single_key_mapping_stays_valid() {
+        let target = make_temp_file("gui:\n    showIcons: true\n");
+        let source = make_temp_file(
+            "gui:\n  nerdFontsVersion: \"3\"\n  theme:\n    activeBorderColor:\n      - \"#333333\"\n      - bold\n",
+        );
+        let target_path = target.path().to_str().unwrap().to_string();
+        let source_path = source.path().to_str().unwrap().to_string();
+
+        patch_yaml_file(target_path.clone(), source_path).unwrap();
+
+        let result = std::fs::read_to_string(&target_path).unwrap();
+        let parsed: yaml_serde::Value = yaml_serde::from_str(&result)
+            .unwrap_or_else(|e| panic!("merged file is invalid: {e}\n{result}"));
+        assert_eq!(parsed["gui"]["showIcons"].as_bool(), Some(true));
+        assert_eq!(parsed["gui"]["nerdFontsVersion"].as_str(), Some("3"));
+        assert_eq!(
+            parsed["gui"]["theme"]["activeBorderColor"][1].as_str(),
+            Some("bold")
         );
     }
 
