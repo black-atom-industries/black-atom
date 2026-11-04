@@ -5,20 +5,20 @@ name = "Black Atom — TERRA ∷ Fall Light"
 [colors]
 foreground = "#422616"
 background = "#ffddbb"
-cursor_bg = "#d47421"
-cursor_border = "#d47421"
+cursor_bg = "#c96600"
+cursor_border = "#c96600"
 cursor_fg = "#ffddbb"
 selection_bg = "#ffe7bf"
 selection_fg = "#422616"
-split = "#d47421"
-compose_cursor = "#ce5d42"
+split = "#c96600"
+compose_cursor = "#c45034"
 scrollbar_thumb = "#815136"
 
 ansi = [
   "#694a39", # black
   "#b8492e", # dark_red
   "#495f2c", # dark_green
-  "#d26045", # dark_yellow
+  "#ce5d42", # dark_yellow
   "#784d34", # dark_blue
   "#654872", # dark_magenta
   "#577862", # dark_cyan
@@ -27,9 +27,9 @@ ansi = [
 
 brights = [
   "#815136", # gray
-  "#ce5d42", # red
+  "#c45034", # red
   "#566b38", # green
-  "#d47421", # yellow
+  "#c96600", # yellow
   "#8c583b", # blue
   "#826490", # magenta
   "#63836d", # cyan
@@ -42,7 +42,7 @@ background = "#ffddbb"
 
 [colors.tab_bar.active_tab]
 fg_color = "#ffddbb"
-bg_color = "#d47421"
+bg_color = "#c96600"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
