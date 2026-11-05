@@ -41,6 +41,8 @@ settings:
             value: black-atom-mono-dark
           - label: "Mono: Dimmed Dark"
             value: black-atom-mono-dimmed-dark
+          - label: "TR-1000: Dark"
+            value: black-atom-tr-1000-dark
     - id: light-theme-variant
       title: Light Theme Variant
       description: Choose your Black Atom variant for light mode
@@ -78,6 +80,8 @@ settings:
             value: black-atom-mono-light
           - label: "Mono: Dimmed Light"
             value: black-atom-mono-dimmed-light
+          - label: "TR-1000: Light"
+            value: black-atom-tr-1000-light
 */
 
 
@@ -4574,6 +4578,276 @@ settings:
   --nav-item-color-hover: #1e2a37;
   --nav-item-color-active: #fa9916;
   --nav-item-color-selected: #1e2a37;
+}
+
+
+
+/* Black Atom — TR-1000 ∷ Dark */
+.theme-dark.black-atom-tr-1000-dark {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #131417;
+  --color-base-05: #1c1d21;
+  --color-base-10: #27292d;
+  --color-base-20: #34353a;
+  --color-base-25: #626978;
+  --color-base-30: #717787;
+  --color-base-35: #828999;
+  --color-base-40: #9198a8;
+  --color-base-50: #bbbec4;
+  --color-base-60: #ced1d8;
+  --color-base-70: #dee1e8;
+  --color-base-100: #eff2f9;
+
+
+  /* Extended Colors */
+  --color-red: #eb6266;
+  --color-red-rgb: 235, 98, 102;
+  --color-orange: #8981cb;
+  --color-orange-rgb: 137, 129, 203;
+  --color-yellow: #8981cb;
+  --color-yellow-rgb: 137, 129, 203;
+  --color-green: #c2e87d;
+  --color-green-rgb: 194, 232, 125;
+  --color-cyan: #75c8fc;
+  --color-cyan-rgb: 117, 200, 252;
+  --color-blue: #ced1d8;
+  --color-blue-rgb: 206, 209, 216;
+  --color-purple: #8981cb;
+  --color-purple-rgb: 137, 129, 203;
+  --color-pink: #8981cb;
+  --color-pink-rgb: 137, 129, 203;
+
+  /* Backgrounds */
+  --background-primary: #1c1d21;
+  --background-primary-alt: #27292d;
+  --background-secondary: #131417;
+  --background-secondary-alt: #131417;
+  --background-modifier-hover: #27292d;
+  --background-modifier-active-hover: #27292d;
+  --background-modifier-border: #27292d;
+  --background-modifier-border-hover: #27292d;
+  --background-modifier-border-focus: #75c8fc;
+  --background-modifier-error-rgb: 79, 48, 48;
+  --background-modifier-error: #4f3030;
+  --background-modifier-error-hover: #4f3030;
+  --background-modifier-success-rgb: 51, 67, 51;
+  --background-modifier-success: #334333;
+  --background-modifier-message: #304148;
+  --background-modifier-form-field: #1c1d21;
+
+  /* Text */
+  --text-normal: #dee1e8;
+  --text-muted: #9198a8;
+  --text-faint: #828999;
+  --text-accent: #75c8fc;
+  --text-accent-hover: #75c8fc;
+  --text-on-accent: #1c1d21;
+  --text-on-accent-inverted: #dee1e8;
+  --text-error: #fa676c;
+  --text-warning: #e4b750;
+  --text-success: #79c77c;
+  --text-selection: #34353a;
+  --text-highlight-bg: #34353a;
+
+  /* Interactive */
+  --interactive-normal: #1c1d21;
+  --interactive-hover: #27292d;
+  --interactive-accent: #75c8fc;
+  --interactive-accent-hover: #75c8fc;
+
+  /* Headings */
+  --h1-color: #75c8fc;
+  --h2-color: #75c8fc;
+  --h3-color: #75c8fc;
+  --h4-color: #bbbec4;
+  --h5-color: #bbbec4;
+  --h6-color: #bbbec4;
+
+  /* Markup */
+  --bold-color: #75c8fc;
+  --italic-color: #75c8fc;
+  --blockquote-border-color: #c2e87d;
+  --link-color: #c2e87d;
+  --link-color-hover: #c2e87d;
+  --link-external-color: #c2e87d;
+  --link-external-color-hover: #c2e87d;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #ced1d8;
+  --code-comment: #626978;
+  --code-function: #75c8fc;
+  --code-important: #eb6266;
+  --code-keyword: #eb6266;
+  --code-operator: #8981cb;
+  --code-property: #9198a8;
+  --code-punctuation: #bbbec4;
+  --code-string: #c2e87d;
+  --code-tag: #75c8fc;
+  --code-value: #ced1d8;
+  --code-background: #34353a;
+
+  /* Tags */
+  --tag-color: #75c8fc;
+  --tag-color-hover: #75c8fc;
+  --tag-background: #27292d;
+  --tag-background-hover: #27292d;
+
+  /* Graph */
+  --graph-line: #27292d;
+  --graph-node: #75c8fc;
+  --graph-node-focused: #75c8fc;
+  --graph-node-tag: #75c8fc;
+  --graph-node-attachment: #c2e87d;
+
+  /* Scrollbar */
+  --scrollbar-bg: #1c1d21;
+  --scrollbar-thumb-bg: #27292d;
+  --scrollbar-active-thumb-bg: #9198a8;
+
+  /* Nav */
+  --nav-item-background-hover: #27292d;
+  --nav-item-background-active: #27292d;
+  --nav-item-background-selected: #34353a;
+  --nav-item-color: #dee1e8;
+  --nav-item-color-hover: #dee1e8;
+  --nav-item-color-active: #75c8fc;
+  --nav-item-color-selected: #dee1e8;
+}
+
+
+
+/* Black Atom — TR-1000 ∷ Light */
+.theme-light.black-atom-tr-1000-light {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #e1e4ed;
+  --color-base-05: #d4d7e0;
+  --color-base-10: #c7cad3;
+  --color-base-20: #babec6;
+  --color-base-25: #8b92a2;
+  --color-base-30: #626978;
+  --color-base-35: #545b69;
+  --color-base-40: #474d5b;
+  --color-base-50: #414247;
+  --color-base-60: #34353a;
+  --color-base-70: #202126;
+  --color-base-100: #15161a;
+
+
+  /* Extended Colors */
+  --color-red: #c92038;
+  --color-red-rgb: 201, 32, 56;
+  --color-orange: #56489b;
+  --color-orange-rgb: 86, 72, 155;
+  --color-yellow: #56489b;
+  --color-yellow-rgb: 86, 72, 155;
+  --color-green: #597417;
+  --color-green-rgb: 89, 116, 23;
+  --color-cyan: #00739a;
+  --color-cyan-rgb: 0, 115, 154;
+  --color-blue: #474d5b;
+  --color-blue-rgb: 71, 77, 91;
+  --color-purple: #56489b;
+  --color-purple-rgb: 86, 72, 155;
+  --color-pink: #56489b;
+  --color-pink-rgb: 86, 72, 155;
+
+  /* Backgrounds */
+  --background-primary: #d4d7e0;
+  --background-primary-alt: #babec6;
+  --background-secondary: #c7cad3;
+  --background-secondary-alt: #c7cad3;
+  --background-modifier-hover: #babec6;
+  --background-modifier-active-hover: #babec6;
+  --background-modifier-border: #babec6;
+  --background-modifier-border-hover: #babec6;
+  --background-modifier-border-focus: #00739a;
+  --background-modifier-error-rgb: 214, 189, 188;
+  --background-modifier-error: #d6bdbc;
+  --background-modifier-error-hover: #d6bdbc;
+  --background-modifier-success-rgb: 187, 197, 187;
+  --background-modifier-success: #bbc5bb;
+  --background-modifier-message: #bac4cb;
+  --background-modifier-form-field: #d4d7e0;
+
+  /* Text */
+  --text-normal: #202126;
+  --text-muted: #626978;
+  --text-faint: #8b92a2;
+  --text-accent: #00739a;
+  --text-accent-hover: #00739a;
+  --text-on-accent: #d4d7e0;
+  --text-on-accent-inverted: #202126;
+  --text-error: #b0072a;
+  --text-warning: #7b4d00;
+  --text-success: #1a6323;
+  --text-selection: #babec6;
+  --text-highlight-bg: #babec6;
+
+  /* Interactive */
+  --interactive-normal: #d4d7e0;
+  --interactive-hover: #babec6;
+  --interactive-accent: #00739a;
+  --interactive-accent-hover: #00739a;
+
+  /* Headings */
+  --h1-color: #00739a;
+  --h2-color: #00739a;
+  --h3-color: #00739a;
+  --h4-color: #474d5b;
+  --h5-color: #474d5b;
+  --h6-color: #474d5b;
+
+  /* Markup */
+  --bold-color: #00739a;
+  --italic-color: #00739a;
+  --blockquote-border-color: #597417;
+  --link-color: #597417;
+  --link-color-hover: #597417;
+  --link-external-color: #597417;
+  --link-external-color-hover: #597417;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #474d5b;
+  --code-comment: #626978;
+  --code-function: #00739a;
+  --code-important: #c92038;
+  --code-keyword: #c92038;
+  --code-operator: #56489b;
+  --code-property: #474d5b;
+  --code-punctuation: #474d5b;
+  --code-string: #597417;
+  --code-tag: #00739a;
+  --code-value: #474d5b;
+  --code-background: #babec6;
+
+  /* Tags */
+  --tag-color: #00739a;
+  --tag-color-hover: #00739a;
+  --tag-background: #babec6;
+  --tag-background-hover: #babec6;
+
+  /* Graph */
+  --graph-line: #babec6;
+  --graph-node: #00739a;
+  --graph-node-focused: #00739a;
+  --graph-node-tag: #00739a;
+  --graph-node-attachment: #597417;
+
+  /* Scrollbar */
+  --scrollbar-bg: #d4d7e0;
+  --scrollbar-thumb-bg: #babec6;
+  --scrollbar-active-thumb-bg: #626978;
+
+  /* Nav */
+  --nav-item-background-hover: #babec6;
+  --nav-item-background-active: #babec6;
+  --nav-item-background-selected: #babec6;
+  --nav-item-color: #202126;
+  --nav-item-color-hover: #202126;
+  --nav-item-color-active: #00739a;
+  --nav-item-color-selected: #202126;
 }
 
 /* ============================================================

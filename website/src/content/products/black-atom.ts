@@ -126,6 +126,7 @@ export const collectionBlurbs = {
     jpn: "Soft and desaturated, after Japanese colour.",
     minium: "Neutral greys with an orange accent.",
     mono: "Monochrome.",
+    "tr-1000": "Slate panel, lit by step sequencer LEDs.",
 } as const satisfies Record<Theme.CollectionKey, string>;
 
 const repoUrl = "https://github.com/black-atom-industries/black-atom";

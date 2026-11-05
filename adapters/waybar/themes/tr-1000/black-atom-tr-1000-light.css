@@ -1,0 +1,30 @@
+/* Black Atom — TR-1000 ∷ Light */
+
+/* Background colors */
+@define-color ba-bg-default #d4d7e0;
+@define-color ba-bg-panel #c7cad3;
+@define-color ba-bg-hover #babec6;
+@define-color ba-bg-active #babec6;
+@define-color ba-bg-selection #babec6;
+@define-color ba-bg-contrast #202126;
+
+/* Foreground colors */
+@define-color ba-fg-default #202126;
+@define-color ba-fg-subtle #626978;
+@define-color ba-fg-accent #00739a;
+@define-color ba-fg-disabled #8b92a2;
+@define-color ba-fg-contrast #d4d7e0;
+
+/* Feedback colors */
+@define-color ba-fg-negative #b0072a;
+@define-color ba-fg-positive #1a6323;
+@define-color ba-fg-warn #7b4d00;
+@define-color ba-fg-info #005c83;
+
+/* Palette colors */
+@define-color ba-red #c92038;
+@define-color ba-green #597417;
+@define-color ba-yellow #56489b;
+@define-color ba-blue #474d5b;
+@define-color ba-magenta #56489b;
+@define-color ba-cyan #00739a;

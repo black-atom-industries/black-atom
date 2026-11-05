@@ -68,6 +68,11 @@
                 "black-atom-mono-dimmed-dark",
                 "black-atom-mono-dimmed-light"
             ]
+        },
+        "tr-1000": {
+            "template": "./fragments/collection.template.css",
+            "output": "./fragments/tr-1000",
+            "themes": ["black-atom-tr-1000-dark", "black-atom-tr-1000-light"]
         }
     }
 }

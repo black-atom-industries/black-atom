@@ -32,6 +32,8 @@
 ---| "black-atom-mono-light"
 ---| "black-atom-mono-dimmed-dark"
 ---| "black-atom-mono-dimmed-light"
+---| "black-atom-tr-1000-dark"
+---| "black-atom-tr-1000-light"
 
 ---@alias BlackAtom.Theme.Collection.Key
 ---| "default"
@@ -40,6 +42,7 @@
 ---| "jpn"
 ---| "minium"
 ---| "mono"
+---| "tr-1000"
 
 ---@class BlackAtom.HighlightDefinition
 ---@field fg?                                                   string

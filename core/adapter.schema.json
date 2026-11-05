@@ -37,6 +37,9 @@
                 },
                 "mono": {
                     "$ref": "#/$defs/collectionConfig"
+                },
+                "tr-1000": {
+                    "$ref": "#/$defs/collectionConfig"
                 }
             },
             "additionalProperties": false,

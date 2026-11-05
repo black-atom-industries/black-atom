@@ -1,0 +1,33 @@
+# Black Atom — TR-1000 ∷ Dark
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#75c8fc"
+      - bold
+    inactiveBorderColor:
+      - "#9198a8"
+    optionsTextColor:
+      - "#63bfe1"
+    selectedLineBgColor:
+      - "#34353a"
+    cherryPickedCommitBgColor:
+      - "#304148"
+    cherryPickedCommitFgColor:
+      - "#63bfe1"
+    markedBaseCommitBgColor:
+      - "#483f2d"
+    markedBaseCommitFgColor:
+      - "#dee1e8"
+    unstagedChangesColor:
+      - "#fa676c"
+    defaultFgColor:
+      - "#dee1e8"
+    searchingActiveBorderColor:
+      - "#e4b750"
+
+  authorColors:
+    "*": "#8981cb"

@@ -17,7 +17,7 @@ test("Livery exposes the exact embedded catalog metadata and all six groups", ()
     assert.deepEqual(actual, expectedCatalog);
     assert.deepEqual(
         getGroupedThemes(themeCatalog).map((group) => group.collectionKey),
-        ["default", "facility", "terra", "jpn", "minium", "mono"],
+        ["default", "facility", "terra", "jpn", "minium", "mono", "tr-1000"],
     );
 });
 

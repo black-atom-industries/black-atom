@@ -91,7 +91,9 @@ fn header<'a>(contents: &'a str, field: &str) -> Option<&'a str> {
 mod tests {
     use super::*;
 
-    const COLLECTIONS: [&str; 6] = ["default", "facility", "jpn", "minium", "mono", "terra"];
+    const COLLECTIONS: [&str; 7] = [
+        "default", "facility", "jpn", "minium", "mono", "terra", "tr-1000",
+    ];
 
     #[test]
     fn test_every_embedded_theme_parses_a_complete_entry() {

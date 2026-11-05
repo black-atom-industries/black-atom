@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — TR-1000 ∷ Dark",
+    "base": "dark-ansi",
+    "overrides": {
+        "text": "#dee1e8",
+        "inverseText": "#1c1d21",
+        "inactive": "#9198a8",
+        "subtle": "#828999",
+        "suggestion": "#63bfe1",
+        "claude": "#75c8fc",
+        "permission": "#63bfe1",
+        "promptBorder": "#828999",
+        "success": "#79c77c",
+        "error": "#fa676c",
+        "warning": "#e4b750",
+        "diffAdded": "#334333",
+        "diffRemoved": "#4f3030",
+        "userMessageBackground": "#131417",
+        "userMessageBackgroundHover": "#27292d",
+        "composerSidebarBackground": "#131417",
+        "bashMessageBackgroundColor": "#131417",
+        "memoryBackgroundColor": "#131417",
+        "selectionBg": "#34353a"
+    }
+}
