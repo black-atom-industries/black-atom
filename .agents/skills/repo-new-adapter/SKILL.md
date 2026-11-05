@@ -14,13 +14,12 @@ Find where the app's theme file lives, its extension, and how the app loads it (
 drop, plugin). Read `core/adapter.schema.json` for the adapter config shape. Read
 `adapters/ghostty/themes/collection.template.conf` and
 `adapters/zed/themes/default/collection.template.json` as two worked examples of Eta templates:
-`<%= theme.ui.bg.default %>` style token references, never `theme.primaries.*`.
+`<%= theme.ui.bg.default %>` style token references. Follow `docs/adapter-guide.md`, What a template may read.
 
 ## 2. Map tokens
 
-Use only semantic tokens: `theme.ui.bg.*`, `theme.ui.fg.*`, `theme.palette.*` (16-color ANSI set),
-`theme.syntax.*`, `theme.meta.label`, `theme.meta.appearance`. Never reference `theme.primaries.*`
-from a template. If the target format needs a value no token covers, ask before inventing one.
+Use the tokens listed in `docs/adapter-guide.md`, What a template may read: `theme.ui.*`, `theme.syntax.*`,
+`theme.palette.*` (the 16-color ANSI set), and `theme.meta.*`. A target that defines its own ramp may read primaries. If the target format needs a value no token covers, ask before inventing one.
 
 ## 3. Scaffold the adapter directory
 

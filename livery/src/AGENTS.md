@@ -4,7 +4,7 @@ The frontend is the orchestrator. It owns UI, state, and calling order, then del
 operation to Rust through `invoke()`.
 
 Repo-wide instructions live in [`AGENTS.md`](../../AGENTS.md); every term is defined in
-[`GLOSSARY.md`](../../GLOSSARY.md). Name things with those words. Component architecture and
+[`docs/glossary.md`](../../docs/glossary.md). Name things with those words. Component architecture and
 folder conventions come from the `react` and `tanstack` topics of the `nbr-repo-conventions` skill.
 
 No filesystem access from TypeScript. `@tauri-apps/plugin-fs` is off limits: file reads and writes

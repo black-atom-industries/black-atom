@@ -4,7 +4,7 @@ The black-atom.industries site: a TanStack Start app that reads theme data from 
 Product structure, routes and the reasons behind them live in [`docs/website.md`](../docs/website.md).
 
 Repo-wide instructions live in [`AGENTS.md`](../AGENTS.md); every term is defined in
-[`GLOSSARY.md`](../GLOSSARY.md). Name things with those words. Language and component conventions come
+[`docs/glossary.md`](../docs/glossary.md). Name things with those words. Language and component conventions come
 from the `nbr-repo-conventions` skill. The stricter lint rules (no `as`, no `!`, `#/` over `../`) apply
 to `website/**` only.
 
@@ -40,17 +40,16 @@ Tests sit next to the code: `foo.ts` gets `foo.test.ts`.
 
 ## Theme
 
-`useTheme()` resolves the theme: `?theme=` (short key without the `black-atom-` prefix), then the
-stored key (`ba-theme`), then a default by system preference. `setTheme` stores the key and drops the
-param for the default theme. `themeToCustomProperties` turns a theme into the `--ba-*` variables on
-`<html>`. `routes/-theme-script.ts` applies them before first paint and mirrors
-`resolveThemeKey` in `lib/theme-precedence.ts`; change both together. Routes stay SSR per request,
-because a prerendered route would flash on `?theme=`.
+`useTheme()` resolves the theme. `setTheme` stores the key and drops the param for the default theme.
+`themeToCustomProperties` turns a theme into the `--ba-*` variables on `<html>`. `routes/-theme-script.ts`
+applies them before first paint and mirrors `resolveThemeKey` in `lib/theme-precedence.ts`; change both
+together. Routes stay SSR per request, because a prerendered route would flash on `?theme=`.
 
 ## Background layer
 
 One `BackgroundLayer` sits in the root layout. `lib/route-background-state.ts` maps a pathname to a
-state: `full`, `receded`, `iter` or `radar`. A new route is `receded` unless the map says otherwise.
+state: a `view` (`hole`, `iter`, `radar` or `wide`) and a `mode` (`full` or `receded`). Routes not in the
+map get `wide` and `receded`.
 
 - `controller.ts` runs one renderer at a time and lazy-loads it. States `full` and `receded` share the
   black hole and ease between each other; a switch to or from `iter` or `radar` disposes the old
@@ -78,20 +77,17 @@ pluggable part:
   `themeRoot(key, appearance)`; `setParams`, `dispose`.
 
 `audio/soundscapes/organic/` is the shipped soundscape. A new one implements `Soundscape` and takes
-the engine's place in `soundEngine`; nothing else changes. Sound is off by default, stored under
-`ba-sound`, and plays only on black-hole states. A remembered "on" starts on the first click or key
-press, since browsers block audio before one. `/dev/sound` (dev server only) tunes params and mutes
-layers. Offline renders cover loudness in `*.browser.test.ts` (`npm run verify:audio`).
+the engine's place in `soundEngine`; nothing else changes. Stored state lives under `ba-sound`. `/dev/sound`
+(dev server only) tunes params and mutes layers. Offline renders cover loudness in `*.browser.test.ts`
+(`npm run verify:audio`).
 
 ## Live data
 
 Server functions in `server/github.ts` are the only code that talks to GitHub. They return
 `{ ok, body }` or `{ ok: false, error }` as values, so an outage renders a fallback instead of an error
-boundary. Success sets `Cache-Control: s-maxage=60, stale-while-revalidate=600`; any failure in the
-response sets `s-maxage=60`. Successful responses are memoized per path for 60 s, failures never; a
-request times out after 5 s. `GITHUB_TOKEN` is used when set. Only repos and paths from
-`content/products/` are accepted. `GITHUB_API_URL` replaces the API host; the e2e suite points it at a
-local stub.
+boundary. Cache headers and timeouts are set there. Successful responses are memoized per path; failures
+never are. `GITHUB_TOKEN` is used when set. Only repos and paths from `content/products/` are accepted.
+`GITHUB_API_URL` replaces the API host; the e2e suite points it at a local stub.
 
 ## Storybook
 

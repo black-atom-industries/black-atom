@@ -1,6 +1,6 @@
 ---
 name: repo-new-theme
-description: Add a theme to an existing collection. Load when asked to create, design, or add a new Black Atom theme, variant, or appearance, or to rework an existing theme's colors.
+description: Add a theme to an existing collection, or rework an existing theme's colors. Load when asked to create, design, or add a new Black Atom theme, variant, or appearance, or to rework a theme's colors. For a new collection, load repo-new-collection.
 ---
 
 # New Theme
@@ -18,15 +18,9 @@ description: Add a theme to an existing collection. Load when asked to create, d
    `primaries`, `accents`, and any per-collection palette overrides. Colors go through
    `oklch()` from `core/src/utils/color.ts`. No comments in theme definition files.
 
-   A color that exists in both appearances keeps its hue and changes lightness: the dark variant
-   is a step lighter than the light one, usually with a little less chroma. This holds for accents
-   and for palette colors set in an `override`. Compare a dark and light sibling in the collection
-   to see the step it uses.
-
-   When the user gives reference material (photos, products, palettes), sample its colors and use
-   them as they are, apart from that lightness step between appearances. Never shift lightness,
-   chroma, or hue for contrast. After the theme generates, report weak contrast pairs from
-   `npm run contrast <theme-key>` and let the user decide whether to change them.
+   For hue across appearances and for reference material, follow `docs/theme-design.md`, Designing a theme.
+   After the theme generates, report weak contrast pairs from `npm run contrast <theme-key>` and let
+   the user decide whether to change them.
 
 3. Register the key in `core/src/themes/<collection>/mod.ts`: import the new theme file and add
    one `{ meta: { name, appearance, status }, colors }` entry to `defineCollection()`'s `themes`
@@ -59,21 +53,6 @@ description: Add a theme to an existing collection. Load when asked to create, d
 
 ## Contrast
 
-When a theme's colors are reworked for readability, `npm run contrast <theme-key>` lists every
-Contrast Pair with its WCAG ratio, and the Theme Lab (`npm run dev`, then
-`/dev/themes?key=<theme-key>`) shows the theme next to its last commit. The user judges by eye
-there.
-
-- A theme's identity outranks the number. A signature accent keeps its value even below 3:1;
-  darkened oranges and yellows turn red, brown, or olive. Monochrome themes keep their grays gray.
-- Darken with saturation: a color that gets darker on a light ground, or lighter on a dark one, also
-  gets more chroma, so it stays lively. Chroma barely moves the WCAG ratio, but it reads better.
-- 3:1 guides syntax and terminal colors. Feedback and git text aims for 4.5:1 on `bg.default` and
-  clearly above 3:1 on its own tint.
-- Fills are exempt: cursor, badges, selection, and `fg.accent` used as a fill. `fg.disabled` is
-  meant to be faint.
-- Light diff backgrounds are dedicated pastels, `oklch(0.9, 0.07, h)` for add and modify and
-  `oklch(0.93, 0.04, h)` for delete, with `h` the git color's hue. Feedback tints sit at about 15%
-  on light grounds and 20 to 30% on dark ones. `pastel` in a collection's `create-ui-light.ts` holds
-  the pattern.
-- A gray ladder keeps even steps; when one step moves, its neighbors move too.
+When a theme's colors are reworked for readability, follow `docs/theme-design.md`, Contrast. Run
+`npm run contrast <theme-key>` for the Contrast Pairs and their WCAG ratios, then check the theme in the Theme Lab
+(`npm run dev`, then `/dev/themes?key=<theme-key>`). The user judges by eye there.

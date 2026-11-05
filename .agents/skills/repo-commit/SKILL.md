@@ -43,7 +43,7 @@ Never use `git add .` or `git add -A`. Unstage any held-back file a hook or help
 ## 3. Audit docs
 
 When staged changes add or change a config key, command, domain term, or what an updater does (files, pointer, reload,
-precondition), check `README.md`, `GLOSSARY.md`, `core/README.md`, `livery/DESIGN.md`, `livery/ADAPTERS.md`, and the adapter's `README.md` against the diff. Fix and stage the
+precondition), check `README.md`, `docs/glossary.md`, `docs/colors.md`, `docs/theme-design.md`, `docs/adapter-guide.md`, `core/README.md`, `livery/DESIGN.md`, `livery/ADAPTERS.md`, and the adapter's `README.md` against the diff. Fix and stage the
 confirmed docs in this same commit.
 
 ## 4. Verify

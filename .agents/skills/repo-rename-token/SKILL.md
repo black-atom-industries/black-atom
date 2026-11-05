@@ -11,8 +11,8 @@ A color token is a key under `theme.ui`, `theme.syntax`, `theme.palette`, `theme
 creators, every adapter template that reads it, and the TypeScript that names its path: the contrast
 analysis and the website.
 
-Adapter templates never read `theme.primaries.*`; they consume semantic UI, syntax, palette, and
-feedback tokens.
+Adapter templates read UI, syntax, and palette tokens. Feedback reaches a template only through the UI tokens it feeds
+(`docs/colors.md`, Feedback). Targets that define their own ramp also read primaries (`docs/adapter-guide.md`, What a template may read).
 
 ## Steps
 
@@ -47,7 +47,7 @@ feedback tokens.
    `core/src/lib/contrast-analysis.ts` lists its pairs as strings (`fg.default`, `syntax.string.default`,
    `palette.red`), and the theme lab in `website/src/dev/theme-lab/` names UI pairs and palette slots
    the same way.
-5. Update `GLOSSARY.md` if the renamed token is named in a table or the example
+5. Update `docs/glossary.md` if the renamed token is named in a table or the example
    dialogue.
 6. From the repo root: `npm run generate`, then `npm run check`, then `npm run test`.
 7. Review the generated diff: `git diff --stat adapters/`. It can be empty even for a correct
