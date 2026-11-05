@@ -53,4 +53,7 @@ writing the creators. This skill covers the wiring.
 
 12. Run `npm run check` and `npm run test` from the repo root. Both must be green.
 
-13. Commit through `repo-commit` as `feat: add <key> collection`.
+13. Run `npm run test:e2e`. The new filter chip and the theme and collection counters change Livery's screenshots. Look at each
+    changed screenshot, then accept it with `npm run test:e2e -- --update-snapshots`.
+
+14. Commit through `repo-commit` as `feat: add <key> collection`.
