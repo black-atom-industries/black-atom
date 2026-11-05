@@ -22,21 +22,23 @@ themes to a machine.
 
 ## Collections
 
-The catalog contains 30 themes across six collections.
+The catalog lists every theme and its collection in [`core/src/themes/catalog.ts`](../core/src/themes/catalog.ts).
 
 | Term               | Definition                                                                                                                                                                                      | Aliases to avoid               |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
 | **Collection**     | A named group of themes sharing a design concept and one set of palette, feedback, UI, and syntax creators in its directory; each theme file defines only colors (e.g., `jpn`, `terra`, `mono`) | Category, family, group        |
-| **Collection Key** | The string identifier for a collection: `"default"`, `"facility"`, `"terra"`, `"jpn"`, `"minium"`, `"mono"`                                                                                     | Collection name, collection ID |
+| **Collection Key** | The string identifier for a collection, such as `"jpn"`. The keys are the `collections` tuple in `core/src/themes/catalog.ts`                                                                   | Collection name, collection ID |
 
 ## Color Groups
 
-| Term          | Definition                                                                                                                                                  | Aliases to avoid                             |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| **Primaries** | A 12-color gradient scale spanning dark-to-light, organized as d10-d40 (dark), m10-m40 (mid), l10-l40 (light) — the foundation all other colors derive from | Base colors, scale, gradient                 |
-| **Palette**   | A 16-color ANSI terminal color set (black, red, green, yellow, blue, magenta, cyan, white + dark variants) derived from primaries                           | Terminal colors, ANSI colors                 |
-| **Feedback**  | Four semantic status colors: `negative`, `success`, `info`, `warning` — represent application state, orthogonal to primaries                                | Status colors, state colors, semantic colors |
-| **Accents**   | An emphasis scale with required a10/a20 and optional a30/a40 tokens used to derive palette and semantic colors                                              | Highlights, emphasis colors                  |
+| Term               | Definition                                                                                                                                                                                                | Aliases to avoid                             |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **Primaries**      | A 12-step gradient from dark to light, organized as d10-d40 (dark), m10-m40 (mid), and l10-l40 (light). The creators draw UI and syntax colors from it                                                    | Base colors, scale, gradient                 |
+| **Palette**        | The 16 ANSI terminal colors of a theme, one named slot each (see **Palette Slot**)                                                                                                                        | Terminal colors, ANSI colors                 |
+| **Palette Slot**   | One named position in the **Palette**, mapped to an ANSI index. `darkGreen` is ANSI 2, the slot most terminal output shows as green. The map is in [`docs/colors.md`](colors.md#palette-and-the-terminal) | Palette entry, palette key                   |
+| **Feedback**       | Four status colors: `negative`, `success`, `info`, `warning`. They reach a tool only through the UI states they feed (see **Feedback Reach**)                                                             | Status colors, state colors, semantic colors |
+| **Feedback Reach** | The path a **Feedback** color takes to a tool: it feeds UI states such as `ui.fg.negative`, and a template reads those states, never the feedback color itself                                            | Feedback mapping, feedback usage             |
+| **Accents**        | An emphasis scale with required a10/a20 and optional a30/a40 tokens. Creators place them in palette slots and in UI and syntax colors                                                                     | Highlights, emphasis colors                  |
 
 ## Derived Color Layers
 
@@ -78,7 +80,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | **Theme Meta**      | Metadata attached to a theme: key, name, label, appearance, status, collection                                    | Header, info, properties |
 | **Theme Meta Base** | The `MetaBase` type: theme metadata without `label`; collection entries supply `name`, `appearance`, and `status` | Raw meta, base meta      |
 | **Label**           | A computed display string combining theme name and collection, derived by `defineCollection()`                    | Display name, title      |
-| **Name**            | The human-readable short name for a theme (e.g., "Winter Dark")                                                   | Title, display name      |
+| **Name**            | The human-readable short name for a theme within its collection (e.g., "Winter Dark")                             | Title, display name      |
 
 ---
 
@@ -94,20 +96,22 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 ## Background and Sound
 
-| Term                 | Definition                                                                                                                                        | Aliases to avoid                 |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| **Background Layer** | The single fixed scene in the root layout behind every page; one renderer runs at a time and the content swaps on top                             | Backdrop, canvas, hero scene     |
-| **Background State** | The mode the Background Layer takes on a route: `full` and `receded` (the black hole, dimmed when receded), `iter` (review loop), `radar` (sweep) | Scene mode, background variant   |
-| **Viewport Frame**   | The cornered frame fixed over every page; the header sits along its top edge and the dock in its bottom-right corner                              | Border, overlay, chrome frame    |
-| **Edge Label**       | The line set into the Viewport Frame's bottom edge on the studio page; it fades into the rule once the page scrolls                               | Tagline bar, frame caption       |
-| **Soundscape**       | A pluggable sound design for the sound engine: params, layers and reactions to scene events, with a pitch root per theme                          | Track, sound theme, audio preset |
+| Term                 | Definition                                                                                                                                                                | Aliases to avoid                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| **Background Layer** | The single fixed scene in the root layout behind every page; one renderer runs at a time and the content swaps on top                                                     | Backdrop, canvas, hero scene     |
+| **Background State** | The view and mode the Background Layer takes on a route: `view` is a **Landmark** or the **Wide Shot**, and `mode` is `full` or `receded` (dimmed behind the page's text) | Scene mode, background variant   |
+| **Landmark**         | One of the three fixed places in the background space: `hole`, `iter` and `radar`. Each product has one                                                                   | Scene, location, stop            |
+| **Wide Shot**        | The background view of all three **Landmarks** at once. A wide shot may drift toward one of them                                                                          | Overview, panorama               |
+| **Viewport Frame**   | The cornered frame fixed over every page; the header sits along its top edge and the dock in its bottom-right corner                                                      | Border, overlay, chrome frame    |
+| **Edge Label**       | The line set into the Viewport Frame's bottom edge on the studio page; it fades into the rule once the page scrolls                                                       | Tagline bar, frame caption       |
+| **Soundscape**       | A pluggable sound design for the sound engine: params, layers and reactions to scene events, with a pitch root per theme                                                  | Track, sound theme, audio preset |
 
 ---
 
 # Livery
 
-> Per-adapter setup contracts live in [`livery/ADAPTERS.md`](livery/ADAPTERS.md); the design spec
-> lives in [`livery/docs/design-system/`](livery/docs/design-system/README.md).
+> Per-adapter setup contracts live in [`livery/ADAPTERS.md`](../livery/ADAPTERS.md); the design spec
+> lives in [`livery/docs/design-system/`](../livery/docs/design-system/README.md).
 
 ## Theme Display
 
@@ -133,7 +137,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 ## Theme Provisioning
 
-> The full per-adapter setup contracts live in [ADAPTERS.md](ADAPTERS.md).
+> The full per-adapter setup contracts live in [`livery/ADAPTERS.md`](../livery/ADAPTERS.md).
 
 | Term                   | Definition                                                                                                                                                                                                                                                                              | Aliases to avoid               |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
@@ -187,7 +191,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 ## Design Language
 
-> The full design spec lives in [`docs/design-system/`](docs/design-system/README.md) ("Warm
+> The full design spec lives in [`livery/docs/design-system/`](../livery/docs/design-system/README.md) ("Warm
 > Precision"). These are the terms it establishes.
 
 | Term              | Definition                                                                                                                           | Aliases to avoid               |
@@ -213,10 +217,8 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 - A **Collection** contains one or more **Themes** sharing a design concept
 - A **Theme** is uniquely identified by its **Theme Key**
-- **Primaries** are the foundation — **Palette**, **UI Colors**, and **Syntax Colors** are all
-  derived from them
-- **Feedback** colors are orthogonal to **Primaries** — they represent application state, not the
-  theme's color identity
+- **Primaries** and **Accents** feed the **Palette**. **UI Colors** and **Syntax Colors** derive from every group before them
+- **Feedback** is independent of the **Palette**: it can be fixed literals, and it reaches a tool through **UI Colors**
 - **Accents** supplement **Primaries** with required `a10`/`a20` and optional `a30`/`a40` tokens
 - An **Adapter** discovers themes via core, applies them to **Templates**, and produces
   **Generated Files**
@@ -268,7 +270,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 >
 > **Dev:** "What's the difference between **Name** and **Label** on the metadata?"
 >
-> **Domain expert:** "**Name** is the short display name you define — like 'Winter Night'.
+> **Domain expert:** "**Name** is the short display name you define — like 'Winter Dark'.
 > **Label** is computed at runtime by combining **Name** with the **Collection** label. You never
 > set **Label** directly."
 
@@ -289,7 +291,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 - **"template"** — core uses **Template** for Eta adapter templates; livery uses
   **ReplaceTemplate** for regex substitution strings. Unrelated concepts; always qualify.
 - **"semantic"** describes both **Feedback** colors and **UI Colors** in code comments. Reserve it
-  for **UI Colors** (which map meaning to slots); call **Feedback** colors "status colors".
+  for **UI Colors** (which map meaning to slots); use **Feedback** for the four status colors.
 - **"name" vs "label" vs "key"** — **Key** is the machine identifier, **Name** the human-readable
   short form, **Label** the computed long form.
 - **Palette overlap with Primaries** — **Primaries** are a continuous dark-to-light gradient,

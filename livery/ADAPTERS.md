@@ -4,7 +4,7 @@ How each supported app gets its Black Atom themes, what livery automates, and wh
 
 ## Theme Provisioning
 
-Livery ships every adapter's generated theme output in its binary and unpacks it into the **managed
+Livery ships the generated theme output of every adapter except helm-tmux in its binary and unpacks it into the **managed
 themes directory** (`$XDG_DATA_HOME/black-atom/themes/<adapter>/`, falling back to
 `~/.local/share`). What happens next depends on one question — **who consumes those files** — and
 every adapter falls into exactly one class:
@@ -196,8 +196,7 @@ options and when a user's own colorscheme wins.
 
 ## Not switched by livery
 
-Livery ships these adapters' generated files in its binary but has no updater for them yet
-([#5](https://github.com/black-atom-industries/black-atom/issues/5)). Wire them up by hand as each adapter's README
+Livery ships these adapters' generated files in its binary but has no updater for them yet. Wire them up by hand as each adapter's README
 describes; the theme stays fixed until you change it.
 
 - **kagi** — paste a theme file into Kagi's Custom CSS setting

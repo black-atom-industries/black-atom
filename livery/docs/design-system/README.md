@@ -20,7 +20,7 @@ renderable. Adopted via epic [#49](https://github.com/black-atom-industries/live
 | `reference/tokens/`                     | Canonical `--ba-*` token files (colors, typography, spacing, borders, motion).                   |
 | `reference/components/`                 | 17 primitive specs — `.jsx` + `.d.ts` + `.prompt.md` per component, plus per-category card HTML. |
 | `reference/guidelines/`                 | Foundation specimen cards (renderable HTML).                                                     |
-| `reference/ui_kits/livery/index.html`   | Static recreation of the main view — open it in a browser.                                       |
+| `reference/Logo Explorations.dc.html`   | The logo exploration board, open it in a browser.                                                |
 | `reference/Livery Explorations.dc.html` | The original exploration board: main view, settings, progress, empty/error states, light mode.   |
 | `reference/refs/`, `reference/uploads/` | Reference images.                                                                                |
 | `screenshots/`                          | PNG captures of the rendered board and UI kit, taken at import time.                             |

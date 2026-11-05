@@ -8,9 +8,8 @@
 
 ## Style Guidelines
 
-Commit messages follow the root [`AGENTS.md`](../../AGENTS.md) convention:
-`<type>(<scope>): <description> <issue-reference>`. Use `nvim` as the scope for changes scoped
-to this adapter.
+Commit messages use `<type>(<scope>): <description>`. Use `nvim` as the scope for changes to
+this adapter.
 
 Lua code is checked with Luacheck and formatted with StyLua:
 
@@ -26,14 +25,20 @@ global.
 
 Each plugin's highlight groups live in a Lua file under
 `lua/black-atom/highlights/plugins/`, keyed by the plugin's repo name with dots swapped for
-underscores (`telescope.nvim` becomes `telescope_nvim.lua`). Every file returns a `map` function:
+underscores (`telescope.nvim` becomes `telescope_nvim.lua`). Every file returns a
+`BlackAtom.HighlightsSpec` table with a `map` function. `map` receives the colors and returns the
+highlight groups:
 
 ```lua
----@type BlackAtom.Highlights
+---@type BlackAtom.HighlightsSpec
 return {
-    HighlightGroup1 = { ... },
-    HighlightGroup2 = { ... },
-    ...
+    map = function(colors)
+        ---@type BlackAtom.Highlights
+        return {
+            HighlightGroup1 = { ... },
+            HighlightGroup2 = { ... },
+        }
+    end,
 }
 ```
 

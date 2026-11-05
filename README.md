@@ -45,7 +45,9 @@ how the tool reloads, and the tools livery leaves to you.
 
 ## Contributing
 
-[`CONTRIBUTING.md`](CONTRIBUTING.md) covers the repository layout, development tasks, Git hooks, and releases.
+[`CONTRIBUTING.md`](CONTRIBUTING.md) covers the repository layout, development tasks, Git hooks, and releases. The color
+model is in [`docs/colors.md`](docs/colors.md), theme design in [`docs/theme-design.md`](docs/theme-design.md), and the adapter pipeline in
+[`docs/adapter-guide.md`](docs/adapter-guide.md).
 
 ## License
 

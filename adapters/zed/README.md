@@ -43,7 +43,7 @@ Alternatively, you can edit your Zed settings JSON file directly:
 
 ```json
 {
-    "theme": "black-atom-jpn-koyo-dark"
+    "theme": "Black Atom — JPN ∷ Koyo Dark"
 }
 ```
 

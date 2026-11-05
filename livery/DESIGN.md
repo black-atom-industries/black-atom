@@ -11,8 +11,6 @@ snapshot of the Black Atom Design project (tokens, 17 component specs, guideline
 exploration board). This document records the adopted decisions and the rules of the language; where
 detail matters (exact tokens, component anatomy), the reference wins.
 
-Adopted via epic [#49](https://github.com/black-atom-industries/livery/issues/49).
-
 ## Design DNA
 
 ### Aesthetic References
@@ -37,9 +35,8 @@ Vendored via Fontsource (static weights 400/500/700, family names match the toke
 
 **Hierarchy through contrast:** massive display next to tiny mono metadata — the datasheet effect.
 
-History: Berkeley Mono (TX-02) was the original mono target; its license prohibits app bundling
-(EULA §1.14, §9; #49 unresolved). JetBrains Mono served as interim until the
-design pass settled on Iosevka.
+Berkeley Mono (TX-02) is not bundled with the app: its license prohibits app bundling
+(EULA §1.14, §9).
 
 ### Color System
 
@@ -139,8 +136,7 @@ handle structure.
 Canonical compositions live on the exploration board
 (`docs/design-system/reference/Livery Explorations.dc.html`) — index: 2a main view (dark + light),
 2b filter popup, 3a adapter settings, 3b general settings, 3c apply progress, 3d empty & error, 3e
-component inventory, 4a color model / token map. The static UI-kit recreation of the main view is
-`docs/design-system/reference/ui_kits/livery/index.html`.
+component inventory, 4a color model / token map.
 
 - **Main View:** split panel — grouped theme list (collection headers, palette pips, `n/m` counts) |
   theme datasheet (display-voice name, swatch bands/grids, KV rows, code preview, doc-code footer).

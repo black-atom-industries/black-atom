@@ -8,8 +8,11 @@
 - `livery/` — the desktop app that applies a theme across the tools on a machine. GUI binary
   `livery-gui`, terminal client `livery`
 - `website/` — the black-atom.industries site; see [`docs/website.md`](docs/website.md)
+- `docs/` — process docs (releases) and the website's behavior. The color model, theme design and the adapter pipeline
+  are in [`docs/colors.md`](docs/colors.md), [`docs/theme-design.md`](docs/theme-design.md) and
+  [`docs/adapter-guide.md`](docs/adapter-guide.md).
 
-[`GLOSSARY.md`](GLOSSARY.md) defines every term the codebase uses.
+[`docs/glossary.md`](docs/glossary.md) defines every term the codebase uses.
 
 ## Getting started
 

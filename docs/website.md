@@ -63,15 +63,21 @@ calls per uncached render, so without a token the fallback shows often.
 
 ## Background
 
-One background layer lives in the root layout and changes state per route while the content swaps on
-top. One renderer runs at a time.
+One background layer lives in the root layout and changes its view per route while the content swaps
+on top. One renderer runs at a time.
 
-| State     | Routes                                          | Scene                  |
-| --------- | ----------------------------------------------- | ---------------------- |
-| `full`    | `/`, `/black-atom`, `/black-atom/livery`        | The black hole         |
-| `receded` | theme pages, changelog, about, legal, not found | The black hole, dimmed |
-| `iter`    | `/iter`                                         | The review loop        |
-| `radar`   | `/radar`                                        | The sweep              |
+A state has a `view` and a `mode`. The view is one landmark (`hole`, `iter` or `radar`) or `wide`, the
+wide shot of all three. The mode is `full`, or `receded` when the layer dims behind the page's text.
+
+| Route                                    | View                                            | Mode      |
+| ---------------------------------------- | ----------------------------------------------- | --------- |
+| `/`, `/black-atom`, `/black-atom/livery` | `hole`                                          | `full`    |
+| `/iter`                                  | `iter`                                          | `full`    |
+| `/radar`                                 | `radar`                                         | `full`    |
+| `/changelog`                             | `wide`, drifting to the landmark of `?product=` | `full`    |
+| `/about`                                 | `wide`                                          | `full`    |
+| `/black-atom/themes/$theme`              | `hole`                                          | `receded` |
+| Any other route                          | `wide`                                          | `receded` |
 
 The scene takes its colors from the current theme. `prefers-reduced-motion` draws a still frame.
 Where no renderer can start, the page keeps the plain theme background.
