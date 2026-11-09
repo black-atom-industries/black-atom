@@ -177,7 +177,9 @@ mod tests {
     use std::sync::mpsc::Receiver;
 
     const SETTLED: Duration = Duration::from_millis(900);
-    const EVENT_TIMEOUT: Duration = Duration::from_secs(10);
+    // Retargeting a symlink restarts the FSEvents stream twice, and each restart
+    // takes seconds while parallel tests compete for FSEvents.
+    const EVENT_TIMEOUT: Duration = Duration::from_secs(30);
 
     fn config_json(theme: &str) -> String {
         let config = Config {
