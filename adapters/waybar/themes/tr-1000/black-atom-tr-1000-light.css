@@ -11,7 +11,7 @@
 /* Foreground colors */
 @define-color ba-fg-default #202126;
 @define-color ba-fg-subtle #626978;
-@define-color ba-fg-accent #00739a;
+@define-color ba-fg-accent #5570ac;
 @define-color ba-fg-disabled #8b92a2;
 @define-color ba-fg-contrast #d4d7e0;
 
@@ -22,9 +22,9 @@
 @define-color ba-fg-info #005c83;
 
 /* Palette colors */
-@define-color ba-red #c92038;
-@define-color ba-green #597417;
-@define-color ba-yellow #56489b;
+@define-color ba-red #ac5154;
+@define-color ba-green #5a7f2b;
+@define-color ba-yellow #6b66b4;
 @define-color ba-blue #474d5b;
-@define-color ba-magenta #56489b;
-@define-color ba-cyan #00739a;
+@define-color ba-magenta #6b66b4;
+@define-color ba-cyan #5570ac;

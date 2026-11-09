@@ -6,7 +6,7 @@ gui:
   nerdFontsVersion: "3"
   theme:
     activeBorderColor:
-      - "#00739a"
+      - "#5570ac"
       - bold
     inactiveBorderColor:
       - "#626978"
@@ -30,4 +30,4 @@ gui:
       - "#7b4d00"
 
   authorColors:
-    "*": "#56489b"
+    "*": "#6b66b4"

@@ -24,10 +24,10 @@ export default defineThemeColors({
         l40: oklch(0.92, 0.012, 267),
     },
     accents: {
-        a10: oklch(0.5, 0.14, 220),
-        a20: oklch(0.54, 0.2, 21),
-        a30: oklch(0.46, 0.13, 288),
-        a40: oklch(0.52, 0.12, 125),
+        a10: oklch(0.55, 0.1, 265),
+        a20: oklch(0.55, 0.12, 20),
+        a30: oklch(0.55, 0.12, 285),
+        a40: oklch(0.55, 0.12, 130),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {

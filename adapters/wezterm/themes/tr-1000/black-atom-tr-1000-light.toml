@@ -5,34 +5,34 @@ name = "Black Atom — TR-1000 ∷ Light"
 [colors]
 foreground = "#202126"
 background = "#d4d7e0"
-cursor_bg = "#00739a"
-cursor_border = "#00739a"
+cursor_bg = "#5570ac"
+cursor_border = "#5570ac"
 cursor_fg = "#d4d7e0"
 selection_bg = "#babec6"
 selection_fg = "#202126"
-split = "#00739a"
+split = "#5570ac"
 compose_cursor = "#b0072a"
 scrollbar_thumb = "#626978"
 
 ansi = [
   "#414247", # black
-  "#c92038", # dark_red
-  "#597417", # dark_green
-  "#56489b", # dark_yellow
+  "#ac5154", # dark_red
+  "#5a7f2b", # dark_green
+  "#6b66b4", # dark_yellow
   "#545b69", # dark_blue
-  "#56489b", # dark_magenta
-  "#00739a", # dark_cyan
+  "#6b66b4", # dark_magenta
+  "#5570ac", # dark_cyan
   "#babec6" # light_gray
 ]
 
 brights = [
   "#474d5b", # gray
-  "#c92038", # red
-  "#597417", # green
-  "#56489b", # yellow
+  "#ac5154", # red
+  "#5a7f2b", # green
+  "#6b66b4", # yellow
   "#474d5b", # blue
-  "#56489b", # magenta
-  "#00739a", # cyan
+  "#6b66b4", # magenta
+  "#5570ac", # cyan
   "#d4d7e0" # white
 ]
 
@@ -42,7 +42,7 @@ background = "#d4d7e0"
 
 [colors.tab_bar.active_tab]
 fg_color = "#d4d7e0"
-bg_color = "#00739a"
+bg_color = "#5570ac"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
