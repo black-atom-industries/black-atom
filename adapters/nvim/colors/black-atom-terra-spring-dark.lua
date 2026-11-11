@@ -84,7 +84,7 @@ local theme = {
                 default = "#70afe3",
                 builtin = "#63a1d5",
                 member = "#63a1d5",
-                parameter = "#f48993",
+                parameter = "#ea9602",
             },
             property = {
                 default = "#63a1d5",
