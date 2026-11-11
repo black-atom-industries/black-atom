@@ -65,8 +65,8 @@
   --text-error: #c03b39;
   --text-warning: #7c8e00;
   --text-success: #007c50;
-  --text-selection: #ecdbed;
-  --text-highlight-bg: #ecdbed;
+  --text-selection: #dec9e0;
+  --text-highlight-bg: #dec9e0;
 
   /* Interactive */
   --interactive-normal: #f4e9f5;
@@ -126,7 +126,7 @@
   /* Nav */
   --nav-item-background-hover: #ecdbed;
   --nav-item-background-active: #f9f0f9;
-  --nav-item-background-selected: #ecdbed;
+  --nav-item-background-selected: #dec9e0;
   --nav-item-color: #452a32;
   --nav-item-color-hover: #452a32;
   --nav-item-color-active: #97a941;

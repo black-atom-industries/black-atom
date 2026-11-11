@@ -12,9 +12,9 @@ html.theme_light[class],
 html.theme_calm_blue[class] {
   --ba-bg: #fef2e1;
   --ba-bg-panel: #f8e7d0;
-  --ba-bg-active: #fff5e5;
+  --ba-bg-active: #fff9f1;
   --ba-bg-hover: #f8e7d0;
-  --ba-bg-selection: #f8e7d0;
+  --ba-bg-selection: #f2daba;
   --ba-fg: #3a2e3b;
   --ba-fg-subtle: #9b8568;
   --ba-fg-accent: #ed9a00;

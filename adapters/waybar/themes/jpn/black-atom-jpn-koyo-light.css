@@ -4,8 +4,8 @@
 @define-color ba-bg-default #fef2e1;
 @define-color ba-bg-panel #f8e7d0;
 @define-color ba-bg-hover #f8e7d0;
-@define-color ba-bg-active #fff5e5;
-@define-color ba-bg-selection #f8e7d0;
+@define-color ba-bg-active #fff9f1;
+@define-color ba-bg-selection #f2daba;
 @define-color ba-bg-contrast #3a2e3b;
 
 /* Foreground colors */

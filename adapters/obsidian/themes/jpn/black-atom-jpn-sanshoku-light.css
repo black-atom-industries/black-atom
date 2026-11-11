@@ -65,8 +65,8 @@
   --text-error: #cb3425;
   --text-warning: #c47600;
   --text-success: #1d7d3e;
-  --text-selection: #e1e9f2;
-  --text-highlight-bg: #e1e9f2;
+  --text-selection: #d4dfeb;
+  --text-highlight-bg: #d4dfeb;
 
   /* Interactive */
   --interactive-normal: #eaf1f8;
@@ -126,7 +126,7 @@
   /* Nav */
   --nav-item-background-hover: #e1e9f2;
   --nav-item-background-active: #f3f7fc;
-  --nav-item-background-selected: #e1e9f2;
+  --nav-item-background-selected: #d4dfeb;
   --nav-item-color: #192f46;
   --nav-item-color-hover: #192f46;
   --nav-item-color-active: #c47600;

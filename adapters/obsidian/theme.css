@@ -1616,7 +1616,7 @@ settings:
 .theme-light.black-atom-jpn-koyo-light {
   /* Foundation: Base Colors */
 
-  --color-base-00: #fff5e5;
+  --color-base-00: #fff9f1;
   --color-base-05: #fef2e1;
   --color-base-10: #f8e7d0;
   --color-base-20: #f2daba;
@@ -1650,12 +1650,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #fef2e1;
-  --background-primary-alt: #fff5e5;
+  --background-primary-alt: #fff9f1;
   --background-secondary: #f8e7d0;
   --background-secondary-alt: #f8e7d0;
   --background-modifier-hover: #f8e7d0;
   --background-modifier-active-hover: #f8e7d0;
-  --background-modifier-border: #fff5e5;
+  --background-modifier-border: #fff9f1;
   --background-modifier-border-hover: #f8e7d0;
   --background-modifier-border-focus: #ed9a00;
   --background-modifier-error-rgb: 246, 216, 217;
@@ -1677,8 +1677,8 @@ settings:
   --text-error: #dc094a;
   --text-warning: #d27500;
   --text-success: #00812b;
-  --text-selection: #f8e7d0;
-  --text-highlight-bg: #f8e7d0;
+  --text-selection: #f2daba;
+  --text-highlight-bg: #f2daba;
 
   /* Interactive */
   --interactive-normal: #fef2e1;
@@ -1721,10 +1721,10 @@ settings:
   --tag-color: #ed9a00;
   --tag-color-hover: #ed9a00;
   --tag-background: #f8e7d0;
-  --tag-background-hover: #fff5e5;
+  --tag-background-hover: #fff9f1;
 
   /* Graph */
-  --graph-line: #fff5e5;
+  --graph-line: #fff9f1;
   --graph-node: #ed9a00;
   --graph-node-focused: #ed9a00;
   --graph-node-tag: #00a085;
@@ -1732,13 +1732,13 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #fef2e1;
-  --scrollbar-thumb-bg: #fff5e5;
+  --scrollbar-thumb-bg: #fff9f1;
   --scrollbar-active-thumb-bg: #9b8568;
 
   /* Nav */
   --nav-item-background-hover: #f8e7d0;
-  --nav-item-background-active: #fff5e5;
-  --nav-item-background-selected: #f8e7d0;
+  --nav-item-background-active: #fff9f1;
+  --nav-item-background-selected: #f2daba;
   --nav-item-color: #3a2e3b;
   --nav-item-color-hover: #3a2e3b;
   --nav-item-color-active: #ed9a00;
@@ -1947,8 +1947,8 @@ settings:
   --text-error: #c03b39;
   --text-warning: #7c8e00;
   --text-success: #007c50;
-  --text-selection: #ecdbed;
-  --text-highlight-bg: #ecdbed;
+  --text-selection: #dec9e0;
+  --text-highlight-bg: #dec9e0;
 
   /* Interactive */
   --interactive-normal: #f4e9f5;
@@ -2008,7 +2008,7 @@ settings:
   /* Nav */
   --nav-item-background-hover: #ecdbed;
   --nav-item-background-active: #f9f0f9;
-  --nav-item-background-selected: #ecdbed;
+  --nav-item-background-selected: #dec9e0;
   --nav-item-color: #452a32;
   --nav-item-color-hover: #452a32;
   --nav-item-color-active: #97a941;
@@ -2217,8 +2217,8 @@ settings:
   --text-error: #cb3425;
   --text-warning: #c47600;
   --text-success: #1d7d3e;
-  --text-selection: #e1e9f2;
-  --text-highlight-bg: #e1e9f2;
+  --text-selection: #d4dfeb;
+  --text-highlight-bg: #d4dfeb;
 
   /* Interactive */
   --interactive-normal: #eaf1f8;
@@ -2278,7 +2278,7 @@ settings:
   /* Nav */
   --nav-item-background-hover: #e1e9f2;
   --nav-item-background-active: #f3f7fc;
-  --nav-item-background-selected: #e1e9f2;
+  --nav-item-background-selected: #d4dfeb;
   --nav-item-color: #192f46;
   --nav-item-color-hover: #192f46;
   --nav-item-color-active: #c47600;

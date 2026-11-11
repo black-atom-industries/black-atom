@@ -4,7 +4,7 @@
 .theme-light.black-atom-jpn-koyo-light {
   /* Foundation: Base Colors */
 
-  --color-base-00: #fff5e5;
+  --color-base-00: #fff9f1;
   --color-base-05: #fef2e1;
   --color-base-10: #f8e7d0;
   --color-base-20: #f2daba;
@@ -38,12 +38,12 @@
 
   /* Backgrounds */
   --background-primary: #fef2e1;
-  --background-primary-alt: #fff5e5;
+  --background-primary-alt: #fff9f1;
   --background-secondary: #f8e7d0;
   --background-secondary-alt: #f8e7d0;
   --background-modifier-hover: #f8e7d0;
   --background-modifier-active-hover: #f8e7d0;
-  --background-modifier-border: #fff5e5;
+  --background-modifier-border: #fff9f1;
   --background-modifier-border-hover: #f8e7d0;
   --background-modifier-border-focus: #ed9a00;
   --background-modifier-error-rgb: 246, 216, 217;
@@ -65,8 +65,8 @@
   --text-error: #dc094a;
   --text-warning: #d27500;
   --text-success: #00812b;
-  --text-selection: #f8e7d0;
-  --text-highlight-bg: #f8e7d0;
+  --text-selection: #f2daba;
+  --text-highlight-bg: #f2daba;
 
   /* Interactive */
   --interactive-normal: #fef2e1;
@@ -109,10 +109,10 @@
   --tag-color: #ed9a00;
   --tag-color-hover: #ed9a00;
   --tag-background: #f8e7d0;
-  --tag-background-hover: #fff5e5;
+  --tag-background-hover: #fff9f1;
 
   /* Graph */
-  --graph-line: #fff5e5;
+  --graph-line: #fff9f1;
   --graph-node: #ed9a00;
   --graph-node-focused: #ed9a00;
   --graph-node-tag: #00a085;
@@ -120,13 +120,13 @@
 
   /* Scrollbar */
   --scrollbar-bg: #fef2e1;
-  --scrollbar-thumb-bg: #fff5e5;
+  --scrollbar-thumb-bg: #fff9f1;
   --scrollbar-active-thumb-bg: #9b8568;
 
   /* Nav */
   --nav-item-background-hover: #f8e7d0;
-  --nav-item-background-active: #fff5e5;
-  --nav-item-background-selected: #f8e7d0;
+  --nav-item-background-active: #fff9f1;
+  --nav-item-background-selected: #f2daba;
   --nav-item-color: #3a2e3b;
   --nav-item-color-hover: #3a2e3b;
   --nav-item-color-active: #ed9a00;
