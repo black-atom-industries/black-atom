@@ -1,6 +1,6 @@
 import type * as Theme from "../../types/theme.ts";
 import { oklch as toOklch } from "culori";
-import { oklch, tint } from "../../utils/color.ts";
+import { oklch, shade, tint } from "../../utils/color.ts";
 
 export default function ({
     primaries,
@@ -21,7 +21,7 @@ export default function ({
             default: primaries.l30,
             panel: primaries.l20,
             float: primaries.l20,
-            active: primaries.l40,
+            active: shade(primaries.l30, -0.04),
             disabled: primaries.m40,
             hover: primaries.l20,
             selection: primaries.l10,

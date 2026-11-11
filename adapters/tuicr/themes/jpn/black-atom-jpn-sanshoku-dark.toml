@@ -32,10 +32,10 @@ comment_issue = "#f86c59"
 comment_praise = "#6fc483"
 
 border_focused = "#f8ac3d"
-border_unfocused = "#233c56"
+border_unfocused = "#27405a"
 status_bar_bg = "#162f48"
 cursor_color = "#f8ac3d"
-cursor_line_bg = "#233c56"
+cursor_line_bg = "#27405a"
 branch_name = "#e274ab"
 help_indicator = "#8ab2dc"
 

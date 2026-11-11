@@ -629,7 +629,7 @@ html.theme_light[class],
 html.theme_calm_blue[class] {
   --ba-bg: #fefbf8;
   --ba-bg-panel: #f1eeeb;
-  --ba-bg-active: #fffffc;
+  --ba-bg-active: #f1eeeb;
   --ba-bg-hover: #f1eeeb;
   --ba-bg-selection: #e0ddda;
   --ba-fg: #181614;

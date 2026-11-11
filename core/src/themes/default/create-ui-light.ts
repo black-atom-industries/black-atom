@@ -1,6 +1,6 @@
 import type * as Theme from "../../types/theme.ts";
 import { oklch as toOklch } from "culori";
-import { oklch, tint } from "../../utils/color.ts";
+import { oklch, shade, tint } from "../../utils/color.ts";
 
 export default function ({ primaries, feedback, accents }: Theme.CreatorContext): Theme.Ui {
     function t(color: string) {
@@ -38,7 +38,7 @@ export default function ({ primaries, feedback, accents }: Theme.CreatorContext)
             default: primaries.l30,
             panel: primaries.l20,
             float: primaries.l20,
-            active: primaries.l40,
+            active: shade(primaries.l30, -0.04),
             disabled: primaries.l10,
             hover: primaries.l10,
             selection: primaries.l10,

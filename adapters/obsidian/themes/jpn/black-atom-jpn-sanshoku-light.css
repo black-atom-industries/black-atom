@@ -38,12 +38,12 @@
 
   /* Backgrounds */
   --background-primary: #eaf1f8;
-  --background-primary-alt: #f3f7fc;
+  --background-primary-alt: #dde4eb;
   --background-secondary: #e1e9f2;
   --background-secondary-alt: #e1e9f2;
   --background-modifier-hover: #e1e9f2;
   --background-modifier-active-hover: #e1e9f2;
-  --background-modifier-border: #f3f7fc;
+  --background-modifier-border: #dde4eb;
   --background-modifier-border-hover: #e1e9f2;
   --background-modifier-border-focus: #c47600;
   --background-modifier-error-rgb: 239, 214, 210;
@@ -109,10 +109,10 @@
   --tag-color: #c47600;
   --tag-color-hover: #c47600;
   --tag-background: #e1e9f2;
-  --tag-background-hover: #f3f7fc;
+  --tag-background-hover: #dde4eb;
 
   /* Graph */
-  --graph-line: #f3f7fc;
+  --graph-line: #dde4eb;
   --graph-node: #c47600;
   --graph-node-focused: #c47600;
   --graph-node-tag: #19969c;
@@ -120,12 +120,12 @@
 
   /* Scrollbar */
   --scrollbar-bg: #eaf1f8;
-  --scrollbar-thumb-bg: #f3f7fc;
+  --scrollbar-thumb-bg: #dde4eb;
   --scrollbar-active-thumb-bg: #768595;
 
   /* Nav */
   --nav-item-background-hover: #e1e9f2;
-  --nav-item-background-active: #f3f7fc;
+  --nav-item-background-active: #dde4eb;
   --nav-item-background-selected: #d4dfeb;
   --nav-item-color: #192f46;
   --nav-item-color-hover: #192f46;

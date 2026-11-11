@@ -572,12 +572,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #dfe5ec;
-  --background-primary-alt: #ecf3fa;
+  --background-primary-alt: #d2d8df;
   --background-secondary: #dde4eb;
   --background-secondary-alt: #dde4eb;
   --background-modifier-hover: #b8bec5;
   --background-modifier-active-hover: #b8bec5;
-  --background-modifier-border: #ecf3fa;
+  --background-modifier-border: #d2d8df;
   --background-modifier-border-hover: #b8bec5;
   --background-modifier-border-focus: #009044;
   --background-modifier-error-rgb: 239, 215, 221;
@@ -643,10 +643,10 @@ settings:
   --tag-color: #009044;
   --tag-color-hover: #009044;
   --tag-background: #b8bec5;
-  --tag-background-hover: #ecf3fa;
+  --tag-background-hover: #d2d8df;
 
   /* Graph */
-  --graph-line: #ecf3fa;
+  --graph-line: #d2d8df;
   --graph-node: #009044;
   --graph-node-focused: #009044;
   --graph-node-tag: #008890;
@@ -654,12 +654,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #dfe5ec;
-  --scrollbar-thumb-bg: #ecf3fa;
+  --scrollbar-thumb-bg: #d2d8df;
   --scrollbar-active-thumb-bg: #43484e;
 
   /* Nav */
   --nav-item-background-hover: #b8bec5;
-  --nav-item-background-active: #ecf3fa;
+  --nav-item-background-active: #d2d8df;
   --nav-item-background-selected: #b8bec5;
   --nav-item-color: #0e1217;
   --nav-item-color-hover: #0e1217;
@@ -706,12 +706,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #eff6fd;
-  --background-primary-alt: #f6fdff;
+  --background-primary-alt: #e2e9f0;
   --background-secondary: #e7eef5;
   --background-secondary-alt: #e7eef5;
   --background-modifier-hover: #a8afb5;
   --background-modifier-active-hover: #a8afb5;
-  --background-modifier-border: #f6fdff;
+  --background-modifier-border: #e2e9f0;
   --background-modifier-border-hover: #a8afb5;
   --background-modifier-border-focus: #009044;
   --background-modifier-error-rgb: 246, 223, 229;
@@ -777,10 +777,10 @@ settings:
   --tag-color: #009044;
   --tag-color-hover: #009044;
   --tag-background: #a8afb5;
-  --tag-background-hover: #f6fdff;
+  --tag-background-hover: #e2e9f0;
 
   /* Graph */
-  --graph-line: #f6fdff;
+  --graph-line: #e2e9f0;
   --graph-node: #009044;
   --graph-node-focused: #009044;
   --graph-node-tag: #008890;
@@ -788,12 +788,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #eff6fd;
-  --scrollbar-thumb-bg: #f6fdff;
+  --scrollbar-thumb-bg: #e2e9f0;
   --scrollbar-active-thumb-bg: #43484e;
 
   /* Nav */
   --nav-item-background-hover: #a8afb5;
-  --nav-item-background-active: #f6fdff;
+  --nav-item-background-active: #e2e9f0;
   --nav-item-background-selected: #a8afb5;
   --nav-item-color: #0e1217;
   --nav-item-color-hover: #0e1217;
@@ -840,12 +840,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #eff6fd;
-  --background-primary-alt: #f6fdff;
+  --background-primary-alt: #e2e9f0;
   --background-secondary: #e7eef5;
   --background-secondary-alt: #e7eef5;
   --background-modifier-hover: #a8afb5;
   --background-modifier-active-hover: #a8afb5;
-  --background-modifier-border: #f6fdff;
+  --background-modifier-border: #e2e9f0;
   --background-modifier-border-hover: #a8afb5;
   --background-modifier-border-focus: #009044;
   --background-modifier-error-rgb: 246, 223, 229;
@@ -911,10 +911,10 @@ settings:
   --tag-color: #009044;
   --tag-color-hover: #009044;
   --tag-background: #a8afb5;
-  --tag-background-hover: #f6fdff;
+  --tag-background-hover: #e2e9f0;
 
   /* Graph */
-  --graph-line: #f6fdff;
+  --graph-line: #e2e9f0;
   --graph-node: #009044;
   --graph-node-focused: #009044;
   --graph-node-tag: #008890;
@@ -922,12 +922,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #eff6fd;
-  --scrollbar-thumb-bg: #f6fdff;
+  --scrollbar-thumb-bg: #e2e9f0;
   --scrollbar-active-thumb-bg: #43484e;
 
   /* Nav */
   --nav-item-background-hover: #a8afb5;
-  --nav-item-background-active: #f6fdff;
+  --nav-item-background-active: #e2e9f0;
   --nav-item-background-selected: #a8afb5;
   --nav-item-color: #0e1217;
   --nav-item-color-hover: #0e1217;
@@ -1650,12 +1650,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #fef2e1;
-  --background-primary-alt: #fff9f1;
+  --background-primary-alt: #f1e5d4;
   --background-secondary: #f8e7d0;
   --background-secondary-alt: #f8e7d0;
   --background-modifier-hover: #f8e7d0;
   --background-modifier-active-hover: #f8e7d0;
-  --background-modifier-border: #fff9f1;
+  --background-modifier-border: #f1e5d4;
   --background-modifier-border-hover: #f8e7d0;
   --background-modifier-border-focus: #ed9a00;
   --background-modifier-error-rgb: 246, 216, 217;
@@ -1721,10 +1721,10 @@ settings:
   --tag-color: #ed9a00;
   --tag-color-hover: #ed9a00;
   --tag-background: #f8e7d0;
-  --tag-background-hover: #fff9f1;
+  --tag-background-hover: #f1e5d4;
 
   /* Graph */
-  --graph-line: #fff9f1;
+  --graph-line: #f1e5d4;
   --graph-node: #ed9a00;
   --graph-node-focused: #ed9a00;
   --graph-node-tag: #00a085;
@@ -1732,12 +1732,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #fef2e1;
-  --scrollbar-thumb-bg: #fff9f1;
+  --scrollbar-thumb-bg: #f1e5d4;
   --scrollbar-active-thumb-bg: #9b8568;
 
   /* Nav */
   --nav-item-background-hover: #f8e7d0;
-  --nav-item-background-active: #fff9f1;
+  --nav-item-background-active: #f1e5d4;
   --nav-item-background-selected: #f2daba;
   --nav-item-color: #3a2e3b;
   --nav-item-color-hover: #3a2e3b;
@@ -1920,12 +1920,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #f4e9f5;
-  --background-primary-alt: #f9f0f9;
+  --background-primary-alt: #e7dce8;
   --background-secondary: #ecdbed;
   --background-secondary-alt: #ecdbed;
   --background-modifier-hover: #ecdbed;
   --background-modifier-active-hover: #ecdbed;
-  --background-modifier-border: #f9f0f9;
+  --background-modifier-border: #e7dce8;
   --background-modifier-border-hover: #ecdbed;
   --background-modifier-border-focus: #97a941;
   --background-modifier-error-rgb: 234, 212, 209;
@@ -1991,10 +1991,10 @@ settings:
   --tag-color: #97a941;
   --tag-color-hover: #97a941;
   --tag-background: #ecdbed;
-  --tag-background-hover: #f9f0f9;
+  --tag-background-hover: #e7dce8;
 
   /* Graph */
-  --graph-line: #f9f0f9;
+  --graph-line: #e7dce8;
   --graph-node: #97a941;
   --graph-node-focused: #97a941;
   --graph-node-tag: #009595;
@@ -2002,12 +2002,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #f4e9f5;
-  --scrollbar-thumb-bg: #f9f0f9;
+  --scrollbar-thumb-bg: #e7dce8;
   --scrollbar-active-thumb-bg: #865f88;
 
   /* Nav */
   --nav-item-background-hover: #ecdbed;
-  --nav-item-background-active: #f9f0f9;
+  --nav-item-background-active: #e7dce8;
   --nav-item-background-selected: #dec9e0;
   --nav-item-color: #452a32;
   --nav-item-color-hover: #452a32;
@@ -2023,7 +2023,7 @@ settings:
 
   --color-base-00: #162f48;
   --color-base-05: #1d364f;
-  --color-base-10: #233c56;
+  --color-base-10: #27405a;
   --color-base-20: #2a435d;
   --color-base-25: #4f759c;
   --color-base-30: #5d84ac;
@@ -2055,13 +2055,13 @@ settings:
 
   /* Backgrounds */
   --background-primary: #1d364f;
-  --background-primary-alt: #233c56;
+  --background-primary-alt: #27405a;
   --background-secondary: #162f48;
   --background-secondary-alt: #162f48;
-  --background-modifier-hover: #233c56;
-  --background-modifier-active-hover: #233c56;
-  --background-modifier-border: #233c56;
-  --background-modifier-border-hover: #233c56;
+  --background-modifier-hover: #27405a;
+  --background-modifier-active-hover: #27405a;
+  --background-modifier-border: #27405a;
+  --background-modifier-border-hover: #27405a;
   --background-modifier-border-focus: #f8ac3d;
   --background-modifier-error-rgb: 89, 65, 60;
   --background-modifier-error: #59413c;
@@ -2087,7 +2087,7 @@ settings:
 
   /* Interactive */
   --interactive-normal: #1d364f;
-  --interactive-hover: #233c56;
+  --interactive-hover: #27405a;
   --interactive-accent: #f8ac3d;
   --interactive-accent-hover: #f8ac3d;
 
@@ -2125,11 +2125,11 @@ settings:
   /* Tags */
   --tag-color: #f8ac3d;
   --tag-color-hover: #f8ac3d;
-  --tag-background: #233c56;
-  --tag-background-hover: #233c56;
+  --tag-background: #27405a;
+  --tag-background-hover: #27405a;
 
   /* Graph */
-  --graph-line: #233c56;
+  --graph-line: #27405a;
   --graph-node: #f8ac3d;
   --graph-node-focused: #f8ac3d;
   --graph-node-tag: #53c1c7;
@@ -2137,12 +2137,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #1d364f;
-  --scrollbar-thumb-bg: #233c56;
+  --scrollbar-thumb-bg: #27405a;
   --scrollbar-active-thumb-bg: #8ab2dc;
 
   /* Nav */
-  --nav-item-background-hover: #233c56;
-  --nav-item-background-active: #233c56;
+  --nav-item-background-hover: #27405a;
+  --nav-item-background-active: #27405a;
   --nav-item-background-selected: #2a435d;
   --nav-item-color: #e2ebf3;
   --nav-item-color-hover: #e2ebf3;
@@ -2190,12 +2190,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #eaf1f8;
-  --background-primary-alt: #f3f7fc;
+  --background-primary-alt: #dde4eb;
   --background-secondary: #e1e9f2;
   --background-secondary-alt: #e1e9f2;
   --background-modifier-hover: #e1e9f2;
   --background-modifier-active-hover: #e1e9f2;
-  --background-modifier-border: #f3f7fc;
+  --background-modifier-border: #dde4eb;
   --background-modifier-border-hover: #e1e9f2;
   --background-modifier-border-focus: #c47600;
   --background-modifier-error-rgb: 239, 214, 210;
@@ -2261,10 +2261,10 @@ settings:
   --tag-color: #c47600;
   --tag-color-hover: #c47600;
   --tag-background: #e1e9f2;
-  --tag-background-hover: #f3f7fc;
+  --tag-background-hover: #dde4eb;
 
   /* Graph */
-  --graph-line: #f3f7fc;
+  --graph-line: #dde4eb;
   --graph-node: #c47600;
   --graph-node-focused: #c47600;
   --graph-node-tag: #19969c;
@@ -2272,12 +2272,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #eaf1f8;
-  --scrollbar-thumb-bg: #f3f7fc;
+  --scrollbar-thumb-bg: #dde4eb;
   --scrollbar-active-thumb-bg: #768595;
 
   /* Nav */
   --nav-item-background-hover: #e1e9f2;
-  --nav-item-background-active: #f3f7fc;
+  --nav-item-background-active: #dde4eb;
   --nav-item-background-selected: #d4dfeb;
   --nav-item-color: #192f46;
   --nav-item-color-hover: #192f46;
@@ -3270,12 +3270,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #dedede;
-  --background-primary-alt: #ebebeb;
+  --background-primary-alt: #d1d1d1;
   --background-secondary: #d1d1d1;
   --background-secondary-alt: #d1d1d1;
   --background-modifier-hover: #d1d1d1;
   --background-modifier-active-hover: #d1d1d1;
-  --background-modifier-border: #ebebeb;
+  --background-modifier-border: #d1d1d1;
   --background-modifier-border-hover: #d1d1d1;
   --background-modifier-border-focus: #5f5155;
   --background-modifier-error-rgb: 234, 207, 205;
@@ -3341,10 +3341,10 @@ settings:
   --tag-color: #5f5155;
   --tag-color-hover: #5f5155;
   --tag-background: #d1d1d1;
-  --tag-background-hover: #ebebeb;
+  --tag-background-hover: #d1d1d1;
 
   /* Graph */
-  --graph-line: #ebebeb;
+  --graph-line: #d1d1d1;
   --graph-node: #5f5155;
   --graph-node-focused: #5f5155;
   --graph-node-tag: #3d3d3d;
@@ -3352,12 +3352,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #dedede;
-  --scrollbar-thumb-bg: #ebebeb;
+  --scrollbar-thumb-bg: #d1d1d1;
   --scrollbar-active-thumb-bg: #525252;
 
   /* Nav */
   --nav-item-background-hover: #d1d1d1;
-  --nav-item-background-active: #ebebeb;
+  --nav-item-background-active: #d1d1d1;
   --nav-item-background-selected: #c4c4c4;
   --nav-item-color: #292929;
   --nav-item-color-hover: #292929;
@@ -3405,12 +3405,12 @@ settings:
 
   /* Backgrounds */
   --background-primary: #fefbf8;
-  --background-primary-alt: #fffffc;
+  --background-primary-alt: #f1eeeb;
   --background-secondary: #f1eeeb;
   --background-secondary-alt: #f1eeeb;
   --background-modifier-hover: #f1eeeb;
   --background-modifier-active-hover: #f1eeeb;
-  --background-modifier-border: #fffffc;
+  --background-modifier-border: #f1eeeb;
   --background-modifier-border-hover: #f1eeeb;
   --background-modifier-border-focus: #2e2e2e;
   --background-modifier-error-rgb: 251, 224, 221;
@@ -3476,10 +3476,10 @@ settings:
   --tag-color: #2e2e2e;
   --tag-color-hover: #2e2e2e;
   --tag-background: #f1eeeb;
-  --tag-background-hover: #fffffc;
+  --tag-background-hover: #f1eeeb;
 
   /* Graph */
-  --graph-line: #fffffc;
+  --graph-line: #f1eeeb;
   --graph-node: #2e2e2e;
   --graph-node-focused: #2e2e2e;
   --graph-node-tag: #4a4745;
@@ -3487,12 +3487,12 @@ settings:
 
   /* Scrollbar */
   --scrollbar-bg: #fefbf8;
-  --scrollbar-thumb-bg: #fffffc;
+  --scrollbar-thumb-bg: #f1eeeb;
   --scrollbar-active-thumb-bg: #605d5b;
 
   /* Nav */
   --nav-item-background-hover: #f1eeeb;
-  --nav-item-background-active: #fffffc;
+  --nav-item-background-active: #f1eeeb;
   --nav-item-background-selected: #e0ddda;
   --nav-item-color: #181614;
   --nav-item-color-hover: #181614;

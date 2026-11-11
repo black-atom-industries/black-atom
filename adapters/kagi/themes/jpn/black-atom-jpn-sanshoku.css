@@ -629,7 +629,7 @@ html.theme_light[class],
 html.theme_calm_blue[class] {
   --ba-bg: #eaf1f8;
   --ba-bg-panel: #e1e9f2;
-  --ba-bg-active: #f3f7fc;
+  --ba-bg-active: #dde4eb;
   --ba-bg-hover: #e1e9f2;
   --ba-bg-selection: #d4dfeb;
   --ba-fg: #192f46;
@@ -675,8 +675,8 @@ html.theme_dark[class],
 html.theme_moon_dark[class] {
   --ba-bg: #1d364f;
   --ba-bg-panel: #162f48;
-  --ba-bg-active: #233c56;
-  --ba-bg-hover: #233c56;
+  --ba-bg-active: #27405a;
+  --ba-bg-hover: #27405a;
   --ba-bg-selection: #2a435d;
   --ba-fg: #e2ebf3;
   --ba-fg-subtle: #8ab2dc;
@@ -712,8 +712,8 @@ html.theme_moon_dark[class] {
   :root.theme_moon_dark_conditional[class] {
     --ba-bg: #1d364f;
     --ba-bg-panel: #162f48;
-    --ba-bg-active: #233c56;
-    --ba-bg-hover: #233c56;
+    --ba-bg-active: #27405a;
+    --ba-bg-hover: #27405a;
     --ba-bg-selection: #2a435d;
     --ba-fg: #e2ebf3;
     --ba-fg-subtle: #8ab2dc;

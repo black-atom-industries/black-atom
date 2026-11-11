@@ -12,7 +12,7 @@ html.theme_light[class],
 html.theme_calm_blue[class] {
   --ba-bg: #eff6fd;
   --ba-bg-panel: #e7eef5;
-  --ba-bg-active: #f6fdff;
+  --ba-bg-active: #e2e9f0;
   --ba-bg-hover: #a8afb5;
   --ba-bg-selection: #a8afb5;
   --ba-fg: #0e1217;
