@@ -1755,10 +1755,10 @@ settings:
   --color-base-05: #351b23;
   --color-base-10: #452a32;
   --color-base-20: #5b3e47;
-  --color-base-25: #6d4769;
-  --color-base-30: #90638b;
-  --color-base-35: #9e76a0;
-  --color-base-40: #b386b5;
+  --color-base-25: #7b354b;
+  --color-base-30: #965e90;
+  --color-base-35: #a571a7;
+  --color-base-40: #b883ba;
   --color-base-50: #b796b8;
   --color-base-60: #c9b1cb;
   --color-base-70: #d4bfd6;
@@ -1803,8 +1803,8 @@ settings:
 
   /* Text */
   --text-normal: #d4bfd6;
-  --text-muted: #b386b5;
-  --text-faint: #9e76a0;
+  --text-muted: #b883ba;
+  --text-faint: #a571a7;
   --text-accent: #d0e08d;
   --text-accent-hover: #d0e08d;
   --text-on-accent: #351b23;
@@ -1825,9 +1825,9 @@ settings:
   --h1-color: #d0e08d;
   --h2-color: #d0e08d;
   --h3-color: #d0e08d;
-  --h4-color: #b386b5;
-  --h5-color: #b386b5;
-  --h6-color: #b386b5;
+  --h4-color: #b883ba;
+  --h5-color: #b883ba;
+  --h6-color: #b883ba;
 
   /* Markup */
   --bold-color: #d0e08d;
@@ -1840,13 +1840,13 @@ settings:
 
   /* Code / Syntax Highlighting */
   --code-normal: #c9b1cb;
-  --code-comment: #90638b;
+  --code-comment: #965e90;
   --code-function: #d0e08d;
   --code-important: #d49bb2;
   --code-keyword: #d49bb2;
   --code-operator: #7ea5b7;
   --code-property: #8cb6c5;
-  --code-punctuation: #b386b5;
+  --code-punctuation: #b883ba;
   --code-string: #80bda2;
   --code-tag: #d0e08d;
   --code-value: #7ea5b7;
@@ -1868,7 +1868,7 @@ settings:
   /* Scrollbar */
   --scrollbar-bg: #351b23;
   --scrollbar-thumb-bg: #452a32;
-  --scrollbar-active-thumb-bg: #b386b5;
+  --scrollbar-active-thumb-bg: #b883ba;
 
   /* Nav */
   --nav-item-background-hover: #452a32;
