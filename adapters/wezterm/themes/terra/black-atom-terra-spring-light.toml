@@ -10,7 +10,7 @@ cursor_border = "#cede1c"
 cursor_fg = "#eef5e3"
 selection_bg = "#f9fcf1"
 selection_fg = "#275639"
-split = "#cede1c"
+split = "#9fb8a3"
 compose_cursor = "#bc4757"
 scrollbar_thumb = "#3c744a"
 

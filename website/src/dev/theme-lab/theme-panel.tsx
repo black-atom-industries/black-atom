@@ -70,6 +70,7 @@ function Code({ theme }: { theme: Theme.Definition }) {
     return code.map((text, index) => {
         const sign = gitSigns[index];
         const diagnostic = diagnostics[index];
+        const indented = text.startsWith("  ");
         const background =
             index === cursorLine
                 ? ui.bg.active
@@ -83,7 +84,8 @@ function Code({ theme }: { theme: Theme.Definition }) {
                     {String(index + 1).padStart(2)}
                 </span>
                 {"  "}
-                <Tokens tokens={tokenize(text)} theme={theme} />
+                {indented && <span style={{ color: "var(--lab-border)" }}>│ </span>}
+                <Tokens tokens={tokenize(indented ? text.slice(2) : text)} theme={theme} />
                 {diagnostic && (
                     <>
                         {"  "}
@@ -105,10 +107,7 @@ function Code({ theme }: { theme: Theme.Definition }) {
 function Float({ theme }: { theme: Theme.Definition }) {
     const { ui } = theme;
     return (
-        <div
-            className={styles.float}
-            style={{ background: ui.bg.float, borderColor: ui.fg.disabled }}
-        >
+        <div className={styles.float} style={{ background: ui.bg.float }}>
             <span style={{ color: theme.syntax.func.default }}>load</span>
             <span style={{ color: ui.fg.default }}>(file: string)</span>
             <div style={{ color: ui.fg.subtle }}>Reads and parses a theme file.</div>
@@ -304,7 +303,12 @@ export function ThemePanel({
     previous?: Theme.Definition;
 }) {
     const { ui } = theme;
-    const style: CSSProperties = { background: ui.bg.default, color: ui.fg.default };
+    const style: CSSProperties & Record<"--lab-border", string> = {
+        background: ui.bg.default,
+        color: ui.fg.default,
+        // A theme loaded from an older git revision has no border token.
+        "--lab-border": ui.fg.border ?? ui.fg.subtle,
+    };
     return (
         <div className={styles.panel} style={style}>
             <div className={styles.label}>{label}</div>

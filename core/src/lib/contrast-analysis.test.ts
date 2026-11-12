@@ -49,6 +49,7 @@ const testTheme = {
             subtle: "#8a8f96",
             accent: "#7aaa8a",
             disabled: "#555a60",
+            border: "#3a3f46",
             contrast: "#1a1d23",
             negative: "#e06060",
             warn: "#d0a030",

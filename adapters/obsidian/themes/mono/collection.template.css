@@ -67,8 +67,8 @@ const isDefault = theme.meta.key === "black-atom-default-dark" || theme.meta.key
   --background-secondary-alt: <%= theme.ui.bg.float %>;
   --background-modifier-hover: <%= theme.ui.bg.hover %>;
   --background-modifier-active-hover: <%= theme.ui.bg.hover %>;
-  --background-modifier-border: <%= theme.ui.bg.active %>;
-  --background-modifier-border-hover: <%= theme.ui.bg.hover %>;
+  --background-modifier-border: <%= theme.ui.fg.border %>;
+  --background-modifier-border-hover: <%= theme.ui.fg.subtle %>;
   --background-modifier-border-focus: <%= theme.ui.fg.accent %>;
   --background-modifier-error-rgb: <%= hexToRgb(theme.ui.bg.negative) %>;
   --background-modifier-error: <%= theme.ui.bg.negative %>;
@@ -214,8 +214,8 @@ const isDefault = theme.meta.key === "black-atom-default-dark" || theme.meta.key
   --background-secondary-alt: <%= theme.ui.bg.float %>;
   --background-modifier-hover: <%= theme.ui.bg.hover %>;
   --background-modifier-active-hover: <%= theme.ui.bg.hover %>;
-  --background-modifier-border: <%= theme.ui.bg.active %>;
-  --background-modifier-border-hover: <%= theme.ui.bg.hover %>;
+  --background-modifier-border: <%= theme.ui.fg.border %>;
+  --background-modifier-border-hover: <%= theme.ui.fg.subtle %>;
   --background-modifier-border-focus: <%= theme.ui.fg.accent %>;
   --background-modifier-error-rgb: <%= hexToRgb(theme.ui.bg.negative) %>;
   --background-modifier-error: <%= theme.ui.bg.negative %>;

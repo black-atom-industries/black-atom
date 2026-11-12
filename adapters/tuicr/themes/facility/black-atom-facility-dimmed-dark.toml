@@ -32,7 +32,7 @@ comment_issue = "#ffa9d2"
 comment_praise = "#96e497"
 
 border_focused = "#ddfa5f"
-border_unfocused = "#252a2c"
+border_unfocused = "#4d5354"
 status_bar_bg = "#131718"
 cursor_color = "#ddfa5f"
 cursor_line_bg = "#252a2c"

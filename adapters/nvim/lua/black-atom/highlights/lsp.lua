@@ -85,7 +85,7 @@ return {
 
             -- LSP CodeLens
             LspCodeLens = { fg = ui.fg.subtle },
-            LspCodeLensSeparator = { fg = ui.fg.subtle },
+            LspCodeLensSeparator = { fg = ui.fg.border },
 
             -- Legacy LSP Diagnostics (Links)
             LspDiagnosticsDefaultError = { link = "DiagnosticError" },

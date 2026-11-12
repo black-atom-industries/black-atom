@@ -25,10 +25,10 @@ _%>
     line-numbers-minus-style = "<%= theme.ui.fg.delete %>"
     line-numbers-plus-style = "<%= theme.ui.fg.add %>"
     line-numbers-zero-style = "<%= theme.ui.fg.subtle %>"
-    line-numbers-left-style = "<%= theme.ui.fg.disabled %>"
-    line-numbers-right-style = "<%= theme.ui.fg.disabled %>"
+    line-numbers-left-style = "<%= theme.ui.fg.border %>"
+    line-numbers-right-style = "<%= theme.ui.fg.border %>"
 
     file-style = "<%= theme.ui.fg.accent %>" bold
-    file-decoration-style = "<%= theme.ui.fg.disabled %>" ul
-    hunk-header-decoration-style = "<%= theme.ui.fg.disabled %>" box
+    file-decoration-style = "<%= theme.ui.fg.border %>" ul
+    hunk-header-decoration-style = "<%= theme.ui.fg.border %>" box
     hunk-header-line-number-style = "<%= theme.ui.fg.info %>"

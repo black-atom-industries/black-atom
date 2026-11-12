@@ -43,8 +43,8 @@
   --background-secondary-alt: #090909;
   --background-modifier-hover: #242424;
   --background-modifier-active-hover: #242424;
-  --background-modifier-border: #242424;
-  --background-modifier-border-hover: #242424;
+  --background-modifier-border: #5d5d5d;
+  --background-modifier-border-hover: #8c8c8c;
   --background-modifier-border-focus: #d2b5bd;
   --background-modifier-error-rgb: 84, 49, 49;
   --background-modifier-error: #543131;

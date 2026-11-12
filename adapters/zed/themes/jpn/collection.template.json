@@ -7,7 +7,7 @@
             "name": "<%= theme.meta.label %>",
             "appearance": "<%= theme.meta.appearance %>",
             "style": {
-                "border": "<%= theme.ui.bg.active %>",
+                "border": "<%= theme.ui.fg.border %>",
                 "border.variant": "<%= theme.ui.bg.hover %>",
                 "border.focused": "<%= theme.ui.fg.accent %>",
                 "border.selected": "<%= theme.ui.bg.selection %>",

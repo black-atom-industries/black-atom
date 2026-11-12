@@ -75,8 +75,8 @@
 .editor {
     display: grid;
     grid-template-columns: 136px minmax(0, 1fr);
-    border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
-    border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+    border-top: 1px solid var(--lab-border);
+    border-bottom: 1px solid var(--lab-border);
 }
 
 .sidebar,
@@ -86,7 +86,7 @@
 }
 
 .sidebar {
-    border-right: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+    border-right: 1px solid var(--lab-border);
 }
 
 .main {
@@ -112,7 +112,7 @@
     width: fit-content;
     margin: 6px 12px 6px 40px;
     padding: 6px 10px;
-    border: 1px solid;
+    border: 1px solid var(--lab-border);
     border-radius: 0;
     line-height: 1.6;
 }
@@ -125,7 +125,7 @@
 }
 
 .terminal {
-    border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+    border-top: 1px solid var(--lab-border);
     white-space: normal;
 }
 

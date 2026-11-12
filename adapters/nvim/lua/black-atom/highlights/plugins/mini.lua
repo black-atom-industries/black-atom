@@ -16,7 +16,7 @@ return {
             -- MiniClue
             MiniClueBorder = { fg = ui.fg.accent, bg = ui.bg.float },
             MiniClueTitle = { fg = ui.fg.accent, bg = ui.bg.float, bold = true },
-            MiniClueSeparator = { fg = ui.fg.subtle },
+            MiniClueSeparator = { fg = ui.fg.border },
             MiniClueNextKey = { fg = ui.fg.accent, bold = true },
             MiniClueNextKeyWithPostkeys = { fg = ui.fg.accent, bold = true },
             MiniClueDescGroup = { fg = ui.fg.subtle, italic = true },
@@ -99,7 +99,7 @@ return {
 
             -- MiniIndentscope
             MiniIndentscopeSymbol = { fg = ui.fg.accent },
-            MiniIndentscopeSymbolOff = { fg = ui.fg.subtle },
+            MiniIndentscopeSymbolOff = { fg = ui.fg.border },
 
             -- MiniJump
             MiniJump = { fg = ui.fg.accent, bold = true, underline = true },

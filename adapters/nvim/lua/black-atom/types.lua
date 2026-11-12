@@ -125,7 +125,8 @@
 ---@field subtle                                                string Subtle text like comments and other secondary information
 ---@field accent                                                string For links and other text that needs to stand out
 ---@field disabled                                              string For disabled text
----@field contrast                                              string Inverted which is also used on colored or inverted backgrounds like feedback
+---@field border                                                string Idle borders, separators and guide lines
+---@field contrast                                             string Inverted which is also used on colored or inverted backgrounds like feedback
 ---@field negative                                              string Feedback - Negative
 ---@field warn                                                  string Feedback - Warnings
 ---@field info                                                  string Feedback - Information

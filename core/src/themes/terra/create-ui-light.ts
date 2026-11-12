@@ -40,6 +40,7 @@ export default function ({
             default: primaries.d20,
             subtle: primaries.m10,
             disabled: primaries.m20,
+            border: tint({ color: primaries.m10, with: primaries.l30, amount: 0.45 }),
             accent: accents.a10,
             contrast: primaries.l30,
             negative: feedback.negative,

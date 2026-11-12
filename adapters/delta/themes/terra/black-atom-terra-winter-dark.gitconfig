@@ -14,10 +14,10 @@
     line-numbers-minus-style = "#e996a0"
     line-numbers-plus-style = "#82c3d3"
     line-numbers-zero-style = "#6f8298"
-    line-numbers-left-style = "#5e748b"
-    line-numbers-right-style = "#5e748b"
+    line-numbers-left-style = "#3f556b"
+    line-numbers-right-style = "#3f556b"
 
     file-style = "#fba952" bold
-    file-decoration-style = "#5e748b" ul
-    hunk-header-decoration-style = "#5e748b" box
+    file-decoration-style = "#3f556b" ul
+    hunk-header-decoration-style = "#3f556b" box
     hunk-header-line-number-style = "#7fb6ee"

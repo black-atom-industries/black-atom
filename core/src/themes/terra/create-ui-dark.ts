@@ -35,6 +35,7 @@ export default function ({
             default: primaries.l30,
             subtle: primaries.m40,
             disabled: primaries.m30,
+            border: primaries.m10,
             accent: accents.a10,
             contrast: primaries.d20,
             negative: feedback.negative,

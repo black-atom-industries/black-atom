@@ -66,7 +66,7 @@ gui:
             - "#e49e22"
             - bold
         inactiveBorderColor:
-            - "#b19b7c"
+            - "#59506a"
         optionsTextColor:
             - "#b5a4d7"
         selectedLineBgColor:
@@ -154,7 +154,7 @@ gui:
             - "<%= theme.ui.fg.accent %>"
             - bold
         inactiveBorderColor:
-            - "<%= theme.ui.fg.subtle %>"
+            - "<%= theme.ui.fg.border %>"
         # ...and so on
 ```
 

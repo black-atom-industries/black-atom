@@ -7,7 +7,7 @@
             "name": "Black Atom — Mono ∷ Dark",
             "appearance": "dark",
             "style": {
-                "border": "#1c1a18",
+                "border": "#4a4745",
                 "border.variant": "#1c1a18",
                 "border.focused": "#e4e4e4",
                 "border.selected": "#2b2826",

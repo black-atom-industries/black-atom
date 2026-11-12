@@ -12,6 +12,7 @@ const themeVarNames = [
     "fg-subtle",
     "fg-accent",
     "fg-disabled",
+    "fg-border",
     "fg-contrast",
     "accent",
     "accent-2",
@@ -54,6 +55,7 @@ export function themeToCustomProperties(theme: Theme.Definition): Record<ThemeVa
         "--ba-fg-subtle": theme.ui.fg.subtle,
         "--ba-fg-accent": theme.ui.fg.accent,
         "--ba-fg-disabled": theme.ui.fg.disabled,
+        "--ba-fg-border": theme.ui.fg.border,
         "--ba-fg-contrast": theme.ui.fg.contrast,
 
         "--ba-accent": theme.accents.a10,

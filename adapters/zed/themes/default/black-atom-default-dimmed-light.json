@@ -7,7 +7,7 @@
             "name": "Black Atom — Dimmed Light",
             "appearance": "light",
             "style": {
-                "border": "#d2d8df",
+                "border": "#a0a4a7",
                 "border.variant": "#b8bec5",
                 "border.focused": "#009044",
                 "border.selected": "#b8bec5",

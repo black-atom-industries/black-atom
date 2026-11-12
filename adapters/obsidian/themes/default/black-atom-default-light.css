@@ -42,8 +42,8 @@
   --background-secondary-alt: #e7eef5;
   --background-modifier-hover: #a8afb5;
   --background-modifier-active-hover: #a8afb5;
-  --background-modifier-border: #e2e9f0;
-  --background-modifier-border-hover: #a8afb5;
+  --background-modifier-border: #a6aaae;
+  --background-modifier-border-hover: #43484e;
   --background-modifier-border-focus: #009044;
   --background-modifier-error-rgb: 246, 223, 229;
   --background-modifier-error: #f6dfe5;
@@ -176,8 +176,8 @@
   --background-secondary-alt: #e7eef5;
   --background-modifier-hover: #a8afb5;
   --background-modifier-active-hover: #a8afb5;
-  --background-modifier-border: #e2e9f0;
-  --background-modifier-border-hover: #a8afb5;
+  --background-modifier-border: #a6aaae;
+  --background-modifier-border-hover: #43484e;
   --background-modifier-border-focus: #009044;
   --background-modifier-error-rgb: 246, 223, 229;
   --background-modifier-error: #f6dfe5;

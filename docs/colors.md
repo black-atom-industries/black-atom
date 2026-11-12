@@ -85,6 +85,11 @@ UI colors are the interface states an adapter styles: backgrounds, foregrounds, 
 from feedback. Syntax colors are the highlight categories for code, nested by construct (`syntax.string.default`,
 `syntax.func.method`, `syntax.markup.heading.h1`). Their exact shape is the type in `core/src/types/theme.ts`.
 
+`ui.fg.border` is the color of idle lines: borders around panes and floats, separators between them, and indent guides.
+It sits at about 2:1 against `ui.bg.default`, visible and behind the content, so it stays out of the contrast pairs,
+which measure readable text. A focused or active border uses `ui.fg.accent`, a border that reports a state uses that
+state's color, and marks that are read as text (line numbers, whitespace marks) use `ui.fg.subtle`.
+
 ## Appearances
 
 Each theme has one `meta.appearance`, `"dark"` or `"light"`. A collection's creators come in dark and light pairs

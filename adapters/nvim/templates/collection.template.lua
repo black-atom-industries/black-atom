@@ -68,6 +68,7 @@ local theme = {
                 subtle = "<%= theme.ui.fg.subtle %>",
                 accent = "<%= theme.ui.fg.accent %>",
                 disabled = "<%= theme.ui.fg.disabled %>",
+                border = "<%= theme.ui.fg.border %>",
                 contrast = "<%= theme.ui.fg.contrast %>",
                 negative = "<%= theme.ui.fg.negative %>",
                 warn = "<%= theme.ui.fg.warn %>",

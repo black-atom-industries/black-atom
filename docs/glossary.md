@@ -48,11 +48,11 @@ Collection modules call `defineCollection({ meta, themes })`, with `{ meta, colo
 The `collections` tuple in `core/src/themes/catalog.ts` drives key types and collection metadata;
 `themeCatalog` combines each collection's `.themes` map.
 
-| Term                      | Definition                                                                                                                                                                  | Aliases to avoid                |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| **UI Colors**             | Semantic background and foreground tokens for interface elements (default, panel, float, active, disabled, hover, selection, search, contrast, plus feedback-mapped states) | Theme tokens, design tokens     |
-| **Syntax Colors**         | Color assignments for code highlighting categories (variable, string, keyword, type, comment, etc.)                                                                         | Highlight colors, editor colors |
-| **Theme Creator Options** | The input structure (`{primaries, palette, feedback, accents}`) passed to UI and syntax creation functions                                                                  | Creator config, color inputs    |
+| Term                      | Definition                                                                                                                                                                          | Aliases to avoid                |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| **UI Colors**             | Semantic background and foreground tokens for interface elements (default, panel, float, active, disabled, hover, selection, search, contrast, border, plus feedback-mapped states) | Theme tokens, design tokens     |
+| **Syntax Colors**         | Color assignments for code highlighting categories (variable, string, keyword, type, comment, etc.)                                                                                 | Highlight colors, editor colors |
+| **Theme Creator Options** | The input structure (`{primaries, palette, feedback, accents}`) passed to UI and syntax creation functions                                                                          | Creator config, color inputs    |
 
 ## Adapter & Generation Pipeline
 

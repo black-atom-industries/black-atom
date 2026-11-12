@@ -9,7 +9,7 @@ gui:
       - "#5f5155"
       - bold
     inactiveBorderColor:
-      - "#525252"
+      - "#969696"
     optionsTextColor:
       - "#0079bd"
     selectedLineBgColor:

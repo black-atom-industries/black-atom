@@ -117,6 +117,7 @@ interface UiForeground {
     subtle: HexColor;
     accent: HexColor;
     disabled: HexColor;
+    border: HexColor;
     contrast: HexColor;
     negative: HexColor;
     warn: HexColor;

@@ -7,7 +7,7 @@
             "name": "Black Atom — Light",
             "appearance": "light",
             "style": {
-                "border": "#e2e9f0",
+                "border": "#a6aaae",
                 "border.variant": "#a8afb5",
                 "border.focused": "#009044",
                 "border.selected": "#a8afb5",

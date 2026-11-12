@@ -7,7 +7,7 @@
             "name": "Black Atom — Minium ∷ Viridian Light",
             "appearance": "light",
             "style": {
-                "border": "#f0fbf9",
+                "border": "#67b5a9",
                 "border.variant": "#bfdfd9",
                 "border.focused": "#ee560c",
                 "border.selected": "#abd5cd",

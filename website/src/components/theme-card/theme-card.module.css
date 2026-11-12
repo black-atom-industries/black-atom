@@ -4,7 +4,7 @@
     padding: 16px;
     background: var(--ba-bg);
     color: var(--ba-fg);
-    border: 1px solid var(--ba-fg-disabled);
+    border: 1px solid var(--ba-fg-border);
     transition: transform 0.3s;
 
     &:hover {

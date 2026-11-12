@@ -7,7 +7,7 @@
             "name": "Black Atom — TR-1000 ∷ Dark",
             "appearance": "dark",
             "style": {
-                "border": "#27292d",
+                "border": "#4c515b",
                 "border.variant": "#27292d",
                 "border.focused": "#8fadee",
                 "border.selected": "#34353a",

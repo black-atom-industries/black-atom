@@ -46,6 +46,7 @@ export default function ({ primaries, feedback, accents }: Theme.CreatorContext)
             subtle: primaries.m30,
             accent: accents.a10,
             disabled: primaries.m20,
+            border: primaries.m10,
             contrast: primaries.d20,
             ...sharedFg,
         },

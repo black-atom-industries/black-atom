@@ -70,7 +70,7 @@ describe("themeScript", () => {
             colorScheme: "dark",
             bg: "#261a2a",
         });
-        expect(result.propertyCount).toBe(35);
+        expect(result.propertyCount).toBe(36);
     });
 
     it("applies the stored theme when the URL theme is unknown", () => {

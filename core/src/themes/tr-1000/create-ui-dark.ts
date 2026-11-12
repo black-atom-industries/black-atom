@@ -35,6 +35,7 @@ export default function ({
             default: primaries.l30,
             subtle: primaries.m40,
             disabled: primaries.m30,
+            border: tint({ color: primaries.m10, with: primaries.d20, amount: 0.7 }),
             accent: accents.a10,
             contrast: primaries.d20,
             negative: feedback.negative,

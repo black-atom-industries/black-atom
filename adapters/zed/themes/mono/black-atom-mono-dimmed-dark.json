@@ -7,7 +7,7 @@
             "name": "Black Atom — Mono ∷ Dimmed Dark",
             "appearance": "dark",
             "style": {
-                "border": "#242424",
+                "border": "#5d5d5d",
                 "border.variant": "#242424",
                 "border.focused": "#d2b5bd",
                 "border.selected": "#2e2e2e",

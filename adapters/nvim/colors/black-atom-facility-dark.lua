@@ -68,6 +68,7 @@ local theme = {
                 subtle = "#a7b4b6",
                 accent = "#ddfa5f",
                 disabled = "#8e9b9c",
+                border = "#464c4d",
                 contrast = "#0d1012",
                 negative = "#ffa9d2",
                 warn = "#ddfa5f",

@@ -7,7 +7,7 @@
             "name": "Black Atom — Facility ∷ Light",
             "appearance": "light",
             "style": {
-                "border": "#dfe9eb",
+                "border": "#a5b2b3",
                 "border.variant": "#dfe9eb",
                 "border.focused": "#b2cd0d",
                 "border.selected": "#dfe9eb",

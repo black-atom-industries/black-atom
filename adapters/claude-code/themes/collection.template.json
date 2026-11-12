@@ -9,7 +9,7 @@
         "suggestion": "<%= theme.ui.fg.info %>",
         "claude": "<%= theme.ui.fg.accent %>",
         "permission": "<%= theme.ui.fg.info %>",
-        "promptBorder": "<%= theme.ui.fg.disabled %>",
+        "promptBorder": "<%= theme.ui.fg.border %>",
         "success": "<%= theme.ui.fg.positive %>",
         "error": "<%= theme.ui.fg.negative %>",
         "warning": "<%= theme.ui.fg.warn %>",

@@ -10,7 +10,7 @@ cursor_border = "<%= theme.ui.fg.accent %>"
 cursor_fg = "<%= theme.ui.bg.default %>"
 selection_bg = "<%= theme.ui.bg.selection %>"
 selection_fg = "<%= theme.ui.fg.default %>"
-split = "<%= theme.ui.fg.accent %>"
+split = "<%= theme.ui.fg.border %>"
 compose_cursor = "<%= theme.ui.fg.negative %>"
 scrollbar_thumb = "<%= theme.ui.fg.subtle %>"
 

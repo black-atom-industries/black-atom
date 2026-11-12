@@ -9,7 +9,7 @@ gui:
       - "<%= theme.ui.fg.accent %>"
       - bold
     inactiveBorderColor:
-      - "<%= theme.ui.fg.subtle %>"
+      - "<%= theme.ui.fg.border %>"
     optionsTextColor:
       - "<%= theme.ui.fg.info %>"
     selectedLineBgColor:

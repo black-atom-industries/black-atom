@@ -7,7 +7,7 @@
             "name": "Black Atom — JPN ∷ Tsuki Dark",
             "appearance": "dark",
             "style": {
-                "border": "#282828",
+                "border": "#4f4f61",
                 "border.variant": "#282828",
                 "border.focused": "#eab899",
                 "border.selected": "#373737",
