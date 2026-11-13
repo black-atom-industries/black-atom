@@ -60,6 +60,14 @@
     padding-top: 150px;
 }
 
+.wide {
+    padding-inline: 24px;
+
+    & .wrap {
+        max-width: 1880px;
+    }
+}
+
 .compact {
     padding-top: 4vh;
 }

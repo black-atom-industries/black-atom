@@ -45,7 +45,7 @@ Adapter templates read UI, syntax, and palette tokens. Feedback reaches a templa
    grep -rn "<old-qualified-path>" core/src/lib website/src
    ```
    `core/src/lib/contrast-analysis.ts` lists its pairs as strings (`fg.default`, `syntax.string.default`,
-   `palette.red`), and the theme lab in `website/src/dev/theme-lab/` names UI pairs and palette slots
+   `palette.red`), and the token lists in `website/src/partials/theme-tokens/` name UI tokens
    the same way.
 5. Update `docs/glossary.md` if the renamed token is named in a table or the example
    dialogue.

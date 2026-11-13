@@ -106,6 +106,17 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | **Edge Label**       | The line set into the Viewport Frame's bottom edge on the studio page; it fades into the rule once the page scrolls                                                       | Tagline bar, frame caption       |
 | **Soundscape**       | A pluggable sound design for the sound engine: params, layers and reactions to scene events, with a pitch root per theme                                                  | Track, sound theme, audio preset |
 
+## Theme Detail Page
+
+| Term                  | Definition                                                                                                                                                                     | Aliases to avoid        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| **Theme Detail Page** | The page at `/black-atom/themes/$theme` that documents one theme: its Spec Plate, Theme Previews, primaries, palette, tokens and generated files                               | Theme page, theme view  |
+| **Theme Previews**    | The editor, diff and terminal previews of one theme, drawn in that theme's colors; with a base version, each preview shows the before and after side by side                   | Demos, mockups          |
+| **Spec Plate**        | The summary strip at the top of the Theme Detail Page: collection, appearance, status, contrast share and accent                                                               | Spec sheet, header card |
+| **Token Card**        | One theme token on the Theme Detail Page: its swatch, path, value, purpose and, for text, its **Contrast Grade**                                                               | Token tile, swatch card |
+| **Contrast Grade**    | How readable a foreground is on its background, at one of four levels: `aaa` and `aa` for any text, `large` for large text and UI marks, `low` for pairs that are hard to read | Score, rating           |
+| **Theme Compare**     | The dev-server-only comparison on the Theme Detail Page: the theme at a git revision (`HEAD` by default) beside the working tree, with the tokens that changed                 | Diff view, lab          |
+
 ---
 
 # Livery
@@ -115,11 +126,10 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 
 ## Theme Display
 
-| Term              | Definition                                                                                                                                                                                 | Aliases to avoid      |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
-| **ThemeGroup**    | A frontend display structure that pairs a Collection Key with its sorted list of Theme Definitions — used to render the picker UI                                                          | Category, section     |
-| **Contrast Pair** | A foreground and background token that occur together in real UI (`fg.default` on `bg.panel`, `syntax.string.default` on `bg.default`), measured as a WCAG ratio by `analyzeThemeContrast` | Color pair, combo     |
-| **Theme Lab**     | The website's dev-only page `/dev/themes`: every theme as a mock editor with its Contrast Pairs, next to the same theme at a git revision                                                  | Monitor, preview page |
+| Term              | Definition                                                                                                                                                                                 | Aliases to avoid  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| **ThemeGroup**    | A frontend display structure that pairs a Collection Key with its sorted list of Theme Definitions — used to render the picker UI                                                          | Category, section |
+| **Contrast Pair** | A foreground and background token that occur together in real UI (`fg.default` on `bg.panel`, `syntax.string.default` on `bg.default`), measured as a WCAG ratio by `analyzeThemeContrast` | Color pair, combo |
 
 ## Configuration
 

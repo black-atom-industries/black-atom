@@ -1,0 +1,80 @@
+.root {
+    display: grid;
+    gap: 10px;
+    color: var(--tp-fg-default);
+    font-family: var(--ba-font-mono);
+    font-size: 13px;
+    line-height: 1.85;
+}
+
+.label {
+    margin: 0;
+    font-size: 12px;
+    color: var(--ba-fg-subtle);
+}
+
+.frame {
+    overflow: hidden;
+    border: 1px solid var(--tp-fg-border);
+    background: var(--tp-bg-default);
+}
+
+.head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 16px;
+    padding: 6px 14px;
+    border-bottom: 1px solid var(--tp-fg-border);
+    background: var(--tp-bg-panel);
+    font-size: 12px;
+}
+
+.grow {
+    flex: 1;
+    color: var(--tp-fg-subtle);
+}
+
+.add {
+    color: var(--tp-fg-add);
+}
+
+.delete {
+    color: var(--tp-fg-delete);
+}
+
+.modify {
+    color: var(--tp-fg-modify);
+}
+
+.body {
+    padding: 10px 0;
+    overflow-x: auto;
+}
+
+.hunk {
+    padding: 0 14px;
+    background: var(--tp-bg-panel);
+    color: var(--tp-fg-subtle);
+    white-space: pre;
+}
+
+.row {
+    display: flex;
+    padding: 0 14px 0 0;
+    white-space: pre;
+}
+
+.number {
+    width: 4ch;
+    padding: 0 10px 0 4px;
+    text-align: right;
+    color: var(--tp-fg-disabled);
+}
+
+.sign {
+    width: 2ch;
+}
+
+.guides {
+    color: var(--tp-fg-border);
+}

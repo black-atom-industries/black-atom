@@ -63,7 +63,7 @@ const processes = createDevProcesses({
     env: session.env,
     stopGraceMs: 1000,
 });
-const themeLabUrl = "http://localhost:3000/dev/themes";
+const themePageUrl = "http://localhost:3000/black-atom/themes/jpn-murasaki-dark";
 
 /** Opens `url` in the browser once the server behind it answers. */
 async function openWhenReady(url: string) {
@@ -143,7 +143,7 @@ const cycle = createDevCycle({
             for (const packagePath of ["livery", "website"]) {
                 processes.startService(["npm", "run", "dev"], join(root, packagePath));
             }
-            void openWhenReady(themeLabUrl);
+            void openWhenReady(themePageUrl);
         }
     },
 });

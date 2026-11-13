@@ -11,7 +11,7 @@ const routes = [
     { path: "/black-atom/livery", h1: "Livery", title: /^Livery · / },
     {
         path: "/black-atom/themes/jpn-koyo-dark",
-        h1: "JPN · dark Koyo Dark",
+        h1: "Koyo Dark",
         title: /^JPN Koyo Dark · /,
     },
     { path: "/iter", h1: "iter.nvim", title: /^iter\.nvim · / },
@@ -100,7 +100,7 @@ test("a theme page previews the theme it documents", async ({ page }) => {
     await page.goto("/black-atom/themes/jpn-koyo-light", { waitUntil: "networkidle" });
 
     const scopeBackground = await page
-        .locator('[data-component="ThemeScope"]')
+        .locator('[data-component="EditorPreview"] > [role="group"]')
         .evaluate((element) => getComputedStyle(element).backgroundColor);
     const pageBackground = await page
         .locator("body")
@@ -116,6 +116,36 @@ test("a theme page previews the theme it documents", async ({ page }) => {
 
     expect(scopeBackground).not.toBe(pageBackground);
     expect(scopeBackground).toBe(koyoLightBackground);
+});
+
+test("the appearance switch opens the sibling theme", async ({ page }) => {
+    await page.goto("/black-atom/themes/jpn-koyo-dark", { waitUntil: "networkidle" });
+    await page
+        .getByRole("group", { name: "Appearance" })
+        .getByRole("link", { name: "light" })
+        .click();
+
+    await expect(page).toHaveURL(/\/black-atom\/themes\/jpn-koyo-light$/);
+    await expect(page.locator("h1")).toHaveText("Koyo Light");
+});
+
+test("a family chip opens that family in the same appearance", async ({ page }) => {
+    await page.goto("/black-atom/themes/jpn-koyo-dark", { waitUntil: "networkidle" });
+    await page
+        .getByRole("navigation", { name: "Themes" })
+        .getByRole("link", { name: "Murasaki", exact: true })
+        .click();
+
+    await expect(page).toHaveURL(/\/black-atom\/themes\/jpn-murasaki-dark$/);
+    await expect(page.locator("h1")).toHaveText("Murasaki Dark");
+});
+
+test("a theme without a light variant disables the light option", async ({ page }) => {
+    await page.goto("/black-atom/themes/jpn-tsuki-dark", { waitUntil: "networkidle" });
+
+    await expect(
+        page.getByRole("group", { name: "Appearance" }).getByRole("button", { name: "light" }),
+    ).toBeDisabled();
 });
 
 test("a theme page applies its theme site-wide", async ({ page }) => {

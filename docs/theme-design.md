@@ -19,8 +19,8 @@ How a Black Atom theme takes its colors, and how to check contrast. For the toke
 
 ## Contrast
 
-`npm run contrast <theme-key>` lists every Contrast Pair with its WCAG ratio. The Theme Lab (`npm run dev`, then
-`/dev/themes?key=<theme-key>`) shows the theme as a mock editor next to its last commit. Judge by eye there.
+`npm run contrast <theme-key>` lists every Contrast Pair with its WCAG ratio. The Theme Detail Page (`npm run dev`, then
+`/black-atom/themes/<short-key>`) shows the theme's previews next to its base revision, `HEAD` by default. Judge by eye there.
 
 - A theme's identity outranks the number. A signature accent keeps its value even below 3:1, because darkened oranges
   and yellows turn red, brown, or olive. Monochrome themes keep their grays gray.
@@ -28,7 +28,7 @@ How a Black Atom theme takes its colors, and how to check contrast. For the toke
   so it stays lively.
 - Chroma raises perceived contrast. The WCAG ratio only measures luminance and barely moves with chroma, but a saturated
   color looks brighter and separates more from its ground. Lowering chroma can weaken a color by eye while its number
-  stays the same, so judge chroma changes in the Theme Lab, not by the ratio.
+  stays the same, so judge chroma changes on the Theme Detail Page, not by the ratio.
 - 3:1 guides syntax and terminal colors. Feedback and git text aims for 4.5:1 on `bg.default` and clearly above 3:1 on
   its own tint.
 - Fills are exempt: cursor, badges, selection, and `fg.accent` used as a fill. `fg.disabled` is meant to be faint.

@@ -13,6 +13,8 @@ const sectionVariants = cva({
             "hero-centered": [styles.hero, styles.centered],
             page: styles.page,
             compact: styles.compact,
+            /** Wider than the page column, for content that needs the room, such as previews. */
+            wide: styles.wide,
             footer: styles.footer,
         },
     },

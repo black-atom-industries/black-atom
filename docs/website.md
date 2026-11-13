@@ -37,8 +37,12 @@ and a shared link opens in the sender's theme. The choice is stored in `localSto
 A script in the document head applies the resolved theme before first paint, so a stored or light
 theme never flashes dark. For the same reason routes render on the server per request.
 
-Theme pages document a theme in the visitor's current theme. Their previews render in the documented
-theme, and "Use site-wide" applies it.
+A theme page documents one theme. Its editor, diff and terminal previews render in the documented theme,
+its tokens follow in definition order with their contrast grades, and "Use site-wide" applies it.
+
+On the dev server the page also compares the theme with a git revision. A strip names the base revision
+(`HEAD` by default, set with `?base=`) and lists the tokens that changed since it, and a side-by-side switch
+(`?compare=`, on by default) draws each preview before and after. The production build contains none of it.
 
 The site reads themes from `@black-atom/core`, the way Livery does, and holds no second copy of theme
 data, so it cannot drift from core.

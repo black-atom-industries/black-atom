@@ -20,7 +20,7 @@
 git clone https://github.com/black-atom-industries/black-atom.git
 cd black-atom
 npm install
-npm run dev           # GUI, website with the theme lab, generation watcher, development CLI
+npm run dev           # GUI, website with Theme Compare, generation watcher, development CLI
 npm run check         # type check, lint, format, Rust format and Clippy (all targets)
 npm run test          # Vitest and Rust workspace tests
 npm run build         # release GUI bundle and CLI

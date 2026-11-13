@@ -62,7 +62,7 @@
 }
 
 .chip {
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 14px;
     border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 55%, transparent);
     letter-spacing: 0.2em;

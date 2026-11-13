@@ -54,5 +54,5 @@ description: Add a theme to an existing collection, or rework an existing theme'
 ## Contrast
 
 When a theme's colors are reworked for readability, follow `docs/theme-design.md`, Contrast. Run
-`npm run contrast <theme-key>` for the Contrast Pairs and their WCAG ratios, then check the theme in the Theme Lab
-(`npm run dev`, then `/dev/themes?key=<theme-key>`). The user judges by eye there.
+`npm run contrast <theme-key>` for the Contrast Pairs and their WCAG ratios, then check the theme on its
+Theme Detail Page (`npm run dev`, then `/black-atom/themes/<short-key>`). The user judges by eye there.

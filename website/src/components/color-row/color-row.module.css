@@ -1,0 +1,35 @@
+.root {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 9ch auto;
+    align-items: center;
+    gap: 16px;
+    min-height: 44px;
+    border-bottom: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 30%, transparent);
+    font-family: var(--ba-font-mono);
+    font-size: 14px;
+
+    @media (max-width: 560px) {
+        grid-template-columns: 56px minmax(0, 1fr);
+    }
+}
+
+.sample {
+    display: grid;
+    place-items: center;
+    height: 36px;
+    font-size: 14px;
+
+    @media (max-width: 560px) {
+        grid-row: span 3;
+    }
+}
+
+.name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.hex {
+    font-size: 12px;
+    color: var(--ba-fg-subtle);
+}

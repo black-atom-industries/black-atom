@@ -1,0 +1,58 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    white-space: nowrap;
+    font-family: var(--ba-font-mono);
+    font-size: 12px;
+}
+
+.pips {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.pip {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border: 1px solid currentColor;
+}
+
+.filled {
+    background: currentColor;
+}
+
+.ratio {
+    min-width: 3ch;
+    text-align: right;
+    color: var(--ba-fg);
+}
+
+.label {
+    min-width: 5ch;
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.success {
+    color: var(--ba-success);
+}
+
+.warning {
+    color: var(--ba-warning);
+}
+
+.negative {
+    color: var(--ba-negative);
+}
+
+.subtle {
+    color: var(--ba-fg-subtle);
+
+    & .ratio {
+        color: var(--ba-fg-subtle);
+    }
+}
