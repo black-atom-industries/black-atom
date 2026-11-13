@@ -61,6 +61,30 @@ export function tint({
 }
 
 /**
+ * Mixes a color into a base and keeps the base's own tone.
+ *
+ * Interpolates in OKLab, a straight line between the two colors, so the result
+ * never passes through unrelated hues and a small amount stays close to the base.
+ *
+ * @param params.color - Color to mix in (hex)
+ * @param params.into - Base color (hex)
+ * @param params.amount - Share of `color` (0-1)
+ * @example
+ * mix({ color: '#80bda2', into: '#351b23', amount: 0.1 }) // A wine background leaning green
+ */
+export function mix({
+    color,
+    into,
+    amount,
+}: {
+    color: string;
+    into: string;
+    amount: number;
+}): HexColor {
+    return formatHex(interpolate([into, color], "oklab")(amount)) as HexColor;
+}
+
+/**
  * Shifts a color's OKLCH lightness and keeps its chroma and hue.
  *
  * @param color - Color to shade (hex)

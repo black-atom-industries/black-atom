@@ -1,6 +1,6 @@
 import { oklch as libOklch } from "culori";
 import { assert, test } from "vite-plus/test";
-import { oklch, shade, tint } from "./color.ts";
+import { mix, oklch, shade, tint } from "./color.ts";
 
 test("tint() - default base (black)", () => {
     // Heavy tint (90% black + 10% red)
@@ -81,4 +81,9 @@ test("shade() - shifts lightness, keeps chroma and hue", () => {
     assert.closeTo(shaded.h!, 25, 1);
 
     assert.deepEqual(shade("#ffffff", 0.2), "#ffffff");
+});
+
+test("mix() - keeps the base at 0 and reaches the color at 1", () => {
+    assert.deepEqual(mix({ color: "#80bda2", into: "#351b23", amount: 0 }), "#351b23");
+    assert.deepEqual(mix({ color: "#80bda2", into: "#351b23", amount: 1 }), "#80bda2");
 });

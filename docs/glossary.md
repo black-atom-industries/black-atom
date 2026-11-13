@@ -69,7 +69,8 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | Term         | Definition                                                                                                                       | Aliases to avoid        |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | **HexColor** | The constrained color type used throughout the system: a hex string in `#rrggbb` or `#rrggbbaa` format                           | Color string, hex value |
-| **tint()**   | The primary color derivation function: blends a base color toward a target color by a specified amount using OKLCH interpolation | Mix, blend, interpolate |
+| **tint()**   | The primary color derivation function: blends a base color toward a target color by a specified amount using OKLCH interpolation | Blend, interpolate      |
+| **mix()**    | Mixes a share of one color into a base color in OKLab, keeping the base's tone                                                   | Blend, interpolate      |
 | **oklch()**  | Utility that converts an OKLCH color-space value to a HexColor                                                                   | Color convert           |
 | **shade()**  | Derives a lighter or darker color by shifting OKLCH lightness, keeping chroma and hue                                            | Lighten, darken         |
 

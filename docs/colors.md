@@ -98,9 +98,11 @@ values from the same accents and primaries.
 
 ## Utilities
 
-`core/src/utils/color.ts` provides three functions:
+`core/src/utils/color.ts` provides four functions:
 
 - `oklch(l, c, h)` builds a `HexColor` from OKLCH values.
 - `tint({ color, with, amount })` blends `color` toward `with` in OKLCH, with `amount` defaulting to 0.25. It neutralizes
   the base's chroma and keeps the tint's hue, so warm tints do not pass through unrelated hues.
+- `mix({ color, into, amount })` mixes `amount` of `color` into `into` in OKLab and keeps the base's tone, so a small
+  amount stays close to the base.
 - `shade(color, amount)` moves lightness and keeps chroma and hue.
