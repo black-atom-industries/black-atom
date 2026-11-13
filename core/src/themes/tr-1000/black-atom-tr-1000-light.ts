@@ -20,14 +20,14 @@ export default defineThemeColors({
 
         l10: oklch(0.8, 0.012, 267),
         l20: oklch(0.84, 0.012, 267),
-        l30: oklch(0.88, 0.012, 267),
-        l40: oklch(0.92, 0.012, 267),
+        l30: oklch(0.9, 0.012, 267),
+        l40: oklch(0.94, 0.012, 267),
     },
     accents: {
-        a10: oklch(0.55, 0.1, 265),
-        a20: oklch(0.55, 0.12, 20),
-        a30: oklch(0.55, 0.12, 285),
-        a40: oklch(0.55, 0.12, 130),
+        a10: oklch(0.55, 0.15, 265),
+        a20: oklch(0.55, 0.15, 20),
+        a30: oklch(0.55, 0.15, 285),
+        a40: oklch(0.55, 0.15, 130),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {

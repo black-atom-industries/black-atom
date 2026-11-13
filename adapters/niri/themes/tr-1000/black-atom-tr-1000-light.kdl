@@ -5,24 +5,24 @@ overview {
     backdrop-color "#c7cad3"
 
     workspace-shadow {
-        color "#d4d7e050"
+        color "#dadee650"
     }
 }
 
 layout {
     focus-ring {
-        active-color "#5570ac"
+        active-color "#466cc8"
         inactive-color "#8b92a2"
     }
 
     border {
-        active-color "#5570ac"
+        active-color "#466cc8"
         inactive-color "#8b92a2"
-        urgent-color "#ac5154"
+        urgent-color "#b9454c"
     }
 
     shadow {
         on
-        color "#d4d7e070"
+        color "#dadee670"
     }
 }
