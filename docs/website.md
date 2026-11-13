@@ -86,6 +86,9 @@ wide shot of all three. The mode is `full`, or `receded` when the layer dims beh
 The scene takes its colors from the current theme. `prefers-reduced-motion` draws a still frame.
 Where no renderer can start, the page keeps the plain theme background.
 
+The film grain lies over the scene and under the page content, so panels, text, the header and the dock
+render clean while the backgrounds stay grainy.
+
 ## Sound
 
 Sound is off by default. A visitor switches it on in the dock; the choice, volume and settings are

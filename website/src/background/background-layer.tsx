@@ -12,7 +12,7 @@ import { connectBackground } from "./handle.ts";
 import styles from "./background-layer.module.css";
 
 /**
- * The fixed scene behind every page, under the film grain. Renders an empty host on the server;
+ * The fixed scene behind every page, with the film grain over it. Renders an empty host on the server;
  * the scene loads on the client, and a still outline of the landmark stands in when it can't run.
  */
 export function BackgroundLayer({ theme }: { theme: Theme.Definition }) {
@@ -55,7 +55,9 @@ export function BackgroundLayer({ theme }: { theme: Theme.Definition }) {
     }, []);
 
     useEffect(() => {
-        const grain = createGrain();
+        const host = hostRef.current;
+        if (!host) return;
+        const grain = createGrain(host);
         grainRef.current = grain;
         return () => {
             grainRef.current = undefined;

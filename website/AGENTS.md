@@ -62,6 +62,7 @@ map get `wide` and `receded`.
   valid while renderers come and go. Import it; never import a renderer or the controller from outside
   `background/`.
 - `three` is pinned. Keep it out of the server bundle: it loads only inside an effect.
+- The film grain is a layer of its own that lies over the scene and under the page content.
 
 ## Sound
 

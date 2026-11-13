@@ -53,14 +53,14 @@ function renderFrames(): { dark: string[]; light: string[] } {
 }
 
 /**
- * Film grain over the whole page, above the content, as in the design. Soft light on dark
- * themes, a lighter multiply on light ones.
+ * Film grain over the scene in `host`, under the page content. Soft light on dark themes, a
+ * lighter multiply on light ones.
  */
-export function createGrain(): Grain {
+export function createGrain(host: HTMLElement): Grain {
     const frames = renderFrames();
     const element = document.createElement("div");
     element.setAttribute("aria-hidden", "true");
-    element.style.cssText = `position:fixed;inset:0;z-index:2147483000;pointer-events:none;background-size:calc(${tileSize}px * var(--grain-size, .9));transition:opacity .6s ease`;
+    element.style.cssText = `position:absolute;inset:0;z-index:1;pointer-events:none;background-size:calc(${tileSize}px * var(--grain-size, .9));transition:opacity .6s ease`;
     let isLight = false;
     let isHidden = false;
     let index = 0;
@@ -74,7 +74,7 @@ export function createGrain(): Grain {
     }
 
     show();
-    document.body.appendChild(element);
+    host.appendChild(element);
 
     return {
         setLight(next) {
