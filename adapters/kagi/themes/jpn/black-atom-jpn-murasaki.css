@@ -627,19 +627,19 @@ html[class] .codehilite {
 html[class],
 html.theme_light[class],
 html.theme_calm_blue[class] {
-  --ba-bg: #f4e9f5;
-  --ba-bg-panel: #ecdbed;
-  --ba-bg-active: #e7dce8;
-  --ba-bg-hover: #ecdbed;
-  --ba-bg-selection: #dec9e0;
+  --ba-bg: #ffd8ff;
+  --ba-bg-panel: #efd3f1;
+  --ba-bg-active: #f2cbf2;
+  --ba-bg-hover: #efd3f1;
+  --ba-bg-selection: #dbc5dd;
   --ba-fg: #452a32;
-  --ba-fg-subtle: #865f88;
+  --ba-fg-subtle: #8c5a8f;
   --ba-fg-accent: #97a941;
-  --ba-fg-disabled: #b796b8;
+  --ba-fg-disabled: #c38dc5;
   --ba-fg-negative: #c03b39;
   --ba-fg-positive: #007c50;
   --ba-fg-info: #007498;
-  --ba-syntax-comment: #6d4769;
+  --ba-syntax-comment: #754070;
   --ba-syntax-comment-doc: #1b855f;
   --ba-syntax-keyword: #c56792;
   --ba-syntax-import: #c03b39;

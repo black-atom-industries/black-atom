@@ -4,14 +4,14 @@
 .theme-light.black-atom-jpn-murasaki-light {
   /* Foundation: Base Colors */
 
-  --color-base-00: #f9f0f9;
-  --color-base-05: #f4e9f5;
-  --color-base-10: #ecdbed;
-  --color-base-20: #dec9e0;
-  --color-base-25: #b796b8;
-  --color-base-30: #865f88;
-  --color-base-35: #7d5178;
-  --color-base-40: #6d4769;
+  --color-base-00: #ffe0ff;
+  --color-base-05: #ffd8ff;
+  --color-base-10: #efd3f1;
+  --color-base-20: #dbc5dd;
+  --color-base-25: #c38dc5;
+  --color-base-30: #8c5a8f;
+  --color-base-35: #834c7d;
+  --color-base-40: #754070;
   --color-base-50: #694c54;
   --color-base-60: #553941;
   --color-base-70: #452a32;
@@ -37,40 +37,40 @@
   --color-pink-rgb: 144, 110, 180;
 
   /* Backgrounds */
-  --background-primary: #f4e9f5;
-  --background-primary-alt: #e7dce8;
-  --background-secondary: #ecdbed;
-  --background-secondary-alt: #ecdbed;
-  --background-modifier-hover: #ecdbed;
-  --background-modifier-active-hover: #ecdbed;
-  --background-modifier-border: #b796b8;
-  --background-modifier-border-hover: #865f88;
+  --background-primary: #ffd8ff;
+  --background-primary-alt: #f2cbf2;
+  --background-secondary: #efd3f1;
+  --background-secondary-alt: #efd3f1;
+  --background-modifier-hover: #efd3f1;
+  --background-modifier-active-hover: #efd3f1;
+  --background-modifier-border: #c38dc5;
+  --background-modifier-border-hover: #8c5a8f;
   --background-modifier-border-focus: #97a941;
-  --background-modifier-error-rgb: 234, 212, 209;
-  --background-modifier-error: #ead4d1;
-  --background-modifier-error-hover: #ead4d1;
-  --background-modifier-success-rgb: 207, 220, 212;
-  --background-modifier-success: #cfdcd4;
-  --background-modifier-message: #cedbe0;
-  --background-modifier-form-field: #f4e9f5;
+  --background-modifier-error-rgb: 229, 207, 204;
+  --background-modifier-error: #e5cfcc;
+  --background-modifier-error-hover: #e5cfcc;
+  --background-modifier-success-rgb: 202, 215, 207;
+  --background-modifier-success: #cad7cf;
+  --background-modifier-message: #cad5db;
+  --background-modifier-form-field: #ffd8ff;
 
   /* Text */
   --text-normal: #452a32;
-  --text-muted: #865f88;
-  --text-faint: #b796b8;
+  --text-muted: #8c5a8f;
+  --text-faint: #c38dc5;
   --text-accent: #97a941;
   --text-accent-hover: #97a941;
-  --text-on-accent: #f4e9f5;
+  --text-on-accent: #ffd8ff;
   --text-on-accent-inverted: #452a32;
   --text-error: #c03b39;
   --text-warning: #7c8e00;
   --text-success: #007c50;
-  --text-selection: #dec9e0;
-  --text-highlight-bg: #dec9e0;
+  --text-selection: #dbc5dd;
+  --text-highlight-bg: #dbc5dd;
 
   /* Interactive */
-  --interactive-normal: #f4e9f5;
-  --interactive-hover: #ecdbed;
+  --interactive-normal: #ffd8ff;
+  --interactive-hover: #efd3f1;
   --interactive-accent: #97a941;
   --interactive-accent-hover: #97a941;
 
@@ -78,9 +78,9 @@
   --h1-color: #7c8e00;
   --h2-color: #7c8e00;
   --h3-color: #7c8e00;
-  --h4-color: #6d4769;
-  --h5-color: #6d4769;
-  --h6-color: #6d4769;
+  --h4-color: #754070;
+  --h5-color: #754070;
+  --h6-color: #754070;
 
   /* Markup */
   --bold-color: #7c8e00;
@@ -93,40 +93,40 @@
 
   /* Code / Syntax Highlighting */
   --code-normal: #007498;
-  --code-comment: #6d4769;
+  --code-comment: #754070;
   --code-function: #7c8e00;
   --code-important: #c56792;
   --code-keyword: #c56792;
   --code-operator: #367b95;
   --code-property: #007498;
-  --code-punctuation: #6d4769;
+  --code-punctuation: #754070;
   --code-string: #007c50;
   --code-tag: #7c8e00;
   --code-value: #367b95;
-  --code-background: #dec9e0;
+  --code-background: #dbc5dd;
 
   /* Tags */
   --tag-color: #97a941;
   --tag-color-hover: #97a941;
-  --tag-background: #ecdbed;
-  --tag-background-hover: #e7dce8;
+  --tag-background: #efd3f1;
+  --tag-background-hover: #f2cbf2;
 
   /* Graph */
-  --graph-line: #e7dce8;
+  --graph-line: #f2cbf2;
   --graph-node: #97a941;
   --graph-node-focused: #97a941;
   --graph-node-tag: #009595;
   --graph-node-attachment: #007c50;
 
   /* Scrollbar */
-  --scrollbar-bg: #f4e9f5;
-  --scrollbar-thumb-bg: #e7dce8;
-  --scrollbar-active-thumb-bg: #865f88;
+  --scrollbar-bg: #ffd8ff;
+  --scrollbar-thumb-bg: #f2cbf2;
+  --scrollbar-active-thumb-bg: #8c5a8f;
 
   /* Nav */
-  --nav-item-background-hover: #ecdbed;
-  --nav-item-background-active: #e7dce8;
-  --nav-item-background-selected: #dec9e0;
+  --nav-item-background-hover: #efd3f1;
+  --nav-item-background-active: #f2cbf2;
+  --nav-item-background-selected: #dbc5dd;
   --nav-item-color: #452a32;
   --nav-item-color-hover: #452a32;
   --nav-item-color-active: #97a941;

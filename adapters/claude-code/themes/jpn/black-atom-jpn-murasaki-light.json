@@ -3,23 +3,23 @@
     "base": "light-ansi",
     "overrides": {
         "text": "#452a32",
-        "inverseText": "#f4e9f5",
-        "inactive": "#865f88",
-        "subtle": "#b796b8",
+        "inverseText": "#ffd8ff",
+        "inactive": "#8c5a8f",
+        "subtle": "#c38dc5",
         "suggestion": "#007498",
         "claude": "#97a941",
         "permission": "#007498",
-        "promptBorder": "#b796b8",
+        "promptBorder": "#c38dc5",
         "success": "#007c50",
         "error": "#c03b39",
         "warning": "#7c8e00",
         "diffAdded": "#b6edce",
         "diffRemoved": "#ffdeda",
-        "userMessageBackground": "#ecdbed",
-        "userMessageBackgroundHover": "#ecdbed",
-        "composerSidebarBackground": "#ecdbed",
-        "bashMessageBackgroundColor": "#ecdbed",
-        "memoryBackgroundColor": "#ecdbed",
-        "selectionBg": "#dec9e0"
+        "userMessageBackground": "#efd3f1",
+        "userMessageBackgroundHover": "#efd3f1",
+        "composerSidebarBackground": "#efd3f1",
+        "bashMessageBackgroundColor": "#efd3f1",
+        "memoryBackgroundColor": "#efd3f1",
+        "selectionBg": "#dbc5dd"
     }
 }

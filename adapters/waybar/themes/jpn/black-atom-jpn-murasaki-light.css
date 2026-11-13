@@ -1,19 +1,19 @@
 /* Black Atom — JPN ∷ Murasaki Light */
 
 /* Background colors */
-@define-color ba-bg-default #f4e9f5;
-@define-color ba-bg-panel #ecdbed;
-@define-color ba-bg-hover #ecdbed;
-@define-color ba-bg-active #e7dce8;
-@define-color ba-bg-selection #dec9e0;
+@define-color ba-bg-default #ffd8ff;
+@define-color ba-bg-panel #efd3f1;
+@define-color ba-bg-hover #efd3f1;
+@define-color ba-bg-active #f2cbf2;
+@define-color ba-bg-selection #dbc5dd;
 @define-color ba-bg-contrast #452a32;
 
 /* Foreground colors */
 @define-color ba-fg-default #452a32;
-@define-color ba-fg-subtle #865f88;
+@define-color ba-fg-subtle #8c5a8f;
 @define-color ba-fg-accent #97a941;
-@define-color ba-fg-disabled #b796b8;
-@define-color ba-fg-contrast #f4e9f5;
+@define-color ba-fg-disabled #c38dc5;
+@define-color ba-fg-contrast #ffd8ff;
 
 /* Feedback colors */
 @define-color ba-fg-negative #c03b39;
