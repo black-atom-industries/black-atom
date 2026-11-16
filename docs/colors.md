@@ -16,6 +16,9 @@ this order:
 
 Each creator is a plain function in the collection's directory. A theme can also pass literal values.
 
+`colors.sources` records where each color a creator produces comes from, keyed by its path: `ui.fg.positive` is
+`feedback.success`, and `ui.bg.negative` comes from `primaries.l30` and `feedback.negative`.
+
 ## Primaries
 
 Twelve steps in three ranges: `d10` to `d40` (dark), `m10` to `m40` (mid), and `l10` to `l40` (light). They form one ramp

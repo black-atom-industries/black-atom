@@ -1,4 +1,5 @@
 import type * as Theme from "../types/theme.ts";
+import { traceSources } from "./trace-sources.ts";
 
 type Creator<Value, Keys extends keyof Theme.Colors> =
     | Value
@@ -36,5 +37,20 @@ export function defineThemeColors(input: Input): Theme.Colors {
         ...context,
         ui: resolve(input.ui, context),
         syntax: resolve(input.syntax, context),
+        sources: {
+            ...trace("accents", input.accents, { primaries }),
+            ...trace("palette", input.palette, { primaries, accents }),
+            ...trace("feedback", input.feedback, { primaries, accents, palette }),
+            ...trace("ui", input.ui, context),
+            ...trace("syntax", input.syntax, context),
+        },
     };
+}
+
+function trace<Value, Context extends object>(
+    layer: string,
+    value: Value | ((context: Context) => Value),
+    context: Context,
+): Theme.Sources {
+    return isCreator(value) ? traceSources(layer, value, context) : {};
 }
