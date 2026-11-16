@@ -33,8 +33,8 @@ How a Black Atom theme takes its colors, and how to check contrast. For the toke
   its own tint.
 - Fills are exempt: cursor, badges, selection, and `fg.accent` used as a fill. `fg.disabled` is meant to be faint.
 - Light diff backgrounds are dedicated pastels: `oklch(0.9, 0.07, h)` for add and modify, and `oklch(0.93, 0.04, h)` for
-  delete, with `h` the git color's hue. Feedback tints sit at about 15% on light grounds and 20 to 30% on dark ones.
-  `pastel` in a collection's `create-ui-light.ts` holds the pattern.
+  delete, with `h` the git color's hue. JPN keeps add and modify at chroma 0.015. Feedback tints sit at about 15% on
+  light grounds and 20 to 30% on dark ones. `pastel` in a collection's `create-ui-light.ts` holds the pattern.
 - A gray ladder keeps even steps. When one step moves, its neighbors move too.
 
 ## Adding a collection

@@ -12,7 +12,7 @@ export default function ({
         return tint({ color, with: primaries.l30, amount: 0.15 });
     }
 
-    function pastel(color: string, lightness = 0.9, chroma = 0.07) {
+    function pastel(color: string, lightness = 0.9, chroma = 0.015) {
         return oklch(lightness, chroma, toOklch(color)?.h ?? 0);
     }
 

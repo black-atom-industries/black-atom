@@ -7,7 +7,7 @@ fg_secondary = "#8c5a8f"
 fg_dim = "#c38dc5"
 
 diff_add = "#007c50"
-diff_add_bg = "#b6edce"
+diff_add_bg = "#d6e1db"
 diff_del = "#c03b39"
 diff_del_bg = "#ffdeda"
 diff_context = "#452a32"
@@ -15,7 +15,7 @@ diff_hunk_header = "#007498"
 expanded_context_fg = "#c38dc5"
 
 syntax_theme = "black-atom-jpn-murasaki-light.tmTheme"
-syntax_add_bg = "#dedbe7"
+syntax_add_bg = "#e8d7ea"
 syntax_del_bg = "#f4d6ea"
 
 file_added = "#007c50"

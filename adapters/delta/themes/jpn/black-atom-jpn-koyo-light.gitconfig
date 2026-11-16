@@ -7,9 +7,9 @@
     minus-style = syntax "#ffe8e0"
     minus-emph-style = syntax "#ffdedf"
     minus-empty-line-marker-style = normal "#ffe8e0"
-    plus-style = syntax "#dfefd2"
-    plus-emph-style = syntax "#c0ebc3"
-    plus-empty-line-marker-style = normal "#dfefd2"
+    plus-style = syntax "#ebeadd"
+    plus-emph-style = syntax "#d8e1d8"
+    plus-empty-line-marker-style = normal "#ebeadd"
 
     line-numbers-minus-style = "#dc094a"
     line-numbers-plus-style = "#00812b"

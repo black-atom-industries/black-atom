@@ -7,7 +7,7 @@ fg_secondary = "#768595"
 fg_dim = "#acb9c7"
 
 diff_add = "#1d7d3e"
-diff_add_bg = "#beecc6"
+diff_add_bg = "#d7e1d9"
 diff_del = "#cb3425"
 diff_del_bg = "#ffdfd8"
 diff_context = "#192f46"
@@ -15,7 +15,7 @@ diff_hunk_header = "#2d6ebd"
 expanded_context_fg = "#acb9c7"
 
 syntax_theme = "black-atom-jpn-sanshoku-light.tmTheme"
-syntax_add_bg = "#d7eae5"
+syntax_add_bg = "#dee7ea"
 syntax_del_bg = "#eae6ea"
 
 file_added = "#1d7d3e"

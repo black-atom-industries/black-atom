@@ -13,7 +13,7 @@
         "success": "#007c50",
         "error": "#c03b39",
         "warning": "#7c8e00",
-        "diffAdded": "#b6edce",
+        "diffAdded": "#d6e1db",
         "diffRemoved": "#ffdeda",
         "userMessageBackground": "#efd3f1",
         "userMessageBackgroundHover": "#efd3f1",
