@@ -4,15 +4,15 @@ name = "Black Atom — JPN ∷ Murasaki Light"
 
 [colors]
 foreground = "#452a32"
-background = "#ffd8ff"
+background = "#ffdeff"
 cursor_bg = "#97a941"
 cursor_border = "#97a941"
-cursor_fg = "#ffd8ff"
-selection_bg = "#dbc5dd"
+cursor_fg = "#ffdeff"
+selection_bg = "#e0c2e3"
 selection_fg = "#452a32"
-split = "#c38dc5"
+split = "#ca86cd"
 compose_cursor = "#c03b39"
-scrollbar_thumb = "#8c5a8f"
+scrollbar_thumb = "#915495"
 
 ansi = [
   "#694c54", # black
@@ -22,7 +22,7 @@ ansi = [
   "#367b95", # dark_blue
   "#906eb4", # dark_magenta
   "#008585", # dark_cyan
-  "#c38dc5" # light_gray
+  "#ca86cd" # light_gray
 ]
 
 brights = [
@@ -33,31 +33,31 @@ brights = [
   "#007498", # blue
   "#c56792", # magenta
   "#009595", # cyan
-  "#dbc5dd" # white
+  "#e0c2e3" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#efd3f1"
-background = "#ffd8ff"
+inactive_tab_edge = "#f4d0f7"
+background = "#ffdeff"
 
 [colors.tab_bar.active_tab]
-fg_color = "#ffd8ff"
+fg_color = "#ffdeff"
 bg_color = "#97a941"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#ffd8ff"
-bg_color = "#c38dc5"
+fg_color = "#ffdeff"
+bg_color = "#ca86cd"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#ffd8ff"
-bg_color = "#efd3f1"
+fg_color = "#ffdeff"
+bg_color = "#f4d0f7"
 
 [colors.tab_bar.new_tab]
-fg_color = "#ffd8ff"
+fg_color = "#ffdeff"
 bg_color = "#007c50"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#ffd8ff"
-bg_color = "#efd3f1"
+fg_color = "#ffdeff"
+bg_color = "#f4d0f7"
 intensity = "Bold"
