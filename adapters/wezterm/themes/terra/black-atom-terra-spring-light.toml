@@ -5,34 +5,34 @@ name = "Black Atom — TERRA ∷ Spring Light"
 [colors]
 foreground = "#275639"
 background = "#eef5e3"
-cursor_bg = "#cede1c"
-cursor_border = "#cede1c"
+cursor_bg = "#79c069"
+cursor_border = "#79c069"
 cursor_fg = "#eef5e3"
 selection_bg = "#f9fcf1"
 selection_fg = "#275639"
 split = "#9fb8a3"
-compose_cursor = "#bc4757"
+compose_cursor = "#9f4d5c"
 scrollbar_thumb = "#3c744a"
 
 ansi = [
   "#467557", # black
-  "#ab384a", # dark_red
-  "#007524", # dark_green
-  "#d17500", # dark_yellow
-  "#266595", # dark_blue
-  "#9b71ae", # dark_magenta
-  "#078f8c", # dark_cyan
+  "#903f4f", # dark_red
+  "#2a682f", # dark_green
+  "#c47c28", # dark_yellow
+  "#1f5f86", # dark_blue
+  "#9476ab", # dark_magenta
+  "#398c87", # dark_cyan
   "#bbdbc0" # light_gray
 ]
 
 brights = [
   "#3c744a", # gray
-  "#bc4757", # red
-  "#008232", # green
-  "#ad8800", # yellow
-  "#3574a4", # blue
-  "#a17cbc", # magenta
-  "#239a95", # cyan
+  "#9f4d5c", # red
+  "#407435", # green
+  "#9f8d0f", # yellow
+  "#2f6d95", # blue
+  "#9e7fb5", # magenta
+  "#459792", # cyan
   "#eef5e3" # white
 ]
 
@@ -42,7 +42,7 @@ background = "#eef5e3"
 
 [colors.tab_bar.active_tab]
 fg_color = "#eef5e3"
-bg_color = "#cede1c"
+bg_color = "#79c069"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
@@ -55,7 +55,7 @@ bg_color = "#d4e4cd"
 
 [colors.tab_bar.new_tab]
 fg_color = "#eef5e3"
-bg_color = "#008232"
+bg_color = "#407435"
 
 [colors.tab_bar.new_tab_hover]
 fg_color = "#eef5e3"

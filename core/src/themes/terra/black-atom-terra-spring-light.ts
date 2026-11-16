@@ -27,36 +27,36 @@ export default defineThemeColors({
         l40: oklch(0.985, 0.015, 120),
     },
     accents: {
-        // Sprout yellow-green, cursor and badges
-        a10: oklch(0.86, 0.19, 115),
+        // Sapling, cursor and badges
+        a10: oklch(0.74, 0.14, 140),
         // Apricot, the warm tone of spring blossom
-        a20: oklch(0.648, 0.18, 70),
+        a20: oklch(0.648, 0.13, 65),
     },
-    palette: ({ primaries, accents }) =>
+    palette: ({ primaries }) =>
         createPalette(primaries, {
             // Cherry blossom
-            darkRed: oklch(0.513, 0.15, 15),
-            red: oklch(0.56, 0.15, 15),
+            darkRed: oklch(0.479, 0.11, 10),
+            red: oklch(0.526, 0.11, 10),
 
             // New leaf
-            darkGreen: oklch(0.481, 0.16, 150),
-            green: oklch(0.526, 0.16, 150),
+            darkGreen: oklch(0.463, 0.11, 145),
+            green: oklch(0.508, 0.11, 140),
 
-            // Daffodil, apricot
-            darkYellow: accents.a20,
-            yellow: oklch(0.641, 0.17, 95),
+            // Primrose, apricot
+            darkYellow: oklch(0.648, 0.13, 65),
+            yellow: oklch(0.641, 0.13, 100),
 
             // Spring sky
-            darkBlue: oklch(0.491, 0.1, 245),
-            blue: oklch(0.539, 0.1, 245),
+            darkBlue: oklch(0.465, 0.09, 240),
+            blue: oklch(0.513, 0.09, 240),
 
             // Lilac
-            darkMagenta: oklch(0.614, 0.1, 315),
-            magenta: oklch(0.646, 0.1, 310),
+            darkMagenta: oklch(0.614, 0.085, 310),
+            magenta: oklch(0.646, 0.085, 310),
 
             // Pond water
-            darkCyan: oklch(0.589, 0.1, 192),
-            cyan: oklch(0.624, 0.1, 190),
+            darkCyan: oklch(0.589, 0.08, 190),
+            cyan: oklch(0.624, 0.08, 190),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,

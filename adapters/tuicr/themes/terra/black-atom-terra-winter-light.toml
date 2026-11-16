@@ -7,7 +7,7 @@ fg_secondary = "#4f667c"
 fg_dim = "#647d97"
 
 diff_add = "#007a92"
-diff_add_bg = "#a9eafd"
+diff_add_bg = "#cbeffa"
 diff_del = "#6964ac"
 diff_del_bg = "#e5e5ff"
 diff_context = "#1e2a37"
@@ -15,7 +15,7 @@ diff_hunk_header = "#2c70af"
 expanded_context_fg = "#647d97"
 
 syntax_theme = "black-atom-terra-winter-light.tmTheme"
-syntax_add_bg = "#cfe7f3"
+syntax_add_bg = "#d9e8f2"
 syntax_del_bg = "#e1e5f4"
 
 file_added = "#007a92"

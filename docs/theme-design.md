@@ -17,6 +17,19 @@ How a Black Atom theme takes its colors, and how to check contrast. For the toke
 - A palette's accent-linked slots either all reuse accents or none do, in both appearances. To change a linked color,
   change the accent.
 
+## Collection character
+
+A collection's themes share a character. A new or reworked theme takes it from its siblings.
+
+### Terra
+
+Terra is four seasons in muted, earthy color. The season sits in the primaries, so the ground and the text carry its
+hue. Accents and palette colors stay soft:
+
+- Dark themes keep palette colors at chroma 0.13 or below and accents at 0.14 or below. Light themes run about 0.03
+  higher.
+- A color that has to stand out gets lighter and stays under the chroma cap.
+
 ## Contrast
 
 `npm run contrast <theme-key>` lists every Contrast Pair with its WCAG ratio. The Theme Detail Page (`npm run dev`, then
@@ -33,8 +46,9 @@ How a Black Atom theme takes its colors, and how to check contrast. For the toke
   its own tint.
 - Fills are exempt: cursor, badges, selection, and `fg.accent` used as a fill. `fg.disabled` is meant to be faint.
 - Light diff backgrounds are dedicated pastels: `oklch(0.9, 0.07, h)` for add and modify, and `oklch(0.93, 0.04, h)` for
-  delete, with `h` the git color's hue. JPN keeps add and modify at chroma 0.015. Feedback tints sit at about 15% on
-  light grounds and 20 to 30% on dark ones. `pastel` in a collection's `create-ui-light.ts` holds the pattern.
+  delete, with `h` the git color's hue. JPN keeps add and modify at chroma 0.015. Terra uses `oklch(0.93, 0.04, h)` for
+  all three. Feedback tints sit at about 15% on light grounds and 20 to 30% on dark ones. `pastel` in a collection's
+  `create-ui-light.ts` holds the pattern.
 - A gray ladder keeps even steps. When one step moves, its neighbors move too.
 
 ## Adding a collection

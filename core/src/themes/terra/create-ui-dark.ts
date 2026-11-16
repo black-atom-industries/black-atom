@@ -8,7 +8,7 @@ export default function ({
     accents,
 }: Theme.CreatorContext): Theme.Ui {
     function t(color: string) {
-        return tint({ color, with: primaries.d10, amount: 0.4 });
+        return tint({ color, with: primaries.d10, amount: 0.3 });
     }
 
     return {
