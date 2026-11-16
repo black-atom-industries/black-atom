@@ -114,7 +114,7 @@ The `collections` tuple in `core/src/themes/catalog.ts` drives key types and col
 | **Theme Detail Page** | The page at `/black-atom/themes/$theme` that documents one theme: its Spec Plate, Theme Previews, primaries, palette, tokens and generated files                               | Theme page, theme view  |
 | **Theme Previews**    | The editor, diff and terminal previews of one theme, drawn in that theme's colors; with a base version, each preview shows the before and after side by side                   | Demos, mockups          |
 | **Spec Plate**        | The summary strip at the top of the Theme Detail Page: collection, appearance, status, contrast share and accent                                                               | Spec sheet, header card |
-| **Token Card**        | One theme token on the Theme Detail Page: its swatch, path, value, purpose and, for text, its **Contrast Grade**                                                               | Token tile, swatch card |
+| **Token Card**        | One theme token on the Theme Detail Page: its swatch, path, value, purpose, source and, for text, its **Contrast Grade**                                                       | Token tile, swatch card |
 | **Contrast Grade**    | How readable a foreground is on its background, at one of four levels: `aaa` and `aa` for any text, `large` for large text and UI marks, `low` for pairs that are hard to read | Score, rating           |
 | **Theme Compare**     | The dev-server-only comparison on the Theme Detail Page: the theme at a git revision (`HEAD` by default) beside the working tree, with the tokens that changed                 | Diff view, lab          |
 

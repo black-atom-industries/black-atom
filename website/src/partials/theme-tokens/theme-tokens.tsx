@@ -14,7 +14,13 @@ export function UiBackgroundTokens({ theme }: Props) {
     return (
         <PageGrid columns="three" align="start">
             {Object.entries(theme.ui.bg).map(([key, color]) => (
-                <TokenCard key={key} name={`bg.${key}`} color={color} purpose={purposeOfBg[key]} />
+                <TokenCard
+                    key={key}
+                    name={`bg.${key}`}
+                    color={color}
+                    purpose={purposeOfBg[key]}
+                    path={`ui.bg.${key}`}
+                />
             ))}
         </PageGrid>
     );
@@ -43,6 +49,7 @@ export function UiForegroundTokens({ theme }: Props) {
                     color={theme.ui.fg[key]}
                     on={on}
                     purpose={uiTokenPurpose.fg[key]}
+                    path={`ui.fg.${key}`}
                     ratio={contrastRatio(theme.ui.fg[key], on)}
                     isLine={key === "border"}
                 />
@@ -66,6 +73,7 @@ export function SyntaxTokens({ theme }: Props) {
                     color={color}
                     on={theme.ui.bg.default}
                     ratio={contrastRatio(color, theme.ui.bg.default)}
+                    path={`syntax.${name}.default`}
                 />
             ))}
         </PageGrid>
@@ -83,6 +91,7 @@ export function TerminalTokens({ theme }: Props) {
                     color={color}
                     on={theme.ui.bg.default}
                     ratio={contrastRatio(color, theme.ui.bg.default)}
+                    path={`palette.${name}`}
                 />
             ))}
         </PageGrid>

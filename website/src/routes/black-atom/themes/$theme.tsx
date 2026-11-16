@@ -21,6 +21,7 @@ import { SwatchPair } from "#/components/swatch-pair/index.ts";
 import { Text } from "#/components/text/index.ts";
 import { adapters, blackAtom, blackAtomLinks } from "#/content/products/black-atom.ts";
 import { studio } from "#/content/studio.ts";
+import { ColorSources } from "#/hooks/use-color-source.ts";
 import { useTheme } from "#/hooks/use-theme.ts";
 import { adapterFilePaths } from "#/lib/adapter-files.ts";
 import { tallyContrast, themeContrastRatios } from "#/lib/contrast-summary.ts";
@@ -263,101 +264,115 @@ function ThemePage() {
                     </Suspense>
                 )}
             </Section>
-            <Section>
-                <Stack gap="md">
-                    <Heading variant="section" id="primaries">
-                        Primaries
-                    </Heading>
-                    <SwatchGrid variant="ramp">
-                        {Object.entries(theme.primaries).map(([key, color]) => (
-                            <Swatch
-                                key={key}
-                                size="tile"
-                                color={color}
-                                label={`${key} · ${color}`}
-                            />
-                        ))}
-                    </SwatchGrid>
-                </Stack>
-                <Stack gap="md">
-                    <Heading variant="section" id="palette">
-                        Palette
-                    </Heading>
-                    <PageGrid columns="cards">
-                        {ansiPairs.map(([first, second]) => (
-                            <SwatchPair
-                                key={first}
-                                first={{ label: first, color: theme.palette[first] }}
-                                second={{ label: second, color: theme.palette[second] }}
-                            />
-                        ))}
-                    </PageGrid>
-                </Stack>
-                <Stack gap="md">
-                    <Heading variant="section" id="accents">
-                        Accents
-                    </Heading>
-                    <SwatchGrid>
-                        {presentEntries(Object.entries(theme.accents)).map(([key, color]) => (
-                            <Swatch
-                                key={key}
-                                size="tile"
-                                color={color}
-                                label={`${key} · ${color}`}
-                            />
-                        ))}
-                    </SwatchGrid>
-                </Stack>
-                <Stack gap="md">
-                    <Heading variant="section" id="feedback">
-                        Feedback
-                    </Heading>
-                    <SwatchGrid>
-                        {Object.entries(theme.feedback).map(([key, color]) => (
-                            <Swatch
-                                key={key}
-                                size="tile"
-                                color={color}
-                                label={`${key} · ${color}`}
-                            />
-                        ))}
-                    </SwatchGrid>
-                </Stack>
-                <Stack gap="sm">
-                    <Caption tone="subtle">Contrast grades</Caption>
-                    <ContrastLegend />
-                </Stack>
-                <Stack gap="md">
-                    <Heading variant="section" id="ui-backgrounds">
-                        UI backgrounds
-                    </Heading>
-                    <UiBackgroundTokens theme={theme} />
-                </Stack>
-                <Stack gap="md">
-                    <Heading variant="section" id="ui-foregrounds">
-                        UI foregrounds
-                    </Heading>
-                    <UiForegroundTokens theme={theme} />
-                </Stack>
-                <Stack gap="md">
-                    <Heading variant="section" id="syntax">
-                        Syntax
-                    </Heading>
-                    <Text variant="small" tone="subtle">
-                        Comments are dim on purpose, so they sit lower than the rest of the code.
-                    </Text>
-                    <SyntaxTokens theme={theme} />
-                </Stack>
-                <Stack gap="md">
-                    <Heading variant="section" id="terminal">
-                        Terminal
-                    </Heading>
-                    <Text variant="small" tone="subtle">
-                        Gray is the terminal&apos;s dim text, the counterpart of comments.
-                    </Text>
-                    <TerminalTokens theme={theme} />
-                </Stack>
-            </Section>
+            <ColorSources value={theme.sources}>
+                <Section>
+                    <Stack gap="md">
+                        <Heading variant="section" id="primaries">
+                            Primaries
+                        </Heading>
+                        <SwatchGrid variant="ramp">
+                            {Object.entries(theme.primaries).map(([key, color]) => (
+                                <Swatch
+                                    key={key}
+                                    size="tile"
+                                    color={color}
+                                    label={`${key} · ${color}`}
+                                    path={`primaries.${key}`}
+                                />
+                            ))}
+                        </SwatchGrid>
+                    </Stack>
+                    <Stack gap="md">
+                        <Heading variant="section" id="palette">
+                            Palette
+                        </Heading>
+                        <PageGrid columns="cards">
+                            {ansiPairs.map(([first, second]) => (
+                                <SwatchPair
+                                    key={first}
+                                    first={{
+                                        label: first,
+                                        color: theme.palette[first],
+                                        path: `palette.${first}`,
+                                    }}
+                                    second={{
+                                        label: second,
+                                        color: theme.palette[second],
+                                        path: `palette.${second}`,
+                                    }}
+                                />
+                            ))}
+                        </PageGrid>
+                    </Stack>
+                    <Stack gap="md">
+                        <Heading variant="section" id="accents">
+                            Accents
+                        </Heading>
+                        <SwatchGrid>
+                            {presentEntries(Object.entries(theme.accents)).map(([key, color]) => (
+                                <Swatch
+                                    key={key}
+                                    size="tile"
+                                    color={color}
+                                    label={`${key} · ${color}`}
+                                    path={`accents.${key}`}
+                                />
+                            ))}
+                        </SwatchGrid>
+                    </Stack>
+                    <Stack gap="md">
+                        <Heading variant="section" id="feedback">
+                            Feedback
+                        </Heading>
+                        <SwatchGrid>
+                            {Object.entries(theme.feedback).map(([key, color]) => (
+                                <Swatch
+                                    key={key}
+                                    size="tile"
+                                    color={color}
+                                    label={`${key} · ${color}`}
+                                    path={`feedback.${key}`}
+                                />
+                            ))}
+                        </SwatchGrid>
+                    </Stack>
+                    <Stack gap="sm">
+                        <Caption tone="subtle">Contrast grades</Caption>
+                        <ContrastLegend />
+                    </Stack>
+                    <Stack gap="md">
+                        <Heading variant="section" id="ui-backgrounds">
+                            UI backgrounds
+                        </Heading>
+                        <UiBackgroundTokens theme={theme} />
+                    </Stack>
+                    <Stack gap="md">
+                        <Heading variant="section" id="ui-foregrounds">
+                            UI foregrounds
+                        </Heading>
+                        <UiForegroundTokens theme={theme} />
+                    </Stack>
+                    <Stack gap="md">
+                        <Heading variant="section" id="syntax">
+                            Syntax
+                        </Heading>
+                        <Text variant="small" tone="subtle">
+                            Comments are dim on purpose, so they sit lower than the rest of the
+                            code.
+                        </Text>
+                        <SyntaxTokens theme={theme} />
+                    </Stack>
+                    <Stack gap="md">
+                        <Heading variant="section" id="terminal">
+                            Terminal
+                        </Heading>
+                        <Text variant="small" tone="subtle">
+                            Gray is the terminal&apos;s dim text, the counterpart of comments.
+                        </Text>
+                        <TerminalTokens theme={theme} />
+                    </Stack>
+                </Section>
+            </ColorSources>
             <Section id="files">
                 <SectionHead number="··" title="Files" aside={`Generated for ${meta.name}`} />
                 <DataTable

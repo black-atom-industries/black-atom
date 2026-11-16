@@ -1,16 +1,12 @@
 .root {
     display: grid;
-    grid-template-columns: 56px minmax(0, 1fr) 9ch auto;
+    grid-template-columns: 56px minmax(0, 1fr) auto;
     align-items: center;
     gap: 16px;
     min-height: 44px;
     border-bottom: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 30%, transparent);
     font-family: var(--ba-font-mono);
     font-size: 14px;
-
-    @media (max-width: 560px) {
-        grid-template-columns: 56px minmax(0, 1fr);
-    }
 }
 
 .sample {
@@ -18,18 +14,22 @@
     place-items: center;
     height: 36px;
     font-size: 14px;
+}
 
-    @media (max-width: 560px) {
-        grid-row: span 3;
-    }
+.text {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+    padding: 8px 0;
 }
 
 .name {
-    min-width: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
 }
 
-.hex {
+.meta {
+    display: grid;
+    gap: 2px;
     font-size: 12px;
     color: var(--ba-fg-subtle);
 }

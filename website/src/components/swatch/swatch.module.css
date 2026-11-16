@@ -35,3 +35,8 @@
 .label {
     color: var(--ba-fg-subtle);
 }
+
+.tile:target .chip {
+    outline: 2px solid var(--ba-fg);
+    outline-offset: 2px;
+}

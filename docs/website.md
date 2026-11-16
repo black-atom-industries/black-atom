@@ -38,7 +38,7 @@ A script in the document head applies the resolved theme before first paint, so 
 theme never flashes dark. For the same reason routes render on the server per request.
 
 A theme page documents one theme. Its editor, diff and terminal previews render in the documented theme,
-its tokens follow in definition order with their contrast grades, and "Use site-wide" applies it.
+its tokens follow in definition order with their contrast grades and sources, and "Use site-wide" applies it.
 
 On the dev server the page also compares the theme with a git revision. A strip names the base revision
 (`HEAD` by default, set with `?base=`) and lists the tokens that changed since it, and a side-by-side switch

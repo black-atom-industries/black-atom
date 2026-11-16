@@ -1,3 +1,4 @@
+import { ColorSources } from "#/hooks/use-color-source.ts";
 import preview from "#/storybook/preview.tsx";
 import { TokenCard } from "./token-card.tsx";
 
@@ -9,6 +10,18 @@ const meta = preview.meta({
         color: "#1d1b26",
         purpose: "Editor background",
     },
+    decorators: [
+        (Story) => (
+            <ColorSources
+                value={{
+                    "ui.fg.default": { ref: "primaries.d20" },
+                    "ui.bg.negative": { from: ["primaries.l30", "feedback.negative"] },
+                }}
+            >
+                <Story />
+            </ColorSources>
+        ),
+    ],
 });
 
 export const Background = meta.story();
@@ -19,7 +32,17 @@ export const Text = meta.story({
         color: "#e4dfd6",
         on: "#1d1b26",
         purpose: "Body text in the editor",
+        path: "ui.fg.default",
         ratio: 12.4,
+    },
+});
+
+export const Derived = meta.story({
+    args: {
+        name: "bg.negative",
+        color: "#f3d6e3",
+        purpose: "Errors",
+        path: "ui.bg.negative",
     },
 });
 
