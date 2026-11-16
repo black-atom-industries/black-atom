@@ -88,6 +88,7 @@ function Line({ line, number }: { line: CodeLine; number: number }) {
             <span>
                 <Code code={line.code} marks={line.marks} />
             </span>
+            {line.isCurrent && <span className={styles.cursor}> </span>}
             {line.diagnostic && (
                 <span
                     className={styles.diagnostic}

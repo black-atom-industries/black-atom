@@ -102,6 +102,10 @@
     }
 }
 
+.cursor {
+    background: var(--tp-fg-accent);
+}
+
 .sign {
     width: 1ch;
 }

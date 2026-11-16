@@ -59,7 +59,7 @@
 }
 
 .cursor {
-    background: var(--tp-fg-default);
+    background: var(--tp-fg-accent);
     color: var(--tp-bg-default);
 }
 
