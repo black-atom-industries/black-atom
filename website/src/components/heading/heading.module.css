@@ -1,0 +1,62 @@
+.root {
+    font-family: var(--ba-font-mono);
+    font-weight: 500;
+}
+
+.display,
+.displaySm {
+    font-weight: 600;
+    font-size: clamp(52px, 8.6vw, 132px);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    color: var(--ba-accent);
+    text-transform: uppercase;
+}
+
+.displaySm {
+    font-size: clamp(40px, 5vw, 72px);
+}
+
+.name {
+    font-weight: 600;
+    font-size: clamp(40px, 5.6vw, 80px);
+    line-height: 1;
+    letter-spacing: 0.01em;
+}
+
+.kicker {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 0.42em;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ba-fg-subtle);
+}
+
+.line {
+    display: block;
+    color: var(--ba-fg);
+}
+
+.section {
+    font-size: 28px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.product {
+    font-weight: 600;
+    font-size: 44px;
+    line-height: 1.02;
+    letter-spacing: 0.02em;
+}
+
+.title {
+    font-size: 22px;
+    letter-spacing: 0.03em;
+}
+
+.item {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+}

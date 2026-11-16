@@ -1,19 +1,16 @@
 import { useState } from "react";
-import { ActionRow, AdapterHeader, ClassDefinition, DraftField } from "../adapter-shared/index.ts";
+import { ActionRow, AdapterHeader, ClassDefinition } from "../adapter-shared/index.ts";
 import { NvimSettingsPanel } from "../nvim-settings-panel/index.ts";
 import type { NvimSettings as NvimPluginSettings } from "../../../bindings.ts";
 import type { AdapterPageProps } from "./types.ts";
 import styles from "./adapter-page.module.css";
 
-/** nvim — linked provisioning, patches a colorscheme line via regex. */
+/** nvim — linked provisioning without a config pointer. The plugin reads the theme and options
+    from Livery's config, so this page has no paths to set. */
 export function NvimSettings({
     appConfig,
-    editableFields,
     detected,
     onToggleEnabled,
-    onFieldCommit,
-    firstFieldRef,
-    onPickPath,
     onSetUp,
     setUpResult,
     onVerifyPath,
@@ -23,17 +20,18 @@ export function NvimSettings({
     linkThemesResult,
     onTestApply,
     testApplyResult,
-    onWriteNvimSettings,
-    writingNvimSettings,
+    onSaveNvimSettings,
+    savingNvimSettings,
     nvimSettingsResult,
+    nvimOverrides,
 }: AdapterPageProps) {
-    // The adapters route remounts this page on every adapter switch, so the
-    // draft starts from the saved settings each time it appears.
+    // The draft holds only unsaved edits, so the panel follows the config file
+    // until the user changes something, and keeps those changes when the file moves.
     const saved = appConfig.settings ?? null;
-    const [draft, setDraft] = useState<NvimPluginSettings | null>(saved);
+    const [draft, setDraft] = useState<NvimPluginSettings | null>(null);
     const settings = draft ?? saved;
-    const dirty =
-        settings !== null && saved !== null && JSON.stringify(settings) !== JSON.stringify(saved);
+    const dirty = draft !== null && JSON.stringify(draft) !== JSON.stringify(saved);
+    if (draft !== null && !dirty) setDraft(null);
 
     return (
         <div className={styles.root}>
@@ -44,52 +42,6 @@ export function NvimSettings({
                 onToggleEnabled={onToggleEnabled}
                 verifyPathResult={verifyPathResult}
             />
-            <div className={styles.fieldGrid}>
-                {editableFields.has("config_path") && (
-                    <DraftField
-                        label="CONFIG_PATH"
-                        note="THE FILE LIVERY PATCHES"
-                        value={appConfig.config_path ?? ""}
-                        onCommit={(value) => onFieldCommit("config_path", value)}
-                        inputRef={firstFieldRef}
-                        pathKind="file"
-                        onPickPath={onPickPath}
-                    />
-                )}
-                {editableFields.has("match_pattern") && (
-                    <DraftField
-                        label="MATCH_PATTERN"
-                        note="REGEX — FINDS THE THEME LINE"
-                        value={appConfig.match_pattern ?? ""}
-                        onCommit={(value) => onFieldCommit("match_pattern", value)}
-                    />
-                )}
-                {editableFields.has("settings_path") && (
-                    <DraftField
-                        label="SETTINGS_PATH"
-                        note="LUA FILE FOR THE MANAGED OPTIONS BLOCK"
-                        value={appConfig.settings_path ?? ""}
-                        onCommit={(value) => onFieldCommit("settings_path", value)}
-                        pathKind="file"
-                        onPickPath={onPickPath}
-                    />
-                )}
-                {editableFields.has("replace_template") && (
-                    <DraftField
-                        label="REPLACE_TEMPLATE"
-                        note="REPLACES THE MATCHED LINE"
-                        value={appConfig.replace_template ?? ""}
-                        onCommit={(value) => onFieldCommit("replace_template", value)}
-                    />
-                )}
-                {(editableFields.has("match_pattern") ||
-                    editableFields.has("replace_template")) && (
-                    <p className={styles.fieldGridNote}>
-                        Template variables: {"{themeKey}"} · {"{themesPath}"} · {"{collectionKey}"}{" "}
-                        · {"{appearance}"}
-                    </p>
-                )}
-            </div>
             <ActionRow
                 onSetUp={onSetUp}
                 setUpResult={setUpResult}
@@ -101,16 +53,17 @@ export function NvimSettings({
                 onTestApply={onTestApply}
                 testApplyResult={testApplyResult}
             />
-            {settings && onWriteNvimSettings && (
+            {settings && onSaveNvimSettings && (
                 <NvimSettingsPanel
                     settings={settings}
+                    overrides={nvimOverrides ?? []}
                     dirty={dirty}
-                    saving={writingNvimSettings ?? false}
+                    saving={savingNvimSettings ?? false}
                     resultMessage={nvimSettingsResult?.message ?? undefined}
                     resultFailed={nvimSettingsResult?.status === "error"}
                     onChange={setDraft}
-                    onSave={() => onWriteNvimSettings(settings)}
-                    onReset={() => setDraft(saved)}
+                    onSave={() => onSaveNvimSettings(settings)}
+                    onReset={() => setDraft(null)}
                 />
             )}
             <ClassDefinition provisioning="linked" />

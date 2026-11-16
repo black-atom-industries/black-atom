@@ -30,7 +30,7 @@ return {
 
             -- Explorer tree structure (undocumented groups defined in codediff/ui/highlights.lua)
             ExplorerDirectorySmall = { fg = ui.fg.subtle }, -- dimmed directory path next to filenames
-            NeoTreeIndentMarker = { fg = ui.fg.subtle }, -- tree indent characters (│, ├, └)
+            NeoTreeIndentMarker = { fg = ui.fg.border }, -- tree indent characters (│, ├, └)
 
             -- Explorer/history status highlights
             CodeDiffStatusAdded = { fg = ui.fg.add },

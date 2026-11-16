@@ -17,7 +17,7 @@ export default defineCollection({
             colors: blackAtomTerraSpringDark,
         },
         "black-atom-terra-spring-light": {
-            meta: { name: "Spring Light", appearance: "light", status: "development" },
+            meta: { name: "Spring Light", appearance: "light", status: "release" },
             colors: blackAtomTerraSpringLight,
         },
         "black-atom-terra-summer-dark": {
@@ -25,7 +25,7 @@ export default defineCollection({
             colors: blackAtomTerraSummerDark,
         },
         "black-atom-terra-summer-light": {
-            meta: { name: "Summer Light", appearance: "light", status: "development" },
+            meta: { name: "Summer Light", appearance: "light", status: "release" },
             colors: blackAtomTerraSummerLight,
         },
         "black-atom-terra-fall-dark": {
@@ -33,7 +33,7 @@ export default defineCollection({
             colors: blackAtomTerraFallDark,
         },
         "black-atom-terra-fall-light": {
-            meta: { name: "Fall Light", appearance: "light", status: "development" },
+            meta: { name: "Fall Light", appearance: "light", status: "release" },
             colors: blackAtomTerraFallLight,
         },
         "black-atom-terra-winter-dark": {
@@ -41,7 +41,7 @@ export default defineCollection({
             colors: blackAtomTerraWinterDark,
         },
         "black-atom-terra-winter-light": {
-            meta: { name: "Winter Light", appearance: "light", status: "development" },
+            meta: { name: "Winter Light", appearance: "light", status: "release" },
             colors: blackAtomTerraWinterLight,
         },
     },

@@ -1,0 +1,36 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 8px;
+    font-family: var(--ba-label-font);
+    font-size: var(--ba-label-size);
+    letter-spacing: var(--ba-label-tracking);
+    text-transform: var(--ba-label-case);
+    line-height: var(--ba-label-leading);
+    border-bottom: 1px solid transparent;
+
+    &[aria-current="page"] {
+        border-bottom-color: var(--ba-accent);
+    }
+
+    @media (max-width: 720px) {
+        flex: none;
+        letter-spacing: 0.06em;
+    }
+}
+
+.chip {
+    min-height: 40px;
+    padding: 0 14px;
+    background: var(--ba-chip-bg);
+}
+
+.number {
+    font-style: normal;
+    color: var(--ba-accent);
+
+    @media (max-width: 720px) {
+        display: none;
+    }
+}

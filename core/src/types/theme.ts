@@ -117,6 +117,7 @@ interface UiForeground {
     subtle: HexColor;
     accent: HexColor;
     disabled: HexColor;
+    border: HexColor;
     contrast: HexColor;
     negative: HexColor;
     warn: HexColor;
@@ -241,7 +242,13 @@ export interface Colors {
     feedback: Feedback;
     ui: Ui;
     syntax: Syntax;
+    /** Where each accent, palette, feedback, UI and syntax color comes from, keyed by its path. */
+    sources: Sources;
 }
+
+/** A color that is another slot as it is (`ref`), or computed from other slots (`from`). */
+export type Source = { ref: string } | { from: string[] };
+export type Sources = Record<string, Source>;
 
 export type CreatorContext = Pick<Colors, "primaries" | "accents" | "palette" | "feedback">;
 

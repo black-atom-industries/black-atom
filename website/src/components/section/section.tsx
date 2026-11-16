@@ -1,0 +1,47 @@
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva, type VariantProps } from "cva";
+import { Panel } from "#/components/panel/index.ts";
+import styles from "./section.module.css";
+
+const sectionVariants = cva({
+    base: styles.root,
+    variants: {
+        variant: {
+            default: null,
+            hero: styles.hero,
+            "hero-centered": [styles.hero, styles.centered],
+            page: styles.page,
+            compact: styles.compact,
+            /** Wider than the page column, for content that needs the room, such as previews. */
+            wide: styles.wide,
+            footer: styles.footer,
+        },
+    },
+});
+
+type Props = Omit<useRender.ComponentProps<"section">, "className"> &
+    VariantProps<typeof sectionVariants>;
+
+export function Section({ render, variant = "default", children, ...props }: Props) {
+    return useRender({
+        defaultTagName: "section",
+        render,
+        props: mergeProps(
+            {
+                className: sectionVariants({ variant }),
+                "data-layout": "Section",
+                children: (
+                    <div className={styles.wrap}>
+                        {variant === "hero" || variant === "hero-centered" ? (
+                            children
+                        ) : (
+                            <Panel variant="backdrop">{children}</Panel>
+                        )}
+                    </div>
+                ),
+            },
+            props,
+        ),
+    });
+}

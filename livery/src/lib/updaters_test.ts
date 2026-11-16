@@ -9,7 +9,7 @@ import type { UpdaterEntry, UpdateResult } from "./updaters.ts";
 test("getEnabledApps returns only enabled apps", () => {
     const apps: Partial<Record<AppName, AppConfig>> = {
         ghostty: { enabled: true, config_path: "/ghostty" },
-        nvim: { enabled: true, config_path: "/nvim" },
+        nvim: { enabled: true },
         tmux: { enabled: false, config_path: "/tmux" },
     };
 
@@ -56,7 +56,7 @@ test("getEnabledApps preserves app config in result", () => {
 test("createUpdaters creates an entry per enabled app", () => {
     const enabledApps: [AppName, AppConfig][] = [
         ["ghostty", { enabled: true, config_path: "/ghostty" }],
-        ["nvim", { enabled: true, config_path: "/nvim" }],
+        ["nvim", { enabled: true }],
     ];
 
     const themeMeta = {

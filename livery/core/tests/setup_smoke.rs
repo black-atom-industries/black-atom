@@ -2,11 +2,15 @@
 //!
 //! Runs the real core functions — ensure_unpacked → get_config → detect_apps
 //! → save_config → link_app_themes → verify_app_path → get_app_status —
-//! against a tempdir `$HOME` with planted app configs. One test function:
-//! `$HOME` and the `XDG_*` variables are process-global, so the scenario
-//! must stay sequential.
+//! against a tempdir `$HOME` with planted app configs. `$HOME` and the `XDG_*`
+//! variables are process-global, so every test takes `ENV_LOCK` and each
+//! scenario stays sequential.
 
-use std::path::Path;
+use std::collections::BTreeMap;
+use std::path::{Path, PathBuf};
+use std::process::{Command, Stdio};
+use std::sync::{Mutex, MutexGuard};
+use std::time::Duration;
 
 use tokio::runtime::Runtime;
 
@@ -15,6 +19,14 @@ use livery_core::paths;
 use livery_core::themes::registry::{provisioning, ThemeProvisioning};
 use livery_core::themes::{commands as themes, detect, unpack};
 use livery_core::updaters::UpdateStatus;
+
+static ENV_LOCK: Mutex<()> = Mutex::new(());
+
+fn env_lock() -> MutexGuard<'static, ()> {
+    ENV_LOCK
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner())
+}
 
 fn runtime() -> &'static Runtime {
     static RUNTIME: std::sync::OnceLock<Runtime> = std::sync::OnceLock::new();
@@ -77,7 +89,9 @@ fn assert_managed_symlink(link: &Path, managed_root: &Path) {
 
 #[test]
 fn setup_chain_end_to_end() {
-    let fake_home = tempfile::TempDir::new().unwrap();
+    let _env = env_lock();
+    // `TMPDIR` is not consulted: an earlier test leaves it pointing at a deleted directory.
+    let fake_home = tempfile::TempDir::new_in(Path::new("/tmp").canonicalize().unwrap()).unwrap();
     let home = fake_home.path();
     std::env::set_var("HOME", home);
     assert_eq!(
@@ -91,6 +105,10 @@ fn setup_chain_end_to_end() {
     let xdg_data = home.join("xdg-data");
     std::env::set_var("XDG_CONFIG_HOME", &xdg_config);
     std::env::set_var("XDG_DATA_HOME", &xdg_data);
+    // Neovim's updater reloads every instance whose socket is under `$TMPDIR`. Short, because
+    // a socket path has a length limit.
+    let socket_root = tempfile::TempDir::new_in("/tmp").unwrap();
+    std::env::set_var("TMPDIR", socket_root.path());
     assert_eq!(
         paths::themes_root(),
         xdg_data.join("black-atom/themes"),
@@ -192,6 +210,7 @@ fn setup_chain_end_to_end() {
     assert!(config.apps.values().all(|app| !app.enabled));
 
     // 2. Conservative detection: planted configured locations are found, everything else not.
+    std::fs::create_dir_all(xdg_config.join("nvim")).unwrap();
     let detections = block_on(detect::detect_apps());
     let mut found: Vec<&str> = detections
         .iter()
@@ -201,7 +220,7 @@ fn setup_chain_end_to_end() {
     found.sort_unstable();
     assert_eq!(
         found,
-        ["claude-code", "ghostty", "herdr", "tmux", "zed"],
+        ["claude-code", "ghostty", "herdr", "nvim", "tmux", "zed"],
         "detected apps"
     );
     let obsidian = detections
@@ -250,6 +269,7 @@ fn setup_chain_end_to_end() {
         AppName::Tmux,
         AppName::Obsidian,
         AppName::Nvim,
+        AppName::Rex,
         AppName::Tuicr,
     ] {
         let result = block_on(themes::link_app_themes(app));
@@ -268,6 +288,7 @@ fn setup_chain_end_to_end() {
         home.join(".config/tmux/themes/black-atom-jpn-koyo-dark.conf"),
         home.join(".config/zed/themes/black-atom-jpn-koyo-dark.json"),
         home.join(".config/tuicr/themes/black-atom-jpn-koyo-dark.toml"),
+        managed_root.join("rex/Black Atom — JPN ∷ Koyo Dark"),
         home.join("config_folder/.obsidian/themes/Black Atom/theme.css"),
         home.join("config_folder/.obsidian/themes/Black Atom/manifest.json"),
     ] {
@@ -371,37 +392,464 @@ fn setup_chain_end_to_end() {
         Some(1)
     );
 
+    // nvim has no config path: its verdict follows the pack link, removed above.
     let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
-    assert!(!nvim.exists, "no nvim config was planted");
+    assert!(!nvim.exists, "the pack link was unwired above");
+    let relink = block_on(themes::link_app_themes(AppName::Nvim));
+    assert!(matches!(relink.status, UpdateStatus::Done));
+    let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
+    assert!(nvim.exists, "a wired pack link needs nothing else");
 
-    // 7. Settings only get persisted once the Lua block was actually
-    // written. A settings_path in a directory that does not exist fails the
-    // write, so the stored settings must still be the previous ones.
+    // A config_path left in an old config.json plays no part in that verdict.
     let mut config = livery_core::config::commands::get_config();
     let nvim_config = config.apps.get_mut(&AppName::Nvim).unwrap();
-    nvim_config.settings_path = Some(
-        home.join("no/such/dir/init.lua")
-            .to_string_lossy()
-            .into_owned(),
-    );
-    let before = nvim_config.settings.clone();
+    nvim_config.config_path = Some("~/no/such/config.lua".to_string());
+    nvim_config.match_pattern = Some("no such line".to_string());
     livery_core::config::commands::save_config(config).unwrap();
+    let nvim = block_on(livery_core::updaters::verify_app_path(AppName::Nvim));
+    assert!(nvim.exists && nvim.pattern_matches.is_none(), "{nvim:?}");
 
-    let mut wanted = before.clone().unwrap_or_default();
-    wanted.term_colors = !wanted.term_colors;
-    let result = block_on(livery_core::updaters::write_nvim_settings(wanted));
-    assert_eq!(
-        result.status,
-        UpdateStatus::Error,
-        "a settings_path in a missing directory must fail"
+    // 7. A saved option reaches a running Neovim through a reload.
+    reload_reaches_a_running_neovim(socket_root.path(), home, &xdg_config, &xdg_data);
+
+    // 8. A config file that can't be read is never replaced.
+    a_broken_config_is_left_as_written();
+}
+
+fn a_broken_config_is_left_as_written() {
+    use livery_core::config::commands::{
+        get_active_theme, get_config, get_config_file_error, save_config, set_active_theme,
+    };
+    use livery_core::config::io::{config_path, ensure_config_exists};
+
+    const THEME: &str = "black-atom-jpn-koyo-yoru";
+    const BROKEN: &str = "{ \"apps\": half-typed";
+
+    set_active_theme(THEME).unwrap();
+    let good = get_config();
+    let path = config_path();
+    let good_content = std::fs::read_to_string(&path).unwrap();
+    assert_eq!(get_config_file_error(), None);
+
+    std::fs::write(&path, BROKEN).unwrap();
+
+    assert!(get_config_file_error().is_some());
+    assert_eq!(get_active_theme().as_deref(), Some(THEME));
+    let error = save_config(good).unwrap_err();
+    assert!(error.contains("left as it is"), "{error}");
+    assert!(set_active_theme("black-atom-jpn-koyo-dark").is_err());
+    ensure_config_exists();
+    assert_eq!(std::fs::read_to_string(&path).unwrap(), BROKEN);
+
+    std::fs::write(&path, &good_content).unwrap();
+    assert_eq!(get_config_file_error(), None);
+    set_active_theme("black-atom-jpn-koyo-dark").unwrap();
+    let unchanged = std::fs::read_to_string(&path).unwrap();
+    set_active_theme("black-atom-jpn-koyo-dark").unwrap();
+    assert_eq!(std::fs::read_to_string(&path).unwrap(), unchanged);
+}
+
+/// Serves a headless Neovim on a socket Livery's reload finds, as a session would.
+struct RunningNeovim {
+    child: std::process::Child,
+    socket: std::path::PathBuf,
+}
+
+impl RunningNeovim {
+    fn start(
+        socket_root: &Path,
+        pid: u32,
+        home: &Path,
+        xdg_config: &Path,
+        xdg_data: &Path,
+    ) -> Self {
+        let dir = socket_root.join("nvim.fixture/0");
+        std::fs::create_dir_all(&dir).unwrap();
+        let socket = dir.join(format!("nvim.{pid}.0"));
+        let init = home.join("reload-init.lua");
+        write_file(&init, "");
+        let child = Command::new("nvim")
+            .env("HOME", home)
+            .env("XDG_CONFIG_HOME", xdg_config)
+            .env("XDG_DATA_HOME", xdg_data)
+            .env("XDG_STATE_HOME", home.join("state"))
+            .env("XDG_CACHE_HOME", home.join("cache"))
+            .env_remove("VIMINIT")
+            .args(["--headless", "-u"])
+            .arg(&init)
+            .arg("--listen")
+            .arg(&socket)
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .unwrap();
+        let neovim = Self { child, socket };
+        for _ in 0..200 {
+            if neovim.socket.exists() && neovim.try_eval("1").is_some() {
+                return neovim;
+            }
+            std::thread::sleep(Duration::from_millis(50));
+        }
+        panic!("headless nvim never opened {}", neovim.socket.display());
+    }
+
+    fn try_eval(&self, expr: &str) -> Option<String> {
+        let output = Command::new("nvim")
+            .arg("--server")
+            .arg(&self.socket)
+            .args(["--remote-expr", expr])
+            .output()
+            .unwrap();
+        output
+            .status
+            .success()
+            .then(|| String::from_utf8_lossy(&output.stdout).trim().to_string())
+    }
+
+    fn eval(&self, expr: &str) -> String {
+        self.try_eval(expr)
+            .unwrap_or_else(|| panic!("nvim refused {expr}"))
+    }
+}
+
+impl Drop for RunningNeovim {
+    fn drop(&mut self) {
+        let _ = self.child.kill();
+        let _ = self.child.wait();
+    }
+}
+
+/// The option as of the last `:colorscheme`, so it only moves when a reload ran.
+const LOADED_GUTTER: &str = "luaeval(\"require('black-atom').config.dark_gutter and 1 or 0\")";
+
+fn reload_reaches_a_running_neovim(
+    socket_root: &Path,
+    home: &Path,
+    xdg_config: &Path,
+    xdg_data: &Path,
+) {
+    use livery_core::config::commands::{get_config, save_config, set_active_theme};
+    use livery_core::updaters::reload_nvim;
+
+    const THEME: &str = "black-atom-jpn-koyo-dark";
+
+    let mut config = get_config();
+    config.apps.get_mut(&AppName::Nvim).unwrap().enabled = false;
+    save_config(config).unwrap();
+    let disabled = block_on(reload_nvim());
+    assert_eq!(disabled.status, UpdateStatus::Skipped, "{disabled:?}");
+
+    let mut config = get_config();
+    config.active_theme = None;
+    config.apps.get_mut(&AppName::Nvim).unwrap().enabled = true;
+    save_config(config).unwrap();
+    let no_theme = block_on(reload_nvim());
+    assert_eq!(no_theme.status, UpdateStatus::Done, "{no_theme:?}");
+
+    set_active_theme(THEME).unwrap();
+    let no_instances = block_on(reload_nvim());
+    assert_eq!(no_instances.status, UpdateStatus::Done, "{no_instances:?}");
+
+    if !std::env::split_paths(&std::env::var_os("PATH").unwrap_or_default())
+        .any(|dir| dir.join("nvim").is_file())
+    {
+        eprintln!("skipped: nvim not on PATH");
+        return;
+    }
+
+    let neovim = RunningNeovim::start(socket_root, 999_999, home, xdg_config, xdg_data);
+    assert_eq!(neovim.eval("g:colors_name"), THEME);
+    let own = RunningNeovim::start(socket_root, 999_998, home, xdg_config, xdg_data);
+    own.eval("execute('colorscheme black-atom-jpn-koyo-light')");
+    let foreign = RunningNeovim::start(socket_root, 999_997, home, xdg_config, xdg_data);
+    foreign.eval("execute('colorscheme desert')");
+    assert_eq!(neovim.eval(LOADED_GUTTER), "0");
+
+    let mut config = get_config();
+    let nvim = config.apps.get_mut(&AppName::Nvim).unwrap();
+    nvim.settings.as_mut().unwrap().dark_gutter = true;
+    save_config(config).unwrap();
+    let saved = block_on(reload_nvim());
+    assert_eq!(saved.status, UpdateStatus::Done, "{saved:?}");
+    assert_eq!(neovim.eval(LOADED_GUTTER), "1");
+    assert_eq!(neovim.eval("g:colors_name"), THEME);
+    assert_eq!(own.eval(LOADED_GUTTER), "1");
+    assert_eq!(own.eval("g:colors_name"), "black-atom-jpn-koyo-light");
+    assert_eq!(foreign.eval("g:colors_name"), "desert");
+}
+
+const STARTUP_THEME: &str = "black-atom-jpn-koyo-dark";
+const OWN_THEME: &str = "black-atom-jpn-koyo-light";
+
+/// A machine whose process environment points every child process at a
+/// tempdir, so nothing reaches the real home.
+struct Machine {
+    home: tempfile::TempDir,
+    _sockets: tempfile::TempDir,
+    sockets: PathBuf,
+    _env: MutexGuard<'static, ()>,
+}
+
+impl Machine {
+    fn new() -> Self {
+        let env = env_lock();
+        // Short, because a socket path has a length limit. `TMPDIR` is not
+        // consulted: an earlier test leaves it pointing at a deleted directory.
+        let base = Path::new("/tmp").canonicalize().unwrap();
+        let home = tempfile::TempDir::new_in(&base).unwrap();
+        let sockets = tempfile::TempDir::new_in(&base).unwrap();
+        std::env::set_var("HOME", home.path());
+        std::env::set_var("XDG_CONFIG_HOME", home.path().join(".config"));
+        std::env::set_var("XDG_DATA_HOME", home.path().join(".local/share"));
+        std::env::set_var("XDG_STATE_HOME", home.path().join(".local/state"));
+        std::env::set_var("XDG_CACHE_HOME", home.path().join(".cache"));
+        std::env::set_var("TMPDIR", sockets.path());
+        let sockets_path = sockets.path().to_path_buf();
+        Self {
+            home,
+            _sockets: sockets,
+            sockets: sockets_path,
+            _env: env,
+        }
+    }
+
+    fn nvim_dir(&self) -> PathBuf {
+        self.home.path().join(".config/nvim")
+    }
+
+    /// Plant a file of the user's own Neovim config.
+    fn plant(&self, relative: &str, content: &str) {
+        write_file(&self.nvim_dir().join(relative), content);
+    }
+
+    /// The same chain `livery setup --yes` runs in core: enable what is found,
+    /// link its themes, apply a theme and record it. The stored options are
+    /// off their defaults, so Neovim reading them is observable.
+    fn run_setup(&self) {
+        use livery_core::config::commands::{get_config, save_config, set_active_theme};
+        use livery_core::themes::catalog;
+        use livery_core::updaters::{update_app, ThemeContext};
+
+        unpack::ensure_unpacked().unwrap();
+        let mut config = get_config();
+        let options = config
+            .apps
+            .get_mut(&AppName::Nvim)
+            .unwrap()
+            .settings
+            .as_mut()
+            .unwrap();
+        options.dark_gutter = true;
+        options.gutter_padding = 2;
+        options.ending_tildes = true;
+        save_config(config).unwrap();
+
+        let found: Vec<AppName> = block_on(detect::detect_apps())
+            .iter()
+            .filter(|detection| detection.found)
+            .map(|detection| detection.app)
+            .collect();
+        assert!(
+            found.contains(&AppName::Nvim),
+            "Neovim is on PATH: {found:?}"
+        );
+        let mut config = get_config();
+        for app in &found {
+            config.apps.get_mut(app).unwrap().enabled = true;
+        }
+        save_config(config).unwrap();
+
+        for app in &found {
+            if provisioning(*app) == ThemeProvisioning::Linked {
+                let linked = block_on(themes::link_app_themes(*app));
+                assert_eq!(linked.status, UpdateStatus::Done, "{linked:?}");
+            }
+        }
+
+        let theme = catalog::find(STARTUP_THEME).unwrap();
+        for app in &found {
+            let result = block_on(update_app(
+                *app,
+                ThemeContext {
+                    theme_key: theme.key.clone(),
+                    appearance: theme.appearance.clone(),
+                    collection_key: theme.collection_key.clone(),
+                    theme_label: Some(theme.label.clone()),
+                },
+            ));
+            assert_ne!(result.status, UpdateStatus::Error, "{result:?}");
+        }
+        set_active_theme(STARTUP_THEME).unwrap();
+    }
+
+    /// Start Neovim on the user's own config, as a user would, and read back
+    /// the theme it opened in and the options it resolved.
+    fn start_neovim(&self) -> serde_json::Value {
+        let root = self.home.path();
+        let output = Command::new("nvim")
+            .env("HOME", root)
+            .env("XDG_CONFIG_HOME", root.join(".config"))
+            .env("XDG_DATA_HOME", root.join(".local/share"))
+            .env("XDG_STATE_HOME", root.join(".local/state"))
+            .env("XDG_CACHE_HOME", root.join(".cache"))
+            .env("TMPDIR", &self.sockets)
+            .env_remove("VIMINIT")
+            .args([
+                "--headless",
+                "-c",
+                "lua io.write(vim.json.encode({ colors_name = vim.g.colors_name or vim.NIL, options = require('black-atom.config').resolve() }))",
+                "-c",
+                "qa!",
+            ])
+            .output()
+            .expect("failed to run nvim");
+        assert!(
+            output.status.success(),
+            "nvim exited {:?}: {}",
+            output.status.code(),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        serde_json::from_slice(&output.stdout).unwrap_or_else(|e| {
+            panic!(
+                "unparseable output ({e}): {}",
+                String::from_utf8_lossy(&output.stdout)
+            )
+        })
+    }
+
+    /// What the search reports, as kind, path below the Neovim config, line.
+    fn overrides(&self) -> Vec<(&'static str, String, u32)> {
+        use livery_core::updaters::nvim_overrides::{find_nvim_overrides, NvimOverrideKind};
+
+        find_nvim_overrides()
+            .into_iter()
+            .map(|found| {
+                let kind = match found.kind {
+                    NvimOverrideKind::Options => "options",
+                    NvimOverrideKind::Colorscheme => "colorscheme",
+                };
+                let file = Path::new(&found.file)
+                    .strip_prefix(self.nvim_dir())
+                    .unwrap()
+                    .display()
+                    .to_string();
+                (kind, file, found.line)
+            })
+            .collect()
+    }
+
+    /// Every file of the user's Neovim config with its bytes.
+    fn nvim_files(&self) -> BTreeMap<String, Vec<u8>> {
+        let dir = self.nvim_dir();
+        if !dir.exists() {
+            return BTreeMap::new();
+        }
+        walk_names(&dir)
+            .into_iter()
+            .map(|name| {
+                let bytes = std::fs::read(dir.join(&name)).unwrap();
+                (name, bytes)
+            })
+            .collect()
+    }
+}
+
+macro_rules! machine_or_skip {
+    () => {{
+        let has_nvim = std::env::split_paths(&std::env::var_os("PATH").unwrap_or_default())
+            .any(|dir| dir.join("nvim").is_file());
+        if !has_nvim {
+            eprintln!("skipped: nvim not on PATH");
+            return;
+        }
+        Machine::new()
+    }};
+}
+
+fn assert_stored_options_reached(neovim: &serde_json::Value, dark_gutter: bool) {
+    let options = &neovim["options"];
+    assert_eq!(options["dark_gutter"], dark_gutter, "{options}");
+    assert_eq!(options["gutter_padding"], 2, "{options}");
+    assert_eq!(options["ending_tildes"], true, "{options}");
+}
+
+/// Puts the plugin on the runtime path before the user's colorscheme line
+/// runs, as a plugin manager does.
+const PLUGIN_ON_RTP: &str =
+    "vim.opt.runtimepath:prepend(vim.fn.stdpath(\"data\") .. \"/site/pack/black-atom/start/black-atom\")\n";
+
+#[test]
+fn neovim_without_a_config_directory_opens_in_the_active_theme() {
+    let machine = machine_or_skip!();
+    machine.run_setup();
+
+    assert!(
+        !machine.nvim_dir().exists(),
+        "setup created a Neovim config"
     );
+    let neovim = machine.start_neovim();
+    assert_eq!(neovim["colors_name"], STARTUP_THEME);
+    assert_stored_options_reached(&neovim, true);
+    assert_eq!(machine.overrides(), []);
+}
 
-    let stored = livery_core::config::commands::get_config()
-        .apps
-        .get(&AppName::Nvim)
-        .and_then(|app| app.settings.clone());
+#[test]
+fn neovim_with_a_minimal_init_opens_in_the_active_theme() {
+    let machine = machine_or_skip!();
+    machine.plant("init.lua", "vim.opt.number = true\n");
+    let before = machine.nvim_files();
+    machine.run_setup();
+
+    assert_eq!(machine.nvim_files(), before);
+    let neovim = machine.start_neovim();
+    assert_eq!(neovim["colors_name"], STARTUP_THEME);
+    assert_stored_options_reached(&neovim, true);
+    assert_eq!(machine.overrides(), []);
+}
+
+#[test]
+fn a_users_own_options_and_colorscheme_win_over_the_stored_ones() {
+    let machine = machine_or_skip!();
+    machine.plant(
+        "init.lua",
+        &format!(
+            "{PLUGIN_ON_RTP}vim.g.black_atom_core_config = {{ dark_gutter = false }}\nvim.cmd.colorscheme(\"{OWN_THEME}\")\n"
+        ),
+    );
+    machine.plant("lua/user/theme.lua", "vim.cmd.colorscheme(vim.g.picked)\n");
+    let before = machine.nvim_files();
+    machine.run_setup();
+
+    assert_eq!(machine.nvim_files(), before);
+    let neovim = machine.start_neovim();
+    assert_eq!(neovim["colors_name"], OWN_THEME);
+    assert_stored_options_reached(&neovim, false);
     assert_eq!(
-        stored, before,
-        "a failed settings write must leave the config untouched"
+        machine.overrides(),
+        [
+            ("options", "init.lua".to_string(), 2),
+            ("colorscheme", "init.lua".to_string(), 3),
+        ]
+    );
+}
+
+#[test]
+fn a_leftover_colorscheme_line_picks_the_theme_and_the_stored_options_apply() {
+    let machine = machine_or_skip!();
+    machine.plant(
+        "init.lua",
+        &format!("{PLUGIN_ON_RTP}vim.cmd.colorscheme(\"{OWN_THEME}\")\n"),
+    );
+    let before = machine.nvim_files();
+    machine.run_setup();
+
+    assert_eq!(machine.nvim_files(), before);
+    let neovim = machine.start_neovim();
+    assert_eq!(neovim["colors_name"], OWN_THEME);
+    assert_stored_options_reached(&neovim, true);
+    assert_eq!(
+        machine.overrides(),
+        [("colorscheme", "init.lua".to_string(), 2)]
     );
 }

@@ -1,4 +1,9 @@
-import type { AdapterEditableField, AppConfig, NvimSettings } from "../../../bindings.ts";
+import type {
+    AdapterEditableField,
+    AppConfig,
+    NvimOverride,
+    NvimSettings,
+} from "../../../bindings.ts";
 import type {
     LinkThemesRowResult,
     PathKind,
@@ -25,10 +30,11 @@ export type AdapterPageProps = {
     firstFieldRef?: React.RefObject<HTMLInputElement | null>;
     onPickPath: (kind: PathKind) => Promise<string | null>;
     onOpenUrl?: (url: string) => void;
-    /** nvim only: saves the plugin options and writes the managed Lua block. */
-    onWriteNvimSettings?: (settings: NvimSettings) => void;
-    writingNvimSettings?: boolean;
+    /** nvim only: saves the plugin options and reloads running Neovims. */
+    onSaveNvimSettings?: (settings: NvimSettings) => void;
+    savingNvimSettings?: boolean;
     nvimSettingsResult?: UpdateResult;
+    nvimOverrides?: NvimOverride[];
 
     onSetUp: () => void;
     setUpResult?: SetUpOutcome;

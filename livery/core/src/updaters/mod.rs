@@ -4,7 +4,9 @@ mod ghostty;
 mod herdr;
 mod lazygit;
 pub mod nvim;
+pub mod nvim_overrides;
 mod obsidian;
+mod rex;
 pub mod system_appearance;
 mod tmux;
 mod zed;
@@ -184,32 +186,21 @@ pub async fn update_app(app: AppName, theme: ThemeContext) -> UpdateResult {
     result
 }
 
-/// Write the Neovim plugin settings into the managed Lua block in nvim's
-/// `settings_path`, then store them in config. Config is the source of
-/// truth; the block is the projection of it Neovim can read. Persisting
-/// only after a successful write keeps the two from drifting apart.
-pub async fn write_nvim_settings(settings: crate::config::types::NvimSettings) -> UpdateResult {
-    let mut config = config_io::read_config_from_disk();
-    let Some(app_config) = config.apps.get_mut(&AppName::Nvim) else {
-        return UpdateResult::error("nvim", "nvim not found in config");
-    };
-
-    let settings_path = app_config
-        .settings_path
-        .clone()
-        .unwrap_or_else(|| crate::config::types::NVIM_SETTINGS_PATH.to_string());
-
-    let result = nvim::write_settings(&settings_path, &settings);
-    if result.status == UpdateStatus::Error {
-        return result;
+/// Reload running Neovims on their own Black Atom theme, so they pick up the
+/// plugin options stored in the config.
+pub async fn reload_nvim() -> UpdateResult {
+    let config = config_io::read_config_from_disk();
+    if !config
+        .apps
+        .get(&AppName::Nvim)
+        .is_some_and(|app| app.enabled)
+    {
+        return UpdateResult::skipped(
+            "nvim",
+            "Neovim is disabled here, so running instances were not reloaded",
+        );
     }
-
-    app_config.settings = Some(settings);
-    if let Err(e) = crate::config::commands::save_config(config) {
-        return UpdateResult::error("nvim", e);
-    }
-
-    result
+    nvim::reload_options("nvim")
 }
 
 /// Dispatch an update to the appropriate per-app updater.
@@ -222,7 +213,7 @@ pub fn dispatch_update(
     let app_str = app.as_str();
     match app {
         AppName::Ghostty => ghostty::update(app_str, app_config, ctx),
-        AppName::Nvim => nvim::update(app_str, app_config, ctx, None),
+        AppName::Nvim => nvim::update(app_str, ctx, None),
         AppName::Tmux => tmux::update(app_str, app_config, ctx),
         AppName::Delta => patch_text_updater(app_str, app_config, ctx),
         AppName::HelmTmux => patch_text_updater(app_str, app_config, ctx),
@@ -232,6 +223,7 @@ pub fn dispatch_update(
         AppName::ClaudeCode => claude_code::update(app_str, app_config, ctx),
         AppName::Zed => zed::update(app_str, app_config, ctx),
         AppName::Obsidian => obsidian::update(app_str, app_config, ctx),
+        AppName::Rex => rex::update(app_str, app_config, ctx),
     }
 }
 
@@ -294,6 +286,18 @@ pub async fn verify_app_path(app: AppName) -> AppPathVerification {
             app: app_str.to_string(),
             exists: !config_folders.is_empty() && config_folders.iter().all(|folder| folder.exists),
             config_folders: Some(config_folders),
+            pattern_matches: None,
+            message: None,
+        };
+    }
+
+    if crate::themes::registry::linked_placement(app)
+        == Some(crate::themes::registry::LinkedPlacement::PackDir)
+    {
+        return AppPathVerification {
+            app: app_str.to_string(),
+            exists: crate::themes::commands::is_linked(app),
+            config_folders: None,
             pattern_matches: None,
             message: None,
         };

@@ -1,5 +1,6 @@
 import type * as Theme from "../../types/theme.ts";
-import { tint } from "../../utils/color.ts";
+import { oklch as toOklch } from "culori";
+import { oklch, shade, tint } from "../../utils/color.ts";
 
 export default function ({
     primaries,
@@ -8,7 +9,11 @@ export default function ({
     accents,
 }: Theme.CreatorContext): Theme.Ui {
     function t(color: string) {
-        return tint({ color, with: primaries.l30 });
+        return tint({ color, with: primaries.l30, amount: 0.15 });
+    }
+
+    function pastel(color: string, lightness = 0.9, chroma = 0.015) {
+        return oklch(lightness, chroma, toOklch(color)?.h ?? 0);
     }
 
     return {
@@ -16,25 +21,26 @@ export default function ({
             default: primaries.l30,
             panel: primaries.l20,
             float: primaries.l20,
-            active: primaries.l40,
+            active: shade(primaries.l30, -0.04),
             disabled: primaries.m40,
             hover: primaries.l20,
-            selection: primaries.l20,
-            search: primaries.l20,
+            selection: primaries.l10,
+            search: primaries.l10,
             contrast: primaries.d20,
             negative: t(feedback.negative),
             warn: t(feedback.warning),
             info: t(feedback.info),
             hint: t(palette.darkYellow),
             positive: t(feedback.success),
-            add: t(feedback.success),
-            delete: t(feedback.negative),
-            modify: t(feedback.info),
+            add: pastel(feedback.success),
+            delete: pastel(feedback.negative, 0.93, 0.04),
+            modify: pastel(feedback.info),
         },
         fg: {
             default: primaries.d20,
             subtle: primaries.m30,
             disabled: primaries.m40,
+            border: primaries.m40,
             accent: accents.a10,
             contrast: primaries.l30,
             negative: feedback.negative,

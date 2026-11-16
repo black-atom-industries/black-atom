@@ -1,0 +1,52 @@
+.root {
+    display: grid;
+    gap: 6px;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.label {
+    font-family: var(--ba-label-font);
+    font-size: 9.5px;
+    letter-spacing: var(--ba-label-tracking);
+    text-transform: var(--ba-label-case);
+    line-height: var(--ba-label-leading);
+    color: var(--ba-fg-subtle);
+}
+
+.control {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    touch-action: none;
+}
+
+.track {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background: color-mix(in srgb, var(--ba-fg-subtle) 45%, transparent);
+}
+
+.indicator {
+    height: 100%;
+    background: var(--ba-accent);
+}
+
+.thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--ba-accent);
+    box-shadow: 0 0 0 3px var(--ba-bg-float);
+
+    &:has(:focus-visible) {
+        outline: 1px solid var(--ba-accent);
+        outline-offset: 3px;
+    }
+}

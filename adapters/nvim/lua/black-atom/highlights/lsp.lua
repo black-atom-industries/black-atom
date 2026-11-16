@@ -3,7 +3,6 @@ return {
     map = function(colors, config)
         local cond_hl = require("black-atom.lib.highlights").cond_hl
         local lsp_kinds = require("black-atom.lib.lsp_kinds")
-        local styles = config.styles or {}
         local ui = colors.ui
         local syntax = colors.syntax
 
@@ -21,49 +20,60 @@ return {
             DiagnosticHint = { fg = ui.fg.hint },
             DiagnosticInfo = { fg = ui.fg.info },
             DiagnosticWarn = { fg = ui.fg.warn },
+            DiagnosticOk = { fg = ui.fg.positive },
 
             -- Diagnostic Virtual Text
             DiagnosticVirtualTextError = {
                 bg = cond_hl(colors.none, {
-                    [styles.diagnostics.background] = ui.bg.negative,
+                    [config.diagnostics.background] = ui.bg.negative,
                 }),
                 fg = ui.fg.negative,
             },
             DiagnosticVirtualTextWarn = {
                 bg = cond_hl(colors.none, {
-                    [styles.diagnostics.background] = ui.bg.warn,
+                    [config.diagnostics.background] = ui.bg.warn,
                 }),
                 fg = ui.fg.warn,
             },
             DiagnosticVirtualTextInfo = {
                 bg = cond_hl(colors.none, {
-                    [styles.diagnostics.background] = ui.bg.info,
+                    [config.diagnostics.background] = ui.bg.info,
                 }),
                 fg = ui.fg.info,
             },
             DiagnosticVirtualTextHint = {
                 bg = cond_hl(colors.none, {
-                    [styles.diagnostics.background] = ui.bg.hint,
+                    [config.diagnostics.background] = ui.bg.hint,
                 }),
                 fg = ui.fg.hint,
+            },
+            DiagnosticVirtualTextOk = {
+                bg = cond_hl(colors.none, {
+                    [config.diagnostics.background] = ui.bg.positive,
+                }),
+                fg = ui.fg.positive,
             },
 
             -- Diagnostic Underlines
             DiagnosticUnderlineError = {
                 sp = ui.fg.negative,
-                config.styles.diagnostics.undercurl and { undercurl = true },
+                config.diagnostics.undercurl and { undercurl = true },
             },
             DiagnosticUnderlineHint = {
                 sp = ui.fg.hint,
-                config.styles.diagnostics.undercurl and { undercurl = true },
+                config.diagnostics.undercurl and { undercurl = true },
             },
             DiagnosticUnderlineInfo = {
                 sp = ui.fg.info,
-                config.styles.diagnostics.undercurl and { undercurl = true },
+                config.diagnostics.undercurl and { undercurl = true },
             },
             DiagnosticUnderlineWarn = {
                 sp = ui.fg.warn,
-                config.styles.diagnostics.undercurl and { undercurl = true },
+                config.diagnostics.undercurl and { undercurl = true },
+            },
+            DiagnosticUnderlineOk = {
+                sp = ui.fg.positive,
+                config.diagnostics.undercurl and { undercurl = true },
             },
 
             -- LSP References
@@ -75,7 +85,7 @@ return {
 
             -- LSP CodeLens
             LspCodeLens = { fg = ui.fg.subtle },
-            LspCodeLensSeparator = { fg = ui.fg.subtle },
+            LspCodeLensSeparator = { fg = ui.fg.border },
 
             -- Legacy LSP Diagnostics (Links)
             LspDiagnosticsDefaultError = { link = "DiagnosticError" },

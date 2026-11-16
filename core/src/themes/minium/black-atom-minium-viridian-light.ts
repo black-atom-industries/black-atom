@@ -1,5 +1,5 @@
 import { defineThemeColors } from "../define-theme-colors.ts";
-import { oklch } from "../../utils/color.ts";
+import { oklch, shade } from "../../utils/color.ts";
 
 import createPalette from "./create-palette-light.ts";
 import createSyntax from "./create-syntax-light.ts";
@@ -13,8 +13,8 @@ export default defineThemeColors({
         d30: oklch(0.38, 0.055, 183),
         d40: oklch(0.407, 0.073, 183),
 
-        m10: oklch(0.55, 0.08, 183),
-        m20: oklch(0.64, 0.08, 183),
+        m10: oklch(0.5, 0.09, 183),
+        m20: oklch(0.58, 0.09, 183),
         m30: oklch(0.72, 0.08, 183),
         m40: oklch(0.8, 0.08, 183),
 
@@ -25,25 +25,33 @@ export default defineThemeColors({
     },
     accents: {
         a10: oklch(0.65, 0.2, 40),
-        a20: oklch(0.65, 0.2, 150),
+        a20: oklch(0.58, 0.2, 150),
         a30: oklch(0.65, 0.2, 70),
-        a40: oklch(0.65, 0.2, 183),
+        a40: oklch(0.57, 0.2, 183),
     },
-    palette: ({ primaries, accents }) =>
-        createPalette(primaries, {
+    palette: ({ primaries, accents }) => {
+        const blue = oklch(0.58, 0.1, 250);
+        const magenta = oklch(0.58, 0.08, 365);
+
+        return createPalette(primaries, {
             debug: false,
             override: (palette) => ({
                 ...palette,
+                red: accents.a10,
+                darkRed: shade(accents.a10, -0.08),
                 green: accents.a20,
-                darkGreen: accents.a20,
-                yellow: accents.a10,
-                darkYellow: accents.a10,
-                darkCyan: accents.a40!,
+                darkGreen: shade(accents.a20, -0.08),
+                yellow: accents.a30!,
+                darkYellow: shade(accents.a30!, -0.08),
                 cyan: accents.a40!,
-                magenta: oklch(0.7, 0.05, 365),
-                darkMagenta: oklch(0.65, 0.05, 365),
+                darkCyan: shade(accents.a40!, -0.08),
+                blue,
+                darkBlue: shade(blue, -0.08),
+                magenta,
+                darkMagenta: shade(magenta, -0.08),
             }),
-        }),
+        });
+    },
     feedback: ({ accents }) => createFeedback(accents),
     ui: createUi,
     syntax: createSyntax,

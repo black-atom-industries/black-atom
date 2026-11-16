@@ -1,0 +1,6 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    font-size: 14px;
+}

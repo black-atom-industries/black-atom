@@ -1,0 +1,20 @@
+.root {
+    font-family: var(--ba-font-mono);
+    color: var(--ba-fg-subtle);
+    overflow-wrap: break-word;
+}
+
+.label {
+    color: var(--ba-fg-subtle);
+}
+
+.link {
+    color: inherit;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+
+    &:hover {
+        color: var(--ba-fg);
+        text-decoration-style: solid;
+    }
+}

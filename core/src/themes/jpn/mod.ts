@@ -24,7 +24,7 @@ export default defineCollection({
             colors: blackAtomJpnMurasakiDark,
         },
         "black-atom-jpn-murasaki-light": {
-            meta: { name: "Murasaki Light", appearance: "light", status: "development" },
+            meta: { name: "Murasaki Light", appearance: "light", status: "release" },
             colors: blackAtomJpnMurasakiLight,
         },
         "black-atom-jpn-tsuki-dark": {
@@ -32,11 +32,11 @@ export default defineCollection({
             colors: blackAtomJpnTsukiDark,
         },
         "black-atom-jpn-sanshoku-dark": {
-            meta: { name: "Sanshoku Dark", appearance: "dark", status: "development" },
+            meta: { name: "Sanshoku Dark", appearance: "dark", status: "release" },
             colors: blackAtomJpnSanshokuDark,
         },
         "black-atom-jpn-sanshoku-light": {
-            meta: { name: "Sanshoku Light", appearance: "light", status: "development" },
+            meta: { name: "Sanshoku Light", appearance: "light", status: "release" },
             colors: blackAtomJpnSanshokuLight,
         },
     },

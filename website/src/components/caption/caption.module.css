@@ -1,0 +1,20 @@
+.root {
+    font-family: var(--ba-label-font);
+    font-size: var(--ba-label-size);
+    font-weight: 400;
+    letter-spacing: var(--ba-label-tracking);
+    text-transform: var(--ba-label-case);
+    line-height: var(--ba-label-leading);
+}
+
+.subtle {
+    color: var(--ba-fg-subtle);
+}
+
+.accent {
+    color: var(--ba-accent);
+}
+
+.sm {
+    font-size: 9.5px;
+}

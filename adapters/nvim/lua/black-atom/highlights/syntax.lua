@@ -12,22 +12,19 @@ return {
             -- TODO: Rename this file to `syntax.lua` and bring in the builtin types as well
             -- TODO: Sort
 
-            Identifier = ext_hl({ fg = syntax.variable.default }, config.styles.syntax.variables),
+            Identifier = ext_hl({ fg = syntax.variable.default }, config.syntax.variables),
             StorageClass = { link = "Identifier" },
             ["@variable"] = { link = "Identifier" },
             ["@variable.builtin"] = { fg = syntax.variable.builtin },
-            ["@variable.parameter"] = ext_hl({ fg = syntax.variable.parameter }, config.styles.syntax.variables),
+            ["@variable.parameter"] = ext_hl({ fg = syntax.variable.parameter }, config.syntax.variables),
             ["@variable.member"] = { fg = syntax.variable.member },
 
-            String = ext_hl({ fg = syntax.string.default }, config.styles.syntax.strings),
+            String = ext_hl({ fg = syntax.string.default }, config.syntax.strings),
             ["@string"] = { link = "String" },
-            ["@string.escape"] = ext_hl({ fg = syntax.string.escape }, config.styles.syntax.strings),
-            ["@string.regexp"] = ext_hl({ fg = syntax.string.regexp }, config.styles.syntax.strings),
-            ["@string.special"] = ext_hl({ fg = syntax.string.default }, config.styles.syntax.strings),
-            ["@string.special.url"] = ext_hl(
-                { fg = syntax.string.default, underline = true },
-                config.styles.syntax.strings
-            ),
+            ["@string.escape"] = ext_hl({ fg = syntax.string.escape }, config.syntax.strings),
+            ["@string.regexp"] = ext_hl({ fg = syntax.string.regexp }, config.syntax.strings),
+            ["@string.special"] = ext_hl({ fg = syntax.string.default }, config.syntax.strings),
+            ["@string.special.url"] = ext_hl({ fg = syntax.string.default, underline = true }, config.syntax.strings),
 
             Boolean = { fg = syntax.boolean.default },
             ["@boolean"] = { link = "Boolean" },
@@ -39,10 +36,10 @@ return {
             -- We assign the `Keyword` highlight to some of the other regexpt highlight groups,
             -- which are also keywords more of less.
             -- To me thats find for now, but I'm open to suggestions.
-            Keyword = ext_hl({ fg = syntax.keyword.default }, config.styles.syntax.keywords),
+            Keyword = ext_hl({ fg = syntax.keyword.default }, config.syntax.keywords),
             ["@keyword"] = { link = "Keyword" },
-            ["@keyword.import"] = ext_hl({ fg = syntax.keyword.import }, config.styles.syntax.keywords),
-            ["@keyword.export"] = ext_hl({ fg = syntax.keyword.export }, config.styles.syntax.keywords),
+            ["@keyword.import"] = ext_hl({ fg = syntax.keyword.import }, config.syntax.keywords),
+            ["@keyword.export"] = ext_hl({ fg = syntax.keyword.export }, config.syntax.keywords),
             Statement = { link = "Keyword" },
             Conditional = { link = "Keyword" },
             Repeat = { link = "Keyword" },
@@ -78,18 +75,15 @@ return {
 
             ["@property"] = { fg = syntax.property.default },
 
-            Function = ext_hl({ fg = syntax.func.default }, config.styles.syntax.functions),
+            Function = ext_hl({ fg = syntax.func.default }, config.syntax.functions),
             ["@function"] = { link = "Function" },
-            ["@function.call"] = ext_hl({ fg = syntax.func.default, bold = true }, config.styles.syntax.functions),
-            ["@function.method.call"] = ext_hl(
-                { fg = syntax.func.default, bold = true },
-                config.styles.syntax.functions
-            ),
-            ["@function.builtin"] = ext_hl({ fg = syntax.func.builtin }, config.styles.syntax.functions),
-            ["@function.method"] = ext_hl({ fg = syntax.func.method }, config.styles.syntax.functions),
+            ["@function.call"] = ext_hl({ fg = syntax.func.default, bold = true }, config.syntax.functions),
+            ["@function.method.call"] = ext_hl({ fg = syntax.func.default, bold = true }, config.syntax.functions),
+            ["@function.builtin"] = ext_hl({ fg = syntax.func.builtin }, config.syntax.functions),
+            ["@function.method"] = ext_hl({ fg = syntax.func.method }, config.syntax.functions),
 
-            ["@method"] = ext_hl({ fg = syntax.func.default }, config.styles.syntax.functions),
-            ["@method.call"] = ext_hl({ fg = syntax.func.default, bold = true }, config.styles.syntax.functions),
+            ["@method"] = ext_hl({ fg = syntax.func.default }, config.syntax.functions),
+            ["@method.call"] = ext_hl({ fg = syntax.func.default, bold = true }, config.syntax.functions),
 
             ["@constructor"] = { fg = syntax.constructor.default, bold = true },
 
@@ -100,9 +94,9 @@ return {
             ["@punctuation.bracket"] = { fg = syntax.punctuation.bracket },
             ["@punctuation.delimiter"] = { fg = syntax.punctuation.delimiter },
 
-            Comment = ext_hl({ fg = syntax.comment.default }, config.styles.syntax.comments),
+            Comment = ext_hl({ fg = syntax.comment.default }, config.syntax.comments),
             Todo = { fg = syntax.comment.todo },
-            SpecialComment = ext_hl({ fg = syntax.comment.doc }, config.styles.syntax.comments),
+            SpecialComment = ext_hl({ fg = syntax.comment.doc }, config.syntax.comments),
             ["@comment"] = { link = "Comment" },
             ["@comment.todo"] = { link = "Todo" },
             ["@comment.documentation"] = { link = "SpecialComment" },

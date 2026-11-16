@@ -8,7 +8,7 @@ export default function (
     return createPalette(
         {
             black: primaries.d40,
-            gray: primaries.m10,
+            gray: primaries.m30,
 
             darkRed: primaries.m40,
             red: primaries.m40,
@@ -29,7 +29,7 @@ export default function (
             magenta: primaries.m30,
 
             lightGray: primaries.m40,
-            white: primaries.m40,
+            white: primaries.l20,
         },
         opts,
     );

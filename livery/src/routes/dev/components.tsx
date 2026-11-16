@@ -28,7 +28,7 @@ import type { AdapterEditableField, AppConfig, AppName, Config } from "../../bin
 const SETTINGS_ADAPTERS_FIXTURE: Config = {
     system_appearance: false,
     apps: {
-        nvim: { enabled: true, config_path: "~/.config/nvim/lua/theme.lua" },
+        nvim: { enabled: true },
         ghostty: {
             enabled: true,
             config_path: "~/.config/ghostty/config",
@@ -49,6 +49,12 @@ const SETTINGS_ADAPTERS_FIXTURE: Config = {
             config_path: "~/.config/herdr/config.toml",
             themes_path: "~/.local/share/black-atom/themes/herdr",
         },
+        rex: {
+            enabled: true,
+            config_path:
+                "~/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app/Contents/MacOS/rex",
+            themes_path: "~/.local/share/black-atom/themes/rex",
+        },
         tuicr: { enabled: true, config_path: "~/.config/tuicr/config.toml" },
         "claude-code": {
             enabled: true,
@@ -60,7 +66,7 @@ const SETTINGS_ADAPTERS_FIXTURE: Config = {
 };
 
 const SETTINGS_EDITABLE_FIELDS: Record<AppName, AdapterEditableField[]> = {
-    nvim: ["config_path", "match_pattern", "replace_template"],
+    nvim: [],
     ghostty: ["config_path", "match_pattern", "replace_template"],
     "helm-tmux": ["config_path", "match_pattern", "replace_template"],
     delta: ["config_path", "themes_path", "match_pattern", "replace_template"],
@@ -69,6 +75,7 @@ const SETTINGS_EDITABLE_FIELDS: Record<AppName, AdapterEditableField[]> = {
     lazygit: ["config_path", "themes_path"],
     obsidian: [],
     herdr: ["config_path", "themes_path"],
+    rex: ["config_path", "themes_path"],
     tuicr: ["config_path", "match_pattern", "replace_template"],
     "claude-code": ["themes_path"],
 };

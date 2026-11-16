@@ -7,7 +7,7 @@ return {
 
         ---@type BlackAtom.Highlights
         return {
-            IndentBlanklineChar = { fg = ui.fg.subtle },
+            IndentBlanklineChar = { fg = ui.fg.border },
             IndentBlanklineContextChar = { fg = ui.fg.subtle },
         }
     end,

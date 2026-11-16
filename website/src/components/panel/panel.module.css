@@ -1,0 +1,58 @@
+.root {
+    --corner: linear-gradient(var(--ba-accent), var(--ba-accent));
+
+    position: relative;
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    background: color-mix(in srgb, var(--ba-bg) 85%, transparent);
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 70%, transparent);
+    padding: 28px 30px 26px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        pointer-events: none;
+        background:
+            var(--corner) 0 0 / 14px 2px no-repeat,
+            var(--corner) 0 0 / 2px 14px no-repeat,
+            var(--corner) 100% 100% / 14px 2px no-repeat,
+            var(--corner) 100% 100% / 2px 14px no-repeat;
+    }
+
+    @media (max-width: 560px) {
+        padding: 22px 18px 20px;
+    }
+}
+
+.backdrop {
+    gap: 36px;
+    padding: 44px 48px 40px;
+
+    @media (max-width: 560px) {
+        padding: 28px 22px 24px;
+    }
+}
+
+.fitted {
+    justify-self: start;
+    width: fit-content;
+    max-width: 100%;
+}
+
+.hero {
+    gap: 24px;
+    max-width: 40rem;
+    padding: 0;
+    background: none;
+    border-color: transparent;
+
+    &::before {
+        display: none;
+    }
+
+    @media (max-width: 560px) {
+        padding: 0;
+    }
+}

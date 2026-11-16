@@ -1,6 +1,7 @@
 use livery_core::config::types::{AppName, Config};
 use livery_core::themes::registry::{config_folder_marker, ThemeProvisioning};
 use livery_core::themes::{catalog, commands as themes, detect, unpack};
+use livery_core::updaters::nvim_overrides::NvimOverrideKind;
 use livery_core::updaters::{self, ThemeContext, UpdateResult, UpdateStatus};
 
 /// Every core entry point the CLI reaches for is `async` while awaiting
@@ -144,7 +145,17 @@ pub fn status() -> Result<(), String> {
     let config = livery_core::config::commands::get_config();
     let statuses = block_on(themes::get_app_status())?;
 
+    if let Some(error) = livery_core::config::commands::get_config_file_error() {
+        println!("config     can't be read: {error}");
+    }
     println!("theme      {}", active_theme_label());
+    for found in livery_core::updaters::nvim_overrides::find_nvim_overrides() {
+        let what = match found.kind {
+            NvimOverrideKind::Options => "nvim options set at",
+            NvimOverrideKind::Colorscheme => "nvim colorscheme set at",
+        };
+        println!("override   {what} {}:{}", found.file, found.line);
+    }
     println!();
 
     for app_status in statuses {
@@ -165,8 +176,11 @@ pub fn status() -> Result<(), String> {
     Ok(())
 }
 
-pub fn setup(yes: bool) -> Result<(), String> {
+pub fn setup(yes: bool, theme: Option<&str>) -> Result<(), String> {
     unpacked()?;
+    if let Some(key) = theme {
+        catalog::find(key).ok_or_else(|| format!("unknown theme '{key}' — run `livery list`"))?;
+    }
 
     let mut detections = block_on(detect::detect_apps());
     let found_count = detections
@@ -287,7 +301,7 @@ pub fn setup(yes: bool) -> Result<(), String> {
     // theme on the machine. That also makes the Active Theme record a
     // reading of something livery did, rather than an assumption.
     println!();
-    apply(&choose_setup_theme(yes)?)
+    apply(&choose_setup_theme(yes, theme)?)
 }
 
 /// Ask whether each app's discovered config folders are complete, and take the missing ones by
@@ -365,11 +379,18 @@ fn ask(message: &str, default: bool) -> Result<bool, String> {
     }
 }
 
-/// The theme setup applies as its last step. `--yes` has to stay
-/// non-interactive, so it takes the default rather than opening the picker.
-fn choose_setup_theme(yes: bool) -> Result<String, String> {
+/// The theme setup applies as its last step: `--theme` when given. `--yes`
+/// has to stay non-interactive, so it keeps the Active Theme, or takes the
+/// default when none is recorded, rather than opening the picker.
+fn choose_setup_theme(yes: bool, theme: Option<&str>) -> Result<String, String> {
+    if let Some(key) = theme {
+        return Ok(key.to_string());
+    }
     if yes {
-        return Ok(DEFAULT_THEME_KEY.to_string());
+        let active = livery_core::config::commands::get_config()
+            .active_theme
+            .filter(|key| catalog::find(key).is_some());
+        return Ok(active.unwrap_or_else(|| DEFAULT_THEME_KEY.to_string()));
     }
     pick_theme("Pick a theme to apply")
 }
@@ -377,19 +398,6 @@ fn choose_setup_theme(yes: bool) -> Result<String, String> {
 pub fn appearance(mode: &str) -> Result<(), String> {
     let result = updaters::update_system_appearance(mode.to_string());
     report("appearance", &result)
-}
-
-/// The settings live in the config; the subcommand only pushes them into
-/// nvim's managed block, so an untouched config writes the defaults.
-pub fn nvim_settings() -> Result<(), String> {
-    let settings = livery_core::config::commands::get_config()
-        .apps
-        .get(&AppName::Nvim)
-        .and_then(|app_config| app_config.settings.clone())
-        .unwrap_or_default();
-
-    let result = block_on(updaters::write_nvim_settings(settings));
-    report("nvim", &result)
 }
 
 fn report(label: &str, result: &updaters::UpdateResult) -> Result<(), String> {
@@ -550,8 +558,14 @@ fn pick_theme(prompt: &str) -> Result<String, String> {
         .position(|theme| theme.key == cursor_key)
         .unwrap_or(0);
 
+    // inquire never checks the terminal height, and the prompt and help lines
+    // take two rows beside the list. A taller page scrolls the prompt away.
+    let page_size = crossterm::terminal::size()
+        .map(|(_, rows)| usize::from(rows).saturating_sub(2).clamp(1, 15))
+        .unwrap_or(15);
+
     let choice = inquire::Select::new(prompt, options)
-        .with_page_size(15)
+        .with_page_size(page_size)
         .with_starting_cursor(starting_cursor)
         .raw_prompt()
         .map_err(|e| format!("no theme picked: {e}"))?;
@@ -574,10 +588,9 @@ fn active_theme_label() -> String {
 fn theme_was_applied(result: &UpdateResult) -> bool {
     result.status == UpdateStatus::Done
         || (result.status == UpdateStatus::Skipped
-            && result
-                .message
-                .as_deref()
-                .is_some_and(|message| message.starts_with("Config patched;")))
+            && result.message.as_deref().is_some_and(|message| {
+                message.starts_with("Config patched;") || message.starts_with("Theme saved;")
+            }))
 }
 
 fn enabled_apps(config: &Config) -> Vec<AppName> {
@@ -700,7 +713,10 @@ impl Notes {
             return;
         }
         if let Some(message) = &result.message {
-            let message = message.strip_prefix("Config patched; ").unwrap_or(message);
+            let message = message
+                .strip_prefix("Config patched; ")
+                .or_else(|| message.strip_prefix("Theme saved; "))
+                .unwrap_or(message);
             self.add(app, message.to_string());
         }
     }
@@ -757,6 +773,10 @@ mod tests {
         assert!(theme_was_applied(&UpdateResult::skipped(
             "ghostty",
             "Config patched; live reload failed"
+        )));
+        assert!(theme_was_applied(&UpdateResult::skipped(
+            "nvim",
+            "Theme saved; live reload failed"
         )));
         assert!(!theme_was_applied(&UpdateResult::skipped(
             "ghostty",

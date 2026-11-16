@@ -22,7 +22,15 @@ test("themeCatalog entries contain metadata and finished colors", () => {
 });
 
 test("collectionOrder follows collection metadata", () => {
-    assert.deepEqual(collectionOrder, ["default", "facility", "terra", "jpn", "minium", "mono"]);
+    assert.deepEqual(collectionOrder, [
+        "default",
+        "facility",
+        "terra",
+        "jpn",
+        "minium",
+        "mono",
+        "tr-1000",
+    ]);
 });
 
 type DefaultThemeKey = Theme.KeysForCollection<"default">;

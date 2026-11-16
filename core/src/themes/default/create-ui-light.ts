@@ -1,9 +1,14 @@
 import type * as Theme from "../../types/theme.ts";
-import { tint } from "../../utils/color.ts";
+import { oklch as toOklch } from "culori";
+import { oklch, shade, tint } from "../../utils/color.ts";
 
 export default function ({ primaries, feedback, accents }: Theme.CreatorContext): Theme.Ui {
     function t(color: string) {
         return tint({ color, with: primaries.l40, amount: 0.15 });
+    }
+
+    function pastel(color: string, lightness = 0.9, chroma = 0.07) {
+        return oklch(lightness, chroma, toOklch(color)?.h ?? 0);
     }
 
     const sharedFg = {
@@ -23,9 +28,9 @@ export default function ({ primaries, feedback, accents }: Theme.CreatorContext)
         hint: t(feedback.warning),
         warn: t(feedback.warning),
         positive: t(feedback.success),
-        add: t(feedback.success),
-        delete: t(feedback.negative),
-        modify: t(feedback.info),
+        add: pastel(feedback.success),
+        delete: pastel(feedback.negative, 0.93, 0.04),
+        modify: pastel(feedback.info),
     };
 
     return {
@@ -33,7 +38,7 @@ export default function ({ primaries, feedback, accents }: Theme.CreatorContext)
             default: primaries.l30,
             panel: primaries.l20,
             float: primaries.l20,
-            active: primaries.l40,
+            active: shade(primaries.l30, -0.04),
             disabled: primaries.l10,
             hover: primaries.l10,
             selection: primaries.l10,
@@ -46,6 +51,7 @@ export default function ({ primaries, feedback, accents }: Theme.CreatorContext)
             subtle: primaries.m10,
             accent: accents.a10,
             disabled: primaries.m30,
+            border: tint({ color: primaries.m40, with: primaries.l30, amount: 0.6 }),
             contrast: primaries.l20,
             ...sharedFg,
         },

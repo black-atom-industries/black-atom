@@ -32,6 +32,8 @@
 ---| "black-atom-mono-light"
 ---| "black-atom-mono-dimmed-dark"
 ---| "black-atom-mono-dimmed-light"
+---| "black-atom-tr-1000-dark"
+---| "black-atom-tr-1000-light"
 
 ---@alias BlackAtom.Theme.Collection.Key
 ---| "default"
@@ -40,6 +42,7 @@
 ---| "jpn"
 ---| "minium"
 ---| "mono"
+---| "tr-1000"
 
 ---@class BlackAtom.HighlightDefinition
 ---@field fg?                                                   string
@@ -122,7 +125,8 @@
 ---@field subtle                                                string Subtle text like comments and other secondary information
 ---@field accent                                                string For links and other text that needs to stand out
 ---@field disabled                                              string For disabled text
----@field contrast                                              string Inverted which is also used on colored or inverted backgrounds like feedback
+---@field border                                                string Idle borders, separators and guide lines
+---@field contrast                                             string Inverted which is also used on colored or inverted backgrounds like feedback
 ---@field negative                                              string Feedback - Negative
 ---@field warn                                                  string Feedback - Warnings
 ---@field info                                                  string Feedback - Information
@@ -193,15 +197,22 @@
 ---@field undercurl?                                            boolean Wether to use undercurls for diagnostics (Default: false)
 ---@field background?                                           boolean Wether to use background color for virtual text (Default: false)
 
----@class BlackAtom.Config.Styles
+---@class BlackAtom.Config
+---@field term_colors?                                          boolean Wether to enable terminal colors (Default: true)
 ---@field cmp_kind_color_mode?                                  "fg" | "bg" (Default: "bg")
 ---@field dark_sidebars?                                        boolean Wether to use dark sidebars (Default: true)
 ---@field dark_floats?                                          boolean Wether to use dark floats (Default: true)
+---@field dark_gutter?                                          boolean Wether to use a dark gutter behind line numbers, signs and folds (Default: false)
+---@field gutter_padding?                                       integer Blank cells `black-atom.gutter`'s `pad` puts between a dark gutter and the code (Default: 0)
 ---@field transparency?                                         "full" | "partial" | "none" Transparency level (Default: "none")
 ---@field diagnostics?                                          BlackAtom.Config.Diagnostics Diagnostics related settings (Default: See Documentation)
 ---@field syntax?                                               BlackAtom.Config.SyntaxStyle Syntax styling options (Default: See Documentation)
 ---@field ending_tildes?                                        boolean Wether to show the end-of-buffer tildes (Default: false)
 
----@class BlackAtom.Config
----@field term_colors?                                          boolean Wether to enable terminal colors (Default: true)
----@field styles?                                               BlackAtom.Config.Styles Various styles related settings (Default: See Documentation)
+---@class BlackAtom.LiveryConfig.Nvim
+---@field enabled?                                              boolean `false` turns the startup theme and the settings layer off
+---@field settings?                                             BlackAtom.Config Options Livery stores for Neovim
+
+---@class BlackAtom.LiveryConfig
+---@field active_theme?                                         string Key of the theme Livery has applied
+---@field apps?                                                 { nvim?: BlackAtom.LiveryConfig.Nvim }

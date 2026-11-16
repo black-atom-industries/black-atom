@@ -4,7 +4,7 @@ The Rust backend is the executor. Every OS operation lives here: file I/O, proce
 socket communication.
 
 Repo-wide instructions live in [`AGENTS.md`](../../AGENTS.md); every term is defined in
-[`GLOSSARY.md`](../../GLOSSARY.md). Name things with those words.
+[`docs/glossary.md`](../../docs/glossary.md). Name things with those words.
 
 It is three crates. `livery/core` (`livery_core`) holds the domain logic and depends on no Tauri
 crate — `cargo tree -p livery_core -e normal | grep -c tauri` must stay `0`. `livery/src-tauri`

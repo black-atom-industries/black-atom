@@ -43,7 +43,7 @@ Never use `git add .` or `git add -A`. Unstage any held-back file a hook or help
 ## 3. Audit docs
 
 When staged changes add or change a config key, command, domain term, or what an updater does (files, pointer, reload,
-precondition), check `README.md`, `GLOSSARY.md`, `core/README.md`, `livery/DESIGN.md`, `livery/ADAPTERS.md`, and the adapter's `README.md` against the diff. Fix and stage the
+precondition), check `README.md`, `docs/glossary.md`, `docs/colors.md`, `docs/theme-design.md`, `docs/adapter-guide.md`, `core/README.md`, `livery/DESIGN.md`, `livery/ADAPTERS.md`, and the adapter's `README.md` against the diff. Fix and stage the
 confirmed docs in this same commit.
 
 ## 4. Verify
@@ -63,6 +63,8 @@ A docs-only change may skip `npm run verify`, but say that it was skipped.
 pointer, or anything under `livery/e2e/`, also run `npm run test:e2e`. A failing spec or screenshot means the suite needs the
 same update as the code: fix its specs, fixtures, or baselines in this commit, and look at a changed screenshot before
 accepting it with `--update-snapshots`.
+
+When the staged change touches `website/`, also run `npm run verify:stories --workspace website`, `npm run verify:audio --workspace website` and `npm run test:e2e --workspace website`.
 
 ## 5. Draft and ask
 

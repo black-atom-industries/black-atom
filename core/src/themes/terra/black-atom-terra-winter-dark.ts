@@ -32,9 +32,9 @@ export default defineThemeColors({
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
-            // Cold violet/mauve - red shifted toward blue
-            darkRed: oklch(0.68, 0.08, 290),
-            red: oklch(0.75, 0.09, 285),
+            // Frost rose
+            darkRed: oklch(0.68, 0.09, 12),
+            red: oklch(0.76, 0.1, 12),
 
             // Icy teal - green shifted cold
             darkGreen: oklch(0.7, 0.06, 220),

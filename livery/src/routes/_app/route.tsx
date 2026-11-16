@@ -8,6 +8,9 @@ import { AppFooter } from "../../components/app-footer/index.ts";
 import { KeyHint } from "../../components/primitives/key-hint/key-hint.tsx";
 import { StatusPip } from "../../components/primitives/status-pip/status-pip.tsx";
 import { themeToStyleSheet } from "../../lib/tokens.ts";
+import { isThemeKey, useActiveTheme } from "../../queries/use-active-theme.ts";
+import { useConfigFileError } from "../../queries/use-config.ts";
+import { useConfigFileSync } from "./-use-config-file-sync.ts";
 import { useDisplayedTheme } from "./-use-displayed-theme.ts";
 import styles from "./route.module.css";
 
@@ -17,6 +20,11 @@ export const Route = createFileRoute("/_app")({
 
 function AppLayout() {
     const displayedTheme = useDisplayedTheme();
+    useConfigFileSync();
+    const configFileError = useConfigFileError().data;
+    const activeThemeKey = useActiveTheme().query.data;
+    const unknownActiveTheme =
+        activeThemeKey && !isThemeKey(activeThemeKey) ? activeThemeKey : null;
 
     const matches = useMatches();
     const isSettings = matches.some((m) => m.routeId === "/_app/settings");
@@ -80,7 +88,15 @@ function AppLayout() {
                             )
                         }
                         status={
-                            isSettings && isSaving ? (
+                            configFileError ? (
+                                <StatusPip intent="error">
+                                    CONFIG.JSON UNREADABLE: {configFileError}
+                                </StatusPip>
+                            ) : unknownActiveTheme ? (
+                                <StatusPip intent="error">
+                                    NO THEME NAMED {unknownActiveTheme}
+                                </StatusPip>
+                            ) : isSettings && isSaving ? (
                                 <StatusPip intent="running">SAVING…</StatusPip>
                             ) : isSettings && justSaved ? (
                                 <StatusPip intent="ok">SAVED</StatusPip>

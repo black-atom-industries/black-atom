@@ -209,6 +209,9 @@ where
                 };
                 diagnostics.push(format!("{}: {detail}", socket.display()));
             }
+            Err(error) if error.contains("server_not_running") => {
+                log::info!("Skipped stale Herdr socket {}", socket.display());
+            }
             Err(error) => diagnostics.push(format!("{}: {error}", socket.display())),
         }
     }
@@ -393,6 +396,28 @@ mod tests {
     }
 
     #[test]
+    fn stale_socket_of_a_stopped_session_is_skipped_quietly() {
+        let sockets = vec![PathBuf::from("live.sock"), PathBuf::from("stale.sock")];
+        let report = reload_sessions_with(&sockets, |socket| {
+            if socket == Path::new("live.sock") {
+                Ok(ReloadReport {
+                    status: "applied".to_string(),
+                    diagnostics: vec![],
+                })
+            } else {
+                Err(
+                    r#"herdr exited with exit status: 1: {"error":{"code":"server_not_running"}}"#
+                        .to_string(),
+                )
+            }
+        })
+        .unwrap();
+
+        assert_eq!(report.status, "applied");
+        assert!(report.diagnostics.is_empty());
+    }
+
+    #[test]
     fn reports_error_when_no_session_reloads() {
         let sockets = vec![PathBuf::from("one.sock"), PathBuf::from("two.sock")];
         let error =
@@ -446,7 +471,6 @@ mod tests {
             themes_path: Some(portable_themes_path),
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let ctx = UpdateContext {
@@ -491,7 +515,6 @@ mod tests {
             themes_path: Some(themes.path().to_string_lossy().to_string()),
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let ctx = UpdateContext {
@@ -526,7 +549,6 @@ mod tests {
             themes_path: Some(themes.path().to_string_lossy().to_string()),
             match_pattern: None,
             replace_template: None,
-            settings_path: None,
             settings: None,
         };
         let ctx = UpdateContext {

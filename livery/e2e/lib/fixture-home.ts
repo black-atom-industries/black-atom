@@ -1,4 +1,12 @@
-import { cpSync, mkdirSync, readFileSync, realpathSync, rmSync } from "node:fs";
+import {
+    cpSync,
+    mkdirSync,
+    readFileSync,
+    realpathSync,
+    renameSync,
+    rmSync,
+    writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join } from "node:path";
 import { test } from "@playwright/test";
@@ -40,5 +48,18 @@ export function readHomeFile(path: string): string {
 }
 
 export function readLiveryConfig(): Config {
-    return JSON.parse(readHomeFile("~/.config/black-atom/livery/config.json"));
+    return JSON.parse(readHomeFile(LIVERY_CONFIG));
+}
+
+const LIVERY_CONFIG = "~/.config/black-atom/livery/config.json";
+
+/** Save text as the Livery config the way an editor does: a temp file, then a rename. */
+export function writeLiveryConfigText(content: string) {
+    const path = homePath(LIVERY_CONFIG);
+    writeFileSync(`${path}.swp`, content);
+    renameSync(`${path}.swp`, path);
+}
+
+export function readLiveryConfigText(): string {
+    return readHomeFile(LIVERY_CONFIG);
 }

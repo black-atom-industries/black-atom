@@ -1,7 +1,7 @@
 //! Tauri command surface. Every command is a thin wrapper over a plain
 //! `livery_core` function, so the domain logic stays callable without Tauri.
 
-use livery_core::config::types::{AppName, Config, NvimSettings};
+use livery_core::config::types::{AppName, Config};
 use livery_core::themes::commands::{AppStatus, LinkThemesResult};
 use livery_core::themes::detect::AppDetection;
 use livery_core::updaters::{AppPathVerification, ThemeContext, UpdateResult};
@@ -16,6 +16,14 @@ pub fn get_config() -> Config {
 #[specta::specta]
 pub fn save_config(config: Config) -> Result<(), String> {
     livery_core::config::commands::save_config(config)
+}
+
+/// Why the config file can't be read as a Config. `None` for a good file and
+/// for a missing one, which first run creates.
+#[tauri::command]
+#[specta::specta]
+pub fn get_config_file_error() -> Option<String> {
+    livery_core::config::commands::get_config_file_error()
 }
 
 /// The theme livery last applied, as a theme key. `None` on a machine that
@@ -81,13 +89,20 @@ pub fn update_system_appearance(appearance: String) -> UpdateResult {
     livery_core::updaters::update_system_appearance(appearance)
 }
 
-/// Save the Neovim plugin settings and write them into the managed Lua
-/// block in nvim's SETTINGS_PATH. The file must already exist — Livery
-/// patches a Neovim entry point, it does not create one.
+/// Reload running Neovims with the Active Theme, so they pick up the plugin
+/// options stored in the config.
 #[tauri::command]
 #[specta::specta]
-pub async fn write_nvim_settings(settings: NvimSettings) -> UpdateResult {
-    livery_core::updaters::write_nvim_settings(settings).await
+pub async fn reload_nvim() -> UpdateResult {
+    livery_core::updaters::reload_nvim().await
+}
+
+/// Lines of the user's Neovim config that set the plugin options or pick a
+/// colorscheme by name. Read-only; empty when there is no Neovim config.
+#[tauri::command]
+#[specta::specta]
+pub fn find_nvim_overrides() -> Vec<livery_core::updaters::nvim_overrides::NvimOverride> {
+    livery_core::updaters::nvim_overrides::find_nvim_overrides()
 }
 
 /// Check one adapter's configured location: does it exist, and does its

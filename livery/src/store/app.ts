@@ -11,10 +11,13 @@ export interface AppState {
      */
     applyingTheme: Theme.Definition | null;
     updaterResults: UpdateResult[];
+    /** A theme set in the config file, for the theme list's cursor to move to. */
+    followThemeKey: string | null;
 }
 
 export const appStore = new Store<AppState>({
     phase: "picking",
     applyingTheme: null,
     updaterResults: [],
+    followThemeKey: null,
 });

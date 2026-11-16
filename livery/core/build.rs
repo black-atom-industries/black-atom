@@ -17,6 +17,7 @@ fn main() {
         "zed/themes",
         "nvim/colors",
         "nvim/lua",
+        "nvim/plugin",
     ] {
         println!("cargo:rerun-if-changed=../../adapters/{path}");
     }

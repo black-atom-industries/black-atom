@@ -1,0 +1,28 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 28px;
+    list-style: none;
+    padding: 0;
+}
+
+.feature {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+    padding: 20px 0;
+    border-top: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 35%, transparent);
+}
+
+.title {
+    font-family: var(--ba-font-mono);
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+}
+
+.body {
+    color: var(--ba-fg-subtle);
+    font-size: 14.5px;
+    text-wrap: pretty;
+}

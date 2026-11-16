@@ -40,6 +40,8 @@ settings:
             value: black-atom-mono-dark
           - label: "Mono: Dimmed Dark"
             value: black-atom-mono-dimmed-dark
+          - label: "TR-1000: Dark"
+            value: black-atom-tr-1000-dark
     - id: light-theme-variant
       title: Light Theme Variant
       description: Choose your Black Atom variant for light mode
@@ -77,3 +79,5 @@ settings:
             value: black-atom-mono-light
           - label: "Mono: Dimmed Light"
             value: black-atom-mono-dimmed-light
+          - label: "TR-1000: Light"
+            value: black-atom-tr-1000-light

@@ -1,35 +1,43 @@
 import type * as Theme from "../../types/theme.ts";
 import { createPalette } from "../create-palette.ts";
+import { shade } from "../../utils/color.ts";
 
 export default function (
     primaries: Theme.Primaries,
     opts?: Parameters<typeof createPalette>[1],
 ): Theme.Palette {
+    const red = shade(primaries.m10, 0.06);
+    const yellow = shade(primaries.m10, 0.06);
+    const green = shade(primaries.m10, -0.08);
+    const cyan = shade(primaries.m10, -0.08);
+    const blue = shade(primaries.m10, -0.22);
+    const magenta = shade(primaries.m10, -0.22);
+
     return createPalette(
         {
             black: primaries.d40,
             gray: primaries.m10,
 
-            darkRed: primaries.m40,
-            red: primaries.m40,
+            darkRed: shade(red, -0.07),
+            red,
 
-            darkYellow: primaries.m30,
-            yellow: primaries.m30,
+            darkYellow: shade(yellow, -0.07),
+            yellow,
 
-            darkGreen: primaries.m30,
-            green: primaries.m30,
+            darkGreen: shade(green, -0.07),
+            green,
 
-            darkCyan: primaries.m40,
-            cyan: primaries.m40,
+            darkCyan: shade(cyan, -0.07),
+            cyan,
 
-            darkBlue: primaries.m40,
-            blue: primaries.m40,
+            darkBlue: shade(blue, -0.07),
+            blue,
 
-            darkMagenta: primaries.m30,
-            magenta: primaries.m30,
+            darkMagenta: shade(magenta, -0.07),
+            magenta,
 
             lightGray: primaries.m40,
-            white: primaries.m40,
+            white: primaries.l10,
         },
         opts,
     );

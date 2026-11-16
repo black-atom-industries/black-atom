@@ -1,0 +1,46 @@
+[
+    {
+        "sha": "775dc7199ca86ab1f02267b45f86ebfa0775cc70",
+        "html_url": "https://github.com/black-atom-industries/black-atom/commit/775dc7199ca86ab1f02267b45f86ebfa0775cc70",
+        "commit": {
+            "message": "feat(livery): apply claude-code themes to every config folder #22",
+            "author": {
+                "name": "nbr",
+                "date": "2026-10-15T11:02:00Z"
+            }
+        }
+    },
+    {
+        "sha": "102f75a368a9c623add29a8338294e0c828ff75a",
+        "html_url": "https://github.com/black-atom-industries/black-atom/commit/102f75a368a9c623add29a8338294e0c828ff75a",
+        "commit": {
+            "message": "fix(herdr): limit the theme to colors #22\n\nFacility themes used to change the sidebar layout.",
+            "author": {
+                "name": "nbr",
+                "date": "2026-10-14T16:40:00Z"
+            }
+        }
+    },
+    {
+        "sha": "0faf8a1864cf89c8a0a4a45b52b1605b966f3288",
+        "html_url": "https://github.com/black-atom-industries/black-atom/commit/0faf8a1864cf89c8a0a4a45b52b1605b966f3288",
+        "commit": {
+            "message": "feat(core): warm Minium Polymer's neutrals and key keywords to orange #22",
+            "author": {
+                "name": "nbr",
+                "date": "2026-10-13T09:15:00Z"
+            }
+        }
+    },
+    {
+        "sha": "3e22d87e42fba15523bf80d60fcc42813985797a",
+        "html_url": "https://github.com/black-atom-industries/black-atom/commit/3e22d87e42fba15523bf80d60fcc42813985797a",
+        "commit": {
+            "message": "feat(claude-code): add claude-code adapter #22",
+            "author": {
+                "name": "nbr",
+                "date": "2026-10-12T18:30:00Z"
+            }
+        }
+    }
+]

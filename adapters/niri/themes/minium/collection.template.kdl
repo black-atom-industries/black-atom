@@ -12,12 +12,12 @@ overview {
 layout {
     focus-ring {
         active-color "<%= theme.ui.fg.accent %>"
-        inactive-color "<%= theme.ui.fg.subtle %>"
+        inactive-color "<%= theme.ui.fg.border %>"
     }
 
     border {
         active-color "<%= theme.ui.fg.accent %>"
-        inactive-color "<%= theme.ui.fg.subtle %>"
+        inactive-color "<%= theme.ui.fg.border %>"
         urgent-color "<%= theme.palette.red %>"
     }
 

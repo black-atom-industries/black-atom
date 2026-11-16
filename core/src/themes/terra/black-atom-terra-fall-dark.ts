@@ -8,14 +8,14 @@ import createUi from "./create-ui-dark.ts";
 
 export default defineThemeColors({
     primaries: {
-        d10: oklch(0.18, 0.025, 50.0),
-        d20: oklch(0.22, 0.025, 50.0),
-        d30: oklch(0.26, 0.025, 50.0),
-        d40: oklch(0.3, 0.025, 50.0),
+        d10: oklch(0.2, 0.025, 45),
+        d20: oklch(0.22, 0.025, 45),
+        d30: oklch(0.26, 0.025, 45),
+        d40: oklch(0.3, 0.025, 45),
 
         m10: oklch(0.5, 0.075, 50.0),
         m20: oklch(0.6, 0.075, 50.0),
-        m30: oklch(0.65, 0.075, 50.0),
+        m30: oklch(0.65, 0.05, 50.0),
         m40: oklch(0.7, 0.075, 50.0),
 
         l10: oklch(0.75, 0.05, 50.0),
@@ -24,13 +24,13 @@ export default defineThemeColors({
         l40: oklch(0.9, 0.0439, 50.0),
     },
     accents: {
-        a10: oklch(0.699, 0.15, 72.07),
-        a20: oklch(0.699, 0.15, 50.77),
+        a10: oklch(0.7, 0.125, 72.07),
+        a20: oklch(0.7, 0.125, 50.77),
     },
     palette: ({ primaries, accents }) =>
         createPalette(primaries, {
-            darkRed: oklch(0.6, 0.14, 30),
-            red: oklch(0.7, 0.14, 30),
+            darkRed: oklch(0.64, 0.125, 30),
+            red: oklch(0.76, 0.125, 30),
 
             darkGreen: oklch(0.655, 0.05, 127.63),
             green: oklch(0.698, 0.05, 127.55),
@@ -38,14 +38,14 @@ export default defineThemeColors({
             darkYellow: accents.a20,
             yellow: accents.a10,
 
-            darkBlue: oklch(0.655, 0.101, 50.7),
-            blue: oklch(0.699, 0.101, 52.11),
+            darkBlue: oklch(0.72, 0.06, 50),
+            blue: oklch(0.82, 0.055, 50),
 
-            darkMagenta: oklch(0.656, 0.101, 36.23),
-            magenta: oklch(0.701, 0.1, 40.54),
+            darkMagenta: oklch(0.6, 0.05, 315),
+            magenta: oklch(0.66, 0.05, 315),
 
-            darkCyan: oklch(0.655, 0.049, 175.15),
-            cyan: oklch(0.7, 0.05, 174.22),
+            darkCyan: oklch(0.72, 0.04, 155),
+            cyan: oklch(0.78, 0.04, 155),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,

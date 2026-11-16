@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es2024",
+        "lib": ["es2024", "dom", "dom.iterable"],
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "types": ["node", "vite/client"],
+        "strict": true,
+        "noEmit": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "paths": {
+            "#/*": ["./src/*"],
+            "#/storybook/*": ["./.storybook/*"]
+        }
+    },
+    "include": ["src", "e2e", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
+}

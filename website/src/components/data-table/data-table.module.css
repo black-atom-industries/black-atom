@@ -1,0 +1,39 @@
+.root {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+
+    & th {
+        padding: 10px 12px 10px 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 50%, transparent);
+        font-family: var(--ba-font-mono);
+        font-weight: 400;
+        font-size: 10.5px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        text-align: left;
+        color: var(--ba-fg-subtle);
+    }
+
+    & td {
+        padding: 12px 12px 12px 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 28%, transparent);
+        vertical-align: baseline;
+    }
+
+    & a {
+        border-bottom: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 50%, transparent);
+    }
+}
+
+.mono {
+    font-family: var(--ba-font-mono);
+}
+
+.subtle {
+    color: var(--ba-fg-subtle);
+}

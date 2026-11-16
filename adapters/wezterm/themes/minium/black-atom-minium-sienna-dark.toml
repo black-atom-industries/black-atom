@@ -10,30 +10,30 @@ cursor_border = "#ef9369"
 cursor_fg = "#2e2726"
 selection_bg = "#4a4342"
 selection_fg = "#d9ccba"
-split = "#ef9369"
-compose_cursor = "#dd7577"
+split = "#5b5352"
+compose_cursor = "#f47a7d"
 scrollbar_thumb = "#857f7a"
 
 ansi = [
   "#4a4342", # black
-  "#a39d98", # dark_red
-  "#857f7a", # dark_green
-  "#caa594", # dark_yellow
-  "#a39d98", # dark_blue
-  "#857f7a", # dark_magenta
-  "#a39d98", # dark_cyan
+  "#caa594", # dark_red
+  "#799a79", # dark_green
+  "#a5896f", # dark_yellow
+  "#7992ad", # dark_blue
+  "#a9829b", # dark_magenta
+  "#619b9e", # dark_cyan
   "#a39d98" # light_gray
 ]
 
 brights = [
-  "#5b5352", # gray
-  "#a39d98", # red
-  "#857f7a", # green
-  "#ef9369", # yellow
-  "#a39d98", # blue
-  "#857f7a", # magenta
-  "#a39d98", # cyan
-  "#a39d98" # white
+  "#857f7a", # gray
+  "#ef9369", # red
+  "#97b997", # green
+  "#c5a88d", # yellow
+  "#97b1cd", # blue
+  "#c9a0ba", # magenta
+  "#80babd", # cyan
+  "#c4b9aa" # white
 ]
 
 [colors.tab_bar]

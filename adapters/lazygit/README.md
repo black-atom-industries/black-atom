@@ -63,27 +63,31 @@ Or manually copy the theme block into your config:
 gui:
     theme:
         activeBorderColor:
-            - "#edaa4b"
+            - "#e49e22"
             - bold
         inactiveBorderColor:
-            - "#9c98b3"
+            - "#59506a"
         optionsTextColor:
-            - "#a298b9"
+            - "#b5a4d7"
         selectedLineBgColor:
-            - "#4d4053"
+            - "#4a3d50"
         cherryPickedCommitBgColor:
-            - "#413446"
+            - "#39373f"
         cherryPickedCommitFgColor:
-            - "#edaa4b"
+            - "#b5a4d7"
+        markedBaseCommitBgColor:
+            - "#413627"
+        markedBaseCommitFgColor:
+            - "#ead2b2"
         unstagedChangesColor:
-            - "#e47889"
+            - "#fe838f"
         defaultFgColor:
-            - "#fbcaa4"
+            - "#ead2b2"
         searchingActiveBorderColor:
-            - "#edaa4b"
+            - "#e49e22"
 
     authorColors:
-        "*": "#eda77d"
+        "*": "#e19b73"
 ```
 
 </details>
@@ -150,7 +154,7 @@ gui:
             - "<%= theme.ui.fg.accent %>"
             - bold
         inactiveBorderColor:
-            - "<%= theme.ui.fg.subtle %>"
+            - "<%= theme.ui.fg.border %>"
         # ...and so on
 ```
 

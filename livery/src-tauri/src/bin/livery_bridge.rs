@@ -15,6 +15,8 @@ fn main() {
         std::process::exit(1);
     };
 
+    livery_lib::dev_bridge::start_config_watcher();
+
     eprintln!("livery-bridge: listening");
     loop {
         std::thread::park();

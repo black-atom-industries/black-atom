@@ -1,0 +1,312 @@
+# Ubiquitous Language
+
+Every term the codebase uses, in one place. Use these words in code, commits, and discussion.
+
+Terms are grouped by the part of the system they belong to: **Themes** covers what a theme is and
+how it is generated, **Website** covers the black-atom.industries site, **Livery** covers the app that applies
+themes to a machine.
+
+---
+
+# Themes
+
+## Theme Structure
+
+| Term                 | Definition                                                                                                                      | Aliases to avoid          |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| **Theme**            | A complete visual definition for one appearance variant, composed of metadata, primaries, palette, UI colors, and syntax colors | Colorscheme, scheme, skin |
+| **Theme Key**        | Unique identifier string for a theme (e.g., `black-atom-terra-winter-dark`)                                                     | ID, slug, theme name      |
+| **Theme Definition** | The TypeScript object (`ThemeDefinition`) representing a complete theme — metadata plus all color groups                        | Theme config, theme data  |
+| **Appearance**       | Whether a theme is `"light"` or `"dark"`                                                                                        | Mode, variant, brightness |
+| **Status**           | A theme's maturity level: `"development"` or `"release"`                                                                        | Stage, phase              |
+
+## Collections
+
+The catalog lists every theme and its collection in [`core/src/themes/catalog.ts`](../core/src/themes/catalog.ts).
+
+| Term               | Definition                                                                                                                                                                                      | Aliases to avoid               |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Collection**     | A named group of themes sharing a design concept and one set of palette, feedback, UI, and syntax creators in its directory; each theme file defines only colors (e.g., `jpn`, `terra`, `mono`) | Category, family, group        |
+| **Collection Key** | The string identifier for a collection, such as `"jpn"`. The keys are the `collections` tuple in `core/src/themes/catalog.ts`                                                                   | Collection name, collection ID |
+
+## Color Groups
+
+| Term               | Definition                                                                                                                                                                                                | Aliases to avoid                             |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **Primaries**      | A 12-step gradient from dark to light, organized as d10-d40 (dark), m10-m40 (mid), and l10-l40 (light). The creators draw UI and syntax colors from it                                                    | Base colors, scale, gradient                 |
+| **Palette**        | The 16 ANSI terminal colors of a theme, one named slot each (see **Palette Slot**)                                                                                                                        | Terminal colors, ANSI colors                 |
+| **Palette Slot**   | One named position in the **Palette**, mapped to an ANSI index. `darkGreen` is ANSI 2, the slot most terminal output shows as green. The map is in [`docs/colors.md`](colors.md#palette-and-the-terminal) | Palette entry, palette key                   |
+| **Feedback**       | Four status colors: `negative`, `success`, `info`, `warning`. They reach a tool only through the UI states they feed (see **Feedback Reach**)                                                             | Status colors, state colors, semantic colors |
+| **Feedback Reach** | The path a **Feedback** color takes to a tool: it feeds UI states such as `ui.fg.negative`, and a template reads those states, never the feedback color itself                                            | Feedback mapping, feedback usage             |
+| **Accents**        | An emphasis scale with required a10/a20 and optional a30/a40 tokens. Creators place them in palette slots and in UI and syntax colors                                                                     | Highlights, emphasis colors                  |
+
+## Derived Color Layers
+
+Theme files export `Colors` through `defineThemeColors()`. It resolves primaries, accents, palette,
+feedback, then UI and syntax; each derived group accepts a value or a creator using earlier groups.
+Collection modules call `defineCollection({ meta, themes })`, with `{ meta, colors }` per theme.
+The `collections` tuple in `core/src/themes/catalog.ts` drives key types and collection metadata;
+`themeCatalog` combines each collection's `.themes` map.
+
+| Term                      | Definition                                                                                                                                                                          | Aliases to avoid                |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| **UI Colors**             | Semantic background and foreground tokens for interface elements (default, panel, float, active, disabled, hover, selection, search, contrast, border, plus feedback-mapped states) | Theme tokens, design tokens     |
+| **Syntax Colors**         | Color assignments for code highlighting categories (variable, string, keyword, type, comment, etc.)                                                                                 | Highlight colors, editor colors |
+| **Theme Creator Options** | The input structure (`{primaries, palette, feedback, accents}`) passed to UI and syntax creation functions                                                                          | Creator config, color inputs    |
+
+## Adapter & Generation Pipeline
+
+| Term               | Definition                                                                                                                                                 | Aliases to avoid               |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Adapter**        | A platform-specific directory under `adapters/` that consumes Black Atom themes and generates output files for that platform (e.g., Zed, Neovim, Obsidian) | Plugin, extension, integration |
+| **Adapter Config** | The `black-atom-adapter.json` file in an adapter directory that declares its collections, templates, and optional post-generation commands                 | Manifest, config file          |
+| **Template**       | An Eta template file (`.template.{ext}`) in an adapter directory that receives a `ThemeDefinition` and produces platform-specific output                   | Eta file, template file        |
+| **Generated File** | The output artifact produced by rendering a template with theme data — the file end-users consume                                                          | Output, artifact, built file   |
+| **postGenerate**   | An optional shell command in adapter config that runs after template rendering (e.g., formatting, building)                                                | Post-hook, after-generate      |
+
+## Color Utilities
+
+| Term         | Definition                                                                                                                       | Aliases to avoid        |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| **HexColor** | The constrained color type used throughout the system: a hex string in `#rrggbb` or `#rrggbbaa` format                           | Color string, hex value |
+| **tint()**   | The primary color derivation function: blends a base color toward a target color by a specified amount using OKLCH interpolation | Blend, interpolate      |
+| **mix()**    | Mixes a share of one color into a base color in OKLab, keeping the base's tone                                                   | Blend, interpolate      |
+| **oklch()**  | Utility that converts an OKLCH color-space value to a HexColor                                                                   | Color convert           |
+| **shade()**  | Derives a lighter or darker color by shifting OKLCH lightness, keeping chroma and hue                                            | Lighten, darken         |
+
+## Metadata
+
+| Term                | Definition                                                                                                        | Aliases to avoid         |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| **Theme Meta**      | Metadata attached to a theme: key, name, label, appearance, status, collection                                    | Header, info, properties |
+| **Theme Meta Base** | The `MetaBase` type: theme metadata without `label`; collection entries supply `name`, `appearance`, and `status` | Raw meta, base meta      |
+| **Label**           | A computed display string combining theme name and collection, derived by `defineCollection()`                    | Display name, title      |
+| **Name**            | The human-readable short name for a theme within its collection (e.g., "Winter Dark")                             | Title, display name      |
+
+---
+
+# Website
+
+## Studio and Products
+
+| Term               | Definition                                                                                                                                           | Aliases to avoid                |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| **Studio**         | Black Atom Industries as the website presents it: the home page and the owner of its products                                                        | Company, brand site, org        |
+| **Product**        | One of the studio's offerings with its own pages, changelog and background state: Black Atom (themes, with Livery as its app), iter.nvim, radar.nvim | Project, app, tool              |
+| **Install Method** | One way to get a product, kept as data on the product; one not yet released shows as a disabled "soon" tab (e.g. from source, brew)                  | Download option, install option |
+
+## Background and Sound
+
+| Term                 | Definition                                                                                                                                                                | Aliases to avoid                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| **Background Layer** | The single fixed scene in the root layout behind every page; one renderer runs at a time and the content swaps on top                                                     | Backdrop, canvas, hero scene     |
+| **Background State** | The view and mode the Background Layer takes on a route: `view` is a **Landmark** or the **Wide Shot**, and `mode` is `full` or `receded` (dimmed behind the page's text) | Scene mode, background variant   |
+| **Landmark**         | One of the three fixed places in the background space: `hole`, `iter` and `radar`. Each product has one                                                                   | Scene, location, stop            |
+| **Wide Shot**        | The background view of all three **Landmarks** at once. A wide shot may drift toward one of them                                                                          | Overview, panorama               |
+| **Viewport Frame**   | The cornered frame fixed over every page; the header sits along its top edge and the dock in its bottom-right corner                                                      | Border, overlay, chrome frame    |
+| **Edge Label**       | The line set into the Viewport Frame's bottom edge on the studio page; it fades into the rule once the page scrolls                                                       | Tagline bar, frame caption       |
+| **Soundscape**       | A pluggable sound design for the sound engine: params, layers and reactions to scene events, with a pitch root per theme                                                  | Track, sound theme, audio preset |
+
+## Theme Detail Page
+
+| Term                  | Definition                                                                                                                                                                     | Aliases to avoid        |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------- |
+| **Theme Detail Page** | The page at `/black-atom/themes/$theme` that documents one theme: its Spec Plate, Theme Previews, primaries, palette, tokens and generated files                               | Theme page, theme view  |
+| **Theme Previews**    | The editor, diff and terminal previews of one theme, drawn in that theme's colors; with a base version, each preview shows the before and after side by side                   | Demos, mockups          |
+| **Spec Plate**        | The summary strip at the top of the Theme Detail Page: collection, appearance, status, contrast share and accent                                                               | Spec sheet, header card |
+| **Token Card**        | One theme token on the Theme Detail Page: its swatch, path, value, purpose, source and, for text, its **Contrast Grade**                                                       | Token tile, swatch card |
+| **Contrast Grade**    | How readable a foreground is on its background, at one of four levels: `aaa` and `aa` for any text, `large` for large text and UI marks, `low` for pairs that are hard to read | Score, rating           |
+| **Theme Compare**     | The dev-server-only comparison on the Theme Detail Page: the theme at a git revision (`HEAD` by default) beside the working tree, with the tokens that changed                 | Diff view, lab          |
+
+---
+
+# Livery
+
+> Per-adapter setup contracts live in [`livery/ADAPTERS.md`](../livery/ADAPTERS.md); the design spec
+> lives in [`livery/docs/design-system/`](../livery/docs/design-system/README.md).
+
+## Theme Display
+
+| Term              | Definition                                                                                                                                                                                 | Aliases to avoid  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| **ThemeGroup**    | A frontend display structure that pairs a Collection Key with its sorted list of Theme Definitions — used to render the picker UI                                                          | Category, section |
+| **Contrast Pair** | A foreground and background token that occur together in real UI (`fg.default` on `bg.panel`, `syntax.string.default` on `bg.default`), measured as a WCAG ratio by `analyzeThemeContrast` | Color pair, combo |
+
+## Configuration
+
+| Term                 | Definition                                                                                                                                        | Aliases to avoid             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| **Config**           | The user's livery configuration file (`$XDG_CONFIG_HOME/black-atom/livery/config.json`) containing a SystemAppearance toggle and per-app settings | Settings, preferences        |
+| **Config Watcher**   | The GUI's watch on the Config file, which reports a change made outside Livery or a file that can't be read as a `config-file-changed` event      | File watcher                 |
+| **AppConfig**        | The per-app configuration block — enabled flag, config_path, themes_path, match_pattern, replace_template, and for Neovim the plugin settings     | App settings, app entry      |
+| **AppName**          | An enum of supported applications that livery can update; `AppName::all()` in `core/src/config/types.rs` is the list                              | App, tool, target            |
+| **ConfigPath**       | The filesystem path to an app's configuration file that livery will patch                                                                         | Target file, output path     |
+| **ThemesPath**       | An optional directory path where an app stores its theme files — used as a template variable, not expanded by Rust                                | Theme directory              |
+| **MatchPattern**     | A regex pattern that locates the theme-setting line in an app's config file                                                                       | Search pattern, find pattern |
+| **ReplaceTemplate**  | A string template with `{variable}` placeholders that produces the new theme-setting line                                                         | Template, replacement string |
+| **SystemAppearance** | The OS-level dark/light mode toggle — a standalone boolean in Config, not an app with AppConfig                                                   | Dark mode, system theme      |
+
+## Theme Provisioning
+
+> The full per-adapter setup contracts live in [`livery/ADAPTERS.md`](../livery/ADAPTERS.md).
+
+| Term                   | Definition                                                                                                                                                                                                                                                                              | Aliases to avoid               |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| **Theme Provisioning** | The classification of who consumes livery's managed theme files for an adapter — External, Linked, or Merged                                                                                                                                                                            | Adapter type, integration mode |
+| **External**           | The app's theme files are provided outside of livery — by a compiled binary — so livery only performs switching                                                                                                                                                                         | Unmanaged, manual              |
+| **Linked**             | Livery symlinks the managed theme files into a location the app itself reads; switching selects one via a pointer in the app's config, which setup may need to add once, by handing the linked file to the app's own import, or through Livery's **Config**, which the app reads itself | Symlinked, placed              |
+| **Merged**             | The app cannot read the managed theme files where they are, so on every switch livery reads the unpacked theme file and writes it into the app's config or a theme file the app reads                                                                                                   | Inline, embedded               |
+| **Managed Themes Dir** | `$XDG_DATA_HOME/black-atom/themes/<adapter>/` — where the themes bundled in the binary unpack; the single source Linked placements point at and Merged reads from                                                                                                                       | Theme cache, staging dir       |
+| **Config Folder**      | A directory that holds one copy of an app's configuration, for apps livery configures by a list of them instead of one config file — Obsidian (`.obsidian`), Claude Code (`.claude`, `.claude-work`)                                                                                    | Vault, profile                 |
+| **Setup Precondition** | A one-time manual prerequisite livery cannot automate — a Config Folder discovery missed, or a Switch Pointer the app sets itself                                                                                                                                                       | Requirement, dependency        |
+| **Switch Pointer**     | The line or property in an app's config that selects the active theme — the thing MatchPattern finds and ReplaceTemplate rewrites. Rex and Neovim have none                                                                                                                             | Theme line, theme setting      |
+
+## Theme Application
+
+| Term               | Definition                                                                                                                                                                                                                                                                                 | Aliases to avoid                     |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| **Active Theme**   | The theme livery last applied, recorded as `active_theme` in `$XDG_CONFIG_HOME/black-atom/livery/config.json`. A record of what livery did or the config file was edited to say, not a reading of the app configs. Livery applies a key changed in the file. Neovim's plugin opens with it | Current theme, applied theme, record |
+| **Applying Theme** | The theme a run is currently writing, held in the frontend store for the duration of the run and the retry that may follow it                                                                                                                                                              | Current theme, selected theme        |
+| **Applied Rule**   | The condition that moves the **Active Theme**: at least one updater returned `done`, or a degraded result that reports `Config patched` or, for Neovim, `Theme saved`. A run that only skipped or errored leaves the record standing                                                       | Success check                        |
+
+## Updater Pipeline
+
+| Term              | Definition                                                                                                                                 | Aliases to avoid            |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------- |
+| **Updater**       | A per-app Rust module that knows how to patch a specific app's config file and optionally reload it                                        | Handler, writer, applier    |
+| **Dispatcher**    | The routing logic in `updaters/mod.rs` that maps an AppName to its Updater                                                                 | Router, switch, handler     |
+| **ThemeContext**  | The theme metadata struct passed from the frontend to the backend `update_app` command — a livery-specific projection of core's Theme Meta | Theme payload, theme params |
+| **UpdateContext** | The backend-internal struct that combines ThemeContext fields with the app's ThemesPath for use in template rendering                      | Render context              |
+| **UpdateResult**  | The outcome of a single Updater invocation — includes app name, status, optional message, and duration                                     | Result, response            |
+| **UpdateStatus**  | The state of an Updater invocation — backend emits `done`, `error`, or `skipped`; frontend adds `pending` and `running`                    | State, outcome              |
+| **UpdaterEntry**  | A frontend struct pairing an AppName with a runnable function that calls the backend                                                       | Task, job                   |
+
+## File Operations
+
+| Term                 | Definition                                                                                                                                 | Aliases to avoid             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
+| **FileOp**           | One of three config-patching strategies: text (regex), YAML (lossless merge), or JSONC (CST edit)                                          | Write strategy, patch method |
+| **patch_text_file**  | A FileOp that uses regex match-and-replace with template variable substitution                                                             | Text replace, regex patch    |
+| **patch_yaml_file**  | A FileOp that performs lossless YAML merging while preserving comments                                                                     | YAML update, YAML write      |
+| **patch_jsonc_file** | A FileOp that edits JSONC via CST manipulation, preserving comments and formatting                                                         | JSON edit, JSONC update      |
+| **TemplateVariable** | A `{name}` placeholder in a ReplaceTemplate — resolved from themeKey, appearance, collectionKey, or themesPath                             | Placeholder, token           |
+| **AtomicWrite**      | The write strategy used by all FileOps — write to a temp file, then persist (rename) to the target path                                    | Safe write                   |
+| **Reload**           | The optional action that signals a running app to re-read its config (e.g., SIGUSR2 for ghostty, socket command for nvim), after any patch | Refresh, restart, notify     |
+
+## UI Lifecycle
+
+| Term           | Definition                                                                                                                                      | Aliases to avoid            |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| **Phase**      | The current UI state machine position — `"picking"` (user browsing themes), `"applying"` (updaters running), or `"done"` (all updates finished) | Step, stage, screen         |
+| **ApplyTheme** | The frontend orchestration function that runs all UpdaterEntries sequentially, reporting progress via callbacks                                 | Run updaters, execute, sync |
+
+## Design Language
+
+> The full design spec lives in [`livery/docs/design-system/`](../livery/docs/design-system/README.md) ("Warm
+> Precision"). These are the terms it establishes.
+
+| Term              | Definition                                                                                                                           | Aliases to avoid               |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------ |
+| **Chrome**        | Everything in the UI that is not theme content — bars, panels, labels, borders. Warm monochrome; re-tints with the selected theme    | UI shell, frame                |
+| **Voice**         | One of the three type roles: Display (Space Grotesk), Mono (Iosevka — the default interface voice), Body (IBM Plex Sans, prose only) | Font, typeface (for the role)  |
+| **Token**         | A `--ba-*` CSS custom property from `src/styles/tokens/` — the only way chrome expresses color, type, spacing, borders, motion       | Variable, CSS var              |
+| **Re-tint**       | The runtime override of chrome tokens with the selected theme's `ui` palette via ThemeProvider — the app wears the livery it applies | Theming, skinning              |
+| **Surface tier**  | One of the four tonal depth levels: recessed < default < subtle < hint. Depth comes only from these — no shadows                     | Elevation, layer (z-index ≠)   |
+| **Actuator**      | An interactive control in bracket notation — `[ LABEL ]`. The Button primitive renders actuators                                     | Button (in design discussions) |
+| **Pip**           | A small square status indicator: 8px StatusPip + mono label, or 4×7px mini palette pips on list rows. Always square, never a circle  | Dot, bullet, badge             |
+| **Datasheet**     | The composition pattern of the theme detail panel: display-voice name → swatch bands → KV rows → code preview → doc-code footer      | Detail view, preview panel     |
+| **Specimen**      | A /dev route section that renders one primitive or foundation in all its variants and states — the visual verification surface       | Story, demo                    |
+| **Motif**         | A recurring visual signature: bracket actuators, square pips, `»` prompts, `n/m` counters, hairline-ruled section labels, doc codes  | Pattern (reserve for code)     |
+| **Copy register** | The writing rules for chrome text: uppercase mono, `·` separators, `—` qualifiers, imperative impersonal voice, keys always named    | Tone, style guide              |
+| **Brand dot**     | The 0.62em filled circle standing in for the O in `BLACK AT●M` — the only circle (and only border-radius) in the system              | Logo, icon                     |
+
+---
+
+## Relationships
+
+### Themes
+
+- A **Collection** contains one or more **Themes** sharing a design concept
+- A **Theme** is uniquely identified by its **Theme Key**
+- **Primaries** and **Accents** feed the **Palette**. **UI Colors** and **Syntax Colors** derive from every group before them
+- **Feedback** is independent of the **Palette**: it can be fixed literals, and it reaches a tool through **UI Colors**
+- **Accents** supplement **Primaries** with required `a10`/`a20` and optional `a30`/`a40` tokens
+- An **Adapter** discovers themes via core, applies them to **Templates**, and produces
+  **Generated Files**
+- **Theme Creator Options** bundle all color groups (**Primaries**, **Palette**, **Feedback**,
+  **Accents**) as input to UI/Syntax creation
+
+### Livery
+
+- **Config** contains a map of **AppName** → **AppConfig** plus a **SystemAppearance** toggle
+- An **AppConfig** has exactly one **MatchPattern** and one **ReplaceTemplate** (for text-based
+  updaters)
+- The **Dispatcher** routes an **AppName** to its **Updater**
+- An **Updater** uses exactly one **FileOp** strategy and optionally performs a **Reload**
+- **ApplyTheme** produces one **UpdateResult** per enabled **AppName**
+- **ThemeContext** is a projection of core's **Theme Meta** — carries Theme Key, Appearance,
+  Collection Key, and Theme Label across the IPC boundary
+- An apply sets the **Applying Theme**, and moves the **Active Theme** only when the
+  **Applied Rule** holds
+- The **Active Theme** and an app's **Switch Pointer** answer different questions: the record says
+  what livery wrote, the pointer says what the app reads today. Neovim has no pointer, so it opens
+  with the record unless the user's own config set a colorscheme
+
+## Example dialogue
+
+> **Dev:** "When I create a new **Theme** in the `terra` **Collection**, do I need to define all
+> color groups?"
+>
+> **Domain expert:** "You supply **Primaries** and values or creators for **Accents**, **Palette**,
+> **Feedback**, **UI Colors**, and **Syntax Colors** to `defineThemeColors()`. Each creator receives
+> the earlier color groups; UI and syntax creators receive **Theme Creator Options**."
+>
+> **Dev:** "And when livery applies that theme, what moves?"
+>
+> **Domain expert:** "The **Phase** changes to `applying` and the **Applying Theme** is set. The
+> frontend builds an **UpdaterEntry** per enabled **AppName**; each **Updater** picks a **FileOp**
+> and rewrites the **Switch Pointer** in that app's **ConfigPath**. Neovim's **Updater** only
+> performs a **Reload**."
+>
+> **Dev:** "So after the run, the **Active Theme** is whatever I picked?"
+>
+> **Domain expert:** "Only if the **Applied Rule** holds — at least one **Updater** returned
+> `done`. A run where every app errored leaves the previous **Active Theme** standing, because
+> nothing on the machine changed."
+>
+> **Dev:** "And if I edit a **Switch Pointer** by hand afterwards?"
+>
+> **Domain expert:** "Then the **Active Theme** is stale, and deliberately so. It records what
+> livery did, not what each app renders. Livery never reads the pointers back."
+>
+> **Dev:** "What's the difference between **Name** and **Label** on the metadata?"
+>
+> **Domain expert:** "**Name** is the short display name you define — like 'Winter Dark'.
+> **Label** is computed at runtime by combining **Name** with the **Collection** label. You never
+> set **Label** directly."
+
+## Flagged ambiguities
+
+- **"current theme"** is the worst offender: it has meant the **Active Theme** (what livery last
+  applied), the **Applying Theme** (what a run is writing), and the row under the picker cursor.
+  These are three different things — a single `currentTheme` field conflating the first two caused
+  a real bug, where a test-apply reverted to a client default instead of the running theme. Use
+  **Active Theme**, **Applying Theme**, or "the cursored theme".
+- **"app"** / **"AppName"**: "app" sometimes means "a configured application that livery can
+  update" and sometimes "livery itself". Use **AppName** or "target app" for tools livery manages,
+  **Livery** for the desktop application.
+- **"config"** covers both livery's own **Config** and the target apps' configuration files
+  (**ConfigPath**). The user owns Livery's **Config** and the target apps' configuration files.
+- **"context"** appears as both **ThemeContext** (frontend → backend IPC payload) and
+  **UpdateContext** (backend-internal, enriched with per-app paths).
+- **"template"** — core uses **Template** for Eta adapter templates; livery uses
+  **ReplaceTemplate** for regex substitution strings. Unrelated concepts; always qualify.
+- **"semantic"** describes both **Feedback** colors and **UI Colors** in code comments. Reserve it
+  for **UI Colors** (which map meaning to slots); use **Feedback** for the four status colors.
+- **"name" vs "label" vs "key"** — **Key** is the machine identifier, **Name** the human-readable
+  short form, **Label** the computed long form.
+- **Palette overlap with Primaries** — **Primaries** are a continuous dark-to-light gradient,
+  **Palette** a categorical 16-color ANSI mapping. "Colors" is used loosely for both.
+- **UI foreground feedback states vs Feedback colors** — UI foreground has `negative`, `warn`,
+  `info`, `hint`, `positive`; **Feedback** has `negative`, `success`, `info`, `warning`. The
+  divergence (`success`/`positive`, `warning`/`warn`, `hint` with no equivalent) invites mistakes.

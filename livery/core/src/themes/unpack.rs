@@ -99,9 +99,12 @@ fn unpack_adapter(root: &Path, adapter: Adapter, payload: &[PayloadFile]) -> Res
 /// Which embedded files reach the disk. Generated themes are named
 /// `black-atom-*`; everything else an adapter repo carries (templates,
 /// READMEs, licences) stays in the binary. The nvim runtime under `lua/`
-/// is not theme output but the colorschemes fail to load without it.
+/// is not theme output but the colorschemes fail to load without it, and
+/// `plugin/black-atom.lua` is the one startup script.
 fn is_unpackable(prefix: &str, file_name: &str) -> bool {
-    prefix == "lua" || file_name.starts_with("black-atom-")
+    prefix == "lua"
+        || (prefix == "plugin" && file_name == "black-atom.lua")
+        || file_name.starts_with("black-atom-")
 }
 
 fn write_file(path: &Path, contents: &[u8]) -> Result<(), String> {
@@ -203,6 +206,27 @@ mod tests {
         assert!(is_unpackable("lua", "highlights.lua"));
         assert!(is_unpackable("colors", "black-atom-jpn-koyo-dark.lua"));
         assert!(!is_unpackable("colors", "template.lua"));
+        assert!(is_unpackable("plugin", "black-atom.lua"));
+        assert!(!is_unpackable("plugin", "other.lua"));
+    }
+
+    #[test]
+    fn test_only_nvim_ships_a_plugin_script() {
+        for (adapter, files) in embedded_payloads() {
+            let plugin_files = files
+                .iter()
+                .filter(|f| f.origin == Origin::Dir("plugin"))
+                .count();
+            assert_eq!(
+                plugin_files,
+                usize::from(adapter == Adapter::Nvim),
+                "{adapter:?}"
+            );
+        }
+        let nvim = embedded::payload_from(Adapter::Nvim, None).unwrap();
+        assert!(nvim.iter().any(|f| f.origin == Origin::Dir("plugin")
+            && f.path == Path::new("black-atom.lua")
+            && !f.contents().unwrap().is_empty()));
     }
 
     fn embedded_payloads() -> Vec<(Adapter, Vec<PayloadFile>)> {

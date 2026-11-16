@@ -8,10 +8,10 @@
   --color-base-05: #fefbf8;
   --color-base-10: #f1eeeb;
   --color-base-20: #e0ddda;
-  --color-base-25: #c6c3c1;
-  --color-base-30: #b3b0ae;
-  --color-base-35: #a09e9b;
-  --color-base-40: #8e8c89;
+  --color-base-25: #94928f;
+  --color-base-30: #82807d;
+  --color-base-35: #716e6c;
+  --color-base-40: #605d5b;
   --color-base-50: #3f3d3a;
   --color-base-60: #2b2826;
   --color-base-70: #181614;
@@ -19,52 +19,52 @@
 
 
   /* Extended Colors */
-  --color-red: #c6c3c1;
-  --color-red-rgb: 198, 195, 193;
-  --color-orange: #b3b0ae;
-  --color-orange-rgb: 179, 176, 174;
-  --color-yellow: #b3b0ae;
-  --color-yellow-rgb: 179, 176, 174;
-  --color-green: #b3b0ae;
-  --color-green-rgb: 179, 176, 174;
-  --color-cyan: #c6c3c1;
-  --color-cyan-rgb: 198, 195, 193;
-  --color-blue: #c6c3c1;
-  --color-blue-rgb: 198, 195, 193;
-  --color-purple: #b3b0ae;
-  --color-purple-rgb: 179, 176, 174;
-  --color-pink: #b3b0ae;
-  --color-pink-rgb: 179, 176, 174;
+  --color-red: #716e6c;
+  --color-red-rgb: 113, 110, 108;
+  --color-orange: #5d5a58;
+  --color-orange-rgb: 93, 90, 88;
+  --color-yellow: #716e6c;
+  --color-yellow-rgb: 113, 110, 108;
+  --color-green: #4a4745;
+  --color-green-rgb: 74, 71, 69;
+  --color-cyan: #4a4745;
+  --color-cyan-rgb: 74, 71, 69;
+  --color-blue: #262422;
+  --color-blue-rgb: 38, 36, 34;
+  --color-purple: #262422;
+  --color-purple-rgb: 38, 36, 34;
+  --color-pink: #161412;
+  --color-pink-rgb: 22, 20, 18;
 
   /* Backgrounds */
   --background-primary: #fefbf8;
-  --background-primary-alt: #fffffc;
+  --background-primary-alt: #f1eeeb;
   --background-secondary: #f1eeeb;
   --background-secondary-alt: #f1eeeb;
   --background-modifier-hover: #f1eeeb;
   --background-modifier-active-hover: #f1eeeb;
-  --background-modifier-border: #fffffc;
-  --background-modifier-border-hover: #f1eeeb;
+  --background-modifier-border: #b1afad;
+  --background-modifier-border-hover: #605d5b;
   --background-modifier-border-focus: #2e2e2e;
-  --background-modifier-error-rgb: 255, 214, 209;
-  --background-modifier-error: #ffd6d1;
-  --background-modifier-error-hover: #ffd6d1;
-  --background-modifier-success-rgb: 222, 231, 202;
-  --background-modifier-success: #dee7ca;
-  --background-modifier-message: #cee9fb;
+  --background-modifier-error-rgb: 251, 224, 221;
+  --background-modifier-error: #fbe0dd;
+  --background-modifier-error-hover: #fbe0dd;
+  --background-modifier-success-rgb: 229, 234, 220;
+  --background-modifier-success: #e5eadc;
+  --background-modifier-message: #deebf6;
   --background-modifier-form-field: #fefbf8;
 
   /* Text */
   --text-normal: #181614;
-  --text-muted: #8e8c89;
-  --text-faint: #b3b0ae;
+  --text-muted: #605d5b;
+  --text-faint: #82807d;
   --text-accent: #2e2e2e;
   --text-accent-hover: #2e2e2e;
   --text-on-accent: #f1eeeb;
   --text-on-accent-inverted: #181614;
-  --text-error: #f14d4c;
-  --text-warning: #cd7b00;
-  --text-success: #819e00;
+  --text-error: #c21725;
+  --text-warning: #af5f00;
+  --text-success: #5d7600;
   --text-selection: #e0ddda;
   --text-highlight-bg: #e0ddda;
 
@@ -78,14 +78,14 @@
   --h1-color: #2e2e2e;
   --h2-color: #2e2e2e;
   --h3-color: #2e2e2e;
-  --h4-color: #8e8c89;
-  --h5-color: #8e8c89;
-  --h6-color: #8e8c89;
+  --h4-color: #605d5b;
+  --h5-color: #605d5b;
+  --h6-color: #605d5b;
 
   /* Markup */
   --bold-color: #2e2e2e;
   --italic-color: #2e2e2e;
-  --blockquote-border-color: #b3b0ae;
+  --blockquote-border-color: #82807d;
   --link-color: #4d4d4d;
   --link-color-hover: #4d4d4d;
   --link-external-color: #4d4d4d;
@@ -93,14 +93,14 @@
 
   /* Code / Syntax Highlighting */
   --code-normal: #2b2826;
-  --code-comment: #a09e9b;
+  --code-comment: #716e6c;
   --code-function: #2e2e2e;
   --code-important: #2e2e2e;
   --code-keyword: #2e2e2e;
   --code-operator: #181614;
-  --code-property: #8e8c89;
+  --code-property: #605d5b;
   --code-punctuation: #3f3d3a;
-  --code-string: #a09e9b;
+  --code-string: #716e6c;
   --code-tag: #4d4d4d;
   --code-value: #181614;
   --code-background: #e0ddda;
@@ -109,23 +109,23 @@
   --tag-color: #2e2e2e;
   --tag-color-hover: #2e2e2e;
   --tag-background: #f1eeeb;
-  --tag-background-hover: #fffffc;
+  --tag-background-hover: #f1eeeb;
 
   /* Graph */
-  --graph-line: #fffffc;
+  --graph-line: #f1eeeb;
   --graph-node: #2e2e2e;
   --graph-node-focused: #2e2e2e;
-  --graph-node-tag: #c6c3c1;
-  --graph-node-attachment: #b3b0ae;
+  --graph-node-tag: #4a4745;
+  --graph-node-attachment: #4a4745;
 
   /* Scrollbar */
   --scrollbar-bg: #fefbf8;
-  --scrollbar-thumb-bg: #fffffc;
-  --scrollbar-active-thumb-bg: #8e8c89;
+  --scrollbar-thumb-bg: #f1eeeb;
+  --scrollbar-active-thumb-bg: #605d5b;
 
   /* Nav */
   --nav-item-background-hover: #f1eeeb;
-  --nav-item-background-active: #fffffc;
+  --nav-item-background-active: #f1eeeb;
   --nav-item-background-selected: #e0ddda;
   --nav-item-color: #181614;
   --nav-item-color-hover: #181614;

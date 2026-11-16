@@ -71,6 +71,11 @@ pub fn find(key: &str) -> Option<ThemeEntry> {
     themes().into_iter().find(|theme| theme.key == key)
 }
 
+/// A theme's label, or its key when the catalogue doesn't hold it.
+pub fn label(key: &str) -> String {
+    find(key).map_or_else(|| key.to_string(), |theme| theme.label)
+}
+
 /// The value of a `# <field>: <value>` header line in a generated theme file.
 fn header<'a>(contents: &'a str, field: &str) -> Option<&'a str> {
     let prefix = format!("# {field}:");
@@ -86,7 +91,9 @@ fn header<'a>(contents: &'a str, field: &str) -> Option<&'a str> {
 mod tests {
     use super::*;
 
-    const COLLECTIONS: [&str; 6] = ["default", "facility", "jpn", "minium", "mono", "terra"];
+    const COLLECTIONS: [&str; 7] = [
+        "default", "facility", "jpn", "minium", "mono", "terra", "tr-1000",
+    ];
 
     #[test]
     fn test_every_embedded_theme_parses_a_complete_entry() {

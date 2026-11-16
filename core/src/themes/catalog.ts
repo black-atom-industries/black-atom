@@ -6,6 +6,7 @@ import miniumCollection from "./minium/mod.ts";
 import monoCollection from "./mono/mod.ts";
 import facilityCollection from "./facility/mod.ts";
 import terraCollection from "./terra/mod.ts";
+import tr1000Collection from "./tr-1000/mod.ts";
 
 const collections = [
     defaultCollection,
@@ -14,6 +15,7 @@ const collections = [
     jpnCollection,
     miniumCollection,
     monoCollection,
+    tr1000Collection,
 ] as const;
 
 type CatalogCollection = (typeof collections)[number];
@@ -39,6 +41,7 @@ export const themeCatalog = {
     ...jpnCollection.themes,
     ...miniumCollection.themes,
     ...monoCollection.themes,
+    ...tr1000Collection.themes,
 } as const satisfies Record<CatalogThemeKey, Theme.ThemeDefinition>;
 
 export const themeKeys = Object.keys(themeCatalog) as CatalogThemeKey[];

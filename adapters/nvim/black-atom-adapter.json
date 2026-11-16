@@ -67,6 +67,11 @@
                 "black-atom-mono-dimmed-dark",
                 "black-atom-mono-dimmed-light"
             ]
+        },
+        "tr-1000": {
+            "template": "./templates/collection.template.lua",
+            "output": "./colors",
+            "themes": ["black-atom-tr-1000-dark", "black-atom-tr-1000-light"]
         }
     }
 }

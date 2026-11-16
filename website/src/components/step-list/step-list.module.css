@@ -1,0 +1,41 @@
+.root {
+    list-style: none;
+    padding: 0;
+    display: grid;
+}
+
+.step {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 12px;
+    padding: 18px 0;
+    border-top: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 35%, transparent);
+
+    @media (max-width: 560px) {
+        grid-template-columns: 40px minmax(0, 1fr);
+    }
+}
+
+.number {
+    font-family: var(--ba-font-mono);
+    color: var(--ba-accent);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+}
+
+.content {
+    display: grid;
+    gap: 4px;
+}
+
+.title {
+    font-family: var(--ba-font-mono);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+}
+
+.body {
+    color: var(--ba-fg-subtle);
+    text-wrap: pretty;
+}

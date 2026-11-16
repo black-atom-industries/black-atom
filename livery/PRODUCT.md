@@ -6,8 +6,8 @@ product
 
 ## Users
 
-Developers who use Black Atom themes across their toolchain (Neovim, Ghostty, Tmux, Zed, Delta,
-Lazygit, Obsidian). They're at their desk, in a focused workflow — often in terminal-native,
+Developers who use Black Atom themes across their toolchain (the supported tools, see
+[ADAPTERS.md](ADAPTERS.md)). They're at their desk, in a focused workflow — often in terminal-native,
 keyboard-driven environments. They want their tools to feel cohesive without manually syncing config
 files.
 

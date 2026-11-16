@@ -1,0 +1,5 @@
+/* Docs blocks paint their own surface; give each story block the theme instead. */
+.docs-story {
+    background: var(--ba-bg);
+    color: var(--ba-fg);
+}

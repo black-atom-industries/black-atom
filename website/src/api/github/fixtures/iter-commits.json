@@ -1,0 +1,24 @@
+[
+    {
+        "sha": "4cd3344f2fac94cbb71c7ed009862c3c8b9ea3cf",
+        "html_url": "https://github.com/black-atom-industries/iter.nvim/commit/4cd3344f2fac94cbb71c7ed009862c3c8b9ea3cf",
+        "commit": {
+            "message": "feat(config): diff.layout picks unified, split or auto by width",
+            "author": {
+                "name": "nbr",
+                "date": "2026-10-21T09:12:00Z"
+            }
+        }
+    },
+    {
+        "sha": "6c1a5e10e969ada120b534aebf5373d67ebe6e84",
+        "html_url": "https://github.com/black-atom-industries/iter.nvim/commit/6c1a5e10e969ada120b534aebf5373d67ebe6e84",
+        "commit": {
+            "message": "fix(diff): side by side splits only the window it opens in",
+            "author": {
+                "name": "nbr",
+                "date": "2026-10-20T17:48:00Z"
+            }
+        }
+    }
+]

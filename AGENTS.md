@@ -4,23 +4,36 @@ A family of dark and light themes for developer tools. Themes are defined once i
 generated for every platform through adapters. `livery/` is the desktop app that applies a theme
 across the tools on a machine.
 
-Every term this codebase uses is defined in [`GLOSSARY.md`](GLOSSARY.md). Name things with those
+Every term this codebase uses is defined in [`docs/glossary.md`](docs/glossary.md). Name things with those
 words in code, commits, and discussion — a concept that already has a name must not acquire a
 second one.
 
+## Where facts live
+
+| Topic                                                                   | Read                                                                    |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Color groups, derivation order, palette slots and ANSI map, feedback    | [`docs/colors.md`](docs/colors.md)                                      |
+| Designing a theme, contrast                                             | [`docs/theme-design.md`](docs/theme-design.md)                          |
+| Generation pipeline, adapter config, templates, tokens a template reads | [`docs/adapter-guide.md`](docs/adapter-guide.md)                        |
+| Terms and the words to use for them                                     | [`docs/glossary.md`](docs/glossary.md)                                  |
+| Repo layout, dev commands, Git hooks, releases                          | [`CONTRIBUTING.md`](CONTRIBUTING.md)                                    |
+| The collections and themes                                              | `core/src/themes/catalog.ts`                                            |
+| The adapters                                                            | `adapters/*/black-atom-adapter.json`, one directory each                |
+| Per-tool wiring, and Livery's side of it                                | `adapters/<name>/README.md`, [`livery/ADAPTERS.md`](livery/ADAPTERS.md) |
+| Website routes, theme precedence, live data, sound                      | [`docs/website.md`](docs/website.md)                                    |
+| Release process                                                         | [`docs/releases.md`](docs/releases.md)                                  |
+| Step-by-step procedures (new theme, collection, adapter, rename)        | The `repo-*` skills in `.agents/skills/`                                |
+
 ## Layout
 
-- `core/` — theme definitions, generator, CLI, adapter schema, preview app (`core/monitor/`)
-- `adapters/<name>/` — one directory per platform
-- `livery/` — Tauri v2 desktop app; frontend in `livery/src/`, domain logic in `livery/core/`
-  (crate `livery_core`, no Tauri dependency), Tauri shell in `livery/src-tauri/`, terminal client
-  in `livery/cli/` (binary `livery`)
+The directories and what each holds are in [`CONTRIBUTING.md`](CONTRIBUTING.md#layout).
 
 ## Sandbox
 
-Agent executions and automated tests must run livery, `tauri dev`, `livery apply`, `livery setup`, and
-updaters with a temporary fixture `$HOME` and XDG directories. Updaters write to config files.
-User-started development inherits the user's normal environment and existing configuration.
+`npm run dev` runs in the user's normal environment, whoever starts it: it reapplies every theme
+change to the real configs, so the user sees it live in their tools. Automated tests, and agent runs
+of livery, `tauri dev`, `livery apply`, `livery setup`, and updaters outside `npm run dev`, use a
+temporary fixture `$HOME` and XDG directories, because updaters write to config files.
 
 Trust the real mise config and point Playwright at the real browser cache before swapping `$HOME`.
 Under a fixture home, mise reads its config as an untrusted project config and every shimmed tool
@@ -36,12 +49,9 @@ export XDG_DATA_HOME="$HOME/.local/share"
 
 ## Themes
 
-Adapters never read primaries. Use UI, syntax, palette, or feedback tokens:
-`<%= theme.ui.bg.default %>`, not `<%= theme.primaries.d10 %>`.
-
-An adapter is a `black-atom-adapter.json` plus Eta templates named
-`themes/<collection>/collection.template.<ext>`, or a single shared template. The generator renders
-one output file per theme next to the template. Generated files are never edited by hand.
+Templates read UI, syntax and palette tokens. A target that defines its own color ramp may also
+read primaries, as [`docs/adapter-guide.md`](docs/adapter-guide.md) describes. Generated files are never
+edited by hand.
 
 ## Conventions
 
@@ -56,4 +66,5 @@ Livery's product and config decisions live in `livery/DESIGN.md` and `livery/ADA
 ## Agent setup
 
 Project skills live in `.agents/skills/`, each a task worth following exactly; `.claude/skills`
-links there. `.claude/hooks/` runs `no-fs-plugin` and `check-bindings` after a write.
+links there. `.claude/settings.json` runs `format.sh`, `no-fs-plugin.sh` and `check-bindings.sh`
+from `.claude/hooks/` after each write or edit.

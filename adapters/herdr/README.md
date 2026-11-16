@@ -60,8 +60,8 @@ node ../../core/src/cli/index.ts generate  # regenerate committed TOML files
 node ../../core/src/cli/index.ts generate --watch       # regenerate on template changes
 ```
 
-Templates use Eta syntax and semantic Black Atom colors only. `surface_dim` uses `ui.bg.panel`, and
-`surface1` is a small blend from `ui.bg.active` toward `ui.fg.disabled`.
+Templates use Eta syntax and semantic Black Atom colors only. `surface_dim` and `surface1` use
+`ui.bg.default`.
 
 ## License
 

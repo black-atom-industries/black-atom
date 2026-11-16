@@ -10,7 +10,9 @@ developer tools. Pick a theme once, apply it everywhere.
 Livery embeds every adapter's generated theme files in its binary and unpacks
 them into `$XDG_DATA_HOME/black-atom/themes/<adapter>/` (`~/.local/share` if
 `XDG_DATA_HOME` is unset). Livery's own settings live in
-`$XDG_CONFIG_HOME/black-atom/livery/config.json`.
+`$XDG_CONFIG_HOME/black-atom/livery/config.json`. The GUI follows that file: a
+hand edit or a `git pull` shows up in the window, and a changed `active_theme`
+applies to every tool.
 
 Each supported app falls into one provisioning class: Linked, Merged, or
 External. See [ADAPTERS.md](ADAPTERS.md) for the class definitions and per-app
@@ -24,10 +26,10 @@ livery apply <theme>         # apply a theme to every enabled app and the system
 livery list                  # list every available theme, grouped by collection
 livery status                # show the active theme, then each app's enabled, provisioning,
                              #   linked and config state
-livery setup [--yes]         # enable detected apps, link their themes, verify config paths,
-                             #   then apply a theme (picker, or default-dark under --yes)
+livery setup [--yes] [--theme <key>]
+                             # enable detected apps, link their themes, verify config paths,
+                             #   then apply --theme, else the picker (--yes keeps the active theme)
 livery appearance <dark|light>  # switch the system between dark and light mode
-livery nvim-settings         # write stored Neovim plugin settings into nvim's managed Lua block
 livery adapter kagi [theme] [--font <family>]  # copy a Kagi theme to the clipboard
 ```
 
@@ -39,7 +41,7 @@ the CLI, in a window.
 ## Development
 
 ```sh
-npm run dev   # from the repo root: GUI, CLI, monitor, generation
+npm run dev   # from the repo root: GUI, CLI, website, generation
 npm run test  # from the repo root: prepares frontend, runs Vitest and Rust tests
 ```
 
@@ -57,8 +59,9 @@ From the root, `npm run build` builds both app and CLI;
 `npm run install:macos` installs both. The package-local `install:macos`
 installs only the app.
 
-Automated tests and agent-run development, setup, and apply commands use
-temporary fixture homes and XDG directories. See the Sandbox section in the root
+`npm run dev` runs in your normal environment and reapplies every theme change.
+Automated tests, and agent runs of setup and apply outside it, use temporary
+fixture homes and XDG directories. See the Sandbox section in the root
 `AGENTS.md`.
 
 ## Architecture

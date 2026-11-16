@@ -39,7 +39,13 @@ Vite server keeps its dependency cache in `e2e/.vite`.
 Scenarios enable only adapters whose updaters stay inside the fixture home: zed, delta, lazygit,
 claude-code, and tuicr for setup. `system_appearance` is `false`. Ghostty (signals running instances), tmux,
 nvim, herdr (talk to running apps) and Obsidian stay disabled and are never applied. The nvim
-settings page only writes its managed block into the fixture `init.lua`.
+settings page saves into the fixture's Livery config, and the reload that follows finds only sockets
+under the fixture `$TMPDIR`.
+
+The bridge has no Tauri event channel. `livery-bridge` runs the real config watcher and queues its
+events, and `src/lib/dev-bridge.ts` polls that queue and replays each one into the same `listen()`
+callback the app uses. Before every test, `reset_config_watch` starts the watcher over from the
+fixture home, so the reset itself reports nothing.
 
 ## Layout
 
@@ -61,4 +67,7 @@ version shown in the header; regenerate them with `--update-snapshots` and revie
   are not covered.
 - Updaters that signal running apps (ghostty, tmux, nvim, herdr), Obsidian, and the system
   appearance switch are not exercised.
+- Config file events reach the page through the bridge's polling. The Tauri emit into a real
+  webview is not exercised. A Rust test covers the emit against a mock runtime, and
+  `core:default` grants the listen permission.
 - Linked/unlinked status is read from `get_app_status` on the bridge; the UI does not render it.

@@ -1,5 +1,0 @@
-.buttonGroup {
-    display: flex;
-    gap: var(--size-2);
-    flex-wrap: wrap;
-}

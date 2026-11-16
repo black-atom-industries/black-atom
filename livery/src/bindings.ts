@@ -8,6 +8,13 @@ export const commands = {
 async getConfig() : Promise<Config> {
     return await TAURI_INVOKE("get_config");
 },
+/**
+ * Why the config file can't be read as a Config. `None` for a good file and
+ * for a missing one, which first run creates.
+ */
+async getConfigFileError() : Promise<string | null> {
+    return await TAURI_INVOKE("get_config_file_error");
+},
 async saveConfig(config: Config) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("save_config", { config }) };
@@ -72,12 +79,18 @@ async verifyAppPath(app: AppName) : Promise<AppPathVerification> {
     return await TAURI_INVOKE("verify_app_path", { app });
 },
 /**
- * Save the Neovim plugin settings and write them into the managed Lua
- * block in nvim's SETTINGS_PATH. The file must already exist — Livery
- * patches a Neovim entry point, it does not create one.
+ * Reload running Neovims with the Active Theme, so they pick up the plugin
+ * options stored in the config.
  */
-async writeNvimSettings(settings: NvimSettings) : Promise<UpdateResult> {
-    return await TAURI_INVOKE("write_nvim_settings", { settings });
+async reloadNvim() : Promise<UpdateResult> {
+    return await TAURI_INVOKE("reload_nvim");
+},
+/**
+ * Lines of the user's Neovim config that set the plugin options or pick a
+ * colorscheme by name. Read-only; empty when there is no Neovim config.
+ */
+async findNvimOverrides() : Promise<NvimOverride[]> {
+    return await TAURI_INVOKE("find_nvim_overrides");
 },
 /**
  * The theme livery last applied, as a theme key. `None` on a machine that
@@ -102,6 +115,11 @@ async setActiveTheme(key: string) : Promise<Result<null, string>> {
 /** user-defined events **/
 
 
+export const events = __makeEvents__<{
+configFileChanged: ConfigFileChanged
+}>({
+configFileChanged: "config-file-changed"
+})
 
 /** user-defined constants **/
 
@@ -114,11 +132,7 @@ async setActiveTheme(key: string) : Promise<Result<null, string>> {
  * the settings UI offers per adapter — editing a field the updater ignores
  * is silent noise; editing one it does read, wrongly, breaks switching.
  */
-export type AdapterEditableField = "config_path" | "themes_path" | "match_pattern" | "replace_template" | 
-/**
- * nvim only: the file the managed Lua settings block is written into.
- */
-"settings_path"
+export type AdapterEditableField = "config_path" | "themes_path" | "match_pattern" | "replace_template"
 export type AppConfig = { enabled?: boolean; 
 /**
  * Generic adapter config file. Apps configured by config folders leave this
@@ -130,11 +144,7 @@ config_path?: string | null;
  */
 config_folders?: string[] | null; themes_path?: string | null; match_pattern?: string | null; replace_template?: string | null; 
 /**
- * nvim only: the file the managed Lua block is written into.
- */
-settings_path?: string | null; 
-/**
- * nvim only: the plugin options the managed Lua block renders.
+ * nvim only: the plugin options, read by the plugin itself.
  */
 settings?: NvimSettings | null }
 /**
@@ -152,7 +162,7 @@ config_folders?: string[] | null; found: boolean }
 /**
  * Supported app names. TypeScript bindings are auto-generated via tauri-specta.
  */
-export type AppName = "nvim" | "tmux" | "ghostty" | "zed" | "delta" | "lazygit" | "herdr" | "obsidian" | "tuicr" | "claude-code" | "helm-tmux"
+export type AppName = "nvim" | "tmux" | "ghostty" | "zed" | "delta" | "lazygit" | "herdr" | "obsidian" | "rex" | "tuicr" | "claude-code" | "helm-tmux"
 /**
  * Result of `verify_app_path` — backs the settings screen's [ VERIFY PATH ].
  */
@@ -192,6 +202,15 @@ export type Config = {
  * Versioned configuration schema. Missing on disk means legacy v1.
  */
 version?: number; system_appearance: boolean; active_theme?: string | null; keymappings?: Keymappings; apps: { [key in AppName]: AppConfig } }
+/**
+ * The config file changed outside Livery, or can't be read.
+ */
+export type ConfigFileChanged = ConfigFileEvent
+/**
+ * What a look at the config file found. `error` is set while the file can't
+ * be read as a Config, and every other field is then false or empty.
+ */
+export type ConfigFileEvent = { error: string | null; nvim_settings_changed: boolean; active_theme_changed: boolean; active_theme: string | null }
 export type ConfigFolderLinkOutcome = { config_folder: string; status: UpdateStatus; message?: string | null; linked: number; pruned: number }
 export type ConfigFolderOutcome = { config_folder: string; status: UpdateStatus; message?: string | null; reload_warning?: string | null }
 export type ConfigFolderPathVerification = { 
@@ -209,19 +228,22 @@ export type Keymappings = { toggle_window: string }
  */
 export type LinkThemesResult = { app: string; status: UpdateStatus; config_folders?: ConfigFolderLinkOutcome[] | null; message?: string | null; linked: number | null; pruned: number | null }
 export type NvimDiagnostics = { undercurl: boolean; background: boolean }
+export type NvimOverride = { kind: NvimOverrideKind; file: string; line: number }
+export type NvimOverrideKind = 
 /**
- * The plugin's `vim.g.black_atom_core_config` table, one field per option
- * `adapters/nvim/lua/black-atom/config.lua` declares. The shape is the
- * contract: it is rendered back into Lua verbatim, so a renamed field here
- * silently stops reaching the plugin.
+ * The config sets the plugin options, which win over `config.json`.
  */
-export type NvimSettings = { term_colors: boolean; styles: NvimStyles }
+"options" | 
 /**
- * Bold/italic pair for one syntax group. Mirrors
- * `BlackAtom.HighlightDefinition` as far as the settings page exposes it.
+ * The config picks a colorscheme by name, so the plugin leaves startup alone.
  */
-export type NvimStyle = { bold: boolean; italic: boolean }
-export type NvimStyles = { 
+"colorscheme"
+/**
+ * One field per option `adapters/nvim/lua/black-atom/config.lua` declares. The
+ * plugin reads this shape from `apps.nvim.settings`, so a renamed field here
+ * silently stops reaching it.
+ */
+export type NvimSettings = { term_colors: boolean; 
 /**
  * `"none"`, `"partial"`, or `"full"`.
  */
@@ -229,7 +251,12 @@ transparency: string; ending_tildes: boolean;
 /**
  * `"fg"` or `"bg"`.
  */
-cmp_kind_color_mode: string; dark_sidebars: boolean; dark_floats: boolean; diagnostics: NvimDiagnostics; syntax: NvimSyntax }
+cmp_kind_color_mode: string; dark_sidebars: boolean; dark_floats: boolean; dark_gutter: boolean; gutter_padding: number; diagnostics: NvimDiagnostics; syntax: NvimSyntax }
+/**
+ * Bold/italic pair for one syntax group. Mirrors
+ * `BlackAtom.HighlightDefinition` as far as the settings page exposes it.
+ */
+export type NvimStyle = { bold: boolean; italic: boolean }
 /**
  * Per-group syntax styling. One entry per group the plugin reads.
  */
@@ -244,7 +271,9 @@ export type ThemeContext = { theme_key: string; appearance: string; collection_k
  * - `External`: the app's theme files are provided outside of livery (plugin,
  * compiled binary, or the user), so livery only performs switching.
  * - `Linked`: livery symlinks the unpacked theme files into a location the app
- * itself reads; switching selects one via a pointer in the app's config.
+ * itself reads; switching selects one via a pointer in the app's config, by
+ * handing the linked file to the app's own import, or through Livery's config,
+ * which the app reads itself.
  * - `Merged`: the app cannot read the managed theme files where they are, so on every switch
  * livery reads the unpacked theme file and writes it into the app's config or a theme file
  * the app reads.

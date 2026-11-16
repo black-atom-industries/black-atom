@@ -25,7 +25,19 @@ pub async fn detect_apps() -> Vec<AppDetection> {
         .iter()
         .map(|app| (*app, crate::config::io::discovered_config_folders(*app)))
         .collect();
-    detect_apps_inner(&config, &discovered)
+    let neovim_installed = neovim_installed_in(
+        &crate::paths::config_home(),
+        std::env::var_os("PATH").as_deref(),
+    );
+    detect_apps_inner(&config, &discovered, neovim_installed)
+}
+
+/// Neovim needs no config file to take a theme, so a machine has it when its
+/// config directory exists or the binary is on PATH.
+fn neovim_installed_in(config_home: &std::path::Path, path: Option<&std::ffi::OsStr>) -> bool {
+    config_home.join("nvim").is_dir()
+        || path
+            .is_some_and(|path| std::env::split_paths(path).any(|dir| dir.join("nvim").is_file()))
 }
 
 /// Apps with a config folder marker are configured by config folders rather than a single
@@ -33,12 +45,17 @@ pub async fn detect_apps() -> Vec<AppDetection> {
 fn detect_apps_inner(
     config: &Config,
     discovered_folders: &BTreeMap<AppName, Vec<String>>,
+    neovim_installed: bool,
 ) -> Vec<AppDetection> {
     AppName::all()
         .iter()
         .filter_map(|app| {
             let app_config = config.apps.get(app)?;
-            let config_path = app_config.config_path.clone().unwrap_or_default();
+            let config_path = if *app == AppName::Nvim {
+                String::new()
+            } else {
+                app_config.config_path.clone().unwrap_or_default()
+            };
             let (config_folders, found) = match config_folder_marker(*app) {
                 Some(marker) => {
                     let mut folders =
@@ -58,6 +75,7 @@ fn detect_apps_inner(
                     });
                     (Some(folders), found)
                 }
+                None if *app == AppName::Nvim => (None, neovim_installed),
                 None => (
                     None,
                     !config_path.is_empty() && std::path::Path::new(&config_path).is_file(),
@@ -94,7 +112,7 @@ mod tests {
             };
         }
 
-        let detections = detect_apps_inner(&config, &BTreeMap::new());
+        let detections = detect_apps_inner(&config, &BTreeMap::new(), false);
         assert_eq!(detections.len(), AppName::all().len());
         for detection in detections {
             match detection.app {
@@ -118,7 +136,7 @@ mod tests {
         obsidian.config_path = None;
         obsidian.config_folders = Some(vec![root.path().to_string_lossy().into_owned()]);
 
-        let detection = detect_apps_inner(&config, &BTreeMap::new())
+        let detection = detect_apps_inner(&config, &BTreeMap::new(), false)
             .into_iter()
             .find(|detection| detection.app == AppName::Obsidian)
             .unwrap();
@@ -131,6 +149,45 @@ mod tests {
     }
 
     #[test]
+    fn test_neovim_is_found_by_config_dir_or_binary() {
+        let root = tempfile::TempDir::new().unwrap();
+        let config_home = root.path().join("config");
+        let bin = root.path().join("bin");
+        std::fs::create_dir_all(&config_home).unwrap();
+        std::fs::create_dir_all(&bin).unwrap();
+        let path = std::env::join_paths([&bin]).unwrap();
+
+        assert!(!neovim_installed_in(&config_home, Some(&path)));
+        assert!(!neovim_installed_in(&config_home, None));
+
+        std::fs::write(bin.join("nvim"), "").unwrap();
+        assert!(neovim_installed_in(&config_home, Some(&path)));
+
+        std::fs::create_dir(config_home.join("nvim")).unwrap();
+        assert!(neovim_installed_in(&config_home, None));
+    }
+
+    #[test]
+    fn test_neovim_detection_ignores_a_stored_config_path() {
+        let home = dirs::home_dir().expect("Cannot determine home directory");
+        let root = tempfile::TempDir::new_in(home).unwrap();
+        let stale = root.path().join("init.lua");
+        std::fs::write(&stale, "").unwrap();
+        let mut config = Config::default();
+        config.apps.get_mut(&AppName::Nvim).unwrap().config_path =
+            Some(stale.to_string_lossy().into_owned());
+
+        for installed in [false, true] {
+            let nvim = detect_apps_inner(&config, &BTreeMap::new(), installed)
+                .into_iter()
+                .find(|detection| detection.app == AppName::Nvim)
+                .unwrap();
+            assert_eq!(nvim.found, installed);
+            assert!(nvim.config_path.is_empty());
+        }
+    }
+
+    #[test]
     fn test_directory_at_config_path_is_not_found() {
         let home = dirs::home_dir().expect("Cannot determine home directory");
         let root = tempfile::TempDir::new_in(home).unwrap();
@@ -140,7 +197,7 @@ mod tests {
             app_config.config_path = Some(root.path().to_string_lossy().to_string());
         }
 
-        assert!(detect_apps_inner(&config, &BTreeMap::new())
+        assert!(detect_apps_inner(&config, &BTreeMap::new(), false)
             .iter()
             .all(|d| !d.found));
     }

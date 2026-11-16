@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — TR-1000 ∷ Dark"
+
+[colors]
+foreground = "#dee1e8"
+background = "#1c1d21"
+cursor_bg = "#8fadee"
+cursor_border = "#8fadee"
+cursor_fg = "#1c1d21"
+selection_bg = "#34353a"
+selection_fg = "#dee1e8"
+split = "#4c515b"
+compose_cursor = "#fa676c"
+scrollbar_thumb = "#9198a8"
+
+ansi = [
+  "#34353a", # black
+  "#f08e8e", # dark_red
+  "#95bd69", # dark_green
+  "#a6a3f7", # dark_yellow
+  "#9198a8", # dark_blue
+  "#a6a3f7", # dark_magenta
+  "#8fadee", # dark_cyan
+  "#bbbec4" # light_gray
+]
+
+brights = [
+  "#626978", # gray
+  "#f08e8e", # red
+  "#95bd69", # green
+  "#a6a3f7", # yellow
+  "#ced1d8", # blue
+  "#a6a3f7", # magenta
+  "#8fadee", # cyan
+  "#dee1e8" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#131417"
+background = "#1c1d21"
+
+[colors.tab_bar.active_tab]
+fg_color = "#1c1d21"
+bg_color = "#8fadee"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#1c1d21"
+bg_color = "#626978"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#1c1d21"
+bg_color = "#27292d"
+
+[colors.tab_bar.new_tab]
+fg_color = "#1c1d21"
+bg_color = "#79c77c"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#1c1d21"
+bg_color = "#27292d"
+intensity = "Bold"

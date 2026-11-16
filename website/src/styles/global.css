@@ -1,0 +1,87 @@
+@import "./fonts.css";
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--ba-frame-inset) + var(--ba-header-height) + var(--ba-frame-gap));
+}
+
+/* While the scene runs, one finger scrolls natively and a pinch reaches the page to zoom the camera. */
+html[data-scene] {
+    touch-action: pan-x pan-y;
+}
+
+body {
+    margin: 0;
+    font: 400 15px/1.75 var(--ba-font-sans);
+    letter-spacing: 0.01em;
+    background: var(--ba-bg);
+    color: var(--ba-fg);
+    transition:
+        background 1s,
+        color 1s;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--ba-fg);
+    text-decoration: none;
+    transition: color 0.4s;
+}
+
+a:hover {
+    color: var(--ba-accent);
+}
+
+button {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 1px solid var(--ba-accent);
+    outline-offset: 3px;
+}
+
+::selection {
+    background: var(--ba-bg-selection);
+    color: var(--ba-fg);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+ul,
+ol,
+figure {
+    margin: 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+    }
+}

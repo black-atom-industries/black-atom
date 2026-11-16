@@ -1,5 +1,5 @@
 import type * as Theme from "../../types/theme.ts";
-import { tint } from "../../utils/color.ts";
+import { mix } from "../../utils/color.ts";
 
 export default function ({
     primaries,
@@ -8,7 +8,7 @@ export default function ({
     accents,
 }: Theme.CreatorContext): Theme.Ui {
     function t(color: string) {
-        return tint({ color, with: primaries.d20, amount: 0.4 });
+        return mix({ color, into: primaries.d20, amount: 0.1 });
     }
 
     return {
@@ -35,6 +35,7 @@ export default function ({
             default: primaries.l30,
             subtle: primaries.m40,
             disabled: primaries.m30,
+            border: primaries.m10,
             accent: accents.a10,
             contrast: primaries.d20,
             negative: feedback.negative,

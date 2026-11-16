@@ -507,7 +507,7 @@
             <key>settings</key>
             <dict>
                 <key>foreground</key>
-                <string>#dd7577</string>
+                <string>#f47a7d</string>
 </dict>
         </dict>
 <dict>
@@ -529,7 +529,7 @@
             <key>settings</key>
             <dict>
                 <key>foreground</key>
-                <string>#dd7577</string>
+                <string>#f47a7d</string>
 </dict>
         </dict>
 </array>

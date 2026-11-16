@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { commands } from "../bindings.ts";
 
 const TOPIC = "app-status" as const;
-const queryKey = () => [TOPIC] as const;
+export const queryKey = () => [TOPIC] as const;
 
 /**
  * Per-adapter setup state — provisioning class, editable config fields, and

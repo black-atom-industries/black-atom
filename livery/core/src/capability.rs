@@ -27,6 +27,7 @@ macro_rules! capabilities {
 
 capabilities! {
     GetConfig => "get_config",
+    GetConfigFileError => "get_config_file_error",
     SaveConfig => "save_config",
     DetectApps => "detect_apps",
     GetAppStatus => "get_app_status",
@@ -34,7 +35,8 @@ capabilities! {
     UpdateApp => "update_app",
     VerifyAppPath => "verify_app_path",
     UpdateSystemAppearance => "update_system_appearance",
-    WriteNvimSettings => "write_nvim_settings",
+    ReloadNvim => "reload_nvim",
+    FindNvimOverrides => "find_nvim_overrides",
     GetActiveTheme => "get_active_theme",
     SetActiveTheme => "set_active_theme",
 }

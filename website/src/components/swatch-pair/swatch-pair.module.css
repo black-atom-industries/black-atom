@@ -1,0 +1,32 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.half {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+    font-family: var(--ba-font-mono);
+    font-size: 12px;
+}
+
+.chip {
+    display: block;
+    height: 44px;
+    border: 1px solid var(--ba-fg-border);
+}
+
+.half + .half .chip {
+    border-left: 0;
+}
+
+.label {
+    color: var(--ba-fg-subtle);
+    overflow-wrap: anywhere;
+}
+
+.half:target .chip {
+    outline: 2px solid var(--ba-fg);
+    outline-offset: 2px;
+}

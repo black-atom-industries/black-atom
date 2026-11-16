@@ -1,22 +1,10 @@
 import { writeFileSync } from "node:fs";
-import { themeKeys } from "../themes/catalog.ts";
+import { collectionKeys } from "../themes/catalog.ts";
 import log from "./log.ts";
 
 function generateSchema() {
-    // Extract collection keys from theme keys
-    const collections = new Set<string>();
-
-    for (const themeKey of themeKeys) {
-        // Extract collection from theme key pattern: black-atom-{collection}-...
-        const parts = themeKey.split("-");
-        if (parts.length >= 3) {
-            const collectionKey = parts[2];
-            collections.add(collectionKey);
-        }
-    }
-
     const collectionProperties: Record<string, unknown> = {};
-    for (const collectionKey of collections) {
+    for (const collectionKey of collectionKeys) {
         collectionProperties[collectionKey] = {
             $ref: "#/$defs/collectionConfig",
         };

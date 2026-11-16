@@ -3,7 +3,7 @@ import type * as Theme from "../types/theme.ts";
 import { themeCatalog } from "./catalog.ts";
 import { defineThemeColors } from "./define-theme-colors.ts";
 
-function selectColors(theme: Theme.Colors): Theme.Colors {
+function selectColors(theme: Theme.Colors): Omit<Theme.Colors, "sources"> {
     const { primaries, accents, palette, feedback, ui, syntax } = theme;
     return { primaries, accents, palette, feedback, ui, syntax };
 }
@@ -36,11 +36,21 @@ test("defineThemeColors resolves creators in dependency order", () => {
         },
     });
 
-    assert.deepEqual(calls, [
+    assert.deepEqual(calls.slice(0, 5), [
         "primaries",
         "primaries,accents",
         "primaries,accents,palette",
         "primaries,accents,palette,feedback",
         "primaries,accents,palette,feedback",
     ]);
+});
+
+test("defineThemeColors traces each UI color to the slots it comes from", () => {
+    const { sources } = themeCatalog["black-atom-jpn-murasaki-light"];
+
+    assert.deepEqual(sources["ui.fg.positive"], { ref: "feedback.success" });
+    assert.deepEqual(sources["feedback.success"], { ref: "palette.green" });
+    assert.deepEqual(sources["ui.fg.disabled"], { ref: "primaries.m40" });
+    assert.deepEqual(sources["ui.bg.negative"], { from: ["primaries.l30", "feedback.negative"] });
+    assert.equal(sources["palette.green"], undefined);
 });

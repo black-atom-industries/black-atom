@@ -59,3 +59,44 @@ export function tint({
     const interpolator = interpolate([baseAdj, color], "oklch");
     return formatHex(interpolator(Math.abs(amount))) as HexColor;
 }
+
+/**
+ * Mixes a color into a base and keeps the base's own tone.
+ *
+ * Interpolates in OKLab, a straight line between the two colors, so the result
+ * never passes through unrelated hues and a small amount stays close to the base.
+ *
+ * @param params.color - Color to mix in (hex)
+ * @param params.into - Base color (hex)
+ * @param params.amount - Share of `color` (0-1)
+ * @example
+ * mix({ color: '#80bda2', into: '#351b23', amount: 0.1 }) // A wine background leaning green
+ */
+export function mix({
+    color,
+    into,
+    amount,
+}: {
+    color: string;
+    into: string;
+    amount: number;
+}): HexColor {
+    return formatHex(interpolate([into, color], "oklab")(amount)) as HexColor;
+}
+
+/**
+ * Shifts a color's OKLCH lightness and keeps its chroma and hue.
+ *
+ * @param color - Color to shade (hex)
+ * @param amount - Lightness offset (-1 to 1). Negative = darker, positive = lighter
+ * @returns Shaded hex color
+ * @example
+ * shade('#e69173', -0.05) // A darker coral of the same hue
+ */
+export function shade(color: string, amount: number): HexColor {
+    const base = libOklch(color);
+    if (!base) throw new Error(`Invalid color: ${color}`);
+
+    base.l = Math.min(1, Math.max(0, base.l + amount));
+    return formatHex(base) as HexColor;
+}

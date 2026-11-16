@@ -16,6 +16,7 @@ pub enum AppName {
     Lazygit,
     Herdr,
     Obsidian,
+    Rex,
     Tuicr,
     #[serde(rename = "claude-code")]
     ClaudeCode,
@@ -35,6 +36,7 @@ impl AppName {
             AppName::Lazygit,
             AppName::Herdr,
             AppName::Obsidian,
+            AppName::Rex,
             AppName::Tuicr,
             AppName::ClaudeCode,
             AppName::HelmTmux,
@@ -51,6 +53,7 @@ impl AppName {
             AppName::Lazygit => "lazygit",
             AppName::Herdr => "herdr",
             AppName::Obsidian => "obsidian",
+            AppName::Rex => "rex",
             AppName::Tuicr => "tuicr",
             AppName::ClaudeCode => "claude-code",
             AppName::HelmTmux => "helm-tmux",
@@ -64,7 +67,8 @@ fn default_true() -> bool {
 
 /// Bold/italic pair for one syntax group. Mirrors
 /// `BlackAtom.HighlightDefinition` as far as the settings page exposes it.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(default)]
 pub struct NvimStyle {
     pub bold: bool,
     pub italic: bool,
@@ -72,6 +76,7 @@ pub struct NvimStyle {
 
 /// Per-group syntax styling. One entry per group the plugin reads.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(default)]
 pub struct NvimSyntax {
     pub comments: NvimStyle,
     pub keywords: NvimStyle,
@@ -81,14 +86,20 @@ pub struct NvimSyntax {
     pub messages: NvimStyle,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize, Type)]
+#[serde(default)]
 pub struct NvimDiagnostics {
     pub undercurl: bool,
     pub background: bool,
 }
 
+/// One field per option `adapters/nvim/lua/black-atom/config.lua` declares. The
+/// plugin reads this shape from `apps.nvim.settings`, so a renamed field here
+/// silently stops reaching it.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
-pub struct NvimStyles {
+#[serde(default)]
+pub struct NvimSettings {
+    pub term_colors: bool,
     /// `"none"`, `"partial"`, or `"full"`.
     pub transparency: String,
     pub ending_tildes: bool,
@@ -96,67 +107,51 @@ pub struct NvimStyles {
     pub cmp_kind_color_mode: String,
     pub dark_sidebars: bool,
     pub dark_floats: bool,
+    pub dark_gutter: bool,
+    pub gutter_padding: u8,
     pub diagnostics: NvimDiagnostics,
     pub syntax: NvimSyntax,
 }
 
-/// Where the managed Lua block goes when the user has not chosen a file.
-pub const NVIM_SETTINGS_PATH: &str = "~/.config/nvim/init.lua";
-
-/// The plugin's `vim.g.black_atom_core_config` table, one field per option
-/// `adapters/nvim/lua/black-atom/config.lua` declares. The shape is the
-/// contract: it is rendered back into Lua verbatim, so a renamed field here
-/// silently stops reaching the plugin.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Type)]
-pub struct NvimSettings {
-    pub term_colors: bool,
-    pub styles: NvimStyles,
-}
-
 /// Mirrors `M.defaults` in `adapters/nvim/lua/black-atom/config.lua`. The
-/// plugin deep-merges the global over those defaults, so every field the
-/// block writes overrides the plugin — an unfaithful default here changes
-/// highlights for a user who never opened the settings page.
+/// plugin merges the stored options over those defaults, so an unfaithful
+/// default here changes highlights for a user who never opened the settings
+/// page. Missing keys in a stored file take these values.
 impl Default for NvimSettings {
     fn default() -> Self {
         Self {
             term_colors: true,
-            styles: NvimStyles {
-                transparency: "none".to_string(),
-                ending_tildes: false,
-                cmp_kind_color_mode: "bg".to_string(),
-                dark_sidebars: true,
-                dark_floats: true,
-                diagnostics: NvimDiagnostics {
-                    undercurl: false,
-                    background: false,
-                },
-                syntax: NvimSyntax {
-                    comments: NvimStyle {
-                        bold: false,
-                        italic: true,
-                    },
-                    keywords: NvimStyle {
-                        bold: true,
-                        italic: false,
-                    },
-                    functions: NvimStyle {
-                        bold: false,
-                        italic: false,
-                    },
-                    strings: NvimStyle {
-                        bold: false,
-                        italic: false,
-                    },
-                    variables: NvimStyle {
-                        bold: false,
-                        italic: false,
-                    },
-                    messages: NvimStyle {
-                        bold: true,
-                        italic: false,
-                    },
-                },
+            transparency: "none".to_string(),
+            ending_tildes: false,
+            cmp_kind_color_mode: "bg".to_string(),
+            dark_sidebars: true,
+            dark_floats: true,
+            dark_gutter: false,
+            gutter_padding: 0,
+            diagnostics: NvimDiagnostics::default(),
+            syntax: NvimSyntax::default(),
+        }
+    }
+}
+
+impl Default for NvimSyntax {
+    fn default() -> Self {
+        let plain = NvimStyle::default();
+        Self {
+            comments: NvimStyle {
+                bold: false,
+                italic: true,
+            },
+            keywords: NvimStyle {
+                bold: true,
+                italic: false,
+            },
+            functions: plain,
+            strings: plain,
+            variables: plain,
+            messages: NvimStyle {
+                bold: true,
+                italic: false,
             },
         }
     }
@@ -179,10 +174,7 @@ pub struct AppConfig {
     pub match_pattern: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub replace_template: Option<String>,
-    /// nvim only: the file the managed Lua block is written into.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub settings_path: Option<String>,
-    /// nvim only: the plugin options the managed Lua block renders.
+    /// nvim only: the plugin options, read by the plugin itself.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub settings: Option<NvimSettings>,
 }
@@ -259,5 +251,31 @@ mod tests {
             serialized["active_theme"],
             serde_json::json!("black-atom-jpn-koyo-dark")
         );
+    }
+
+    #[test]
+    fn partial_nvim_settings_take_the_defaults_for_missing_keys() {
+        let partial: NvimSettings = serde_json::from_str(r#"{"dark_gutter":true}"#).unwrap();
+
+        let expected = NvimSettings {
+            dark_gutter: true,
+            ..NvimSettings::default()
+        };
+        assert_eq!(partial, expected);
+
+        let empty: NvimSettings = serde_json::from_str("{}").unwrap();
+        assert_eq!(empty, NvimSettings::default());
+    }
+
+    #[test]
+    fn a_leftover_styles_key_is_ignored() {
+        let parsed: NvimSettings =
+            serde_json::from_str(r#"{"styles":{"dark_gutter":true}}"#).unwrap();
+        assert_eq!(parsed, NvimSettings::default());
+    }
+
+    #[test]
+    fn nvim_settings_with_a_wrong_type_still_fail() {
+        assert!(serde_json::from_str::<NvimSettings>(r#"{"dark_gutter":"yes"}"#).is_err());
     }
 }

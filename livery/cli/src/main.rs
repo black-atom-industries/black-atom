@@ -36,14 +36,15 @@ enum Command {
         /// Accept every prompt
         #[arg(short, long)]
         yes: bool,
+        /// Theme to apply at the end, instead of the picker or the active theme
+        #[arg(long)]
+        theme: Option<String>,
     },
     /// Switch the system between dark and light mode
     Appearance {
         /// dark or light
         mode: String,
     },
-    /// Write the stored Neovim plugin settings into nvim's managed Lua block
-    NvimSettings,
     /// Copy an adapter's theme file to the clipboard
     Adapter {
         #[command(subcommand)]
@@ -70,6 +71,7 @@ enum AdapterCommand {
 fn cli_surface(cap: Capability) -> &'static str {
     match cap {
         Capability::GetConfig => "status",
+        Capability::GetConfigFileError => "status",
         Capability::SaveConfig => "setup",
         Capability::DetectApps => "setup",
         Capability::GetAppStatus => "status",
@@ -77,7 +79,8 @@ fn cli_surface(cap: Capability) -> &'static str {
         Capability::UpdateApp => "apply",
         Capability::VerifyAppPath => "status",
         Capability::UpdateSystemAppearance => "appearance",
-        Capability::WriteNvimSettings => "nvim-settings",
+        Capability::ReloadNvim => "apply",
+        Capability::FindNvimOverrides => "status",
         Capability::GetActiveTheme => "status",
         Capability::SetActiveTheme => "apply",
     }
@@ -101,9 +104,8 @@ fn main() -> std::process::ExitCode {
         Some(Command::Reapply) => commands::reapply(),
         Some(Command::List) => commands::list(),
         Some(Command::Status) => commands::status(),
-        Some(Command::Setup { yes }) => commands::setup(yes),
+        Some(Command::Setup { yes, theme }) => commands::setup(yes, theme.as_deref()),
         Some(Command::Appearance { mode }) => commands::appearance(&mode),
-        Some(Command::NvimSettings) => commands::nvim_settings(),
         Some(Command::Adapter {
             adapter: AdapterCommand::Kagi { theme, font },
         }) => commands::kagi(theme.as_deref(), font.as_deref()),

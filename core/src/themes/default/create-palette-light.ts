@@ -1,26 +1,31 @@
 import type * as Theme from "../../types/theme.ts";
 import { createPalette } from "../create-palette.ts";
+import { oklch, shade } from "../../utils/color.ts";
 
 export default function (
     primaries: Theme.Primaries,
     opts?: Parameters<typeof createPalette>[1],
 ): Theme.Palette {
+    const red = oklch(0.56, 0.15, 25);
+    const yellow = oklch(0.56, 0.15, 85);
+    const cyan = oklch(0.56, 0.12, 200);
+
     return createPalette(
         {
             black: primaries.d20,
             gray: primaries.m10,
 
-            darkRed: primaries.m20,
-            red: primaries.m20,
+            darkRed: shade(red, -0.08),
+            red,
 
-            darkYellow: primaries.m30,
-            yellow: primaries.m30,
+            darkYellow: shade(yellow, -0.08),
+            yellow,
 
             darkGreen: primaries.m40,
             green: primaries.m40,
 
-            darkCyan: primaries.m30,
-            cyan: primaries.m30,
+            darkCyan: shade(cyan, -0.08),
+            cyan,
 
             darkBlue: primaries.m20,
             blue: primaries.m20,

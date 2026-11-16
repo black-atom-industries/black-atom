@@ -1,7 +1,7 @@
 # Black Atom
 
 Dark and light themes for developer tools. Every theme is defined once and generated for each tool, so the same colors
-show up in the terminal, the editor, and the rest of the desktop. Livery switches most of them at once.
+show up in the terminal, the editor, and the rest of the desktop. Livery switches most of them at once. See [black-atom.industries](https://black-atom.industries).
 
 ## Install
 
@@ -45,7 +45,9 @@ how the tool reloads, and the tools livery leaves to you.
 
 ## Contributing
 
-[`CONTRIBUTING.md`](CONTRIBUTING.md) covers the repository layout, development tasks, Git hooks, and releases.
+[`CONTRIBUTING.md`](CONTRIBUTING.md) covers the repository layout, development tasks, Git hooks, and releases. The color
+model is in [`docs/colors.md`](docs/colors.md), theme design in [`docs/theme-design.md`](docs/theme-design.md), and the adapter pipeline in
+[`docs/adapter-guide.md`](docs/adapter-guide.md).
 
 ## License
 

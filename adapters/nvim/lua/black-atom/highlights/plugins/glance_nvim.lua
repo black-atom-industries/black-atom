@@ -41,7 +41,7 @@ return {
 
             -- Other
             GlanceFoldIcon = { fg = ui.fg.info },
-            GlanceIndent = { fg = ui.fg.subtle, bg = ui.bg.float },
+            GlanceIndent = { fg = ui.fg.border, bg = ui.bg.float },
             GlanceBorderTop = border_style,
         }
     end,

@@ -1,0 +1,23 @@
+.root {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    gap: 8px;
+    font-size: 13.5px;
+
+    &:hover {
+        color: var(--ba-accent);
+    }
+
+    &[aria-pressed="true"] {
+        font-weight: 600;
+
+        &::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ba-accent);
+        }
+    }
+}

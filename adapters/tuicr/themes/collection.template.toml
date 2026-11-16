@@ -54,7 +54,7 @@ comment_issue = "<%= theme.ui.fg.negative %>"
 comment_praise = "<%= theme.ui.fg.positive %>"
 
 border_focused = "<%= theme.ui.fg.accent %>"
-border_unfocused = "<%= theme.ui.bg.active %>"
+border_unfocused = "<%= theme.ui.fg.border %>"
 status_bar_bg = "<%= theme.ui.bg.panel %>"
 cursor_color = "<%= theme.ui.fg.accent %>"
 cursor_line_bg = "<%= theme.ui.bg.active %>"

@@ -19,6 +19,8 @@ Read [`references/curated-release.md`](references/curated-release.md) for the wo
 
 ## Format
 
+- Group the feature blocks in `### Highlights` under `#### Themes`, `#### Livery` and `#### Core`, one `##### Name` per
+  feature. Fixes and upgrade notes follow as `####` items.
 - Leave the generated heading and commit groups as release-please wrote them. The commit list stays complete, including the
   commits a highlight covers.
 - A release section never contains a line that is only `---`. release-please reads the notes from the PR description

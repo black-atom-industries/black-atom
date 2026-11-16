@@ -8,10 +8,10 @@
   --color-base-05: #351b23;
   --color-base-10: #452a32;
   --color-base-20: #5b3e47;
-  --color-base-25: #6d4769;
-  --color-base-30: #7d5178;
-  --color-base-35: #865f88;
-  --color-base-40: #946996;
+  --color-base-25: #7b354b;
+  --color-base-30: #965e90;
+  --color-base-35: #a571a7;
+  --color-base-40: #b883ba;
   --color-base-50: #b796b8;
   --color-base-60: #c9b1cb;
   --color-base-70: #d4bfd6;
@@ -43,21 +43,21 @@
   --background-secondary-alt: #250d15;
   --background-modifier-hover: #452a32;
   --background-modifier-active-hover: #452a32;
-  --background-modifier-border: #452a32;
-  --background-modifier-border-hover: #452a32;
+  --background-modifier-border: #7b354b;
+  --background-modifier-border-hover: #b883ba;
   --background-modifier-border-focus: #d0e08d;
-  --background-modifier-error-rgb: 117, 74, 69;
-  --background-modifier-error: #754a45;
-  --background-modifier-error-hover: #754a45;
-  --background-modifier-success-rgb: 72, 92, 83;
-  --background-modifier-success: #485c53;
-  --background-modifier-message: #4b5a5f;
+  --background-modifier-error-rgb: 71, 36, 43;
+  --background-modifier-error: #47242b;
+  --background-modifier-error-hover: #47242b;
+  --background-modifier-success-rgb: 62, 42, 46;
+  --background-modifier-success: #3e2a2e;
+  --background-modifier-message: #3f2931;
   --background-modifier-form-field: #351b23;
 
   /* Text */
   --text-normal: #d4bfd6;
-  --text-muted: #946996;
-  --text-faint: #865f88;
+  --text-muted: #b883ba;
+  --text-faint: #a571a7;
   --text-accent: #d0e08d;
   --text-accent-hover: #d0e08d;
   --text-on-accent: #351b23;
@@ -78,9 +78,9 @@
   --h1-color: #d0e08d;
   --h2-color: #d0e08d;
   --h3-color: #d0e08d;
-  --h4-color: #946996;
-  --h5-color: #946996;
-  --h6-color: #946996;
+  --h4-color: #b883ba;
+  --h5-color: #b883ba;
+  --h6-color: #b883ba;
 
   /* Markup */
   --bold-color: #d0e08d;
@@ -93,13 +93,13 @@
 
   /* Code / Syntax Highlighting */
   --code-normal: #c9b1cb;
-  --code-comment: #7d5178;
+  --code-comment: #965e90;
   --code-function: #d0e08d;
   --code-important: #d49bb2;
   --code-keyword: #d49bb2;
   --code-operator: #7ea5b7;
   --code-property: #8cb6c5;
-  --code-punctuation: #946996;
+  --code-punctuation: #b883ba;
   --code-string: #80bda2;
   --code-tag: #d0e08d;
   --code-value: #7ea5b7;
@@ -121,7 +121,7 @@
   /* Scrollbar */
   --scrollbar-bg: #351b23;
   --scrollbar-thumb-bg: #452a32;
-  --scrollbar-active-thumb-bg: #946996;
+  --scrollbar-active-thumb-bg: #b883ba;
 
   /* Nav */
   --nav-item-background-hover: #452a32;

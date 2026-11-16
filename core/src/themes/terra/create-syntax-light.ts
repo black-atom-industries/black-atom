@@ -25,18 +25,18 @@ export default function ({ primaries, palette, feedback }: Theme.CreatorContext)
             default: palette.darkBlue,
         },
         boolean: {
-            default: palette.darkGreen,
+            default: palette.darkCyan,
         },
         number: {
-            default: palette.darkGreen,
+            default: palette.darkCyan,
         },
         type: {
             default: palette.cyan,
             builtin: palette.darkCyan,
         },
         attribute: {
-            default: palette.darkYellow,
-            builtin: palette.darkYellow,
+            default: palette.cyan,
+            builtin: palette.cyan,
         },
         func: {
             default: palette.yellow,

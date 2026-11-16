@@ -1,0 +1,22 @@
+.root {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 320px;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 60%, transparent);
+    background: var(--ba-bg-panel);
+}
+
+.caption {
+    position: absolute;
+    left: 14px;
+    bottom: 12px;
+    padding: 2px 8px;
+    background: var(--ba-bg);
+    font-family: var(--ba-label-font);
+    font-size: var(--ba-label-size);
+    letter-spacing: var(--ba-label-tracking);
+    text-transform: var(--ba-label-case);
+    line-height: var(--ba-label-leading);
+}

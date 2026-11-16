@@ -184,5 +184,17 @@
         "collection_key": "terra",
         "appearance": "light",
         "label": "Black Atom — TERRA ∷ Winter Light"
+    },
+    {
+        "key": "black-atom-tr-1000-dark",
+        "collection_key": "tr-1000",
+        "appearance": "dark",
+        "label": "Black Atom — TR-1000 ∷ Dark"
+    },
+    {
+        "key": "black-atom-tr-1000-light",
+        "collection_key": "tr-1000",
+        "appearance": "light",
+        "label": "Black Atom — TR-1000 ∷ Light"
     }
 ]

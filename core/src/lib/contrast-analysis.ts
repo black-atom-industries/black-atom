@@ -94,22 +94,57 @@ export const INTENDED_PAIRINGS: PairingCategory[] = [
         name: "Contrast inversion",
         pairs: [{ fg: "fg.contrast", bg: "bg.contrast" }],
     },
+    {
+        name: "Syntax",
+        pairs: [
+            "variable",
+            "string",
+            "boolean",
+            "number",
+            "property",
+            "constant",
+            "module",
+            "type",
+            "attribute",
+            "func",
+            "constructor",
+            "operator",
+            "keyword",
+            "punctuation",
+            "comment",
+            "tag",
+        ].map((group) => ({ fg: `syntax.${group}.default`, bg: "bg.default" })),
+    },
+    {
+        // Black, light gray and white sit near one of the two backgrounds by
+        // terminal convention, so only the slots that carry text are listed.
+        name: "Terminal palette",
+        pairs: [
+            "gray",
+            "darkRed",
+            "red",
+            "darkGreen",
+            "green",
+            "darkYellow",
+            "yellow",
+            "darkBlue",
+            "blue",
+            "darkMagenta",
+            "magenta",
+            "darkCyan",
+            "cyan",
+        ].map((slot) => ({ fg: `palette.${slot}`, bg: "bg.default" })),
+    },
 ];
 
-/** Resolves a dot-path key (e.g. "fg.default") to a hex color from a theme.
- *  Keys must be single-dot format: "fg.<token>" or "bg.<token>". */
+/** Resolves a dot-path key to a hex color from a theme. `fg.<token>` and
+ *  `bg.<token>` are short for `ui.fg.<token>` and `ui.bg.<token>`. */
 function resolveColor(theme: Theme.Definition, key: string) {
-    type UiBgKey = keyof Theme.Definition["ui"]["bg"];
-    type UiFgKey = keyof Theme.Definition["ui"]["fg"];
-
-    const [group, token] = key.split(".");
-    const color =
-        group === "fg"
-            ? theme.ui.fg[token as UiFgKey]
-            : group === "bg"
-              ? theme.ui.bg[token as UiBgKey]
-              : undefined;
-    if (!color) {
+    const path = key.startsWith("fg.") || key.startsWith("bg.") ? `ui.${key}` : key;
+    const color = path
+        .split(".")
+        .reduce<unknown>((node, segment) => (node as Record<string, unknown>)?.[segment], theme);
+    if (typeof color !== "string") {
         throw new Error(`resolveColor: token "${key}" not found in theme "${theme.meta.key}"`);
     }
     return color;

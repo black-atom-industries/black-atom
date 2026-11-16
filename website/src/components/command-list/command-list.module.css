@@ -1,0 +1,30 @@
+.root {
+    display: grid;
+    margin: 0;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: minmax(200px, auto) minmax(0, 1fr);
+    gap: 20px;
+    align-items: baseline;
+    padding: 12px 0;
+    border-top: 1px solid color-mix(in srgb, var(--ba-fg-subtle) 30%, transparent);
+
+    @media (max-width: 560px) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2px;
+    }
+}
+
+.command {
+    font-family: var(--ba-font-mono);
+    font-size: 13.5px;
+    color: var(--ba-fg-accent);
+}
+
+.description {
+    margin: 0;
+    font-size: 14.5px;
+    color: var(--ba-fg-subtle);
+}

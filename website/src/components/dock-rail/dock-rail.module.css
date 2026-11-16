@@ -1,0 +1,10 @@
+.root {
+    display: grid;
+    gap: 8px;
+
+    /* The dock sits on the background scene: its buttons get a backing instead of an outline. */
+    & > button {
+        background: var(--ba-chip-bg);
+        border-color: transparent;
+    }
+}

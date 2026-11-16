@@ -13,7 +13,7 @@ return {
             NormalNC = { fg = ui.fg.default, bg = bg.default(config, colors) },
             NormalPanel = { fg = ui.fg.default, bg = bg.panel(config, colors) },
 
-            EndOfBuffer = ext_hl({ fg = ui.bg.default }, { [config.styles.ending_tildes] = ui.fg.subtle }),
+            EndOfBuffer = ext_hl({ fg = ui.bg.default }, { [config.ending_tildes] = ui.fg.subtle }),
             NonText = { fg = ui.fg.subtle },
             Whitespace = { link = "NonText" },
             Title = { fg = ui.fg.accent },
@@ -22,9 +22,9 @@ return {
             Question = { fg = ui.fg.accent },
 
             -- Floating Windows
-            NormalFloat = { fg = ui.fg.default, bg = ui.bg.float },
-            FloatBorder = { fg = ui.fg.subtle, bg = ui.bg.float },
-            FloatTitle = { fg = ui.fg.accent, bg = ui.bg.float, bold = true },
+            NormalFloat = { fg = ui.fg.default, bg = bg.float(config, colors) },
+            FloatBorder = { fg = ui.fg.border, bg = bg.float(config, colors) },
+            FloatTitle = { fg = ui.fg.accent, bg = bg.float(config, colors), bold = true },
 
             -- Cursor & Matching
             Cursor = { reverse = true },
@@ -37,8 +37,11 @@ return {
             CursorLine = { bg = ui.bg.active },
             CursorColumn = { bg = ui.bg.active },
             ColorColumn = { bg = ui.bg.active },
-            LineNr = { fg = ui.fg.subtle },
-            CursorLineNr = { fg = ui.fg.accent, bg = ui.bg.active },
+            LineNr = { fg = ui.fg.subtle, bg = bg.gutter(config, colors) },
+            CursorLineNr = {
+                fg = ui.fg.accent,
+                bg = config.dark_gutter and bg.gutter(config, colors) or ui.bg.active,
+            },
 
             QuickFixLine = { fg = ui.fg.accent },
 
@@ -56,6 +59,9 @@ return {
             DiffChange = { bg = ui.bg.modify },
             DiffDelete = { bg = ui.bg.delete },
             DiffText = { bg = ui.bg.info },
+            Added = { fg = ui.fg.add },
+            Changed = { fg = ui.fg.modify },
+            Removed = { fg = ui.fg.delete },
 
             -- Spell Checking
             SpellBad = { fg = ui.fg.negative, undercurl = true },
@@ -64,17 +70,17 @@ return {
             SpellRare = { fg = ui.fg.negative, undercurl = true },
 
             -- Popup Menu
-            Pmenu = { fg = ui.fg.default, bg = ui.bg.float },
+            Pmenu = { fg = ui.fg.default, bg = bg.float(config, colors) },
             PmenuSel = { fg = ui.fg.accent, bg = ui.bg.active, bold = true },
             PmenuThumb = { bg = ui.bg.active },
-            PmenuSBar = { bg = ui.bg.float },
+            PmenuSBar = { bg = bg.float(config, colors) },
 
             -- Messages & Mode
-            Error = ext_hl({ fg = ui.fg.negative }, config.styles.syntax.messages),
-            ErrorMsg = ext_hl({ fg = ui.fg.negative }, config.styles.syntax.messages),
-            MoreMsg = ext_hl({ fg = ui.fg.info }, config.styles.syntax.messages),
-            ModeMsg = ext_hl({ fg = ui.fg.info }, config.styles.syntax.messages),
-            WarningMsg = ext_hl({ fg = ui.fg.warn }, config.styles.syntax.messages),
+            Error = ext_hl({ fg = ui.fg.negative }, config.syntax.messages),
+            ErrorMsg = ext_hl({ fg = ui.fg.negative }, config.syntax.messages),
+            MoreMsg = ext_hl({ fg = ui.fg.info }, config.syntax.messages),
+            ModeMsg = ext_hl({ fg = ui.fg.info }, config.syntax.messages),
+            WarningMsg = ext_hl({ fg = ui.fg.warn }, config.syntax.messages),
 
             -- Window & Tab Management
             TabLineFill = { fg = ui.fg.subtle, bg = bg.panel(config, colors) },
@@ -83,25 +89,25 @@ return {
 
             StatusLine = ext_hl(
                 { fg = ui.fg.default, bg = bg.default(config, colors) },
-                { [config.styles.transparency == "full"] = { bg = colors.none } }
+                { [config.transparency == "full"] = { bg = colors.none } }
             ),
             StatusLineNC = { link = "StatusLine" },
 
             WinBar = ext_hl(
                 { fg = ui.fg.subtle, bg = bg.default(config, colors) },
-                { [config.styles.transparency == "full"] = { bg = colors.none } }
+                { [config.transparency == "full"] = { bg = colors.none } }
             ),
             WinBarNC = { link = "WinBar" },
             WinBarPath = { fg = ui.fg.subtle },
             WinBarFileName = { fg = ui.fg.accent },
             WinBarSymbol = { fg = ui.fg.info },
             WinBarSeparator = { link = "WinBar" },
-            WinSeparator = { fg = ui.fg.subtle, bg = bg.default(config, colors) },
+            WinSeparator = { fg = ui.fg.border, bg = bg.default(config, colors) },
 
             -- Folds & Columns
             Folded = { fg = ui.fg.subtle, bg = ui.bg.panel },
-            FoldColumn = { fg = ui.fg.subtle },
-            SignColumn = { fg = ui.fg.subtle },
+            FoldColumn = { fg = ui.fg.subtle, bg = bg.gutter(config, colors) },
+            SignColumn = { fg = ui.fg.subtle, bg = bg.gutter(config, colors) },
         }
 
         return highlights_map
