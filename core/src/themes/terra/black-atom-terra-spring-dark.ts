@@ -8,55 +8,44 @@ import createUi from "./create-ui-dark.ts";
 
 export default defineThemeColors({
     primaries: {
-        // Ground: a green-black garden at night
-        d10: oklch(0.18, 0.025, 160),
-        d20: oklch(0.23, 0.028, 158),
-        d30: oklch(0.28, 0.03, 158),
-        d40: oklch(0.34, 0.032, 158),
+        d10: oklch(0.18, 0.018, 120),
+        d20: oklch(0.23, 0.02, 120),
+        d30: oklch(0.28, 0.022, 120),
+        d40: oklch(0.34, 0.025, 120),
 
-        // Mid: moss and stem
-        m10: oklch(0.4, 0.06, 152),
-        m20: oklch(0.5, 0.07, 152),
-        m30: oklch(0.61, 0.07, 150),
-        m40: oklch(0.72, 0.06, 150),
+        m10: oklch(0.4, 0.025, 120),
+        m20: oklch(0.5, 0.06, 337),
+        m30: oklch(0.65, 0.07, 337),
+        m40: oklch(0.72, 0.06, 337),
 
-        // Ink: pale new-leaf text
-        l10: oklch(0.74, 0.05, 130),
-        l20: oklch(0.8, 0.045, 130),
-        l30: oklch(0.86, 0.04, 130),
-        l40: oklch(0.92, 0.03, 125),
+        l10: oklch(0.74, 0.035, 80),
+        l20: oklch(0.8, 0.035, 80),
+        l30: oklch(0.86, 0.03, 80),
+        l40: oklch(0.92, 0.025, 80),
     },
     accents: {
-        // Sapling, cursor and badges
-        a10: oklch(0.84, 0.11, 140),
-        // Apricot blossom
-        a20: oklch(0.78, 0.1, 65),
+        a10: oklch(0.78, 0.12, 26),
+        a20: oklch(0.86, 0.14, 85),
     },
     palette: ({ primaries }) =>
         createPalette(primaries, {
-            // Cherry blossom
-            darkRed: oklch(0.72, 0.085, 10),
-            red: oklch(0.79, 0.08, 10),
+            darkRed: oklch(0.72, 0.1, 10),
+            red: oklch(0.78, 0.12, 26),
 
-            // New leaf
-            darkGreen: oklch(0.72, 0.085, 145),
-            green: oklch(0.8, 0.085, 140),
+            darkGreen: oklch(0.72, 0.1, 135),
+            green: oklch(0.8, 0.1, 130),
 
-            // Primrose, apricot
-            darkYellow: oklch(0.78, 0.1, 65),
-            yellow: oklch(0.86, 0.1, 100),
+            darkYellow: oklch(0.75, 0.08, 78),
+            yellow: oklch(0.86, 0.13, 85),
 
-            // Spring sky
-            darkBlue: oklch(0.72, 0.07, 240),
-            blue: oklch(0.8, 0.065, 240),
+            darkBlue: oklch(0.72, 0.08, 265),
+            blue: oklch(0.8, 0.075, 265),
 
-            // Lilac
-            darkMagenta: oklch(0.72, 0.075, 310),
-            magenta: oklch(0.79, 0.07, 310),
+            darkMagenta: oklch(0.72, 0.07, 330),
+            magenta: oklch(0.79, 0.07, 330),
 
-            // Pond water
-            darkCyan: oklch(0.72, 0.065, 190),
-            cyan: oklch(0.8, 0.06, 190),
+            darkCyan: oklch(0.72, 0.065, 165),
+            cyan: oklch(0.8, 0.06, 165),
         }),
     feedback: ({ palette }) => createFeedback(palette),
     ui: createUi,

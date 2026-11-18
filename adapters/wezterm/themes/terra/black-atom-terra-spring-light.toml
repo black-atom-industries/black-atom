@@ -3,61 +3,61 @@ author = "Black Atom Industries"
 name = "Black Atom — TERRA ∷ Spring Light"
 
 [colors]
-foreground = "#275639"
-background = "#eef5e3"
-cursor_bg = "#79c069"
-cursor_border = "#79c069"
-cursor_fg = "#eef5e3"
-selection_bg = "#f9fcf1"
-selection_fg = "#275639"
-split = "#9fb8a3"
-compose_cursor = "#9f4d5c"
-scrollbar_thumb = "#3c744a"
+foreground = "#474e35"
+background = "#faf1e2"
+cursor_bg = "#e66f66"
+cursor_border = "#e66f66"
+cursor_fg = "#faf1e2"
+selection_bg = "#fef9f1"
+selection_fg = "#474e35"
+split = "#aeb2a4"
+compose_cursor = "#b13f3a"
+scrollbar_thumb = "#626a4d"
 
 ansi = [
-  "#467557", # black
-  "#903f4f", # dark_red
-  "#2a682f", # dark_green
-  "#c47c28", # dark_yellow
-  "#1f5f86", # dark_blue
-  "#9476ab", # dark_magenta
-  "#398c87", # dark_cyan
-  "#bbdbc0" # light_gray
+  "#656d4d", # black
+  "#98374c", # dark_red
+  "#366809", # dark_green
+  "#b38537", # dark_yellow
+  "#3b5697", # dark_blue
+  "#a66ea1", # dark_magenta
+  "#4b8c71", # dark_cyan
+  "#e3c8db" # light_gray
 ]
 
 brights = [
-  "#3c744a", # gray
-  "#9f4d5c", # red
-  "#407435", # green
-  "#9f8d0f", # yellow
-  "#2f6d95", # blue
-  "#9e7fb5", # magenta
-  "#459792", # cyan
-  "#eef5e3" # white
+  "#626a4d", # gray
+  "#b13f3a", # red
+  "#4c730f", # green
+  "#b08506", # yellow
+  "#4964a3", # blue
+  "#b077ab", # magenta
+  "#55977b", # cyan
+  "#faf1e2" # white
 ]
 
 [colors.tab_bar]
-inactive_tab_edge = "#e1ecd8"
-background = "#eef5e3"
+inactive_tab_edge = "#f3e6d2"
+background = "#faf1e2"
 
 [colors.tab_bar.active_tab]
-fg_color = "#eef5e3"
-bg_color = "#79c069"
+fg_color = "#faf1e2"
+bg_color = "#e66f66"
 intensity = "Bold"
 
 [colors.tab_bar.inactive_tab]
-fg_color = "#eef5e3"
-bg_color = "#a3c9aa"
+fg_color = "#faf1e2"
+bg_color = "#d4b2ca"
 
 [colors.tab_bar.inactive_tab_hover]
-fg_color = "#eef5e3"
-bg_color = "#d4e4cd"
+fg_color = "#faf1e2"
+bg_color = "#eadcc5"
 
 [colors.tab_bar.new_tab]
-fg_color = "#eef5e3"
-bg_color = "#407435"
+fg_color = "#faf1e2"
+bg_color = "#4c730f"
 
 [colors.tab_bar.new_tab_hover]
-fg_color = "#eef5e3"
-bg_color = "#d4e4cd"
+fg_color = "#faf1e2"
+bg_color = "#eadcc5"
 intensity = "Bold"
