@@ -1,5 +1,5 @@
 import type * as Theme from "../../types/theme.ts";
-import { tint } from "../../utils/color.ts";
+import { diffBackground, tint } from "../../utils/color.ts";
 
 export default function ({ primaries, feedback, accents }: Theme.CreatorContext): Theme.Ui {
     function t(color: string) {
@@ -23,9 +23,9 @@ export default function ({ primaries, feedback, accents }: Theme.CreatorContext)
         hint: t(feedback.warning),
         warn: t(feedback.warning),
         positive: t(feedback.success),
-        add: t(feedback.success),
-        delete: t(feedback.negative),
-        modify: t(feedback.info),
+        add: diffBackground(feedback.success, primaries.d20),
+        delete: diffBackground(feedback.negative, primaries.d20),
+        modify: diffBackground(feedback.info, primaries.d20),
     };
 
     return {

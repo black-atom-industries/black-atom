@@ -1,5 +1,5 @@
 import type * as Theme from "../../types/theme.ts";
-import { tint } from "../../utils/color.ts";
+import { diffBackground, tint } from "../../utils/color.ts";
 
 export default function ({
     primaries,
@@ -27,9 +27,9 @@ export default function ({
             info: t(feedback.info),
             hint: t(palette.darkYellow),
             positive: t(feedback.success),
-            add: t(feedback.success),
-            delete: t(feedback.negative),
-            modify: t(feedback.info),
+            add: diffBackground(feedback.success, primaries.d20),
+            delete: diffBackground(feedback.negative, primaries.d20),
+            modify: diffBackground(feedback.info, primaries.d20),
         },
         fg: {
             default: primaries.l30,

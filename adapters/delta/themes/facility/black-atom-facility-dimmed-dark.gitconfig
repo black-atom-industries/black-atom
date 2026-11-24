@@ -4,12 +4,12 @@
     dark = true
     syntax-theme = ansi
 
-    minus-style = syntax "#463941"
-    minus-emph-style = syntax "#705260"
-    minus-empty-line-marker-style = normal "#463941"
-    plus-style = syntax "#344437"
-    plus-emph-style = syntax "#4c674c"
-    plus-empty-line-marker-style = normal "#344437"
+    minus-style = syntax "#2d252b"
+    minus-emph-style = syntax "#3e2933"
+    minus-empty-line-marker-style = normal "#2d252b"
+    plus-style = syntax "#212b24"
+    plus-emph-style = syntax "#253525"
+    plus-empty-line-marker-style = normal "#212b24"
 
     line-numbers-minus-style = "#ffa9d2"
     line-numbers-plus-style = "#96e497"

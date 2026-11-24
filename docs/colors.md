@@ -51,15 +51,17 @@ Feedback comes in two shapes:
 
 Feedback reaches a tool only through the UI tokens that `create-ui-*.ts` derive from it:
 
-| Feedback   | UI foreground        | UI background (tinted) |
-| ---------- | -------------------- | ---------------------- |
-| `negative` | `negative`, `delete` | `negative`, `delete`   |
-| `success`  | `positive`, `add`    | `positive`, `add`      |
-| `info`     | `info`, `modify`     | `info`, `modify`       |
-| `warning`  | `warn`               | `warn`                 |
+| Feedback   | UI foreground        | UI background        |
+| ---------- | -------------------- | -------------------- |
+| `negative` | `negative`, `delete` | `negative`, `delete` |
+| `success`  | `positive`, `add`    | `positive`, `add`    |
+| `info`     | `info`, `modify`     | `info`, `modify`     |
+| `warning`  | `warn`               | `warn`               |
 
-`hint` follows `warning` in some collections and `palette.darkYellow` in others, and each collection sets its own tint ground
-(`d10` or `d20` in dark). `create-ui-*.ts` holds both choices.
+The status backgrounds (`negative`, `positive`, `info`, `warn`, `hint`) are tints. `hint` follows `warning` in some
+collections and `palette.darkYellow` in others, and each collection sets its own tint ground (`d10` or `d20` in dark).
+`create-ui-*.ts` holds both choices. The diff backgrounds (`add`, `delete`, `modify`) follow one rule for every theme,
+described in [`theme-design.md`](theme-design.md).
 
 No template reads `theme.feedback`. A template gets a status color through a UI token, such as `theme.ui.fg.negative`.
 

@@ -1,4 +1,4 @@
-import { formatHex, interpolate, oklch as libOklch } from "culori";
+import { clampChroma, formatHex, interpolate, oklch as libOklch } from "culori";
 import type { HexColor } from "../types/colors.ts";
 
 /**
@@ -82,6 +82,28 @@ export function mix({
     amount: number;
 }): HexColor {
     return formatHex(interpolate([into, color], "oklab")(amount)) as HexColor;
+}
+
+/**
+ * Derives a diff background: the ground's lightness stepped away from it (lighter on a dark
+ * ground, darker on a light one), the git color's hue, and its chroma capped low but never below
+ * the ground's, so code on a diff line reads as it does on the ground and the line looks no grayer.
+ *
+ * @param color - Git color whose hue the background takes (hex)
+ * @param ground - Background the diff sits on, `bg.default` (hex)
+ * @returns Diff background hex color
+ */
+export function diffBackground(color: string, ground: string): HexColor {
+    const git = libOklch(color);
+    const base = libOklch(ground);
+    if (!git) throw new Error(`Invalid color: ${color}`);
+    if (!base) throw new Error(`Invalid color: ${ground}`);
+
+    const step = base.l > 0.5 ? -0.04 : 0.07;
+    const chroma = Math.min(git.c ?? 0, Math.max(0.035, base.c ?? 0));
+    return formatHex(
+        clampChroma({ mode: "oklch", l: base.l + step, c: chroma, h: git.h ?? 0 }, "oklch"),
+    ) as HexColor;
 }
 
 /**

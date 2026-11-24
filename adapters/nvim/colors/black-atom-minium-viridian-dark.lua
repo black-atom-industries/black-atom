@@ -59,9 +59,9 @@ local theme = {
                 info = "#445359",
                 hint = "#5c5243",
                 positive = "#505544",
-                add = "#505544",
-                delete = "#664545",
-                modify = "#445359",
+                add = "#464e2f",
+                delete = "#623f3f",
+                modify = "#29505e",
             },
             fg = {
                 default = "#daf1ed",

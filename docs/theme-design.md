@@ -45,10 +45,11 @@ hue. Accents and palette colors stay soft:
 - 3:1 guides syntax and terminal colors. Feedback and git text aims for 4.5:1 on `bg.default` and clearly above 3:1 on
   its own tint.
 - Fills are exempt: cursor, badges, selection, and `fg.accent` used as a fill. `fg.disabled` is meant to be faint.
-- Light diff backgrounds are dedicated pastels: `oklch(0.9, 0.07, h)` for add and modify, and `oklch(0.93, 0.04, h)` for
-  delete, with `h` the git color's hue. JPN keeps add and modify at chroma 0.015. Terra uses `oklch(0.93, 0.04, h)` for
-  all three. Feedback tints sit at about 15% on light grounds and 20 to 30% on dark ones. `pastel` in a collection's
-  `create-ui-light.ts` holds the pattern.
+- Diff backgrounds follow one rule for every theme: `bg.default`'s lightness plus 0.07 in dark and minus 0.04 in light,
+  the git color's hue, and chroma capped at 0.035 or `bg.default`'s chroma, whichever is higher. Code on a diff line
+  then reads about as well as on `bg.default`, and a tinted ground never makes the line look gray.
+  `diffBackground` in `core/src/utils/color.ts` holds the rule.
+- Feedback tints sit at about 15% on light grounds and 20 to 30% on dark ones.
 - A gray ladder keeps even steps. When one step moves, its neighbors move too.
 
 ## Adding a collection
