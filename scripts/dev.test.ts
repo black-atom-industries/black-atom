@@ -309,6 +309,57 @@ test("failed service retains its failure code while stopping other services", as
     assert.equal(await group.finished, 23);
 });
 
+test("service trees end with a dev process that dies without running its shutdown", async () => {
+    for (const failure of [
+        "Promise.reject(new Error('crash'))",
+        "setTimeout(() => { throw new Error('crash'); })",
+    ]) {
+        const fixture = await mkdtemp(join(tmpdir(), "black-atom-test-"));
+        try {
+            const crashed = await output(process.execPath, {
+                args: [
+                    "--input-type=module",
+                    "-e",
+                    `import { existsSync } from "node:fs";
+                    import { createDevProcesses } from ${JSON.stringify(
+                        new URL("./dev-process.ts", import.meta.url).href,
+                    )};
+                    const fixture = process.argv[1];
+                    createDevProcesses({ cwd: fixture }).startService([
+                        "sh",
+                        "-c",
+                        \`exec >/dev/null 2>&1; sleep 60 & echo $! > '\${fixture}/pid.tmp'; mv '\${fixture}/pid.tmp' '\${fixture}/pid'; wait\`,
+                    ]);
+                    while (!existsSync(\`\${fixture}/pid\`)) await new Promise((resolve) => setTimeout(resolve, 10));
+                    ${failure};
+                    await new Promise((resolve) => setTimeout(resolve, 10_000));`,
+                    fixture,
+                ],
+            });
+            assert.equal(crashed.code, 1, crashed.stderr);
+            const grandchild = Number(await readFile(`${fixture}/pid`, "utf8"));
+            try {
+                let alive = true;
+                for (let attempt = 0; attempt < 100 && alive; attempt++) {
+                    try {
+                        process.kill(grandchild, 0);
+                        await new Promise((resolve) => setTimeout(resolve, 20));
+                    } catch {
+                        alive = false;
+                    }
+                }
+                assert.equal(alive, false, `${failure} left the service's grandchild running`);
+            } finally {
+                try {
+                    process.kill(grandchild, "SIGKILL");
+                } catch {}
+            }
+        } finally {
+            await rm(fixture, { recursive: true, force: true });
+        }
+    }
+});
+
 test("generation in flight keeps readiness closed and later Rust edits rebuild", async () => {
     const gate = Promise.withResolvers<void>();
     const started = Promise.withResolvers<void>();

@@ -28,6 +28,7 @@ export function startDevProcess(
     }
     return {
         status,
+        kill: signalGroup,
         async stop() {
             signalGroup("SIGTERM");
             await new Promise((resolve) => setTimeout(resolve, options.stopGraceMs ?? 300));
@@ -45,10 +46,21 @@ export function createDevProcesses(options: {
     const children = new Set<ReturnType<typeof startDevProcess>>();
     const finished = Promise.withResolvers<number>();
     let stopping = false;
+    /** A dev process that dies before `stop` finishes leaves detached service trees behind. */
+    function killRemaining() {
+        for (const child of children) {
+            try {
+                child.kill("SIGKILL");
+            } catch {}
+        }
+    }
+    process.once("exit", killRemaining);
     async function stop(code: number) {
         if (stopping) return finished.promise;
         stopping = true;
         await Promise.all([...children].map((child) => child.stop()));
+        children.clear();
+        process.off("exit", killRemaining);
         finished.resolve(code);
         return code;
     }

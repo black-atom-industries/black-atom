@@ -174,10 +174,13 @@ for (const watcher of watchers) {
 async function stop(code: number) {
     if (stopping) return;
     stopping = true;
-    cycle.stop();
-    for (const watcher of watchers) watcher.close();
-    await processes.stop(code);
-    finished.resolve(code);
+    try {
+        cycle.stop();
+        for (const watcher of watchers) watcher.close();
+    } finally {
+        await processes.stop(code);
+        finished.resolve(code);
+    }
 }
 const interrupt = () => void stop(130);
 const terminate = () => void stop(143);
