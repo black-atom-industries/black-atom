@@ -72,6 +72,11 @@
             "template": "./themes/collection.template.toml",
             "output": "./themes/tr-1000",
             "themes": ["black-atom-tr-1000-dark", "black-atom-tr-1000-light"]
+        },
+        "agar": {
+            "template": "./themes/collection.template.toml",
+            "output": "./themes/agar",
+            "themes": ["black-atom-agar-light"]
         }
     }
 }

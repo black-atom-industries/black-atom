@@ -66,6 +66,10 @@
         "tr-1000": {
             "template": "./themes/tr-1000/collection.template.css",
             "themes": ["black-atom-tr-1000-dark", "black-atom-tr-1000-light"]
+        },
+        "agar": {
+            "template": "./themes/agar/collection.template.css",
+            "themes": ["black-atom-agar-light"]
         }
     }
 }

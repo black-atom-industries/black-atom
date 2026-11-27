@@ -1,0 +1,63 @@
+[metadata]
+author = "Black Atom Industries"
+name = "Black Atom — AGAR ∷ Light"
+
+[colors]
+foreground = "#2a281b"
+background = "#e9e7d8"
+cursor_bg = "#11ad32"
+cursor_border = "#11ad32"
+cursor_fg = "#e9e7d8"
+selection_bg = "#c8c6b8"
+selection_fg = "#2a281b"
+split = "#b1aea0"
+compose_cursor = "#c82462"
+scrollbar_thumb = "#929082"
+
+ansi = [
+  "#4a483c", # black
+  "#a40046", # dark_red
+  "#006911", # dark_green
+  "#52a800", # dark_yellow
+  "#383ec1", # dark_blue
+  "#c5256d", # dark_magenta
+  "#007115", # dark_cyan
+  "#c8c6b8" # light_gray
+]
+
+brights = [
+  "#585649", # gray
+  "#c82462", # red
+  "#1c882d", # green
+  "#11ad32", # yellow
+  "#505fe4", # blue
+  "#e94b8a", # magenta
+  "#009036", # cyan
+  "#e9e7d8" # white
+]
+
+[colors.tab_bar]
+inactive_tab_edge = "#d9d6c8"
+background = "#e9e7d8"
+
+[colors.tab_bar.active_tab]
+fg_color = "#e9e7d8"
+bg_color = "#11ad32"
+intensity = "Bold"
+
+[colors.tab_bar.inactive_tab]
+fg_color = "#e9e7d8"
+bg_color = "#b1aea0"
+
+[colors.tab_bar.inactive_tab_hover]
+fg_color = "#e9e7d8"
+bg_color = "#c8c6b8"
+
+[colors.tab_bar.new_tab]
+fg_color = "#e9e7d8"
+bg_color = "#1c882d"
+
+[colors.tab_bar.new_tab_hover]
+fg_color = "#e9e7d8"
+bg_color = "#c8c6b8"
+intensity = "Bold"

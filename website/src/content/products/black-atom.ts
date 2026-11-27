@@ -127,6 +127,7 @@ export const collectionBlurbs = {
     minium: "Neutral greys with an orange accent.",
     mono: "Monochrome.",
     "tr-1000": "Slate panel, lit by step sequencer LEDs.",
+    agar: "Khaki lab label, olive-black ink, signal green and ultramarine.",
 } as const satisfies Record<Theme.CollectionKey, string>;
 
 const repoUrl = "https://github.com/black-atom-industries/black-atom";

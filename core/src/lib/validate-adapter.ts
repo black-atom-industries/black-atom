@@ -22,6 +22,7 @@ export function createAdapterConfigSchema(themeKeys: readonly string[]) {
         minium: collectionConfigSchema,
         mono: collectionConfigSchema,
         "tr-1000": collectionConfigSchema,
+        agar: collectionConfigSchema,
     };
 
     const collectionsSchema = z.object(collectionEntries).partial();

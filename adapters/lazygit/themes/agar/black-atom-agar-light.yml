@@ -1,0 +1,33 @@
+# Black Atom — AGAR ∷ Light
+# Black Atom Industries - Lazygit Theme
+# https://github.com/black-atom-industries
+
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#11ad32"
+      - bold
+    inactiveBorderColor:
+      - "#b1aea0"
+    optionsTextColor:
+      - "#505fe4"
+    selectedLineBgColor:
+      - "#c8c6b8"
+    cherryPickedCommitBgColor:
+      - "#cdd3e8"
+    cherryPickedCommitFgColor:
+      - "#505fe4"
+    markedBaseCommitBgColor:
+      - "#cddecd"
+    markedBaseCommitFgColor:
+      - "#2a281b"
+    unstagedChangesColor:
+      - "#c82462"
+    defaultFgColor:
+      - "#2a281b"
+    searchingActiveBorderColor:
+      - "#11ad32"
+
+  authorColors:
+    "*": "#e94b8a"

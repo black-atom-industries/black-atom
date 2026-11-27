@@ -1,0 +1,25 @@
+{
+    "name": "Black Atom — AGAR ∷ Light",
+    "base": "light-ansi",
+    "overrides": {
+        "text": "#2a281b",
+        "inverseText": "#e9e7d8",
+        "inactive": "#929082",
+        "subtle": "#b1aea0",
+        "suggestion": "#505fe4",
+        "claude": "#11ad32",
+        "permission": "#505fe4",
+        "promptBorder": "#b1aea0",
+        "success": "#1c882d",
+        "error": "#c82462",
+        "warning": "#11ad32",
+        "diffAdded": "#cce0cb",
+        "diffRemoved": "#efd0d6",
+        "userMessageBackground": "#d9d6c8",
+        "userMessageBackgroundHover": "#c8c6b8",
+        "composerSidebarBackground": "#d9d6c8",
+        "bashMessageBackgroundColor": "#d9d6c8",
+        "memoryBackgroundColor": "#d9d6c8",
+        "selectionBg": "#c8c6b8"
+    }
+}

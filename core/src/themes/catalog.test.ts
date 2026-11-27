@@ -30,6 +30,7 @@ test("collectionOrder follows collection metadata", () => {
         "minium",
         "mono",
         "tr-1000",
+        "agar",
     ]);
 });
 

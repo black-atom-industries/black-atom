@@ -1,5 +1,11 @@
 [
     {
+        "key": "black-atom-agar-light",
+        "collection_key": "agar",
+        "appearance": "light",
+        "label": "Black Atom — AGAR ∷ Light"
+    },
+    {
         "key": "black-atom-default-dark",
         "collection_key": "default",
         "appearance": "dark",

@@ -72,6 +72,11 @@
             "template": "./templates/collection.template.lua",
             "output": "./colors",
             "themes": ["black-atom-tr-1000-dark", "black-atom-tr-1000-light"]
+        },
+        "agar": {
+            "template": "./templates/collection.template.lua",
+            "output": "./colors",
+            "themes": ["black-atom-agar-light"]
         }
     }
 }

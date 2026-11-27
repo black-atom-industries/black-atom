@@ -40,6 +40,9 @@
                 },
                 "tr-1000": {
                     "$ref": "#/$defs/collectionConfig"
+                },
+                "agar": {
+                    "$ref": "#/$defs/collectionConfig"
                 }
             },
             "additionalProperties": false,

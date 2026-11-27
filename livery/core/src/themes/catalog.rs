@@ -91,8 +91,8 @@ fn header<'a>(contents: &'a str, field: &str) -> Option<&'a str> {
 mod tests {
     use super::*;
 
-    const COLLECTIONS: [&str; 7] = [
-        "default", "facility", "jpn", "minium", "mono", "terra", "tr-1000",
+    const COLLECTIONS: [&str; 8] = [
+        "agar", "default", "facility", "jpn", "minium", "mono", "terra", "tr-1000",
     ];
 
     #[test]

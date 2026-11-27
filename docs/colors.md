@@ -44,7 +44,7 @@ colors. They need not appear in the palette.
 
 Feedback comes in two shapes:
 
-- **Palette-derived.** `facility`, `jpn` and `terra` map `negative`, `success`, `info` and `warning` to the palette's
+- **Palette-derived.** `agar`, `facility`, `jpn` and `terra` map `negative`, `success`, `info` and `warning` to the palette's
   `red`, `green`, `blue` and `yellow`.
 - **Fixed literals.** `default`, `minium`, `mono` and `tr-1000` write `oklch()` values directly. A fixed `success` keeps
   its green even when the palette has none.

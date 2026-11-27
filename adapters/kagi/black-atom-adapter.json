@@ -73,6 +73,11 @@
             "template": "./fragments/collection.template.css",
             "output": "./fragments/tr-1000",
             "themes": ["black-atom-tr-1000-dark", "black-atom-tr-1000-light"]
+        },
+        "agar": {
+            "template": "./fragments/collection.template.css",
+            "output": "./fragments/agar",
+            "themes": ["black-atom-agar-light"]
         }
     }
 }

@@ -1,0 +1,30 @@
+/* Black Atom — AGAR ∷ Light */
+
+/* Background colors */
+@define-color ba-bg-default #e9e7d8;
+@define-color ba-bg-panel #d9d6c8;
+@define-color ba-bg-hover #c8c6b8;
+@define-color ba-bg-active #c8c6b8;
+@define-color ba-bg-selection #c8c6b8;
+@define-color ba-bg-contrast #2a281b;
+
+/* Foreground colors */
+@define-color ba-fg-default #2a281b;
+@define-color ba-fg-subtle #929082;
+@define-color ba-fg-accent #11ad32;
+@define-color ba-fg-disabled #b1aea0;
+@define-color ba-fg-contrast #e9e7d8;
+
+/* Feedback colors */
+@define-color ba-fg-negative #c82462;
+@define-color ba-fg-positive #1c882d;
+@define-color ba-fg-warn #11ad32;
+@define-color ba-fg-info #505fe4;
+
+/* Palette colors */
+@define-color ba-red #c82462;
+@define-color ba-green #1c882d;
+@define-color ba-yellow #11ad32;
+@define-color ba-blue #505fe4;
+@define-color ba-magenta #e94b8a;
+@define-color ba-cyan #009036;

@@ -1,5 +1,6 @@
 import type * as Theme from "../types/theme.ts";
 
+import agarCollection from "./agar/mod.ts";
 import defaultCollection from "./default/mod.ts";
 import jpnCollection from "./jpn/mod.ts";
 import miniumCollection from "./minium/mod.ts";
@@ -16,6 +17,7 @@ const collections = [
     miniumCollection,
     monoCollection,
     tr1000Collection,
+    agarCollection,
 ] as const;
 
 type CatalogCollection = (typeof collections)[number];
@@ -42,6 +44,7 @@ export const themeCatalog = {
     ...miniumCollection.themes,
     ...monoCollection.themes,
     ...tr1000Collection.themes,
+    ...agarCollection.themes,
 } as const satisfies Record<CatalogThemeKey, Theme.ThemeDefinition>;
 
 export const themeKeys = Object.keys(themeCatalog) as CatalogThemeKey[];

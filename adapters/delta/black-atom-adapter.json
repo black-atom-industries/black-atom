@@ -72,6 +72,11 @@
             "template": "./themes/collection.template.gitconfig",
             "output": "./themes/tr-1000",
             "themes": ["black-atom-tr-1000-dark", "black-atom-tr-1000-light"]
+        },
+        "agar": {
+            "template": "./themes/collection.template.gitconfig",
+            "output": "./themes/agar",
+            "themes": ["black-atom-agar-light"]
         }
     }
 }

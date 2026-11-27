@@ -82,6 +82,8 @@ settings:
             value: black-atom-mono-dimmed-light
           - label: "TR-1000: Light"
             value: black-atom-tr-1000-light
+          - label: "AGAR: Light"
+            value: black-atom-agar-light
 */
 
 
@@ -128,6 +130,141 @@ settings:
   default: false
 */
 
+
+
+
+/* Black Atom — AGAR ∷ Light */
+.theme-light.black-atom-agar-light {
+  /* Foundation: Base Colors */
+
+  --color-base-00: #faf7e8;
+  --color-base-05: #e9e7d8;
+  --color-base-10: #d9d6c8;
+  --color-base-20: #c8c6b8;
+  --color-base-25: #b1aea0;
+  --color-base-30: #929082;
+  --color-base-35: #747265;
+  --color-base-40: #585649;
+  --color-base-50: #4a483c;
+  --color-base-60: #3d3b2f;
+  --color-base-70: #2a281b;
+  --color-base-100: #1e1c11;
+
+
+  /* Extended Colors */
+  --color-red: #c82462;
+  --color-red-rgb: 200, 36, 98;
+  --color-orange: #52a800;
+  --color-orange-rgb: 82, 168, 0;
+  --color-yellow: #11ad32;
+  --color-yellow-rgb: 17, 173, 50;
+  --color-green: #1c882d;
+  --color-green-rgb: 28, 136, 45;
+  --color-cyan: #009036;
+  --color-cyan-rgb: 0, 144, 54;
+  --color-blue: #505fe4;
+  --color-blue-rgb: 80, 95, 228;
+  --color-purple: #e94b8a;
+  --color-purple-rgb: 233, 75, 138;
+  --color-pink: #c5256d;
+  --color-pink-rgb: 197, 37, 109;
+
+  /* Backgrounds */
+  --background-primary: #e9e7d8;
+  --background-primary-alt: #c8c6b8;
+  --background-secondary: #d9d6c8;
+  --background-secondary-alt: #d9d6c8;
+  --background-modifier-hover: #c8c6b8;
+  --background-modifier-active-hover: #c8c6b8;
+  --background-modifier-border: #b1aea0;
+  --background-modifier-border-hover: #929082;
+  --background-modifier-border-focus: #11ad32;
+  --background-modifier-error-rgb: 230, 204, 209;
+  --background-modifier-error: #e6ccd1;
+  --background-modifier-error-hover: #e6ccd1;
+  --background-modifier-success-rgb: 203, 216, 202;
+  --background-modifier-success: #cbd8ca;
+  --background-modifier-message: #cdd3e8;
+  --background-modifier-form-field: #e9e7d8;
+
+  /* Text */
+  --text-normal: #2a281b;
+  --text-muted: #929082;
+  --text-faint: #b1aea0;
+  --text-accent: #11ad32;
+  --text-accent-hover: #11ad32;
+  --text-on-accent: #e9e7d8;
+  --text-on-accent-inverted: #2a281b;
+  --text-error: #c82462;
+  --text-warning: #11ad32;
+  --text-success: #1c882d;
+  --text-selection: #c8c6b8;
+  --text-highlight-bg: #c8c6b8;
+
+  /* Interactive */
+  --interactive-normal: #e9e7d8;
+  --interactive-hover: #c8c6b8;
+  --interactive-accent: #11ad32;
+  --interactive-accent-hover: #11ad32;
+
+  /* Headings */
+  --h1-color: #11ad32;
+  --h2-color: #11ad32;
+  --h3-color: #11ad32;
+  --h4-color: #585649;
+  --h5-color: #585649;
+  --h6-color: #585649;
+
+  /* Markup */
+  --bold-color: #11ad32;
+  --italic-color: #11ad32;
+  --blockquote-border-color: #1c882d;
+  --link-color: #1c882d;
+  --link-color-hover: #1c882d;
+  --link-external-color: #1c882d;
+  --link-external-color-hover: #1c882d;
+
+  /* Code / Syntax Highlighting */
+  --code-normal: #585649;
+  --code-comment: #929082;
+  --code-function: #11ad32;
+  --code-important: #e94b8a;
+  --code-keyword: #e94b8a;
+  --code-operator: #e94b8a;
+  --code-property: #585649;
+  --code-punctuation: #585649;
+  --code-string: #1c882d;
+  --code-tag: #11ad32;
+  --code-value: #585649;
+  --code-background: #c8c6b8;
+
+  /* Tags */
+  --tag-color: #11ad32;
+  --tag-color-hover: #11ad32;
+  --tag-background: #c8c6b8;
+  --tag-background-hover: #c8c6b8;
+
+  /* Graph */
+  --graph-line: #c8c6b8;
+  --graph-node: #11ad32;
+  --graph-node-focused: #11ad32;
+  --graph-node-tag: #009036;
+  --graph-node-attachment: #1c882d;
+
+  /* Scrollbar */
+  --scrollbar-bg: #e9e7d8;
+  --scrollbar-thumb-bg: #c8c6b8;
+  --scrollbar-active-thumb-bg: #929082;
+
+  /* Nav */
+  --nav-item-background-hover: #c8c6b8;
+  --nav-item-background-active: #c8c6b8;
+  --nav-item-background-selected: #c8c6b8;
+  --nav-item-color: #2a281b;
+  --nav-item-color-hover: #2a281b;
+  --nav-item-color-active: #11ad32;
+  --nav-item-color-selected: #2a281b;
+}
 
 
 

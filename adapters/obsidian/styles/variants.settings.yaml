@@ -81,3 +81,5 @@ settings:
             value: black-atom-mono-dimmed-light
           - label: "TR-1000: Light"
             value: black-atom-tr-1000-light
+          - label: "AGAR: Light"
+            value: black-atom-agar-light
