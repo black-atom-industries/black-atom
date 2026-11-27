@@ -49,7 +49,9 @@ writing the creators. This skill covers the wiring.
     `themes/<key>/collection.template.*` and point the block at it.
 
 11. Run `npm run generate`, then check one generated file per adapter in its `output` directory, and the nvim colorscheme at
-    `adapters/nvim/colors/`.
+    `adapters/nvim/colors/`. Restart a running `npm run dev`, or ask the user to restart it. Livery compiles its theme
+    list into the binary, and `tauri dev` rebuilds only when Rust sources change. The dev GUI and `livery-dev` apply a
+    new theme key only after the restart.
 
 12. Run `npm run check` and `npm run test` from the repo root. Both must be green.
 

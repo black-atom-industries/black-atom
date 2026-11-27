@@ -39,7 +39,10 @@ description: Add a theme to an existing collection, or rework an existing theme'
    `adapters/obsidian/styles/variants.settings.yaml`.
 
 6. Run `npm run generate` from the repo root. It regenerates every adapter that has a
-   `black-atom-adapter.json` in the current tree.
+   `black-atom-adapter.json` in the current tree. Restart a running `npm run dev`, or ask the user
+   to restart it. Livery compiles its theme list into the binary, and `tauri dev` rebuilds only
+   when Rust sources change. The dev GUI and `livery-dev` apply a new theme key only after the
+   restart.
 
 7. Verify one generated output file per adapter that declares the collection. Outputs live at
    `adapters/<name>/themes/<collection>/<theme-key>.<ext>`, except nvim's colorschemes at

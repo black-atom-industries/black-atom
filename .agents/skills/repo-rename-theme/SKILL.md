@@ -42,7 +42,9 @@ in one commit.
 
 8. Run `npm run generate` from the repo root to regenerate every adapter's output for the new
    key. Confirm the new generated files exist and no `black-atom-<collection>-<old>` file remains
-   under `adapters/`.
+   under `adapters/`. Restart a running `npm run dev`, or ask the user to restart it. Livery
+   compiles its theme list into the binary, and `tauri dev` rebuilds only when Rust sources
+   change. The dev GUI and `livery-dev` apply a new theme key only after the restart.
 
 9. Obsidian assembles `adapters/obsidian/theme.css` during central generation. If this theme is
    in the Obsidian adapter, inspect that file and `adapters/obsidian/styles/variants.settings.yaml`

@@ -35,9 +35,6 @@ conflict. A launcher left by a dev session that is no longer running is reported
 offers to remove it with its session directory. The launcher is ready after successful generation and
 compilation; shutdown removes its symlink. The installed `livery` command stays independent.
 
-Debug builds read the adapter themes from the repo's `adapters/` instead of their embedded copy, so
-the dev GUI, `livery-dev`, and the end-to-end bridge always apply the current working tree.
-
 On macOS, the root build produces the `.app` bundle and CLI.
 
 `install:macos` installs `/Applications/livery.app` and `$CARGO_HOME/bin/livery` (default
